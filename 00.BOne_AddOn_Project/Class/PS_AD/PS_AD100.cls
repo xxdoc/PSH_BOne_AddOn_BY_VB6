@@ -87,7 +87,7 @@ On Error GoTo LoadForm_Error
     Call PS_AD100_ComboBox_Setting
     Call PS_AD100_CF_ChooseFromList
     Call PS_AD100_EnableMenus
-    Call PS_AD100_SetDocument(oFromDocEntry01) '주석 테스트
+    Call PS_AD100_SetDocument(oFromDocEntry01)
     Call PS_AD100_FormResize
     
     oForm01.EnableMenu ("1283"), False '삭제
