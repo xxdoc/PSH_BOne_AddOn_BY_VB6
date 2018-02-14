@@ -1,0 +1,7 @@
+AcctCode	String	20,
+AcctName	String	200,
+RptItm	String	200,
+BaseAmt	Number,
+Debit	Number,
+Credit	Number,
+Balance	Number

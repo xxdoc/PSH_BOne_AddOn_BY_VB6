@@ -1,0 +1,22 @@
+MM030CardCode	String	20
+MM030CardName	String	100
+MM030DocEntry	String	10
+MM030DocDate	DateTime
+MM030DueDate	DateTime
+MM030Purchase	String	30
+MM030ItemCode	String	20
+MM030ItemName	String	100
+MM030Size	String	100
+MM030InvntryUom	String	10
+MM030Qty	Number
+MM030Weight	Number
+MM030Price	Number
+MM030LinTotal	Number
+MM070DocDate	DateTime
+MM070Qty	Number
+MM070Weight	Number
+MM070LinTotal	Number
+NoQty	Number
+NoWeight	Number
+NoLinTotal	Number
+MM030Comments	String	200

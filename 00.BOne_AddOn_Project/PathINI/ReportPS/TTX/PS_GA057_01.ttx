@@ -1,0 +1,22 @@
+CntcCode		String	20
+CntcName		String	50
+BPLId				String	1
+BPLName		String	50
+TeamCode		String	20
+TeamName		String	50
+RspCode		String	20
+RspName		String	50
+ChkDate			DateTime
+ChkCls			String	5
+ChkNm			String	50
+ChkCode		String	20
+ChkName		String	50
+ChkValue		String	20
+OpnCode		String	20
+OpnName		String	50
+Mitnc				String	1000
+OpnYN			String	1
+OpnYNName	String	5
+Note				String	4000
+FrDt				String	10
+ToDt				String	10

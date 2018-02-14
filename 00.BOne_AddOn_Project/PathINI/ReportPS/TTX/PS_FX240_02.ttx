@@ -1,0 +1,13 @@
+div	String	20
+ClasCode	String	20
+ClasName	String	100
+TeamCode	String	20
+TeamName	String	100
+RspCode	String	20
+RspName	String	100
+PostAmt	Number
+GatAmt	Number
+OBalance	Number
+FixAmt	Number
+EBalance	Number
+HisAmt	Number

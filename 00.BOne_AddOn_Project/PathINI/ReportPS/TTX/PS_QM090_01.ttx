@@ -1,0 +1,5 @@
+ItemCode	String	20
+ItemName	String	100
+FailCode	String	20
+FailName	String	100
+Qty	Number

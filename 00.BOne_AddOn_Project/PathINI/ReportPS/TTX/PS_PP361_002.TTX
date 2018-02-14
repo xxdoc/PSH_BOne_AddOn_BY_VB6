@@ -1,0 +1,16 @@
+OrdNum	String	50
+Sub	String	10
+ItemCode	String	50
+ItemName	String	50
+Size	String	30
+Unit	String	10
+Quantity	Number
+Jaje	Number
+Sulge	Number
+JaGa	Number
+WaeGa	Number
+WaeJe	Number
+ToTal	Number
+Sujugum	Number
+JakNum	String	10
+

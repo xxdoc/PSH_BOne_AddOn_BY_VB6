@@ -1,0 +1,19 @@
+OrdNum	String	50
+CardName	String	10
+ItemCode	String	50
+ItemName		String	50
+Size	String	30
+Unit	String	10
+Quantity	Number
+LinTotal	Number
+SulGe	Number
+WorkCost	Number
+WajuGa	Number
+Wajuje	Number
+Total	Number
+DocDate	DateTime
+Sugum	Number
+DocDueDate	DateTime
+Yalru	DateTime
+YesNo	String	10
+

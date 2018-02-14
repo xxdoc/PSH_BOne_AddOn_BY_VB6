@@ -1,0 +1,15 @@
+ItemCode	String	20
+ItemName	String	60
+MovDocNo	String	20
+PorNum	String	20
+Size	String	20
+CallSize	String	20
+ItemType	String	20
+Mark	String	50
+ItmMsort	String	20
+PkQty	Number
+PkWt	Number
+NPkQty	Number
+NPkWt	Number
+JANSU	Number
+JANJUNG	Number

@@ -1,0 +1,21 @@
+Div	String	20
+divnm	String	20
+OrdNum	String	20
+OrdSub	String	20
+JakMyung	String	200
+JakSize	String	200
+JakUnit	String	20
+CntcCode	String	20
+CntcName	String	20
+DocDate	Datetime
+QcGubun	String	20
+FinYn	String	20
+PassQty	Number
+PassTm	Number
+SpQty	Number
+SpTm	Number
+ModQty	Number
+ModTm	Number
+FQty	Number
+FTm	Number
+DocEntry	String	20

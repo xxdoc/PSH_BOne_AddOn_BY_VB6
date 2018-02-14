@@ -1,0 +1,14 @@
+CardName	String	150
+QuotDate	String	30
+FrgnName	String	150
+Size	String	150
+Uom	String	15
+QuotQty	Number
+QuotTot	Number
+SaleDate	String	20
+DocDueDate	String	20
+DocEntry	String	20
+LineNum	String	20
+SaleQty	Number
+SaleTot	Number
+JakName	String	30

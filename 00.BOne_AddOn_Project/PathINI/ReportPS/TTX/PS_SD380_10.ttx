@@ -1,0 +1,8 @@
+PackNo		String	100
+ItemCode	String	100
+ItemName	String	100
+CardName	String	100
+Size	String	100
+BatchNum	String	100
+Info02		String	100
+Weight		Number

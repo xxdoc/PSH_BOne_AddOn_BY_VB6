@@ -1,0 +1,12 @@
+DocEntry	String	10
+Gubun	String	50
+LineId	String	10
+FrgnName	String	100
+Quality	String	50
+Size	String	50
+ItemType	String	50
+Mark	String	50
+Box	Number
+Qty	Number
+Weight	Number
+Sort	String	50

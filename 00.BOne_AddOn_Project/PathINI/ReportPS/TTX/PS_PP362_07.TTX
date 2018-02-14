@@ -1,0 +1,6 @@
+Sub1_2		String	6
+CpCode		String	20
+CpName		String	50
+OrdNum		String	20
+ItemName	String	100
+Amt			Number

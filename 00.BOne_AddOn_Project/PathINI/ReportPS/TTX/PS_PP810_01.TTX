@@ -1,0 +1,11 @@
+ToolType	String	10
+Code	String	20
+Name	String	100
+Size	String	100
+DD_cnt	Number
+Coil_cnt	Number
+Kg	Number
+St_ymd	DateTime
+Status	String	10
+Y_Count	Number
+End_ymd	DateTime

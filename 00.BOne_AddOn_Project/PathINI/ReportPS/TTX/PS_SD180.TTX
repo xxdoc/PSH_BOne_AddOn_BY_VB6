@@ -1,0 +1,14 @@
+CardCode	String	50
+CardName	String	100
+CdNaming	String	30
+CdNaming1	String	30
+GeSu	Number
+GeGum	Number
+PuSu	Number
+PuGum	Number
+GoSu	Number
+GoGum	Number
+JaSu	Number
+JaGum	Number
+MolSu	Number
+MolGum	Number

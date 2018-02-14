@@ -1,0 +1,46 @@
+BPLId	String	10
+DocNum	Short
+DocDate	DateTime
+CntcName	String	20
+DueDate	DateTime
+Text01	String	10
+Text02	String	10
+Text03	String	10
+Text04	String	10
+Text05	String	10
+ItemCode	String	20
+ItemName	String	100
+Size	String	100
+JakNum	String	30
+PrcName	String	50
+DocEntry	Short
+MM030DocDate	DateTime
+PurType	String	10
+CardCode	String	20
+VATRegNum	String	30
+CardName	String	100
+Qty	Number
+InvntryUom	String	10
+WeightUnit	String	10
+Weight	Number
+Price	Number
+LinTotal	Number
+SumQty	Number
+SumWeight	Number
+DocTotal	Number
+ECardNm1	String	100
+ECardNm2	String	100
+ECardNm3	String	100
+EAmount1	Number
+EAmount2	Number
+EAmount3	Number
+HComments	Memo
+Purchase	String	10
+PreQty	Number
+PrePrice	Number
+PreDocEntry	String	10
+PreDocDate	DateTime
+BPLName	String	50
+E_EBELN	String	20
+Payment	String	100
+Note	String	100

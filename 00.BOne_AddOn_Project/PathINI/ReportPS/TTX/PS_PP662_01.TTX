@@ -1,0 +1,4 @@
+FailCode	String	5
+FailName	String	20
+FailQty	Number
+Cnt	Number

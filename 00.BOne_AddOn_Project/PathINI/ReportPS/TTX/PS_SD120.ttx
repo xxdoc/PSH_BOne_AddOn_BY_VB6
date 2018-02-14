@@ -1,0 +1,7 @@
+CardName	String	150
+QuotDocu	String	10
+ItemName	String	200
+LineTotal	Number
+Comments	String	150
+OwnerCode	String	20
+QName	String	20

@@ -1,0 +1,6 @@
+div	String	20
+div1	String	20
+div2	String	20
+Qty	Number
+Wgt	Number
+Amt	Number

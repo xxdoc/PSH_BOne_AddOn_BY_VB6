@@ -1,0 +1,11 @@
+ItemCode	String	50
+FrgnName	String	100
+Size	String	50
+CardCode	String	50
+CardName	String	100
+DocDate	String	20
+ItmsGrpCod	String	50
+Quantity	Number
+Weight	Number
+Price	Number
+LineTotal	Number

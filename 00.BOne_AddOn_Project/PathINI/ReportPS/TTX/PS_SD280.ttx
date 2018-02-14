@@ -1,0 +1,14 @@
+JakName	string		20
+ShipDoc		string		10
+SD040_No	String	10
+FrgnName	string		50
+Size			string		50
+LotNo		string		20
+CardName	string		50
+POQty		Number
+POTot		Number
+ShipQty		Number
+ShipTot		number
+DocDate		String	20
+ItemName	String	100
+OrdrNum	string		30

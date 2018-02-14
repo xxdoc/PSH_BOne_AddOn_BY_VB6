@@ -1,0 +1,7 @@
+code	String	10
+name	String	50
+mcode	String	10
+mname	String	50
+quantity	Number
+weight	Number
+linetotal	Number

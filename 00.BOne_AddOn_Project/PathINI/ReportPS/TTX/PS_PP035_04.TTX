@@ -1,0 +1,14 @@
+JAKBUN	String	20
+DocEntry	Short
+FrgnName	String	30
+SIZE	String	50
+SELWT	Short
+DocDate	string	8
+DueDate	string	8
+CardName	String	50
+Quantity	Number
+TotalSumSy	Number
+DocDate	DateTime
+SelWt	Number
+DueDate	DateTime
+Comments	String	100

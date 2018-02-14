@@ -1,0 +1,14 @@
+PP040HNo	String	100
+WorkDt		String	10
+EmpCode	String	20
+EmpName	String	50
+WkTime		Number
+Qty			String	100
+Price			String	100
+Amt			Number
+Class			String	5
+CpCode		String	20
+CpName		String	100
+OrdNum		String	20
+Sub1_2		String	6
+Sort			Number

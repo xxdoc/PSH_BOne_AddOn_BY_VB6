@@ -1,0 +1,21 @@
+QDocEntry		String	20
+QName			String	20
+FrgnName		String	100
+Size				String	150
+Name			String	20
+CodeName		String	100
+QuotQty			Number
+SaleQty			Number
+QuotPri			Number
+QuotTot			Number
+QuotDate		String	20
+SaleDate			String	20
+ODocEntry		String	20
+OName			String	20
+SalePri			Number
+SaleTot			Number
+SaleDoc			String	20
+CardName		String	100
+JakName		String	50
+SeTotal			Number
+LotNo			String	50

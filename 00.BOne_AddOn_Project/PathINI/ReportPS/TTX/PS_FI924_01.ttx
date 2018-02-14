@@ -1,0 +1,10 @@
+CardCode	String	20,
+CardName	String	20,
+Sales	Number,
+Misu	Number,
+MisuRDay	Short,
+NoPay	Number,
+NoPayRDay	Short,
+Fail	Number,
+SumAmt	Number,
+SumAmtRDay	Short

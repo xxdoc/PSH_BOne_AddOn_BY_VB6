@@ -1,0 +1,8 @@
+Account	String	15,
+AcctName	String	200,
+Debit	Number,
+Credit	Number,
+GroupMask	String	2,
+Balance	Number,
+ThisMonInPay	Number,
+ThisMonOutPay	Number

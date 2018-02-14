@@ -1,0 +1,8 @@
+PQNum	String	20
+CntcName	String	30
+DocDate	String	30
+Gubun	String	20
+ItemCode	String	50
+ItemName	String	150
+Size	String	100
+PODocNum	String	30

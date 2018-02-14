@@ -1,0 +1,11 @@
+OrdGbn	String	10
+Name	String	50
+CpCode	String	30
+CpName	String	50
+DocDate	DateTime
+WorkCode	String	10
+WorkName	String	10
+OrdNum	String	30
+PQty	Number
+WorkTime	String	10
+PRICE	Number

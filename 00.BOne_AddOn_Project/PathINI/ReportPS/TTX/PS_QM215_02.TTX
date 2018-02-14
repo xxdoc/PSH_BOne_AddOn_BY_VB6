@@ -1,0 +1,7 @@
+Level			String	5
+StdName	String	4000
+DocCode	String	10
+DeptCode	String	10
+DeptName	String	20
+Cmt			String	10
+Date			String	10

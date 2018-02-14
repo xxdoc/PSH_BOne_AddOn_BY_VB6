@@ -1,0 +1,10 @@
+OrdNum		String	20
+Sub1_2		String	6
+DocDate		String	10
+WorkCode	String	20
+WorkName	String	50
+CpCode		String	20
+CpName		String	100
+PQty			Number
+Amt			Number
+Sort			Number

@@ -1,0 +1,7 @@
+Level	Short
+HabDebit	Number
+JanDebit	Number
+AcctCode	String	10
+AcctName	String	100
+JanCredit	Number
+HabGredit	Number

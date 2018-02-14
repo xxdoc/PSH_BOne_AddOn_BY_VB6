@@ -1,0 +1,15 @@
+CardName					String	50
+PP020_YesterDayCnt		Number
+PP020_YesterDayAmt		Number
+PP020_MonthCnt			Number
+PP020_MonthAmt			Number
+PP080_YesterDayCnt		Number
+PP080_YesterDayAmt		Number
+PP080_MonthCnt			Number
+PP080_MonthAmt			Number
+PP510_Cnt					Number
+PP510_Cnt2					Number
+Cnt_Tot						Number
+PP510_Amt					Number
+PP510_Amt2				Number
+Amt_Tot						Number

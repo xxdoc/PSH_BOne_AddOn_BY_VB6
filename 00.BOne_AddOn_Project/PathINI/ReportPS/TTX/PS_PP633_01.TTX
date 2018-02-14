@@ -1,0 +1,8 @@
+ItemCode	String	30
+ItemName	String	60
+OrdNum	String	100
+LotNo	String	20
+MulGbn1	String	10
+Quantity	Number
+Coil	Number
+DocDate	DateTime

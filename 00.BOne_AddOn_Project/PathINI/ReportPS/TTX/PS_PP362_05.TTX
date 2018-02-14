@@ -1,0 +1,13 @@
+CpCode		String	20
+CpName		String	50
+StdTime		String	100
+WkTime		String	100
+ReTime		String	100
+Amt			Number
+Class			String	5
+CompltDt	String	10
+FirstWkDt	String	10
+LastWkDt	String	10
+Sequence	Number
+OrdNum		String	20
+Sub1_2		String	6

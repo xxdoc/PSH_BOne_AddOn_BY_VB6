@@ -1,0 +1,5 @@
+SpecDiv	String	20
+ItmMsort	String	20
+Msortnm	String	100
+Qty	Number
+Wgt	Number

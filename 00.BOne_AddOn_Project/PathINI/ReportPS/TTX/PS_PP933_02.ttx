@@ -1,0 +1,5 @@
+DocDate	String	10
+ItemCode	String	15
+ItemName	String	50
+BatchNum	String	5
+Quantity	Number

@@ -1,0 +1,18 @@
+DocEntry	String	10
+BPLId	String	1
+CallSize	String	10
+LotNo	String	20
+ItemName030L	String	50
+BatchNum	String	20
+SoLotNo	String	50
+ItemName030H	String	50
+SWW	String	10
+SelWt	Short
+OutSize	String	50
+DocDate	DateTime
+MulType1	String	10
+MulType2	String	10
+MulType3	String	10
+CpCode	String	30
+CpName	String	50
+StdTime	String	10

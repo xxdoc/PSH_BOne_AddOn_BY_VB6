@@ -1,0 +1,13 @@
+PubNo		String	100
+GrpDt		String	10
+VioCode		String	50
+VioName	String	100
+ActGd		String	50
+ActGdNm	String	100
+CodeLv1		String	50
+NameLv1	String	100
+CodeLv2		String	50
+NameLv2	String	100
+GrpName	String	100
+FrGrpDt		Datetime
+ToGrpDt		Datetime

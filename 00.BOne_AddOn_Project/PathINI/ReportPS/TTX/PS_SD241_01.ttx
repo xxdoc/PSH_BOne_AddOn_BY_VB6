@@ -1,0 +1,23 @@
+LotNo	String	100
+BPLId	String	5
+BPLName	String	100
+CardCode	String	50
+CardName	String	150
+FrgnName	String	150
+Size	String	150
+DocDate	DateTime
+DocDueDate	DateTime
+Quantity	Number
+LineTotal	Number
+RegNum	String	30
+SjWeight	Number
+Napsu	Number
+Minap	Number
+ItemCode	String	50
+Migum	Number
+Chlsu	Number
+Chlgum	Number
+DocEntry1	String	30
+Jungi	DateTime
+DocNum	String	30
+Gubun	String	10

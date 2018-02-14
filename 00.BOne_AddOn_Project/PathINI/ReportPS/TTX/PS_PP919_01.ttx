@@ -1,0 +1,10 @@
+OrdGbn	String	5
+Name	String	30
+CpCode	String	20
+CpName	String	30
+PQty	Number
+YQty	Number
+NQty	Number
+WorkTime	Number
+Suyul	Number
+Bulrang	Number

@@ -1,0 +1,12 @@
+BPLId	String	20
+BPLNM	String	20
+DocDate	DateTime
+DocEntry	String	20
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Weight	Number
+OutWhCd	String	20
+OutNM	String	20
+InWhCd	String	20
+InNM	String	20

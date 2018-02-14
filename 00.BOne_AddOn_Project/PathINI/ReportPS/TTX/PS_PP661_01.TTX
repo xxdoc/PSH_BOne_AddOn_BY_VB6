@@ -1,0 +1,9 @@
+ItemCode	String	20
+ItemName	String	60
+BPLId	String	1
+LotNo	String	100
+FailCode	String	5
+FailName	String	20
+FailQty	Number
+DocDate	DateTime
+WorkName	String	10

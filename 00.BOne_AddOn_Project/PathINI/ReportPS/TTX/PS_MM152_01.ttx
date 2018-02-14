@@ -1,0 +1,20 @@
+DocNum	String	10
+DocDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+Size	String	100
+JakNum	String	20
+TotalWt	Number
+CPWt	Number
+CPWtName	String	100
+UnWeight	Number
+OutQty	Number
+UnWt	Number
+OutWt	Number
+ReStatus	String	10
+VATRegNum	String	20
+CardName	String	100
+RepName	String	10
+Street	String	100
+Industry	String	30
+Business	String	30

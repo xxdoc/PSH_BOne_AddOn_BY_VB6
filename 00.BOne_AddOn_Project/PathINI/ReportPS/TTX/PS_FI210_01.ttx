@@ -1,0 +1,15 @@
+Account	String	20
+AcctName	String	100
+CdName	String	100
+amt01	Number
+amt02	Number
+amt03	Number
+amt04	Number
+amt05	Number
+amt06	Number
+amt07	Number
+amt08	Number
+amt09	Number
+amt10	Number
+amt11	Number
+amt12	Number

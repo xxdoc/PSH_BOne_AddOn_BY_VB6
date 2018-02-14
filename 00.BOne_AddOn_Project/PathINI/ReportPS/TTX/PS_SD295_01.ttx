@@ -1,0 +1,15 @@
+CardCode			STRING	50
+CardName		STRING	100
+SalesOrder_Cnt		NUMBER
+SalesOrder_Qty		NUMBER
+Delivery_Cnt		NUMBER
+Delivery_Qty		NUMBER
+Normal_Delivery_Cnt	NUMBER
+Normal_Delivery_Qty	NUMBER
+Over_Delivery_Cnt		NUMBER
+Over_Delivery_Qty		NUMBER
+Normal_Pcnt		NUMBER
+Over_Pcnt			NUMBER
+DocDateFr		STRING	10
+DocDateTo		STRING	10
+BPLName			STRING	50

@@ -1,0 +1,34 @@
+Gubun	String	100
+VATRegNum	String	100
+CardName	String	100
+RepName		String	100
+Street		String	100
+PARAM01		String	100
+PARAM02		String	100
+PARAM03		String	100
+PARAM04		String	100
+PARAM05		String	100
+PARAM06		String	100
+PARAM07		String	100
+PARAM08		String	100
+OutDocEntry	String	100
+BPLName		String	100
+DocDate	DateTime
+CCardName	String	100
+Purpose		String	100
+Comments	String	100
+ItemCode	String	100
+ItemName_1	String	100
+ItemName_2	String	100
+Quality_1	String	100
+Quality_2	String	100
+Size_1	String	100
+Size_2	String	100
+ItemType_1	String	100
+ItemType_2	String	100
+Mark_1		String	100
+Mark_2		String	100
+Qty 		Number
+Weight 	Number
+BatchNum 	String	100
+Sort 		String	100

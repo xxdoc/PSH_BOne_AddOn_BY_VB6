@@ -1,0 +1,20 @@
+DocEntry		Number
+BPLId			String	1
+BPLName	String	50
+CntcCode	String	20
+CntcName	String	50
+TeamCd		String	50
+TeamNm	String	50
+RspCd		String	20
+RspNm		String	50
+PrtrCd		String	20
+PrtrNm		String	50
+PrtrSpec		String	50
+PrvdDt		Datetime
+Pred			Number
+Qty			Number
+RtrnDt		String	10
+RtrnRsn		String	400
+Note			String	4000
+FrDt			String	10
+ToDt			String	10

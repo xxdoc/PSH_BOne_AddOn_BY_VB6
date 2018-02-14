@@ -1,0 +1,16 @@
+CardCode	STRING	50
+CardName	STRING	100
+DocDate		DATETIME
+DocEntry		STRING	100
+U_LotNo		STRING	50
+PunName	STRING	20
+ItemCode	STRING	50
+Dscription	STRING	100
+unitMsr		STRING	20
+Quantity		NUMBER
+Price			NUMBER
+LineTotal	NUMBER
+ShipDate	DATETIME
+OwnerCode	STRING	20
+OName		STRING	10
+AR_YN		STRING	50

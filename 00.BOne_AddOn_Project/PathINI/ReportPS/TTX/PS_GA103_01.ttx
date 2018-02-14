@@ -1,0 +1,23 @@
+C_Cls			String	5
+C_Org		String	20
+C_TrgtNod	Number
+C_Grd		String	5
+C_TrgtMtp	Number
+C_StrDt		Datetime
+C_StrPrns	Number
+C_PrgNod	Number
+C_CmMtp	Number
+C_CmDt		Datetime
+C_CmRate	Number
+O_Cls			String	5
+O_Org		String	20
+O_TrgtNod	Number
+O_Grd		String	5
+O_TrgtMtp	Number
+O_StrDt		Datetime
+O_StrPrns	Number
+O_PrgNod	Number
+O_CmMtp	Number
+O_CmDt		Datetime
+O_CmRate	Number
+StdDt			Datetime

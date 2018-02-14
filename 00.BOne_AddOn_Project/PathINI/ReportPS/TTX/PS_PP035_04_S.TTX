@@ -1,0 +1,10 @@
+DocEntry	Short
+LineId	Number
+SIZE	String	50
+Name	String	200
+CntcCode	String	50
+BuyUnitMsr	String	10
+Weight	Number
+CntcName	String	10
+ProcType	String	10
+Comments	String	100

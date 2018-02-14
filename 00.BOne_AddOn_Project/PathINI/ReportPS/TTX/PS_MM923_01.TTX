@@ -1,0 +1,9 @@
+YoDocDate	DateTime
+DocEntry	String	10
+ItemCode	String	30
+ItemName	String	50
+YQty	Number
+YWeight	Number
+EiDocDate	DateTime
+EQty	Number
+EWeight	Number

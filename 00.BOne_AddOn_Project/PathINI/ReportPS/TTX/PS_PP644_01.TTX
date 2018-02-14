@@ -1,0 +1,8 @@
+ItmBsort	String	20
+BPLid	String	1
+ItemCode	String	30
+ItemName	String	100
+InDate	DateTime
+ItemsGrpCod	String	10
+BatchNum	String	30
+Quantity	Number

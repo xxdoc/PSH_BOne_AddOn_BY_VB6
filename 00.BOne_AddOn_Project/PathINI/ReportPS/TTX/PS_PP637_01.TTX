@@ -1,0 +1,9 @@
+ItemCode	String	20
+ItemName	String	60
+OrdNum	String	20
+TODocDate	String	30
+INDocDate	String	30
+CpCode	String	20
+CpName	String	60
+bqty	Number
+batchnum	String	100

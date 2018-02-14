@@ -1,0 +1,12 @@
+JakName		String	30
+DocEntry			String	10
+ItemName		String	50
+Size				String	30
+CardName		String	10
+PurPose			String	30
+OutMan			String	10
+Qty				Number
+Price				Number
+InDate			DateTime
+Comment1		String	100
+LotNo			String	20

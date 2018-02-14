@@ -1,0 +1,11 @@
+Code	String	10
+Name	String	20
+TeamCode	String	10
+TeamName	String	20
+RspCode	String	10
+RspName	String	20
+Passport	String	20
+IssueDat	DateTime
+ExpirDat	DateTime
+PassType	String	10
+Comments	String	100

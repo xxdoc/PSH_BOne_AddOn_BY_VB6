@@ -1,0 +1,8 @@
+BPLId	String	10
+BPLNM	String	30
+RegiDate	DateTime
+DocEntry	String	20
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Weight	Number	

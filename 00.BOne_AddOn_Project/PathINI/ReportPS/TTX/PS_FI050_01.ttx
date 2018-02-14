@@ -1,0 +1,12 @@
+BoeNum	Short,
+EBill	String	20,
+CardCode	String	15,
+CardName	String	200,
+IssuePsn	String	200,
+RefNum	String	150,
+PayBank	String	200,
+DueDate	String	10,
+DeposDate	String 10,
+BoeSum	Number,
+BoeStatus	String	1,
+DepositTyp	String	1

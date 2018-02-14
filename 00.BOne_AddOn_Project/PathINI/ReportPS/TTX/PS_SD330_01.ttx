@@ -1,0 +1,17 @@
+ItemClassName	String	10
+Year		String	4
+M01		Number
+M02		Number
+M03		Number
+M04		Number
+M05		Number
+M06		Number
+M07		Number
+M08		Number
+M09		Number
+M10		Number
+M11		Number
+M12		Number
+M_Total		Number
+StdYear		String	4
+Sort		String	1

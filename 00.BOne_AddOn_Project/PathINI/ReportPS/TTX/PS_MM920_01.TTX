@@ -1,0 +1,11 @@
+DocDate	DateTime
+ItemCode	String	30
+Dscription	String	100
+BuyUnitMsr	String	20
+ItmMsort	String	10
+Name	String	50
+Qty	Number
+Price	Number
+OcrCode	String	50
+JrnlMemo	String	30
+Comments	String	100

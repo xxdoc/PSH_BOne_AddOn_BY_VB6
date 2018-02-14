@@ -1,0 +1,27 @@
+TransId	String	10
+RefDate	DateTime
+TransType	String	10
+CreatedBy	String	10
+BPLName	String	100
+Line_Id	String	10
+Debit	Number
+Credit	Number
+U_VatRegN	String	20
+LineMemo	String	50
+AcctCode	String	15
+AcctName	String	100
+U_Rpttxt01	String	20
+U_Rpttxt02	String	20
+U_Rpttxt03	String	20
+U_Rpttxt04	String	20
+U_Rpttxt05	String	20
+U_Rpttxt06	String	20
+U_RptItm01	String	30
+U_RptItm02	String	30
+U_RptItm03	String	30
+U_RptItm04	String	30
+U_RptItm05	String	30
+U_RptItm06	String	30
+eTaxTit	String	100
+eTaxNum	String	100
+CreateDate	DateTime

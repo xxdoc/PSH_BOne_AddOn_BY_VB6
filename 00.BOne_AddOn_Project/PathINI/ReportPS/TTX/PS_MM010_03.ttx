@@ -1,0 +1,16 @@
+DocNum				Short
+BPLId					String	10
+BPLName			String	50
+DocDate				DateTime
+MM005CntcName	String	20
+CntcName			String	20
+Tel1					String	20
+Fax1					String	20
+ItemCode			String	20
+FrgnName			String	100
+Size					String	100
+BuyUnitMsr			String	10
+Qty					Number
+MM005DocDate	DateTime
+MM005DueDate	DateTime
+Comments			String	200

@@ -1,0 +1,22 @@
+Gubun	String	100
+DocEntry	String	20
+U_ItmBSort	String	20
+U_JakName	String	50
+U_SubNo1	String	20
+U_SubNo2	String	20
+U_ReDate	DateTime
+U_ItemCode	String	20
+U_ItemName	String	100
+U_WrWeight	Number
+Wgt	Number
+Com_wgt	Number
+C_Wgt	Number
+U_SjDocNum	String	20
+U_SjLinNum	String	20
+U_CardCode	String	20
+U_CardName	String	100
+ItemName	String	100
+U_BPLId	String	20
+U_JakMyung	String	100
+U_JakSize	String	100
+U_JakUnit	String	20

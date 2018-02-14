@@ -1,0 +1,13 @@
+U_BPLId		String	20,
+U_CardCode	String	20,
+U_CardName	String	200,
+U_InDate	Datetime,
+U_Purpose	String	100,
+U_OutNum	String	15,
+U_ItemCode	String	20,
+U_ItemName	String	200,
+U_Size	String	200,
+U_Unit	String	20,
+U_Qty	Number,
+U_Weight	Number,
+U_Price	Number

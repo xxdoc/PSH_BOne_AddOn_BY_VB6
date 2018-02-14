@@ -1,0 +1,18 @@
+ItemGpCd	String	20
+CardCode	String	10
+CardName	String	50
+InDate	DateTime
+ShipDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Amt	Number
+il	Number
+jamt	Number
+Status	String	20
+PDNNo	String	10
+PDNNum	String	10
+MM030NO	String	10
+MM050NO	String	10
+MM070NO	String	10
+MM070LNO	String	10

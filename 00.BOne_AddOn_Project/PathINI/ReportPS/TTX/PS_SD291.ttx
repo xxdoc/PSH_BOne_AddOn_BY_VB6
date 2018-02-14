@@ -1,0 +1,11 @@
+CardName	String	100
+OrderNo	String	10
+U_JakName	String	30
+FrgnName	String	50
+U_Size	String	100
+Quantity	Number
+DocDueDate	String	20
+DelayDay	Number
+DelayQty	Number
+LineTotal	Number
+Delaytot	Number

@@ -1,0 +1,17 @@
+ItemCode	String	20
+ItemName	String	100
+FailCode	String	20
+FailName	String	100
+Qty01	Number
+Qty02	Number
+Qty03	Number
+Qty04	Number
+Qty05	Number
+Qty06	Number
+Qty07	Number
+Qty08	Number
+Qty09	Number
+Qty10	Number
+Qty11	Number
+Qty12	Number
+SQty	Number

@@ -1,0 +1,5 @@
+ItemCode	String	30
+ItemName	String	60
+GUBUN	String	8
+TalQuantity	Number
+BTalQuantity	Number

@@ -1,0 +1,10 @@
+Seq			Short
+Type			String	10
+FrYYYYMM	String	7
+ToYYYYMM	String	7
+Section		String	200
+Elec			String	5
+Cnt			Short
+TotAmt		Number
+TotVat		Number
+BPLName	String	50

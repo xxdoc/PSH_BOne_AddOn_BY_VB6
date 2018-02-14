@@ -1,0 +1,22 @@
+RegNum	String	20
+CardCode	String	20
+CardName	String	100
+OrdNum	String	20
+DueDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+Size	String	100
+MarkName	String	20
+TypeName	String	20
+CallSize	String	50
+Qty	Number
+Wgt	Number
+mkDate	DateTime
+mkQty	Number
+mkWgt	Number
+jgQty	Number
+jgWgt	Number
+TotmkQty	Number
+TotmkWgt	Number
+NmkQty	Number
+NmkWgt	Number

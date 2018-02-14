@@ -1,0 +1,18 @@
+OrdNum			String	20
+CardName		String	100
+ItemCode		String	20
+ItemName		String	100
+Spec				String	100
+Unit				String	5
+Quantity			Number
+MatAmt			Number
+DrawAmt		Number
+GagongAmt	Number
+OutgAmt		Number
+OutmAmt		Number
+Total				Number
+SjAmt			Number
+DocDate			String	10
+ShipDate		String	10
+EndDate			String	10
+YesNo			String	10

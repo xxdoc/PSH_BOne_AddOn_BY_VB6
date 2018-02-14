@@ -1,0 +1,15 @@
+CardName	String	150
+QGpart	Number
+QHpart	Number
+QMpart	Number
+QPpart	Number
+QTpart	Number
+QDpart	Number
+Quantity	Number
+LGpart	Number
+LHpart	Number
+LMpart	Number
+LPpart	Number
+LTpart	Number
+LDpart	Number
+LineTotal	Number

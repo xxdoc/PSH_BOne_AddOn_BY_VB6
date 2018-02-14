@@ -1,0 +1,8 @@
+ItemCode	String	20
+ItemName	String	100
+MQty	Number
+MWgt	Number
+Mrate	Number
+SQty	Number
+SWgt	Number
+Srate	Number	

@@ -1,0 +1,11 @@
+DocDate	DateTime
+HisType	String	20
+HisName	String	100
+ClasCode	String	20
+ClasName	String	100
+AmtYN	String	20
+FixCode	String	20
+FixName	String	100
+Qty	Number
+Amt	NUmber
+Comments	String	200

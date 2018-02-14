@@ -1,0 +1,15 @@
+CardCode	String	20
+CardName	String	100
+ItemCode	String	20
+FrgnName	String	100
+Size	String	100
+CallSize	String	30
+DocDate	DateTime
+OutQty	Number
+OutWt	Number
+BulQty	Number
+BulWt	Number
+ScrapWt	Number
+CpName	String	100
+Price	Number
+Amount	Number

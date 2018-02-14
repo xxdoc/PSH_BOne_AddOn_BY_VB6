@@ -1,0 +1,9 @@
+MainOrdNum	String	20
+Sub1_2			String	6
+Purchase			String	2
+PurchaseNm	String	20
+OrdNum			String	30
+ItemCode		String	20
+ItemName		String	100
+MatAmt			Number
+Sort				Number

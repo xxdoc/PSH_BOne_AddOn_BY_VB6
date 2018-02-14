@@ -1,0 +1,10 @@
+DocEntry	Short,
+LineNum	Short,
+DocDate	String	10,
+ItemCode	String	20,
+Frgnname	String	200,
+Dscription	String	200,
+Size	String	200,
+InvntryUom	String	100,
+Quantity	Number,
+BPLid	String	5

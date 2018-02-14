@@ -1,0 +1,6 @@
+ItemCode	String	20
+Dscription	String	60
+DocDate	DateTime
+Quantity	Number
+ToTal	Number
+CNT	Number	

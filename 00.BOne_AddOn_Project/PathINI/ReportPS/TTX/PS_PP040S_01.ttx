@@ -1,0 +1,5 @@
+ItmsGrpNam	String	10
+ItemCode	String	20
+FrgnName	String	100
+Size	String	100
+Material	String	20

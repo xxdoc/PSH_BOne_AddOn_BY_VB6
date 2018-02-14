@@ -1,0 +1,69 @@
+PackNo01	String	20
+BPLId01	String	2
+BPLName01	String	100
+PackDate01	DateTime
+FinalArrival01	String	100
+ItemName01	String	100
+LotNo01_01	String	20
+Qty01_01	Number
+Weight01_01	Number
+Status01_01	String	50
+LotNo01_02	String	20
+Qty01_02	Number
+Weight01_02	Number
+Status01_02	String	50
+LotNo01_03	String	20
+Qty01_03	Number
+Weight01_03	Number
+Status01_03	String	50
+LotNo01_04	String	20
+Qty01_04	Number
+Weight01_04	Number
+Status01_04	String	50
+LotNo01_05	String	20
+Qty01_05	Number
+Weight01_05	Number
+Status01_05	String	50
+SumQty01	Short
+NetWt01	Number
+TareWt01	Number
+GrossWt01	Number
+UserName01_01	String	20
+UserName01_02	String	20
+UserName01_03	String	20
+UserName01_04	String	20
+PackNo02	String	20
+BPLId02	String	2
+BPLName02	String	100
+PackDate02	DateTime
+FinalArrival02	String	100
+ItemName02	String	100
+LotNo02_01	String	20
+Qty02_01	Number
+Weight02_01	Number
+Status02_01	String	50
+LotNo02_02	String	20
+Qty02_02	Number
+Weight02_02	Number
+Status02_02	String	50
+LotNo02_03	String	20
+Qty02_03	Number
+Weight02_03	Number
+Status02_03	String	50
+LotNo02_04	String	20
+Qty02_04	Number
+Weight02_04	Number
+Status02_04	String	50
+LotNo02_05	String	20
+Qty02_05	Number
+Weight02_05	Number
+Status02_05	String	50
+SumQty02	Short
+NetWt02	Number
+TareWt02	Number
+GrossWt02Number
+UserName02_01	String	20
+UserName02_02	String	20
+UserName02_03	String	20
+UserName02_04	String	20
+Page	Short

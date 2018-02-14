@@ -1,0 +1,12 @@
+CardCode	String	20,
+CardName	String	200,
+LineTotal	Number,
+VatSum	Number,
+TotalAmt	Number,
+Quantity	Number,
+Weight	Number,
+CalPrice	Number,
+CopPrice	Number,
+RM	Number,
+CustDC_01	Number,
+CustDC_02	Number

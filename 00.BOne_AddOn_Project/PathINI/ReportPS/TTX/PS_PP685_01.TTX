@@ -1,0 +1,6 @@
+CpCode	String	30
+CpName	String	100
+ItemCode	String	30
+ItemName	String	100
+yqty	Number
+CNT	Number

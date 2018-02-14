@@ -1,0 +1,6 @@
+SpecDiv	String	10
+FrgnName	String	100
+Spec1	Number
+ItemName	String	100
+Qty	Number
+Wgt	Number

@@ -1,0 +1,13 @@
+PP030HNo	String	10
+PP030MNo	String	10
+OrdNum	String	20
+CpCode	String	10
+CpName	String	30
+CsCpName	String	30
+FailCode	String	10
+FailName	String	30
+FailGbn	String	20
+Wgt	Number
+Price	Number
+Amt	Number
+MachName	String	30

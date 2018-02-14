@@ -1,0 +1,23 @@
+ItemCode	String	30
+FrgnName	String	100
+Size	String	100
+Unit	String	5
+CardName	String	100
+RegDate	DateTime
+DueDate	DateTime
+DocDate	DateTime
+Day	Number
+PQty	Number
+ReWeight	Number
+Cost01	Number
+Cost02	Number
+Cost05	Number
+Cost03	Number
+Cost06	Number
+Cost04	Number
+mat	Number
+Gagong	Number
+Walse	Number
+Sjamt	Number
+Chaeck	Number
+Chaper	Number

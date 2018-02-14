@@ -1,0 +1,9 @@
+ItmBsort	String	20
+ItemCode	String	20
+ItemName	String	100
+P_Qty_d	Number
+P_Qty_m	Number
+P_Qty_s	Number
+M_Qty_d	Number
+M_Qty_m	Number
+M_Qty_s	Number

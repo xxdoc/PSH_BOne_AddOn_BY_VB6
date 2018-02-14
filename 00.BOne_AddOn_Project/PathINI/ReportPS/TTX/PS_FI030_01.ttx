@@ -1,0 +1,13 @@
+CardCode	String	15,
+CardName	String	200,
+RefNum	String	100,
+LineMemo	String	300,
+BoeSum	Number,
+DueDate	String	10,
+TaxDate	String	10,
+BPLId	String	5,
+BPLName	String	200,
+AMT1	Number,
+AMT2	Number,
+AMT3	Number,
+AMT4	Number

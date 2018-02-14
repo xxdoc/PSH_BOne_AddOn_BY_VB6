@@ -1,0 +1,10 @@
+CpBCode	String	10
+CpBName	String	20
+CpCode	String	20
+CpName	String	60
+DeptName	String	60
+U_PartName	String	20
+WkClsNam	String	20
+PsmtP	Number
+Price	Number
+Unit	String	20

@@ -1,0 +1,36 @@
+ItemCode	String	50
+Itemname	String	150
+ItmMCode	String	20
+ItmMName	String	150
+U_Mark	String	50
+Marknm	String	50
+U_ItemType	String	50
+TypeName	String	50
+jwgt	Number
+jamt	Number
+wgt01	Number
+wgt02	Number
+wgt03	Number
+wgt04	Number
+wgt05	Number
+wgt06	Number
+wgt07	Number
+wgt08	Number
+wgt09	Number
+wgt10	Number
+wgt11	Number
+wgt12	Number
+wgt13	Number
+amt01	Number
+amt02	Number
+amt03	Number
+amt04	Number
+amt05	Number
+amt06	Number
+amt07	Number
+amt08	Number
+amt09	Number
+amt10	Number
+amt11	Number
+amt12	Number
+amt13	Number

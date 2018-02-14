@@ -1,0 +1,25 @@
+DocNum	Short
+U_DocDate	DateTime
+U_DueDate	DateTime
+U_CardCode	String	32
+U_CardName	String	100
+VATRegNum	String	20
+Phone1	String	20
+Fax	String	20
+Address	String	100
+BPLName	String	50
+RepName	String	20
+U_CntcName	String	20
+U_ItemCode	String	20
+U_ItemName	String	100
+U_Size	String	100
+BuyUnitMsr	String	10
+U_Qty	Short
+U_Price	Number
+U_LinTotal	Number
+U_PQDocNum	String	10
+U_Comments	String	100
+DocTotal	Number
+Payment	String	100
+U_BPLId	String	10
+U_Weight	Number

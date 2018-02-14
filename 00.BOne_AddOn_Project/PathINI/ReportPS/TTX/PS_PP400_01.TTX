@@ -1,0 +1,17 @@
+CardCode	String	30
+CardName	String	100
+ItmBSort	String	5
+ItemCode	String	30
+Soge	String	2
+Soge1	String	2
+Name	String	100
+RegNum	String	30
+FrgnName	String	100
+Size	String	100
+SjWeight	Number
+LinTotal	Number
+PQty	Number
+Jiyun	Number
+DueDate	DateTime
+DocDate	DateTime
+DAY	Number

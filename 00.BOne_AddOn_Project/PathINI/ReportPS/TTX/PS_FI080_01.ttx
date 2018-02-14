@@ -1,0 +1,7 @@
+Account	String	15,
+AcctName	String	200,
+Debit	Number,
+Credit	Number,
+Balance	Number,
+TodayInPay	Number,
+TodayOutPay	Number

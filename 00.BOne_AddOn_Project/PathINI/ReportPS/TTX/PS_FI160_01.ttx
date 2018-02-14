@@ -1,0 +1,13 @@
+TransId	Short,
+CardCode	String	20,
+CardName	String	200,
+RefDate	String	10,
+LineMemo	String	200,
+Debit	Number,
+Credit	Number,
+UseBalance	Number,
+BaseBalance	Number,
+BankCode	String	10,
+BankName	String	200,
+Account	String	100,
+AcctName	String	200

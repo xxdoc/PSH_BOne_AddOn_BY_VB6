@@ -1,0 +1,5 @@
+ITEMCODE	String	30
+ITEMNAME	String	60
+MulGbn1	String	10
+Quantity	Number
+Coil	Number

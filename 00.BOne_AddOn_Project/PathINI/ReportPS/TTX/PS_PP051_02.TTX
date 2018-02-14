@@ -1,0 +1,6 @@
+ItemCode	String	20
+ItemName	String	100
+OutSize	String	100
+CallSize	String	100
+Wgt	Number
+Cnt	Number

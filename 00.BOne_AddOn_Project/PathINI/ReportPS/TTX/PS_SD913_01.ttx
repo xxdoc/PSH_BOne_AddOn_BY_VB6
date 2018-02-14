@@ -1,0 +1,7 @@
+CardCode	String	20
+CardName	String	100
+Qty	Number
+Wgt	Number
+Amt	Number
+Vat	Number
+TOT	Number

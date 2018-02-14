@@ -1,0 +1,14 @@
+CardCode	String	20
+CardName	String	100
+OutGbn	String	20
+ItemName	String	100
+GiChoQty	Number
+GiChoWt	Number
+OutQty	Number
+OutWt	Number
+InQty	Number
+InWt	Number
+BadWt	Number
+ScrapWt	Number
+StocQty	Number
+StocWt	Number

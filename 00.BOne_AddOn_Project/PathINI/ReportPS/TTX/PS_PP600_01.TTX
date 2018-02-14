@@ -1,0 +1,11 @@
+ItemCode	String	20
+ItemName	String	100
+CpCode	String	20
+CPName	String	100
+Sequence	Number
+PQty	Number
+OutQty	Number
+NQty	Number
+GONGSENG	Number
+DocDate	DateTime	
+JEGONG	Number

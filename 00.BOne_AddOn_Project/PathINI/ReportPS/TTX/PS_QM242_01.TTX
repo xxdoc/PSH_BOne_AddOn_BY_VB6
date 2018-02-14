@@ -1,0 +1,8 @@
+Gcode	String	100
+Code	String	20
+CdName	String	100
+Size	String	100
+Cycle	Number
+U_Sect	String	100
+DocDate	DateTime
+NextDate	DateTime

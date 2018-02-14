@@ -1,0 +1,17 @@
+ItemCode	String	20
+ItemName	String	100
+D_GQty	Number
+D_RQty	Number
+D_BQty	Number
+D_RPer	Number
+D_BPer	Number
+M_GQty	Number
+M_RQty	Number
+M_BQty	Number
+M_RPer	Number
+M_BPer	Number
+J_GQty	Number
+J_RQty	Number
+J_BQty	Number
+J_RPer	Number
+J_BPer	Number

@@ -1,0 +1,6 @@
+Purchase	String	10
+ItemName	String	100
+Siz	String	50
+Unit	String	50
+PumSu	Number
+PumGum	Number

@@ -1,0 +1,13 @@
+DocEntry	Short
+CardCode	String	20,
+CardName	String	200,
+DocDate	String	10,
+OrdNum	String	20,
+ItemCode	String	20,
+ItemName	String	200,
+Size	String	200,
+OutItmCd	String	20,
+OutItmNm	String	200,
+OutSize	String	200,
+OutQty	Number,
+OutWt	Number

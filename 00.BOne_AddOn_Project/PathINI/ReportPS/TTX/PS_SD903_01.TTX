@@ -1,0 +1,18 @@
+BPLId	String	5
+CardCode	String	10
+CardName	String	30
+chul	DateTime
+yoil	DateTime
+ChlNo	String	10
+YoNo	String	10
+ItemCode	String	30
+ItemName	String	50
+Mark	String	20
+Quality	String	10
+Size	String	50
+Yosu	Number
+Yojung	Number
+Chulsu	Number
+Chuljung	Number
+Jansu	Number
+Janjung	Number

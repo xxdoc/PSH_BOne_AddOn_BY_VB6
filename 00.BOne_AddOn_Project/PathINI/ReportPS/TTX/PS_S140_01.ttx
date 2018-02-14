@@ -1,0 +1,69 @@
+Doc		String	100
+DueDate		String	100
+VATRegNum	String	100
+CardName	String	100
+RepName		String	100
+Street		String	100
+CVATRegNum	String	100
+CCardName	String	100
+CRepName	String	100
+CStreet		String	100
+LotNo		String	100
+QuantitySum	Number
+LinTotalSum	Number
+TranCard	String	100
+TranCode	String	100
+Destin		String	100
+TranCost	Number
+CntcCode	String	100
+CntcName	String	100
+HComments	String	100
+ItemCode01	String	100
+ItemName01	String	100
+Size01		String	100
+Unit01		String	100
+Quantity01	Number
+Price01	Number
+LComments01	Number
+ItemCode02	String	100
+ItemName02	String	100
+Size02		String	100
+Unit02		String	100
+Quantity02	Number
+Price02	Number
+LComments02	Number
+ItemCode03	String	100
+ItemName03	String	100
+Size03		String	100
+Unit03		String	100
+Quantity03	Number
+Price03	Number
+LComments03	Number
+ItemCode04	String	100
+ItemName04	String	100
+Size04		String	100
+Unit04		String	100
+Quantity04	Number
+Price04	Number
+LComments04	Number
+ItemCode05	String	100
+ItemName05	String	100
+Size05		String	100
+Unit05		String	100	
+Quantity05	Number
+Price05	Number
+LComments05	Number
+ItemCode06	String	100
+ItemName06	String	100
+Size06		String	100
+Unit06		String	100
+Quantity06	Number
+Price06	Number
+LComments06	Number
+ItemCode07	String	100
+ItemName07	String	100
+Size07		String	100
+Unit07		String	100
+Quantity07	Number
+Price07	Number
+LComments07	Number

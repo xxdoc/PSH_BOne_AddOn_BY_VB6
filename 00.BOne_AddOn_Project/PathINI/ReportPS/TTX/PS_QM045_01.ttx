@@ -1,0 +1,10 @@
+ItemCode	String	20
+spec1	Number
+spec2	Number
+avspec	Number
+fx	Number
+fx2	Number
+dosu	Number
+xbar	Number
+k	Number
+s	Number

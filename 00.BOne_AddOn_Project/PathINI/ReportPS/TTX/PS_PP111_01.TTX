@@ -1,0 +1,10 @@
+PoEntry	String	20
+PoLine	String	20
+OrdNum	String	20
+OrdSub1	String	10
+OrdSub2	String	10
+ItemName	String	100
+CpCode	String	20
+CpName	String	100
+InVal	Number
+ReVal	String	20

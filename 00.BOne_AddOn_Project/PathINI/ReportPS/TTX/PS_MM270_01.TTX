@@ -1,0 +1,21 @@
+ItemCode	String	20
+ItemName	String	100
+ItmMsort	String	10
+OrdNum	String	20
+CpCode	String	20
+CpName	String	30
+FQty	Number
+FWgt	Number
+OutQty	Number
+OutWgt	Number
+InQTy	Number
+InWgt	Number
+brQty	Number
+brWgt	Number
+miQty1	Number
+miWgt1	Number
+miQty2	Number
+miWgt2	Number
+janQty	Number
+janWgt	Number
+EndYN	String	10

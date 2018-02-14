@@ -1,0 +1,21 @@
+BPLId	String	5
+PQNum	String	20
+CardCode	String	20
+CardName	String	100
+DueDate	DateTime
+OrdType	String	10
+OrdName	String	100
+ItemCode	String	50
+JakMyung	String	100
+Size	String	100
+JakUnit	String	10
+PQty	Number
+PWeight	Number
+PLinTotal	Number
+GQty	Number
+GWeight	Number
+GLinTotal	Number
+MiSu	Number
+MiJung	Number
+MiAmt	Number
+POType	String	10

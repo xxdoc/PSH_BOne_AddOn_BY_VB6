@@ -1,0 +1,8 @@
+DocDate	DateTime
+WorkCode	String	20
+WorkName	String 	20
+WorkTime	Number
+Price	Number
+CpCode	String	50
+CpName	String	50
+LineTotal	Number

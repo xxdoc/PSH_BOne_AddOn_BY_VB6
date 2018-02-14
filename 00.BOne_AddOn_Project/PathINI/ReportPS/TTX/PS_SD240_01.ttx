@@ -1,0 +1,24 @@
+SO_No			String	100
+LotNo			String	20
+TradeType		String	1
+TradeTypeNm	String	10
+CardCode		String	20
+CardName		String	100
+ItemCode		String	20
+ItemName		String	100
+Spec				String	100
+DocDate			DateTime
+DueDate			DateTime
+UP_Qty			Number
+UP_Amt			Number
+SO_Qty			Number
+SO_Amt			Number
+Req_No			String	20
+Req_Qty			Number
+Deli_Qty			Number
+Deli_Amt		Number
+AR_Qty			Number
+AR_Amt			Number
+DocStatus		String	1
+FrDt				DateTime
+ToDt				DateTime

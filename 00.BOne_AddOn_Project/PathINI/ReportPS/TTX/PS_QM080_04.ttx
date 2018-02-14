@@ -1,0 +1,11 @@
+Ban	String	20
+ItemCode	String	20
+ItemName	String	100
+D_GQty	Number
+D_BQty	Number
+M_GQty	Number
+M_BQty	Number
+BPer	Number
+J_GQty	Number
+J_BQty	Number
+JPer	Number

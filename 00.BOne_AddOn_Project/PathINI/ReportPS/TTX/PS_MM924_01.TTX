@@ -1,0 +1,8 @@
+CardCode	String	30
+CardName	String	50
+DocDate	DateTime
+DocEntry	String	10
+ItemCode	String	30
+ItemName	String	100
+Quantity	Number
+Jung	Number

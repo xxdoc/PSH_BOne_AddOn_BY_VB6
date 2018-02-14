@@ -1,0 +1,25 @@
+OrdNum	String	30
+DueDate	DateTime
+ItemCode	String	50
+ItemName	String	100
+Size	String	50
+MarkName	String	50
+TypeName	String	50
+CallSize	String	30
+Qty	Number
+Wgt	Number
+mkDate	DateTime
+mkQty	Number
+mkWgt	Number
+jgQty	Number
+jgWgt	Number
+TotmkQty	Number
+TotmkWgt	Number
+NmkQty	Number
+NmkWgt	Number
+CutQty	Number
+CutWgt	Number
+OutQty	Number
+OutWgt	Number
+JekQty	Number
+JekWgt	Number

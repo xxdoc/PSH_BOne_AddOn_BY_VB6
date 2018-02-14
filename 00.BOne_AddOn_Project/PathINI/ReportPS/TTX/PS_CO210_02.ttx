@@ -1,0 +1,7 @@
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Wgt	Number
+QPrice	Number
+WPrice	Number
+Amt	Number

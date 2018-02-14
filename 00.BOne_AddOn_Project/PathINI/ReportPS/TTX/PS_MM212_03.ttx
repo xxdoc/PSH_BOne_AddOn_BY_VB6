@@ -1,0 +1,24 @@
+MM005OrdNum	String	11
+MM005OrdSub1	String	2
+MM005OrdSub2	String	3
+PP030ItemName	String	100
+MM005ItemCode	String	20
+MM005ItemName	String	100
+MM005Size	String	100	
+MM005OutUnit	String	10
+MM005Comments	String	100
+MM005Weight	Number
+MM005DocDate	DateTime
+MM005CGNum	String	20
+MM030DocEntry	Short
+MM030DocDate	DateTime
+MM030DueDate	DateTime
+MM030CardCode	String	20
+MM030CardName	String	100
+MM030LinTotal	Number
+MM050DocDate	DateTime
+MM050Weight	Number
+MM070Weight	Number
+MM070LinTotal	Number
+MissWeight	Number
+MissLinTotal	Number

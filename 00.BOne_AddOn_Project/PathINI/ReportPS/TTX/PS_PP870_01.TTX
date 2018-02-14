@@ -1,0 +1,16 @@
+MachCode	String	20
+MachName	String	100
+Inwon	Number
+Tuip	Number
+YQty	Number
+BQty	Number
+yuk	Number
+Gunmu	Number
+Gadong	Number
+Bgadong	Number
+GadongP	Number
+SilDongP	Number
+JoupP	Number
+WrkP1	Number
+WrkP2	Number
+WrkP3	Number

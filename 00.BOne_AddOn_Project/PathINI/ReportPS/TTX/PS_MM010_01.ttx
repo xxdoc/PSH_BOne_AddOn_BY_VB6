@@ -1,0 +1,19 @@
+DocNum	Short
+BPLId	String	10
+BPLName	String	50
+Purchase	String	10
+DocDate	DateTime
+MM005CntcName	String	20
+CntcName	String	20
+ItemCode	String	20
+FrgnName	String	100
+OrdNumSub	String	20
+JakMyung	String	100
+SubJakMyung	String	100
+PrcName		String	100
+Size	String	100
+BuyUnitMsr	String	10
+Qty	Number
+MM005DocDate	DateTime
+MM005DueDate	DateTime
+Comments	String	200

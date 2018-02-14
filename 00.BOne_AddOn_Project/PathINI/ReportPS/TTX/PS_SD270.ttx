@@ -1,0 +1,14 @@
+bplid			STRING	10
+cardcode	STRING	50
+cardname	STRING	100
+codename	STRING	30
+jakname		STRING	50
+regnum		STRING	50
+frgnname	STRING	100
+size			STRING	100
+unit			STRING	10
+quantity		NUMBER
+linetotal		NUMBER
+LotNo		STRING	20
+docentry		STRING	5
+shipdate		STRING 	10

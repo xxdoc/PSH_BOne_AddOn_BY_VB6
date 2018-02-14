@@ -1,0 +1,7 @@
+ItmBsort	String	20
+ItemCode	String	20
+ItemName	String	100
+YQty	Number
+fName	String	100
+NQty	Number
+RQty	Number

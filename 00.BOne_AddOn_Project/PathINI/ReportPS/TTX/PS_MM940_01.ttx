@@ -1,0 +1,22 @@
+DocEntry			NUMBER
+CardCode		STRING	50
+CardName		STRING	100
+ItemCode		STRING	50
+ItemName		STRING	100
+Spec				STRING	100
+Unit				STRING	10
+Unit_NM			STRING	50
+POType			STRING	10
+POType_NM	STRING	50
+Purchase			STRING	10
+Purchase_NM	STRING	50
+PO_Qty			NUMBER
+In_Qty			NUMBER
+PO_Amt			NUMBER
+In_Amt			NUMBER
+PO_Dt			DATETIME
+In_Dt				DATETIME
+Delay_Dt			NUMBER
+Delay_Amt		NUMBER
+FrDt				DATETIME
+ToDt				DATETIME

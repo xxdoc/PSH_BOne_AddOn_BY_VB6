@@ -1,0 +1,12 @@
+ItemCode	String	100
+FrgnName	String	100
+Size	String	100
+Weight	Number
+ToCoil	Number
+PQty	Number
+SeCoil	Number
+Scrap	Number
+FailQty	Number
+GoCoil	Number
+Suyul	Number
+Bulra	Number

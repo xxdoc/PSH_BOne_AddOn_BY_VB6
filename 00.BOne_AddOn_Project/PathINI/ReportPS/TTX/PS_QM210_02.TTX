@@ -1,0 +1,7 @@
+No			Number
+StdName	String	4000
+DocCode	String	10
+CrtDim		Number
+MaxDate		String	10
+DeptName	String	20
+Comment	String	50

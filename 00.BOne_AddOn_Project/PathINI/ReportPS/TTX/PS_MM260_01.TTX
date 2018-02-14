@@ -1,0 +1,7 @@
+ItemCode	String	50
+ItemName	String	100
+ItmMsort	String	10
+DocDate	DateTime
+OrdNum	String	50
+Qty	Number
+Wgt	Number

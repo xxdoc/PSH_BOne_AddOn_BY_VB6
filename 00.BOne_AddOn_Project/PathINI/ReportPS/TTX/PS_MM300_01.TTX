@@ -1,0 +1,10 @@
+DocDate	DateTime
+DocEntry	String	20
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Weight	Number
+DueDate	DateTime
+UseDept	String	100
+Note	String	100
+Comments	String	100

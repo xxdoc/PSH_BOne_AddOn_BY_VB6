@@ -1,0 +1,7 @@
+Name	String	100,
+PRCCODE1	String	100,
+PRCNAME1	String	200,
+Div	String	100,
+Fan	Number,
+Je	Number,
+Sum_Fan_Je	Number

@@ -1,0 +1,23 @@
+Gubun	String	20
+DocNum	String	20
+MovDocNo	String	20
+BPLId	String	20
+BPLName	String	40
+RegiDate	Datetime
+CardCode	String	20
+CardName	String	100
+CarNo	String	20
+TransCom	String	100
+DeliArea	String	100
+Fee	Number
+Comments	String	254
+ItemCode	String	20
+ItemName	String	200
+Size	String	200
+ItemType	String	50
+Name	String	100
+Mark	String	100
+Box	Number
+Qty	Number
+Weight	Number
+UintQ1	Number

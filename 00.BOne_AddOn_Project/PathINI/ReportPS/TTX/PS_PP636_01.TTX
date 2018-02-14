@@ -1,0 +1,6 @@
+ItemCode	String	20
+Dscription	String	60
+CNT	Number
+Quantity	Number
+BANAP	Number
+ToTal	Number

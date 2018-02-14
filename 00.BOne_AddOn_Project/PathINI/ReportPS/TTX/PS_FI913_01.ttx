@@ -1,0 +1,5 @@
+Dept	String	100,
+Part	String	100,
+Spender	String	100,
+Count	Short,
+Amt	Number

@@ -1,0 +1,10 @@
+LotNo	String	20
+ItemCode	String	60
+Dsription	String	60
+DocDate	DateTime
+Quantity	Number
+YQty	Number
+SUMQTY	Number
+JANYANG	Number
+TYPE	String	10
+

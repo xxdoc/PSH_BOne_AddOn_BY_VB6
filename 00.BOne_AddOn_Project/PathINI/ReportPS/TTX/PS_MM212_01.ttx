@@ -1,0 +1,33 @@
+MM010CntcCode		String	20
+MM010CntcName		String	20
+MM010DocDate		DateTime
+MM010ItmBSort		String	20
+MM010Purchase		String	10
+MM010CGNum			String	20
+MM010ItemCode		String	20
+MM010ItemName		String	100
+MM010Size				String	100
+MM010InvntryUom	String	10
+MM010Qty				Number
+MM010Weight			Number
+MM030DocDate		DateTime
+MM030DueDate		DateTime
+MM030CardCode		String	20
+MM030CardName		String	100
+MM030Qty				Number
+MM030Weight			Number
+MM030Price			Number
+MM030LinTotal		Number
+MM050DocEntry		String	20
+MM050DocDate		DateTime
+MM050Qty				Number
+MM050Weight			Number
+MM070DocEntry		String	20
+MM070DocDate		DateTime
+MM070Qty				Number
+Mm070Weight			Number
+MM010No				String	10
+MM005UseDept		String	50
+MM030DocEntry		String	20
+MM030Comment		String	100
+MM005Comment		String	100

@@ -1,0 +1,4 @@
+CardName	String	50
+InQty	Number
+BadQty	Number
+Badyul	Number

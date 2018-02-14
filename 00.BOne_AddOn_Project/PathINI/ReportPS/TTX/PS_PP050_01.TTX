@@ -1,0 +1,27 @@
+DocEntry	Short
+BPLId	String	1
+ItemCode	String	20
+ItemName	String	60
+OrdNum	String	20
+BatchNum	String	30
+DueDate	DateTime
+PackNo	String	30
+Code	String	10
+Unit	String	10
+Size	String	20
+CardName	String	60
+FailName	String	60
+Sequence	String	10
+CpCode	String	20
+CpName	String	60
+BQty	Number
+YQty	Number
+WorkName	String	10
+WorkTime	Number
+DocDate	DateTime
+ScrapWt	Number
+NQty	Number
+MoldCode	String	30
+UseMCode	String	50
+
+

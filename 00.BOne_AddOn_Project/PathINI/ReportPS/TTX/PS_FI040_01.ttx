@@ -1,0 +1,16 @@
+DueDate	String	10,
+PmntDate	String	10,
+DocDate	String	10,
+RDay	Short,
+RefNum	String	100,
+CardCode	String	15,
+CardName	String	200,
+PayBank	String	150,
+IssuePsn	String	100,
+BoeSum	Number,
+Status	String	20,
+BankName	String	100,
+Status01	Number
+Status02	Number
+Status03	Number
+Status04	Number

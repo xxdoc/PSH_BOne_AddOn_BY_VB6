@@ -1,0 +1,4 @@
+CardName	String	50
+Cnt			Number
+Amt			Number
+Amt2			Number

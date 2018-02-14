@@ -1,0 +1,12 @@
+DocEntry	Short
+BPLName	String	200
+Specific	String	200
+LineNum	String	5
+ItemCode	String	100
+ItemName	String	150
+Size	String	30
+CallSize	String	50
+Quality	String	30
+Mark	String	10
+Qty	Number
+Weight1	Number

@@ -1,0 +1,144 @@
+IDX		Number
+VATRegNum	String	100
+CardName	String	100
+RepName		String	100
+Street		String	100
+PARAM01		String	100
+PARAM02		String	100
+PARAM03		String	100
+PARAM04		String	100
+PARAM05		String	100
+PARAM06		String	100
+PARAM07		String	100
+PARAM08		String	100
+OutDocEntry	String	100
+BPLName		String	100
+DocDate		String	100
+CCardName	String	100
+DCardName	String	100
+Comments	String	100
+CAddress	String	100
+ItemCode01	String	100
+ItemName01	String	100
+Quality01	String	100
+Size01		String	100
+Bsort01	String	20
+Lot01	String	100
+ItemType01	String	100
+Mark01		String	100
+Box01		Number
+Qty01		Number
+Weight01	Number
+Sort01		String	100
+ItemCode02	String	100
+ItemName02	String	100
+Quality02	String	100
+Size02	String	100	
+Bsort02	String	20
+Lot02	String	100
+ItemType02	String	100
+Mark02		String	100
+Box02		Number
+Qty02		Number
+Weight02	Number
+Sort02		String	100
+ItemCode03	String	100
+ItemName03	String	100
+Quality03	String	100
+Size03		String	100
+Bsort03	String	20
+Lot03	String	100
+ItemType03	String	100
+Mark03		String	100
+Box03		Number
+Qty03		Number
+Weight03	Number
+Sort03		String	100
+ItemCode04	String	100
+ItemName04	String	100
+Quality04	String	100
+Size04		String	100
+Bsort04	String	20
+Lot04	String	100
+ItemType04	String	100
+Mark04		String	100
+Box04		Number
+Qty04		Number
+Weight04	Number
+Sort04		String	100
+ItemCode05	String	100
+ItemName05	String	100
+Quality05	String	100
+Size05		String	100
+Bsort05	String	20
+Lot05	String	100
+ItemType05	String	100
+Mark05		String	100
+Box05		Number
+Qty05		Number
+Weight05	Number
+Sort05		String	100
+ItemCode06	String	100
+ItemName06	String	100
+Quality06	String	100
+Size06		String	100
+Bsort06	String	20
+Lot06	String	100
+ItemType06	String	100
+Mark06		String	100
+Box06		Number
+Qty06		Number
+Weight06	Number
+Sort06		String	100
+ItemCode07	String	100
+ItemName07	String	100
+Quality07	String	100
+Size07		String	100
+Bsort07	String	20
+Lot07	String	100
+ItemType07	String	100
+Mark07		String	100
+Box07		Number
+Qty07		Number
+Weight07	Number
+Sort07		String	100
+ItemCode08	String	100
+ItemName08	String	100
+Quality08	String	100
+Size08		String	100
+Bsort08	String	20
+Lot08	String	100
+ItemType08	String	100
+Mark08		String	100
+Box08		Number
+Qty08		Number
+Weight08	Number
+Sort08		String	100
+ItemCode09	String	100
+ItemName09	String	100
+Quality09	String	100
+Size09		String	100
+Bsort09	String	20
+Lot09	String	100
+ItemType09	String	100
+Mark09		String	100
+Box09		Number
+Qty09		Number
+Weight09	Number
+Sort09		String	100
+ItemCode10	String	100
+ItemName10	String	100
+Quality10	String	100
+Size10		String	100
+Bsort10	String	20
+Lot10	String	100
+ItemType10	String	100
+Mark10		String	100
+Box10		Number
+Qty10		Number
+Weight10	Number
+Sort10		String	100
+QtyPageSum	Number
+WeightPageSum	Number
+QtyDocSum	Number
+WeightDocSum	Number

@@ -1,0 +1,16 @@
+CdNaming	String	30
+Gcnt	Number
+GWeight	Number
+GPrice	Number
+Jcnt	Number
+JWeight	Number
+JPrice	Number
+Mcnt	Number
+MWeight	Number
+MPrice	Number
+Pcnt	Number
+PWeight	Number
+PPrice	Number
+Tcnt	Number
+TWeight	Number
+TPrice	Number

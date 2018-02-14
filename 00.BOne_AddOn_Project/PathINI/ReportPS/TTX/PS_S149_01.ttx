@@ -1,0 +1,20 @@
+CardCode	String	20
+CardName	String	100
+OQUTNo		String	100
+OQUTDate	String	100
+BPLId		String	100
+CompanyName	String	100
+Manager		String	100
+CompanyAddress	String	100
+Phone		String	100
+Fax		String	100
+RowNumber	String	100
+ItemCode	String	100
+ItemName	String	100
+Unit		String	100
+Quantity	Number
+Price		Number
+LineTotal	Number
+Note		String	100
+TQuantity	Number
+TLineTotal	Number

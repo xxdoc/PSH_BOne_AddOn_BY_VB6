@@ -1,0 +1,10 @@
+CpCode	String	30	
+CPName	String	60
+ItmMsort	String	30
+U_CodeName	String	100
+JEGONG	Number
+JEGONGW	Number
+SEOULDE	Number
+SEOULDEW	Number
+SEOULJE	Number
+SEOULJEW	Number

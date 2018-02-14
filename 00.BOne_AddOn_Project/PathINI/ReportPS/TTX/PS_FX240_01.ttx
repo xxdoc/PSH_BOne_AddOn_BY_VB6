@@ -1,0 +1,23 @@
+ClasCode	String	20
+ClasName	String	100
+TeamCode	String	20
+TeamName	String	100
+RspCode	String	20
+RspName	String	100
+FixCode	String	20
+FixName	String	100
+PostDate	DateTime
+LongYear	Number
+PostQty	Number
+DepRate	Number
+DepCode	String	20
+DepName	String	100
+PostAmt	Number
+GatAmt	Number
+OBalance	Number
+FixAmt	Number
+EBalance	Number
+HisAmt	Number
+div	String	20
+TempChr1	String	20
+BPLID		String	1

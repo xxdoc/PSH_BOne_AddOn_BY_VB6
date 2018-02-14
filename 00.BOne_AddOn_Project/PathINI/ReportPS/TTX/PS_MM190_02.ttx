@@ -1,0 +1,17 @@
+CardCode	String	20
+CardName	String	100
+ItemCode	String	20
+Dscription	String	100
+m01	Number
+m02	Number
+m03	Number
+m04	Number
+m05	Number
+m06	Number
+m07	Number
+m08	Number
+m09	Number
+m10	Number
+m11	Number
+m12	Number
+mtt	Number

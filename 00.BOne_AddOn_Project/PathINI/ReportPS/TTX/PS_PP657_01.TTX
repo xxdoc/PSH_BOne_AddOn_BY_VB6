@@ -1,0 +1,9 @@
+ItemCode	String	100
+ItemName	String	100
+BatchNum	String	30
+OrdNum	String	30
+Weight	Number
+PQty	Number
+Scrap	Number
+Suyul	Number
+DueDate	DateTime

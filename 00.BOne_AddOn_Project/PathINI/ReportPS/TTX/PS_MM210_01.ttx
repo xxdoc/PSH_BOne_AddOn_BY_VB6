@@ -1,0 +1,7 @@
+DocDate	String	10,
+CardCode	String	20,
+CardName	String	200,
+ItemCode	String	20,
+Dscription	String	200,
+MSortName	String	100,
+Qty	Number

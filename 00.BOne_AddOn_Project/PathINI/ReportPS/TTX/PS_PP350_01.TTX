@@ -1,0 +1,14 @@
+DocDate	DateTime
+DocEntry	String	20
+OrdNum	String	20
+ItemCode	String	20
+ItemName	String	60
+CpCode	String	20
+CpName	String	60
+WorkName	String	100
+INSU	Number
+YQty	Number
+NQty	Number
+WorkTime	Number
+
+

@@ -1,0 +1,13 @@
+TransId	Short,
+RefDate	String	10,
+ShortName	String	20,
+CardName	String	200,
+RefNum	String	100,
+DueDate	String	10,
+IssuePsn	String	100,
+PayBank	String	200,
+Debit	Number,
+Credit	Number,
+UseBalance	Number,
+BaseBalance	Number,
+TotalBalance	Number

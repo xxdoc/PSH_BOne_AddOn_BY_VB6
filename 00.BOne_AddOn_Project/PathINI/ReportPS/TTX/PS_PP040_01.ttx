@@ -1,0 +1,16 @@
+OrdNum	String	20
+ItemCode	String	20
+FrgnName	String	100
+Size	String	100
+Mark	String	20
+ItemType	String	20
+SelWt	Number
+PSum	Number
+JanWt	Number
+DocDate	DateTime
+PP040CpName	String	20
+CutCount	Number
+PQty	Number
+WorkTime	Number
+Sequence	Number
+PP030CpName	String	20

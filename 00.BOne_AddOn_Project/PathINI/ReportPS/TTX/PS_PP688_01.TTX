@@ -1,0 +1,16 @@
+RegNum		String	30
+SjDocNum	String	30
+LotNo		String	30
+CardName	String	100
+PuDate		DateTime
+SjDcDate	DateTime
+ItemCode	String	30
+FrgnName	String	30
+Size			String	30
+Unit			String	10
+SjWeight		Number
+Price			Number
+LinTotal		Number
+yedan		Number
+yegum		Number
+TradeType	String	10

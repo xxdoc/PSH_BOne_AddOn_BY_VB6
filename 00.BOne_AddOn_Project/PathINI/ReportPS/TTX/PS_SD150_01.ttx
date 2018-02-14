@@ -1,0 +1,6 @@
+DocEntry	String	20
+CardCode	String	20
+CardName	String	50
+Comments	String	100
+SD030cnt	Number
+SD040cnt	Number

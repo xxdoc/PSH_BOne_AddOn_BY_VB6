@@ -1,0 +1,9 @@
+CpCode	String	20
+CpName	String	60
+ItemCode	String	20
+ItemName	String	60
+BPLId	String	1
+LotNo	String	100
+PQty	Number
+NQty	Number
+FailName	String	20

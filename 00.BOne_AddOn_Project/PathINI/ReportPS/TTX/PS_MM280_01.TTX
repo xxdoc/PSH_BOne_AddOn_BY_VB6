@@ -1,0 +1,5 @@
+InDate	DateTime
+DocEntry	String	20
+ItemName	String	100
+Weight	Number
+Comment	String	200

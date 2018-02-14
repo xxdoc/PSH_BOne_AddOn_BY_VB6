@@ -1,0 +1,9 @@
+ItemCode	String	20
+ItemName	String	60
+OrdNum	String	20
+FailCode	String	5
+FailName	String	20
+PQty	Number
+FailQty	Number
+DocDate	DateTime
+WorkName	String	10

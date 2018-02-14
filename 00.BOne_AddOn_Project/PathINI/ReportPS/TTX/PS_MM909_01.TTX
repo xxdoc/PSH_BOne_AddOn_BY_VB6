@@ -1,0 +1,9 @@
+ItemCode	String	30
+FrgnName	String	30
+Spec1	String	30
+Name	String	10
+OrdNum	String	30
+DocDate	DateTime
+DocEntry	String	10
+SelQty	Number
+SelWt	Number

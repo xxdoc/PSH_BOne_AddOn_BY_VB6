@@ -1,0 +1,8 @@
+ItmBsor	String	10
+ItemCode030L	String	30
+ItemName030L	String	60
+BatchNum	String	30
+DocDate	DateTime
+Quantity	Number
+BanNap	Number
+ToTal	Number

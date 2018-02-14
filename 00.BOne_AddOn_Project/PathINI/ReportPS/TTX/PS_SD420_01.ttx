@@ -1,0 +1,10 @@
+BPLId	String	20
+ItemCode	String	20
+ItemName	String	100
+FrgnName	String	100
+Spec1	Number
+Mark	String	20
+Quality	String	100
+Size	String	100
+Jansu	Number
+Janjung	Number

@@ -1,0 +1,6 @@
+DocDate	DateTime
+WorkCode	String	10
+WorkName	String	20
+WorkTime	Number
+PQty	Number
+WorkCost	Number

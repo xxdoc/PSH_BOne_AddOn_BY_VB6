@@ -1,0 +1,13 @@
+ItemCode	String	20
+ItemName	String	60
+CardCode	String	15
+CardName	String	40
+RegDate	DateTime
+DueDate	DateTime
+SjWeight	Number
+SuJung	Number
+IpSu	Number
+Ipju	Number
+Gasu	Number
+Gaju	Number
+IpPer	Number

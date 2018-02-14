@@ -1,0 +1,10 @@
+ItemCode	String	30
+ItemName	String	60
+CardName	String	60
+LotNo	String	30
+BPLName	String	60
+CallSize	String	10
+OrdNum	String	20
+JUNRANG	Number
+MulGbn1	String	5
+DocDate	DateTime

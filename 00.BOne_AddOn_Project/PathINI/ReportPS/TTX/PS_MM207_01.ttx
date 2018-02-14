@@ -1,0 +1,9 @@
+DocDate	String	10,
+DocEntry	String	20,
+ItemCode	String	20,
+Dscription	String	200,
+Size	String	200,
+InvntryUom	String	10,
+Msort	String	20,
+OutQty	Number,
+TransValue	Number

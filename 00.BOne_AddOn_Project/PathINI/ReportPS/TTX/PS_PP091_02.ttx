@@ -1,0 +1,12 @@
+CardName	String	100
+PackDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+Size	String	100
+PackNo	String	20
+BPLName	String	50
+LotNo	String	20
+Weight	Number
+Status	String	20
+SumQty	Number
+NetWt	Number

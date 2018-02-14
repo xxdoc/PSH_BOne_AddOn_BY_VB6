@@ -1,0 +1,862 @@
+
+DECLARE @MDC_DOCENTRY		INT
+DECLARE @MDC_DATE			VARCHAR(8)
+DECLARE @MDC_TIME			VARCHAR(4)
+
+SELECT @MDC_DATE = CONVERT(VARCHAR(8),GETDATE(),112)
+SELECT @MDC_TIME = SUBSTRING(CONVERT(VARCHAR(8),GETDATE(),108),1,2)+SUBSTRING(CONVERT(VARCHAR(8),GETDATE(),108),4,2)
+
+--select * from [@PS_HR200H]
+--select * from [@PS_HR200L]
+
+/*
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+/* 헤더 */
+INSERT INTO [@PS_HR200H] VALUES(N'1',	N'부서', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+/* 라인 */
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 1,	N'PS_HR200'	,NULL,	'1',	N'1100',	N'임원',		'1',	'Y',	'0',	NULL,	NULL,	'0',	'1',	'창원사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 2,	N'PS_HR200'	,NULL,	'2',	N'1200',	N'운영지원팀',	'2',	'Y',	'0',	NULL,	NULL,	'0',	'1',	'창원사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 3,	N'PS_HR200'	,NULL,	'3',	N'1300',	N'생산팀',		'3',	'Y',	'0',	NULL,	NULL,	'0',	'1',	'창원사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 4,	N'PS_HR200'	,NULL,	'4',	N'1400',	N'품질보증팀',	'4',	'Y',	'0',	NULL,	NULL,	'0',	'1',	'창원사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 5,	N'PS_HR200'	,NULL,	'5',	N'1500',	N'포장사업팀',	'5',	'Y',	'0',	NULL,	NULL,	'0',	'1',	'창원사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 6,	N'PS_HR200'	,NULL,	'6',	N'2100',	N'임원',		'6',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 7,	N'PS_HR200'	,NULL,	'7',	N'2200',	N'운영지원팀',	'7',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 8,	N'PS_HR200'	,NULL,	'8',	N'2300',	N'변화혁신팀',	'8',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	 9,	N'PS_HR200'	,NULL,	'9',	N'2400',	N'설계기술팀',	'9',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	10,	N'PS_HR200'	,NULL,	'10',	N'2500',	N'영업생산팀',	'10',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	11,	N'PS_HR200'	,NULL,	'11',	N'2600',	N'품질보증팀',	'11',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	12,	N'PS_HR200'	,NULL,	'12',	N'2700',	N'영업팀',		'12',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+INSERT INTO [@PS_HR200L] VALUES(N'1',	13,	N'PS_HR200'	,NULL,	'13',	N'2800',	N'생산팀',		'13',	'Y',	'0',	NULL,	NULL,	'0',	'2',	'부산사업장',	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P005',	N'사번구성체계', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'기타',								'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'8Length=YYYY(4)+MM(2)+Seq(2)',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'8Length=YY(2)+MM(2)+DD(2)+Seq(2)',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'8Length=YYYY(4)+Seq(4)',				'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	5,	N'PS_HR200'	,NULL,	'5',	N'5',	N'6Length=YY(2)+MM(2)+Seq(2)',			'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	6,	N'PS_HR200'	,NULL,	'6',	N'6',	N'6Length=YYYY(4)+Seq(2)',				'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	7,	N'PS_HR200'	,NULL,	'7',	N'7',	N'6Length=Seq(6)',						'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	8,	N'PS_HR200'	,NULL,	'8',	N'8',	N'5Length=Char(2)+Seq(3)',				'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	9,	N'PS_HR200'	,NULL,	'9',	N'9',	N'8Length=YYY(3)+MM(2)+Seq(3)',			'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P005',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'8Length=YY(2)+MM(2)+DD(2)+Seq(2)',	'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P121',	N'본인과의관계', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'본인',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'배우자',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'자',			'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'손',			'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'부',			'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'모',			'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'형',			'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'제',			'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'사촌형제',	'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'육촌형제',	'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'팔촌형제',	'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'조부',		'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'조모',		'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'백부',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'백모',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'숙부',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'숙모',		'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'고모부',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'고모',		'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	20,	N'PS_HR200'	,NULL,	'20',	N'20',	N'조카',		'20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	21,	N'PS_HR200'	,NULL,	'21',	N'21',	N'장인',		'21',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	22,	N'PS_HR200'	,NULL,	'22',	N'22',	N'장모',		'22',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	23,	N'PS_HR200'	,NULL,	'23',	N'23',	N'처남',		'23',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	24,	N'PS_HR200'	,NULL,	'24',	N'24',	N'매부',		'24',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	25,	N'PS_HR200'	,NULL,	'25',	N'25',	N'처형제',		'25',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	26,	N'PS_HR200'	,NULL,	'26',	N'26',	N'사위',		'26',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	27,	N'PS_HR200'	,NULL,	'27',	N'27',	N'동서',		'27',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	28,	N'PS_HR200'	,NULL,	'28',	N'28',	N'기타친척',	'28',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	29,	N'PS_HR200'	,NULL,	'29',	N'29',	N'친구',		'29',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	30,	N'PS_HR200'	,NULL,	'30',	N'30',	N'선배',		'30',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	31,	N'PS_HR200'	,NULL,	'31',	N'31',	N'후배',		'31',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	32,	N'PS_HR200'	,NULL,	'32',	N'32',	N'상사',		'32',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	33,	N'PS_HR200'	,NULL,	'33',	N'33',	N'동료',		'33',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	34,	N'PS_HR200'	,NULL,	'34',	N'34',	N'부하',		'34',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	35,	N'PS_HR200'	,NULL,	'35',	N'35',	N'은사',		'35',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	36,	N'PS_HR200'	,NULL,	'36',	N'36',	N'제자',		'36',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	37,	N'PS_HR200'	,NULL,	'37',	N'37',	N'기타지인',	'37',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P121',	38,	N'PS_HR200'	,NULL,	'38',	N'38',	N'자부',		'38',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P123',	N'최종학력', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'무학',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'초등중퇴',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'초등졸',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'중등중퇴',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'중등졸',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'고등중퇴',	'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'고등졸',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'전문대중퇴',	'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'전문대수료',	'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'전문대졸',	'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'대학중퇴',	'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'대학수료',	'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'대학졸',		'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'대학원중퇴',	'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'대학원수료',	'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'대학원졸',	'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'대학재학',	'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'고등재학',	'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'중등재학',	'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P123',	20,	N'PS_HR200'	,NULL,	'20',	N'20',	N'초등재학',	'20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P125',	N'자격/면허', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'전기보안담당자',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'위험물취급기능사',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'열관리기능사',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'검사대상기기조정자',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'고압가스안전관리자',	'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'배출시설관리인',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'조리사',				'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'방화관리사',			'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'품질관리담당자',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'안전관리자',			'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'전기안전관리보조원',	'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'대기환경기사',		'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'전기기능사',			'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'전기기사',			'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'산업안전기사',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'수질환경기사',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'다듬질기능사',		'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'전자기기기능사',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'수치제어선반기능사',	'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	20,	N'PS_HR200'	,NULL,	'20',	N'20',	N'선반기능사',			'20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	21,	N'PS_HR200'	,NULL,	'21',	N'21',	N'R/TV기능사',			'21',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	22,	N'PS_HR200'	,NULL,	'22',	N'22',	N'화학분석기능사',		'22',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	23,	N'PS_HR200'	,NULL,	'23',	N'23',	N'기계조립기능사',		'23',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	24,	N'PS_HR200'	,NULL,	'24',	N'24',	N'고압가스기계기능사',	'24',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	25,	N'PS_HR200'	,NULL,	'25',	N'25',	N'고압가스화학기능사',	'25',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	26,	N'PS_HR200'	,NULL,	'26',	N'26',	N'밀링기능사',			'26',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	27,	N'PS_HR200'	,NULL,	'27',	N'27',	N'생산기계산업기사',	'27',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	28,	N'PS_HR200'	,NULL,	'28',	N'28',	N'전산응용가공기능사',	'28',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	29,	N'PS_HR200'	,NULL,	'29',	N'29',	N'기계제도기능사',		'29',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	30,	N'PS_HR200'	,NULL,	'30',	N'30',	N'전기기기기능사',		'30',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	31,	N'PS_HR200'	,NULL,	'31',	N'31',	N'정보처리기능사',		'31',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	32,	N'PS_HR200'	,NULL,	'32',	N'32',	N'중기지계차',			'32',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	33,	N'PS_HR200'	,NULL,	'33',	N'33',	N'보일러기능사',		'33',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	34,	N'PS_HR200'	,NULL,	'34',	N'34',	N'건설기계기사',		'34',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	35,	N'PS_HR200'	,NULL,	'35',	N'35',	N'정밀기계기사',		'35',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	36,	N'PS_HR200'	,NULL,	'36',	N'36',	N'일반기계기사',		'36',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	37,	N'PS_HR200'	,NULL,	'37',	N'37',	N'소방설비기계기사',	'37',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	38,	N'PS_HR200'	,NULL,	'38',	N'38',	N'조선제도기사',		'38',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	39,	N'PS_HR200'	,NULL,	'39',	N'39',	N'자동차기능정비사',	'39',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	40,	N'PS_HR200'	,NULL,	'40',	N'40',	N'가스용접기능사',		'40',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	41,	N'PS_HR200'	,NULL,	'41',	N'41',	N'전기용접기능사',		'41',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	42,	N'PS_HR200'	,NULL,	'42',	N'42',	N'정밀측정기사',		'42',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	43,	N'PS_HR200'	,NULL,	'43',	N'43',	N'연삭기능사',			'43',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	44,	N'PS_HR200'	,NULL,	'44',	N'44',	N'열처리기능사',		'44',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	45,	N'PS_HR200'	,NULL,	'45',	N'45',	N'금속재료기사',		'45',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	46,	N'PS_HR200'	,NULL,	'46',	N'46',	N'직기조정기능사',		'46',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	47,	N'PS_HR200'	,NULL,	'47',	N'47',	N'교원자격증',			'47',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	48,	N'PS_HR200'	,NULL,	'48',	N'48',	N'공해관리기사',		'48',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	49,	N'PS_HR200'	,NULL,	'49',	N'49',	N'주산',				'49',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	50,	N'PS_HR200'	,NULL,	'50',	N'50',	N'부기',				'50',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	51,	N'PS_HR200'	,NULL,	'51',	N'51',	N'워드프로세서',		'51',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	52,	N'PS_HR200'	,NULL,	'52',	N'52',	N'화공기사',			'52',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	53,	N'PS_HR200'	,NULL,	'53',	N'53',	N'무선정비기능사',		'53',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	54,	N'PS_HR200'	,NULL,	'54',	N'54',	N'기계가공기능장',		'54',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	55,	N'PS_HR200'	,NULL,	'55',	N'55',	N'전기공사기능사',		'55',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	56,	N'PS_HR200'	,NULL,	'56',	N'56',	N'정보처리산업기사',	'56',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	57,	N'PS_HR200'	,NULL,	'57',	N'57',	N'아마추어무선기사',	'57',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	58,	N'PS_HR200'	,NULL,	'58',	N'58',	N'공조냉동기계기사',	'58',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	59,	N'PS_HR200'	,NULL,	'59',	N'59',	N'위험물안전관리자',	'59',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	60,	N'PS_HR200'	,NULL,	'60',	N'60',	N'무역영어',			'60',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	61,	N'PS_HR200'	,NULL,	'61',	N'61',	N'일반시설안전관리자',	'61',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	62,	N'PS_HR200'	,NULL,	'62',	N'62',	N'문서실무사',			'62',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P125',	63,	N'PS_HR200'	,NULL,	'63',	N'63',	N'AUTOCAD',				'63',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P126',	N'직원구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'임원',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'사무직',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'기술직',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'전문직',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'계약직',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P126',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'시간제',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P127',	N'직무', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'K310 OGIVE 황삭',				'1',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'K310 OGIVE 사상',				'2',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'K310 BASE 사상',				'3',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'K310 BASE/C 황삭',			'4',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 5,	N'PS_HR200'	,NULL,	'5',	N'5',	N'K310 BASE/C 사상',			'5',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 6,	N'PS_HR200'	,NULL,	'6',	N'6',	N'K310 격침나사 가공',			'6',	'Y',	'0',	'22',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 7,	N'PS_HR200'	,NULL,	'7',	N'7',	N'K310 겸침나사 전조, 면취',	'7',	'Y',	'0',	'22',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 8,	N'PS_HR200'	,NULL,	'8',	N'8',	N'K310 SLIDER 1,2차 가공',		'8',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	 9,	N'PS_HR200'	,NULL,	'9',	N'9',	N'K310 부품 디버링,세척,건조',	'9',	'Y',	'0',	'22',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'K310 BASE PLATE 성형',		'10',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'K310 HOUSING 지지핀가공',		'11',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'K307 분사기몸체 사상',		'12',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'RK3 벌크헤드 가공',			'13',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'RK3 격침나사 가공',			'14',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'RK3 HOUSING 성형',			'15',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'RK3 BASE PLATE 성형',			'16',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'열처리',						'17',	'Y',	'0',	'25',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'CHIP 처리',					'18',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'기타',						'19',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	20,	N'PS_HR200'	,NULL,	'20',	N'20',	N'A1 SA-NOSE 가공',				'20',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	21,	N'PS_HR200'	,NULL,	'21',	N'21',	N'전공장 전기 설비 보전',		'21',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	22,	N'PS_HR200'	,NULL,	'22',	N'22',	N'설비 기계 정비 U/T 업무',		'22',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	23,	N'PS_HR200'	,NULL,	'23',	N'23',	N'금형 제작',					'23',	'Y',	'0',	'',		NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	24,	N'PS_HR200'	,NULL,	'24',	N'24',	N'SAW 연마',					'24',	'Y',	'0',	'',		NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	25,	N'PS_HR200'	,NULL,	'25',	N'25',	N'폐수처리장 가동 및 U/T 업무',	'25',	'Y',	'0',	'12',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	26,	N'PS_HR200'	,NULL,	'26',	N'26',	N'K310 SLIDER 육안검사',		'26',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	27,	N'PS_HR200'	,NULL,	'27',	N'27',	N'K310 BASE/C 렌치홈 가공',		'27',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	28,	N'PS_HR200'	,NULL,	'28',	N'28',	N'부품검사',					'28',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	29,	N'PS_HR200'	,NULL,	'29',	N'29',	N'멀티검사',					'29',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	30,	N'PS_HR200'	,NULL,	'30',	N'30',	N'공정관리',					'30',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	31,	N'PS_HR200'	,NULL,	'31',	N'31',	N'외경연삭(소재)',				'31',	'Y',	'0',	'21',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	32,	N'PS_HR200'	,NULL,	'32',	N'32',	N'금형(소재)',					'32',	'Y',	'0',	'21',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	33,	N'PS_HR200'	,NULL,	'33',	N'33',	N'V.M(소재)',					'33',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	34,	N'PS_HR200'	,NULL,	'34',	N'34',	N'열처리(소재)',				'34',	'Y',	'0',	'25',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	35,	N'PS_HR200'	,NULL,	'35',	N'35',	N'P/K(소재)',					'35',	'Y',	'0',	'24',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	36,	N'PS_HR200'	,NULL,	'36',	N'36',	N'F.R.M(소재)',					'36',	'Y',	'0',	'24',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	37,	N'PS_HR200'	,NULL,	'37',	N'37',	N'S/L(소재)',					'37',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	38,	N'PS_HR200'	,NULL,	'38',	N'38',	N'D/G(소재)',					'38',	'Y',	'0',	'24',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	39,	N'PS_HR200'	,NULL,	'39',	N'39',	N'포장(소재)',					'39',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	40,	N'PS_HR200'	,NULL,	'40',	N'40',	N'주자재관리',					'40',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	41,	N'PS_HR200'	,NULL,	'41',	N'41',	N'제품운반',					'41',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P127',	42,	N'PS_HR200'	,NULL,	'42',	N'42',	N'제품운송',					'42',	'Y',	'0',	'31',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P129',	N'직급코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	1,	N'PS_HR200'	,NULL,	'1',	N'07',	N'회장',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	2,	N'PS_HR200'	,NULL,	'2',	N'09',	N'부회장',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	3,	N'PS_HR200'	,NULL,	'3',	N'11',	N'사장',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	4,	N'PS_HR200'	,NULL,	'4',	N'13',	N'부사장',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	5,	N'PS_HR200'	,NULL,	'5',	N'15',	N'전무',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	6,	N'PS_HR200'	,NULL,	'6',	N'17',	N'상무',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	7,	N'PS_HR200'	,NULL,	'7',	N'19',	N'상무보',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	8,	N'PS_HR200'	,NULL,	'8',	N'20',	N'감사',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	9,	N'PS_HR200'	,NULL,	'9',	N'21',	N'이사보',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	10,	N'PS_HR200'	,NULL,	'10',	N'36',	N'G1',			'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	11,	N'PS_HR200'	,NULL,	'11',	N'38',	N'G2',			'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	12,	N'PS_HR200'	,NULL,	'12',	N'40',	N'G3',			'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	13,	N'PS_HR200'	,NULL,	'13',	N'42',	N'G4',			'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	14,	N'PS_HR200'	,NULL,	'14',	N'44',	N'G5',			'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	15,	N'PS_HR200'	,NULL,	'15',	N'46',	N'A1',			'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	16,	N'PS_HR200'	,NULL,	'16',	N'60',	N'전문직',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	17,	N'PS_HR200'	,NULL,	'17',	N'71',	N'노무직',		'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	18,	N'PS_HR200'	,NULL,	'18',	N'72',	N'촉탁',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	19,	N'PS_HR200'	,NULL,	'19',	N'73',	N'계약직(사무)','19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	20,	N'PS_HR200'	,NULL,	'20',	N'74',	N'계약직(기능)','20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	21,	N'PS_HR200'	,NULL,	'21',	N'75',	N'일용직',		'21',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	22,	N'PS_HR200'	,NULL,	'22',	N'76',	N'연수생',		'22',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	23,	N'PS_HR200'	,NULL,	'23',	N'77',	N'고문',		'23',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P129',	24,	N'PS_HR200'	,NULL,	'24',	N'78',	N'자문역',		'24',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P130',	N'포상징계구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	1,	N'PS_HR200'	,NULL,	'1',	N'001',	N'모법사원표창',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	2,	N'PS_HR200'	,NULL,	'2',	N'002',	N'제안표창',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	3,	N'PS_HR200'	,NULL,	'3',	N'003',	N'근속표창',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	4,	N'PS_HR200'	,NULL,	'4',	N'004',	N'노사협력표창',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	5,	N'PS_HR200'	,NULL,	'5',	N'005',	N'훈장',			'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	6,	N'PS_HR200'	,NULL,	'6',	N'006',	N'포상',			'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	7,	N'PS_HR200'	,NULL,	'7',	N'007',	N'표창',			'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	8,	N'PS_HR200'	,NULL,	'8',	N'008',	N'정직',			'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	9,	N'PS_HR200'	,NULL,	'9',	N'009',	N'감급1',			'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	10,	N'PS_HR200'	,NULL,	'10',	N'010',	N'감급2',			'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	11,	N'PS_HR200'	,NULL,	'11',	N'011',	N'감급3',			'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	12,	N'PS_HR200'	,NULL,	'12',	N'012',	N'견책',			'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	13,	N'PS_HR200'	,NULL,	'13',	N'013',	N'경고',			'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	14,	N'PS_HR200'	,NULL,	'14',	N'014',	N'안정유공',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	15,	N'PS_HR200'	,NULL,	'15',	N'015',	N'우수분임조',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	16,	N'PS_HR200'	,NULL,	'16',	N'016',	N'근무유공',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	17,	N'PS_HR200'	,NULL,	'17',	N'017',	N'공로유공(무재해)','17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P130',	18,	N'PS_HR200'	,NULL,	'18',	N'018',	N'공로유공',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P132',	N'급여형태', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P132',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'연봉직',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P132',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'월급직',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P132',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'일급직',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P132',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'시급직',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P134',	N'수당코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	1,	N'PS_HR200'	,NULL,	'1',	N'A01',	N'기본급',				'1',	'Y',	'0',	'10',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	2,	N'PS_HR200'	,NULL,	'2',	N'A02',	N'일급',				'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	3,	N'PS_HR200'	,NULL,	'3',	N'A03',	N'시급',				'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	4,	N'PS_HR200'	,NULL,	'4',	N'A04',	N'상여',				'4',	'Y',	'0',	'11',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	5,	N'PS_HR200'	,NULL,	'5',	N'B01',	N'식대보조(사용안함)',	'5',	'Y',	'0',	'12',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	6,	N'PS_HR200'	,NULL,	'6',	N'B02',	N'차량유지비(사용안함)','6',	'Y',	'0',	'13',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	7,	N'PS_HR200'	,NULL,	'7',	N'B03',	N'국외비과(사용안함)',	'7',	'Y',	'0',	'17',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	8,	N'PS_HR200'	,NULL,	'8',	N'C01',	N'연차수당',			'8',	'Y',	'0',	'14',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	9,	N'PS_HR200'	,NULL,	'9',	N'C02',	N'월차수당(사용안함)',	'9',	'Y',	'0',	'15',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	10,	N'PS_HR200'	,NULL,	'10',	N'C03',	N'보건수당(사용안함)',	'10',	'Y',	'0',	'16',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	11,	N'PS_HR200'	,NULL,	'11',	N'C04',	N'근속수당',			'11',	'Y',	'0',	'19',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	12,	N'PS_HR200'	,NULL,	'12',	N'C05',	N'주휴수당',			'12',	'Y',	'0',	'24',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	13,	N'PS_HR200'	,NULL,	'13',	N'D01',	N'연장수당',			'13',	'Y',	'0',	'20',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	14,	N'PS_HR200'	,NULL,	'14',	N'D02',	N'추가연장(사용안함)',	'14',	'Y',	'0',	'21',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	15,	N'PS_HR200'	,NULL,	'15',	N'D03',	N'야간수당',			'15',	'Y',	'0',	'22',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	16,	N'PS_HR200'	,NULL,	'16',	N'D04',	N'특근수당',			'16',	'Y',	'0',	'23',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	17,	N'PS_HR200'	,NULL,	'17',	N'D05',	N'시간외수당',			'17',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	18,	N'PS_HR200'	,NULL,	'18',	N'E01',	N'업적급',				'18',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	19,	N'PS_HR200'	,NULL,	'19',	N'E02',	N'직위수당',			'19',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	20,	N'PS_HR200'	,NULL,	'20',	N'E03',	N'직책수당',			'20',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	21,	N'PS_HR200'	,NULL,	'21',	N'E04',	N'출납수당',			'21',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	22,	N'PS_HR200'	,NULL,	'22',	N'E05',	N'생장수당',			'22',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	23,	N'PS_HR200'	,NULL,	'23',	N'E06',	N'보건수당',			'23',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	24,	N'PS_HR200'	,NULL,	'24',	N'E07',	N'연구수당',			'24',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	25,	N'PS_HR200'	,NULL,	'25',	N'E08',	N'비서수당',			'25',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	26,	N'PS_HR200'	,NULL,	'26',	N'E09',	N'위험수당',			'26',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	27,	N'PS_HR200'	,NULL,	'27',	N'E10',	N'안전수당',			'27',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	28,	N'PS_HR200'	,NULL,	'28',	N'E20',	N'가족수당',			'28',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	29,	N'PS_HR200'	,NULL,	'29',	N'E25',	N'자격수당',			'29',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	30,	N'PS_HR200'	,NULL,	'30',	N'E90',	N'인센티브',			'30',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	31,	N'PS_HR200'	,NULL,	'31',	N'E92',	N'사내강사료',			'21',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	32,	N'PS_HR200'	,NULL,	'32',	N'E94',	N'전월미지급',			'22',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	33,	N'PS_HR200'	,NULL,	'33',	N'E96',	N'연장근무공제',		'23',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	34,	N'PS_HR200'	,NULL,	'34',	N'E98',	N'학자금',				'24',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P134',	35,	N'PS_HR200'	,NULL,	'35',	N'E99',	N'기타수당',			'25',	'Y',	'0',	'30',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P136',	N'역종', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P136',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'예비역',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P136',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'보충역',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P136',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'면제',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P136',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'미필',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P136',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'민방위',	'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P137',	N'전역구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P137',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'의가사',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P137',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'특례만기',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P137',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'면제',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P137',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'미필',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P137',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'만기',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P138',	N'군별', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'육군',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'해군',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'공군',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'해병',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'병특례',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'면제',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'미필',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'의경',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'전경',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'상근예비역',	'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P138',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'공익요원',	'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P139',	N'주거구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P139',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'자택',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P139',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'사택',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P139',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'차가',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P139',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'기타',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P141',	N'수당구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	1,	N'PS_HR200'	,NULL,	'1',	N'10',	N'기본급',			'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	2,	N'PS_HR200'	,NULL,	'2',	N'11',	N'상여기본',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	3,	N'PS_HR200'	,NULL,	'3',	N'12',	N'식대수당',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	4,	N'PS_HR200'	,NULL,	'4',	N'13',	N'교통비',			'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	5,	N'PS_HR200'	,NULL,	'5',	N'14',	N'연차수당',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	6,	N'PS_HR200'	,NULL,	'6',	N'15',	N'월차수당',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	7,	N'PS_HR200'	,NULL,	'7',	N'16',	N'보건수당',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	8,	N'PS_HR200'	,NULL,	'8',	N'17',	N'국외수당',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	9,	N'PS_HR200'	,NULL,	'9',	N'20',	N'기본연장4시간',	'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	10,	N'PS_HR200'	,NULL,	'10',	N'30',	N'기타수당',		'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	11,	N'PS_HR200'	,NULL,	'11',	N'18',	N'상여금',			'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	12,	N'PS_HR200'	,NULL,	'12',	N'19',	N'근속수당',		'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	13,	N'PS_HR200'	,NULL,	'13',	N'21',	N'연장기본시간초과','13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	14,	N'PS_HR200'	,NULL,	'14',	N'22',	N'야간시간',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	15,	N'PS_HR200'	,NULL,	'15',	N'23',	N'휴일근무수당',	'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	16,	N'PS_HR200'	,NULL,	'16',	N'24',	N'주휴수당',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	17,	N'PS_HR200'	,NULL,	'17',	N'25',	N'연구보조',		'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	18,	N'PS_HR200'	,NULL,	'18',	N'26',	N'보육수당',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P141',	19,	N'PS_HR200'	,NULL,	'19',	N'90',	N'기타공제',		'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P142',	N'과세구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'과세',							'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'비과세-식대',						'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'비과세-차량보조',					'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'비과세-생산직',					'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	5,	N'PS_HR200'	,NULL,	'5',	N'5',	N'비과세-국외',						'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	6,	N'PS_HR200'	,NULL,	'6',	N'6',	N'비과세-연구',						'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	7,	N'PS_HR200'	,NULL,	'7',	N'7',	N'비과세-보육',						'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	8,	N'PS_HR200'	,NULL,	'8',	N'8',	N'비과세-기타(지급조서제출-여)',	'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P142',	9,	N'PS_HR200'	,NULL,	'9',	N'9',	N'비과세-기타(지급조서제출-부)',	'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P143',	N'공제코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	1,	N'PS_HR200'	,NULL,	'1',	N'G01',	N'소득세',				'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	2,	N'PS_HR200'	,NULL,	'2',	N'G02',	N'지방소득세',			'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	3,	N'PS_HR200'	,NULL,	'3',	N'G03',	N'국민연금',			'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	4,	N'PS_HR200'	,NULL,	'4',	N'G04',	N'건강보험',			'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	5,	N'PS_HR200'	,NULL,	'5',	N'G05',	N'고용보험',			'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	6,	N'PS_HR200'	,NULL,	'6',	N'G06',	N'소득세정산',			'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	7,	N'PS_HR200'	,NULL,	'7',	N'G07',	N'지방소득세정산',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	8,	N'PS_HR200'	,NULL,	'8',	N'G08',	N'건강보험정산',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	9,	N'PS_HR200'	,NULL,	'9',	N'G09',	N'노조회비(사용안함)',	'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	10,	N'PS_HR200'	,NULL,	'10',	N'G10',	N'장기요양보험',		'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	11,	N'PS_HR200'	,NULL,	'11',	N'G11',	N'새마을금고',			'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	12,	N'PS_HR200'	,NULL,	'12',	N'G12',	N'신원보증',			'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	13,	N'PS_HR200'	,NULL,	'13',	N'G15',	N'사우회비',			'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	14,	N'PS_HR200'	,NULL,	'14',	N'G90',	N'기타1공제',			'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	15,	N'PS_HR200'	,NULL,	'15',	N'G91',	N'기타2공제',			'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P143',	16,	N'PS_HR200'	,NULL,	'16',	N'G92',	N'고용보험 정산',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P144',	N'사업장(자사)', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P144',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'(주)풍산홀딩스 창원공장',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P144',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'(주)풍산홀딩스 동래공장',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P144',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'(주)풍산홀딩스 사상공장',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P147',	N'학위', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P147',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'박사',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P147',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'석사',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P147',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'학사',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P148',	N'이수구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'졸업',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'졸업예정',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'검정고시',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'수료',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'재학',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'중퇴',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P148',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'기타',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P149',	N'병과', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	1,	N'PS_HR200'	,NULL,	'1',	N'00',	N'보병',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	2,	N'PS_HR200'	,NULL,	'2',	N'01',	N'통신',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	3,	N'PS_HR200'	,NULL,	'3',	N'02',	N'포병',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	4,	N'PS_HR200'	,NULL,	'4',	N'03',	N'기관',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	5,	N'PS_HR200'	,NULL,	'5',	N'04',	N'보급',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	6,	N'PS_HR200'	,NULL,	'6',	N'05',	N'병기',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	7,	N'PS_HR200'	,NULL,	'7',	N'06',	N'특과',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	8,	N'PS_HR200'	,NULL,	'8',	N'07',	N'탄약',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	9,	N'PS_HR200'	,NULL,	'9',	N'08',	N'경리',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	10,	N'PS_HR200'	,NULL,	'10',	N'09',	N'시설',		'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	11,	N'PS_HR200'	,NULL,	'11',	N'10',	N'수송',		'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	12,	N'PS_HR200'	,NULL,	'12',	N'11',	N'공병',		'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	13,	N'PS_HR200'	,NULL,	'13',	N'12',	N'헌병',		'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	14,	N'PS_HR200'	,NULL,	'14',	N'13',	N'특전사',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	15,	N'PS_HR200'	,NULL,	'15',	N'14',	N'기갑',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P149',	16,	N'PS_HR200'	,NULL,	'16',	N'15',	N'행정',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P150',	N'계급', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'이병',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'일병',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'상병',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'병장',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'하사',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'중사',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'상사',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'원사',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'준위',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'소위',		'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'중위',		'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'대위',		'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'소령',		'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'중령',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'대령',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'준장',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'소장',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'중장',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P150',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'대장',		'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P151',	N'여권종류', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P151',	1,	N'PS_HR200'	,NULL,	'1',	N'PM',	N'복수여권',		'1',	'Y',	'0',	'PASSPORT MULTIPLE',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P151',	2,	N'PS_HR200'	,NULL,	'2',	N'PS',	N'단수여권',		'2',	'Y',	'0',	'PASSPORT SINGLE',		NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P151',	3,	N'PS_HR200'	,NULL,	'3',	N'PR',	N'거주여권',		'3',	'Y',	'0',	'PASSPORT RESIDENCE',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P151',	4,	N'PS_HR200'	,NULL,	'4',	N'PD',	N'외교관여권',		'4',	'Y',	'0',	'PASSPORT DIPLOMATIC',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P151',	5,	N'PS_HR200'	,NULL,	'5',	N'PO',	N'관용여권',		'5',	'Y',	'0',	'PASSPORT OFFICIAL',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P152',	N'직책(노조)', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	1,	N'PS_HR200'	,NULL,	'1',	N'10',	N'위원장',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	2,	N'PS_HR200'	,NULL,	'2',	N'15',	N'부위원장',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	3,	N'PS_HR200'	,NULL,	'3',	N'20',	N'사무국장',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	4,	N'PS_HR200'	,NULL,	'4',	N'25',	N'회계감사',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	5,	N'PS_HR200'	,NULL,	'5',	N'30',	N'총무부장',	'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	6,	N'PS_HR200'	,NULL,	'6',	N'35',	N'조직부장',	'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	7,	N'PS_HR200'	,NULL,	'7',	N'40',	N'교선부장',	'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	8,	N'PS_HR200'	,NULL,	'8',	N'45',	N'후복부장',	'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P152',	9,	N'PS_HR200'	,NULL,	'9',	N'50',	N'대의원',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P153',	N'사고구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P153',	1,	N'PS_HR200'	,NULL,	'1',	N'10',	N'개인휴직',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P153',	2,	N'PS_HR200'	,NULL,	'2',	N'20',	N'산재',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P153',	3,	N'PS_HR200'	,NULL,	'3',	N'30',	N'공상',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P154',	N'근무형태', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P154',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'1교대',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P154',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'2교대',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P154',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'3교대',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P154',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'4교대',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P155',	N'근무조', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	1,	N'PS_HR200'	,NULL,	'1',	N'11',	N'1조',		'1',	'Y',	'0',	'1',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	2,	N'PS_HR200'	,NULL,	'2',	N'21',	N'1조',		'2',	'Y',	'0',	'2',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	3,	N'PS_HR200'	,NULL,	'3',	N'22',	N'2조',		'3',	'Y',	'0',	'2',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	4,	N'PS_HR200'	,NULL,	'4',	N'31',	N'1조',		'4',	'Y',	'0',	'3',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	5,	N'PS_HR200'	,NULL,	'5',	N'32',	N'2조',		'5',	'Y',	'0',	'3',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	6,	N'PS_HR200'	,NULL,	'6',	N'33',	N'3조',		'6',	'Y',	'0',	'3',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	7,	N'PS_HR200'	,NULL,	'7',	N'41',	N'1조',		'7',	'Y',	'0',	'4',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	8,	N'PS_HR200'	,NULL,	'8',	N'42',	N'2조',		'8',	'Y',	'0',	'4',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	9,	N'PS_HR200'	,NULL,	'9',	N'43',	N'3조',		'9',	'Y',	'0',	'4',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P155',	10,	N'PS_HR200'	,NULL,	'10',	N'44',	N'4조',		'10',	'Y',	'0',	'4',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P156',	N'동호회', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 1,	N'PS_HR200'	,NULL,	'1',	N'100',	N'족구회',		'1',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 2,	N'PS_HR200'	,NULL,	'2',	N'101',	N'기우회',		'2',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 3,	N'PS_HR200'	,NULL,	'3',	N'102',	N'다사랑',		'3',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 4,	N'PS_HR200'	,NULL,	'4',	N'103',	N'축구회',		'4',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 5,	N'PS_HR200'	,NULL,	'5',	N'104',	N'산악회',		'5',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 6,	N'PS_HR200'	,NULL,	'6',	N'105',	N'볼링회',		'6',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 7,	N'PS_HR200'	,NULL,	'7',	N'106',	N'테니스회',	'7',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 8,	N'PS_HR200'	,NULL,	'8',	N'107',	N'신우회',		'8',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	 9,	N'PS_HR200'	,NULL,	'9',	N'108',	N'바라밀',		'9',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	10,	N'PS_HR200'	,NULL,	'10',	N'109',	N'촛점회',		'10',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	11,	N'PS_HR200'	,NULL,	'11',	N'110',	N'안부회',		'11',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	12,	N'PS_HR200'	,NULL,	'12',	N'111',	N'나눔회',		'12',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	13,	N'PS_HR200'	,NULL,	'13',	N'112',	N'안동회',		'13',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	14,	N'PS_HR200'	,NULL,	'14',	N'113',	N'탁구회',		'14',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	15,	N'PS_HR200'	,NULL,	'15',	N'114',	N'헬스회',		'15',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	16,	N'PS_HR200'	,NULL,	'16',	N'115',	N'당구회',		'16',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	17,	N'PS_HR200'	,NULL,	'17',	N'116',	N'한설산악회',	'17',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	18,	N'PS_HR200'	,NULL,	'18',	N'120',	N'경리',		'18',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	19,	N'PS_HR200'	,NULL,	'19',	N'121',	N'영업',		'19',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P156',	20,	N'PS_HR200'	,NULL,	'20',	N'190',	N'기타',		'20',	'Y',	'0',	'신동사업부',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P157',	N'시간구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	1,	N'PS_HR200'	,NULL,	'1',	N'10',	N'기본시간',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	2,	N'PS_HR200'	,NULL,	'2',	N'15',	N'점심휴식',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	3,	N'PS_HR200'	,NULL,	'3',	N'20',	N'연장근무시간',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	4,	N'PS_HR200'	,NULL,	'4',	N'25',	N'저녁휴식',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	5,	N'PS_HR200'	,NULL,	'5',	N'30',	N'심야시간',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	6,	N'PS_HR200'	,NULL,	'6',	N'35',	N'야간휴식',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	7,	N'PS_HR200'	,NULL,	'7',	N'40',	N'조출시간',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	8,	N'PS_HR200'	,NULL,	'8',	N'50',	N'특근시간',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P157',	9,	N'PS_HR200'	,NULL,	'9',	N'60',	N'특근연장',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P158',	N'전문직호칭', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P158',	1,	N'PS_HR200'	,NULL,	'1',	N'10',	N'사원',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P158',	2,	N'PS_HR200'	,NULL,	'2',	N'20',	N'주임',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P158',	3,	N'PS_HR200'	,NULL,	'3',	N'30',	N'차석',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P158',	4,	N'PS_HR200'	,NULL,	'4',	N'40',	N'계장',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P159',	N'관계코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	1,	N'PS_HR200'	,NULL,	'1',	N'0',	N'본인',				'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	2,	N'PS_HR200'	,NULL,	'2',	N'1',	N'소득자의 직계존속',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	3,	N'PS_HR200'	,NULL,	'3',	N'2',	N'배우자의 직계존속',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	4,	N'PS_HR200'	,NULL,	'4',	N'3',	N'배우자',				'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	5,	N'PS_HR200'	,NULL,	'5',	N'4',	N'직계비속 자녀',		'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	6,	N'PS_HR200'	,NULL,	'6',	N'5',	N'직계비속 자녀외',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	7,	N'PS_HR200'	,NULL,	'7',	N'6',	N'형제 자매',			'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P159',	8,	N'PS_HR200'	,NULL,	'8',	N'7',	N'기타',				'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P160',	N'발령구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'보직변경',			'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'보직변경(직무대리)',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'소속변경',			'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'파견',				'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'직군이동',			'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	6,	N'PS_HR200'	,NULL,	'6',	N'08',	N'정기승호(상반기)',	'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	7,	N'PS_HR200'	,NULL,	'7',	N'09',	N'정기승호(하반기)',	'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	8,	N'PS_HR200'	,NULL,	'8',	N'10',	N'특별승호',			'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	9,	N'PS_HR200'	,NULL,	'9',	N'11',	N'특별승호(공로)',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	10,	N'PS_HR200'	,NULL,	'10',	N'12',	N'특별승호(근무)',		'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	11,	N'PS_HR200'	,NULL,	'11',	N'13',	N'특별승호(제안)',		'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	12,	N'PS_HR200'	,NULL,	'12',	N'14',	N'특별승호(무재해)',	'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	13,	N'PS_HR200'	,NULL,	'13',	N'15',	N'특별승호(분임조)',	'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	14,	N'PS_HR200'	,NULL,	'14',	N'16',	N'특별승호(논문)',		'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	15,	N'PS_HR200'	,NULL,	'15',	N'17',	N'특별승호(모범)',		'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	16,	N'PS_HR200'	,NULL,	'16',	N'18',	N'급여인상',			'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	17,	N'PS_HR200'	,NULL,	'17',	N'19',	N'급여인상(정기)',		'17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	18,	N'PS_HR200'	,NULL,	'18',	N'20',	N'급여인상(특별)',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	19,	N'PS_HR200'	,NULL,	'19',	N'21',	N'급호조정',			'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	20,	N'PS_HR200'	,NULL,	'20',	N'23',	N'정기승진',			'20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	21,	N'PS_HR200'	,NULL,	'21',	N'24',	N'특별승진',			'21',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	22,	N'PS_HR200'	,NULL,	'22',	N'25',	N'수습해제',			'22',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	23,	N'PS_HR200'	,NULL,	'23',	N'27',	N'휴직(공상)',			'23',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	24,	N'PS_HR200'	,NULL,	'24',	N'28',	N'휴직(신병)',			'24',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	25,	N'PS_HR200'	,NULL,	'25',	N'29',	N'휴직(사사)',			'25',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	26,	N'PS_HR200'	,NULL,	'26',	N'30',	N'휴직(군복무)',		'26',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	27,	N'PS_HR200'	,NULL,	'27',	N'33',	N'휴직연장',			'27',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	28,	N'PS_HR200'	,NULL,	'28',	N'34',	N'복직',				'28',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	29,	N'PS_HR200'	,NULL,	'29',	N'35',	N'임명',				'29',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	30,	N'PS_HR200'	,NULL,	'30',	N'36',	N'해임',				'30',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	31,	N'PS_HR200'	,NULL,	'31',	N'37',	N'정직',				'31',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	32,	N'PS_HR200'	,NULL,	'32',	N'38',	N'직제개편',			'32',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	33,	N'PS_HR200'	,NULL,	'33',	N'39',	N'정년연장',			'33',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	34,	N'PS_HR200'	,NULL,	'34',	N'40',	N'대기발령',			'34',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	35,	N'PS_HR200'	,NULL,	'35',	N'41',	N'보직해제',			'35',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	36,	N'PS_HR200'	,NULL,	'36',	N'42',	N'퇴직',				'36',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	37,	N'PS_HR200'	,NULL,	'37',	N'43',	N'채용',				'37',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	38,	N'PS_HR200'	,NULL,	'38',	N'44',	N'전보',				'38',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	39,	N'PS_HR200'	,NULL,	'39',	N'45',	N'파견복귀',			'39',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	40,	N'PS_HR200'	,NULL,	'40',	N'46',	N'소속및보직변경',		'40',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	41,	N'PS_HR200'	,NULL,	'41',	N'47',	N'위촉',				'41',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	42,	N'PS_HR200'	,NULL,	'42',	N'48',	N'가족수당본봉화',		'42',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	43,	N'PS_HR200'	,NULL,	'43',	N'49',	N'연봉제급여시행',		'43',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	44,	N'PS_HR200'	,NULL,	'44',	N'50',	N'퇴직금중간정산',		'44',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	45,	N'PS_HR200'	,NULL,	'45',	N'51',	N'연봉재계약',			'45',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	46,	N'PS_HR200'	,NULL,	'46',	N'52',	N'징계(견책)',			'46',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	47,	N'PS_HR200'	,NULL,	'47',	N'53',	N'호봉제도개선',		'47',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	48,	N'PS_HR200'	,NULL,	'48',	N'54',	N'주5일년월차본봉화',	'48',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	49,	N'PS_HR200'	,NULL,	'49',	N'55',	N'정규직전환',			'49',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	50,	N'PS_HR200'	,NULL,	'50',	N'56',	N'소속확인',			'50',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	51,	N'PS_HR200'	,NULL,	'51',	N'57',	N'퇴임',				'51',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	52,	N'PS_HR200'	,NULL,	'52',	N'58',	N'해촉',				'52',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	53,	N'PS_HR200'	,NULL,	'53',	N'59',	N'감급',				'53',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P160',	54,	N'PS_HR200'	,NULL,	'54',	N'60',	N'호칭부여',			'54',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P180',	N'사회보험구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P180',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'연금보험',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P180',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'고용보험',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P180',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'건강보험',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P180',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'장기요양보험',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P181',	N'사회보험기준금액', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P181',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'기준소득월액',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P181',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'신고소득월액',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P181',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'보수월액',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P181',	4,	N'PS_HR200'	,NULL,	'4',	N'4',	N'건강보험료',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P193',	N'건강보험해외경감율', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P193',	1,	N'PS_HR200'	,NULL,	'1',	N'0',	N'제외',		'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P193',	2,	N'PS_HR200'	,NULL,	'2',	N'50',	N'50% 경감',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P193',	3,	N'PS_HR200'	,NULL,	'3',	N'100',	N'100% 경감',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P201',	N'평휴구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	1,	N'PS_HR200'	,NULL,	'1',	N'0',	N'평일',		'1',	'Y',	'0',	'1',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	2,	N'PS_HR200'	,NULL,	'2',	N'1',	N'일요일',		'2',	'Y',	'0',	'3',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	3,	N'PS_HR200'	,NULL,	'3',	N'2',	N'무급토요일',	'3',	'Y',	'0',	'2N',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	4,	N'PS_HR200'	,NULL,	'4',	N'3',	N'유급토요일',	'4',	'Y',	'0',	'2Y',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	5,	N'PS_HR200'	,NULL,	'5',	N'4',	N'무급휴일',	'5',	'Y',	'0',	'1',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P201',	6,	N'PS_HR200'	,NULL,	'6',	N'5',	N'유급휴일',	'6',	'Y',	'0',	'1',	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P202',	N'요일구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P202',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'평일',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P202',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'휴일',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P202',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'토요일',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P212',	N'지급구분', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P212',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'정기',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P212',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'특별',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P212',	3,	N'PS_HR200'	,NULL,	'3',	N'9',	N'기타',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P213',	N'급여지급대상', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P213',	1,	N'PS_HR200'	,NULL,	'1',	N'0',	N'제외',			'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P213',	2,	N'PS_HR200'	,NULL,	'2',	N'1',	N'지급대상(일반)',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P213',	3,	N'PS_HR200'	,NULL,	'3',	N'2',	N'2차 지급일',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P215',	N'상여계산방법', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P215',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'계산식 사용',					'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P215',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'기간급여 지정수당 평균',		'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P215',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'기간급여 지정수당 합계/월수',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P216',	N'목적구분코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P216',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'공용',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P216',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'경조',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P216',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'납품',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P217',	N'출장지코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P217',	1,	N'PS_HR200'	,NULL,	'1',	N'1',	N'안강',			'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P217',	2,	N'PS_HR200'	,NULL,	'2',	N'2',	N'동래',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P217',	3,	N'PS_HR200'	,NULL,	'3',	N'3',	N'온산',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P217',	4,	N'PS_HR200'	,NULL,	'4',	N'9',	N'기타',		'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+
+--위해코드 (노과장님이하셨음)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P220',	N'위해코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	1,	N'PS_HR200'	,NULL,	'1',	N'11',	N'산처리',							'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	2,	N'PS_HR200'	,NULL,	'2',	N'12',	N'폐수처리',						'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	3,	N'PS_HR200'	,NULL,	'3',	N'13',	N'화학실험실(산취급)',				'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	4,	N'PS_HR200'	,NULL,	'4',	N'14',	N'휘팅바렐',						'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	5,	N'PS_HR200'	,NULL,	'5',	N'21',	N'MG금형연삭',						'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	6,	N'PS_HR200'	,NULL,	'6',	N'22',	N'부품자동선반/전용기/다축선반',	'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	7,	N'PS_HR200'	,NULL,	'7',	N'23',	N'휘팅 소재절단(6A~20A)엘보벤딩',	'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	8,	N'PS_HR200'	,NULL,	'8',	N'24',	N'휘팅 면취/MG, D/G, P/K, FRM',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	9,	N'PS_HR200'	,NULL,	'9',	N'25',	N'고열',							'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	10,	N'PS_HR200'	,NULL,	'10',	N'31',	N'기타',							'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P220',	11,	N'PS_HR200'	,NULL,	'11',	N'46',	N'6급',								'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--근태코드(노과장님이하셨음)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P221',	N'근태코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'정상근무',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'무단결근',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'유계결근',	'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 4,	N'PS_HR200'	,NULL,	'4',	N'04',	N'공용외출',	'4',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 5,	N'PS_HR200'	,NULL,	'5',	N'05',	N'사용외출',	'5',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 6,	N'PS_HR200'	,NULL,	'6',	N'06',	N'조퇴',		'6',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 7,	N'PS_HR200'	,NULL,	'7',	N'07',	N'지각',		'7',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 8,	N'PS_HR200'	,NULL,	'8',	N'08',	N'당직',		'8',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	 9,	N'PS_HR200'	,NULL,	'9',	N'09',	N'훈련',		'9',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	10,	N'PS_HR200'	,NULL,	'10',	N'10',	N'월차휴가',	'10',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	11,	N'PS_HR200'	,NULL,	'11',	N'11',	N'년차휴가',	'11',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	12,	N'PS_HR200'	,NULL,	'12',	N'12',	N'생리휴가',	'12',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	13,	N'PS_HR200'	,NULL,	'13',	N'13',	N'경조휴가',	'13',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	14,	N'PS_HR200'	,NULL,	'14',	N'14',	N'하기휴가',	'14',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	15,	N'PS_HR200'	,NULL,	'15',	N'15',	N'특별휴가',	'15',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	16,	N'PS_HR200'	,NULL,	'16',	N'16',	N'분만휴가',	'16',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	17,	N'PS_HR200'	,NULL,	'17',	N'17',	N'근속가산휴가','17',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	18,	N'PS_HR200'	,NULL,	'18',	N'18',	N'반차',		'18',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	19,	N'PS_HR200'	,NULL,	'19',	N'19',	N'근속반차',	'19',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	20,	N'PS_HR200'	,NULL,	'20',	N'20',	N'유급휴일',	'20',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	21,	N'PS_HR200'	,NULL,	'21',	N'21',	N'무급휴일',	'21',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	22,	N'PS_HR200'	,NULL,	'22',	N'22',	N'휴업',		'22',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	23,	N'PS_HR200'	,NULL,	'23',	N'23',	N'근속반차',	'23',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	24,	N'PS_HR200'	,NULL,	'24',	N'24',	N'제외',		'24',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	25,	N'PS_HR200'	,NULL,	'25',	N'25',	N'제외',		'25',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	26,	N'PS_HR200'	,NULL,	'26',	N'26',	N'제외',		'26',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	27,	N'PS_HR200'	,NULL,	'27',	N'27',	N'제외',		'27',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	28,	N'PS_HR200'	,NULL,	'28',	N'28',	N'제외',		'28',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	29,	N'PS_HR200'	,NULL,	'29',	N'29',	N'제외',		'29',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	30,	N'PS_HR200'	,NULL,	'30',	N'30',	N'제외',		'30',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	31,	N'PS_HR200'	,NULL,	'31',	N'31',	N'제외',		'31',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	32,	N'PS_HR200'	,NULL,	'32',	N'32',	N'제외',		'32',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	33,	N'PS_HR200'	,NULL,	'33',	N'33',	N'제외',		'33',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	34,	N'PS_HR200'	,NULL,	'34',	N'34',	N'제외',		'34',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	35,	N'PS_HR200'	,NULL,	'35',	N'35',	N'제외',		'35',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P221',	36,	N'PS_HR200'	,NULL,	'36',	N'36',	N'제외',		'36',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+--/* 헤더 */
+--INSERT INTO [@PS_HR200H] VALUES(N'P222',	N'학자금학교코드', @MDC_DOCENTRY,	'N',	N'PS_HR200',	0,	1,	'N',	@MDC_DATE,	@MDC_TIME,	0,	0,	'I',	NULL)
+--/* 라인 */
+--INSERT INTO [@PS_HR200L] VALUES(N'P222',	 1,	N'PS_HR200'	,NULL,	'1',	N'01',	N'고등학교',	'1',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P222',	 2,	N'PS_HR200'	,NULL,	'2',	N'02',	N'전문대학',	'2',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+--INSERT INTO [@PS_HR200L] VALUES(N'P222',	 3,	N'PS_HR200'	,NULL,	'3',	N'03',	N'대학교',		'3',	'Y',	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL,	'0',	NULL,	NULL)
+
+
+
+
+
+
+--AUTOKEY갱신
+SELECT @MDC_DOCENTRY = ISNULL(MAX(DOCENTRY), 0) + 1 FROM [@PS_HR200H]
+UPDATE ONNM SET AUTOKEY = @MDC_DOCENTRY
+WHERE OBJECTCODE = 'PS_HR200'
+
+
+--SELECT * FROM [@PS_HR200L] WHERE Code IN('CSY001','CSY002','CSY003')

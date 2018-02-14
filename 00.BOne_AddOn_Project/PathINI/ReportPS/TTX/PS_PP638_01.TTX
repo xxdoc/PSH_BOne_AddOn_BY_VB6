@@ -1,0 +1,8 @@
+ItmMsort	String	3
+CodeName	String	30
+PQty	Number
+PWeight	Number
+NQty	Number
+NWeight	Number
+SunSu	Number
+SunJu	Number

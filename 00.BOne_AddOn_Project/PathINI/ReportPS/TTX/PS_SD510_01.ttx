@@ -1,0 +1,7 @@
+ItemCode	String	20
+ItemName	String	200
+LineTotal	Number
+DocDate	DateTime
+giamt	Number
+sDocDate	DateTime
+amt	Number

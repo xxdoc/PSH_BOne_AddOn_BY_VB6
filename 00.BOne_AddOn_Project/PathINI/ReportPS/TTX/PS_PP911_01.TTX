@@ -1,0 +1,27 @@
+ItemCode	String	50
+CardCode	String	30
+CardName	String	100
+FrgnName	String	100
+Size	String	100
+Unit	String	10
+SjWeight	Number
+SjDocLin	String	30
+RegNum	String	20
+LinTotal	Number
+DueDate	DateTime
+PuDate	DateTime
+DocDate	DateTime
+Quantity	Number
+LineTotal	Number
+RegDate	DateTime
+SengDate	DateTime
+NapDate	DateTime
+YalDate	DateTime
+NapNu	Number
+PanIl	DateTime
+JaJe	Number
+JaChe	Number
+Wajuga	Number
+Wajuje	Number
+SulGe	Number
+PanWak	Number

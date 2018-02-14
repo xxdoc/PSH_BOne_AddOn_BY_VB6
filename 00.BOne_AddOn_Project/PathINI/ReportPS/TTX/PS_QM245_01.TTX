@@ -1,0 +1,13 @@
+Code	String	20
+ItemCode	String	20
+ItemName	String	100
+IDate	DateTime
+StdNum	String	20
+LotNo	String	20
+IQty	Number
+IWgt	Number
+endyn	String	10
+The_Qty	Number
+ODate	DateTime
+OQty	Number
+OWgt	Number

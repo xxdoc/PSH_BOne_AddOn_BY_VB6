@@ -1,0 +1,3 @@
+DocDate		Datetime
+CSF			String	4000
+Comment	String	4000

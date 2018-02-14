@@ -1,0 +1,14 @@
+DocDate	String	20
+CardCode	String	50
+CardName	String	100
+ItemCode	String	50
+FrgnName	String	100
+Quality	String	50
+CallSize	String	50
+Size	String	50
+Mark	String	50
+ItmsGrpCod	String	50
+Quantity	Number
+Weight	Number
+Price	Number
+LineTotal	Number

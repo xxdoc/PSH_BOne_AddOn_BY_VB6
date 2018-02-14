@@ -1,0 +1,15 @@
+OrdNum			String	20
+OrdSub			String	6
+ItemCode		String	20
+ItemName		String	100
+Spec				String	100
+Unit				String	5
+Quantity			Number
+MatAmt			Number
+DrawAmt		Number
+GagongAmt	Number
+OutgAmt		Number
+OutmAmt		Number
+Total				Number
+SjAmt			Number
+PP030HNo		Number

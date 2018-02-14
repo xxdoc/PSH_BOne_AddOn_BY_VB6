@@ -1,0 +1,77 @@
+DocNum	Short
+CardName	String	200
+InDate		DateTime
+PurPose	String	100
+BPLId	String	10
+BPLName	String	50
+Comment1	String	100
+TranCard	String	30
+TranCode	String	20
+TranCost	String	100
+Destin	String	30
+OutMan	String	10
+OutNum	String	50
+RptGbn	String	10
+Title	String	2
+JakName1	String	20
+ItemName1	String	100
+Size1	String	100
+Quantity1	Number
+Weight1	Number
+Unit1	String	20
+JakName2	String	20
+ItemName2	String	100
+Size2	String	100
+Quantity2	Number
+Weight2	Number
+Unit2	String	20
+JakName3	String	20
+ItemName3	String	100
+Size3	String	100
+Quantity3	Number
+Weight3	Number
+Unit3	String	20
+JakName4	String	20
+ItemName4	String	100
+Size4	String	100
+Quantity4	Number
+Weight4	Number
+Unit4	String	20
+JakName5	String	20
+ItemName5	String	100
+Size5	String	100
+Quantity5	Number
+Weight5	Number
+Unit5	String	20
+JakName6	String	20
+ItemName6	String	100
+Size6	String	100
+Quantity6	Number
+Weight6	Number
+Unit6	String	20
+JakName7	String	20
+ItemName7	String	100
+Size7	String	100
+Quantity7	Number
+Weight7	Number
+Unit7	String	20
+JakName8	String	20
+ItemName8	String	100
+Size8	String	100
+Quantity8	Number
+Weight8	Number
+Unit8	String	20
+JakName9	String	20
+ItemName9	String	100
+Size9	String	100
+Quantity9	Number
+Weight9	Number
+Unit9	String	20
+JakName10	String	20
+ItemName10	String	100
+Size10	String	100
+Quantity10	Number
+Weight10	Number
+Unit10	String	20
+TotalQty	Number
+TotalWeight	Number

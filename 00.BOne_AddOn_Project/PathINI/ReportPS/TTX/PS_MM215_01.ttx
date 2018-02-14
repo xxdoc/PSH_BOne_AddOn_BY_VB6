@@ -1,0 +1,8 @@
+PQNum	String	20
+DocDate	String	30
+Gubun	String	20
+ItemCode	String	50
+ItemName	String	200
+OutUnit	String	20
+Qty	Number
+RFCNo	String	100

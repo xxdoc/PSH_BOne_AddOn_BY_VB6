@@ -1,0 +1,21 @@
+DocEntry		Number
+TrgtCls		String	10
+TrgtName	String	20
+BPLId			String	1
+BPLName	String	50
+TeamCd1	String	20
+TeamNm1	String	50
+RspCd1		String	20
+RspNm1		String	50
+TeamCd2	String	20
+TeamNm2	String	50
+RspCd2		String	20
+RspNm2		String	50
+TrgtNod		Number
+Grd			String	5
+TrgtMtp		Number
+StrDt			DateTime
+StrPrns		Number
+CmDt			DateTime
+CmYN		String	10
+CmYNNm	String	50

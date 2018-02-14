@@ -1,0 +1,7 @@
+DocDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+BatchNum	String	20
+InDate	DateTime
+FailName	String	100
+Wgt	Number

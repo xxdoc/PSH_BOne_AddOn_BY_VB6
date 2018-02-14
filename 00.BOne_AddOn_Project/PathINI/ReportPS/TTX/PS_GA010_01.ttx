@@ -1,0 +1,15 @@
+DocEntry		Number
+BPLId			String	1
+BPLName	String	50
+Loc			String	100
+BORsn		String	100
+BOCls		String	2
+BOClsName	String	10
+BOSDate		Datetime
+BOSTime	String	5
+BOEDate		Datetime
+BOETime	String	5
+PreNote		String	4000
+DmgNote	String	4000
+FrDt			Datetime
+ToDt			Datetime

@@ -1,0 +1,18 @@
+BPLId			String	1
+ItemCode	String	100
+FrgnName	String	100
+Size			String	30
+Minor		String	1
+Pumtxt		String	10
+ReqWt		Number
+Pqty			Number
+SjPrice		Number
+SalUnitMsr	String	10
+MiNap		Number
+RegDate		DateTime
+DueDate		DateTime
+CardCode	String	100
+CardName	String	100
+Lotno			String	100
+Soge			String	100
+TradeType	String	5

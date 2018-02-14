@@ -1,0 +1,13 @@
+ItemCode	String	50
+ItemName	String	100
+BatchNum	String	50
+InDate	DateTime
+Quantity	Number
+OrdNum	String	100
+TuDate	DateTime
+CpCode	String	50
+CpName	String	100
+EdDate	DateTime
+OtDate	DateTime
+OutQty	Number
+Div	String	10

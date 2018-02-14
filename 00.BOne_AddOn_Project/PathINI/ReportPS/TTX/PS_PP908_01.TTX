@@ -1,0 +1,11 @@
+CardName	String	1000
+01-10_IN		Number
+01-10_OUT	Number
+11-20_IN		Number
+11-20_OUT	Number
+21-30_IN		Number
+21-30_OUT	Number
+31_IN			Number
+31_OUT		Number
+SUM_IN		Number
+SUM_OUT	Number

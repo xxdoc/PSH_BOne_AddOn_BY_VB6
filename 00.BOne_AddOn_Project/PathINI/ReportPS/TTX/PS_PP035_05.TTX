@@ -1,0 +1,14 @@
+DocEntry	String	10
+JAKBUN	String	20
+FrgnName	String	30
+MarkName	String	20
+SIZE	String	50
+CallSize	String	20		
+TypeName	String	20
+UnWeight	Number
+CardName	String	100
+Selwt	Number
+Jungrang	Number
+HComments	String	100
+ItemName	String	1000
+Comments	String	200

@@ -1,0 +1,7 @@
+ItmMsort	String	20
+ItmMname	String	100
+ItemCode	String	20
+ItemName	String	100
+TAmt	Number
+SQty	Number
+SAmt	Number

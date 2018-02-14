@@ -1,0 +1,19 @@
+Minor	String	10
+Saup	String	10
+Pumtxt	String	30
+ItemCode	String	100
+FrgnName	String	100
+Size	String	100
+SalUnitMsr	String	10
+YQty	Number
+DocDate	DateTime
+Cost01	Number
+Cost02	Number
+Cost05	Number
+Cost03	Number
+Cost06	Number
+Cost04	Number
+JajeSum	Number
+GagoSum	Number
+ToTal	Number
+LinTotal	Number

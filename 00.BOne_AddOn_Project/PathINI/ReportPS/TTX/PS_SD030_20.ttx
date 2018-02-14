@@ -1,0 +1,30 @@
+Groups		String	100
+DocEntry	String	100
+DocDate		String	100
+CardCode	String	100
+CardName	String	100
+DCardCode	String	100
+DCardName	String	100
+Address		String	100
+Phone		String	100
+HComments	String	100
+RowNumber	String	100
+ItemName	String	100
+ItemCode	String	100
+BoxQty		Number
+ItemGroup	String	100
+ItemType	String	100
+ItemSize	String	100
+Mname	String	100
+SizeDesc	String	100
+Box		Number
+Qty		Number
+Weight		Number
+Quality		String	100
+LComments	String	100
+BoxCal	Number
+BoxMod	Number
+BoxCSum	NUmber
+BoxSum		Number
+QtySum		Number
+WeightSum	Number

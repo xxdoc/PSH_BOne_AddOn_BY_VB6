@@ -1,0 +1,10 @@
+PQNum	String	20
+CardName	String	100
+DocDate	String	30
+ItemCode	String	50
+FrgnName	String	150
+Size	String	100
+Unit	String	10
+Qty	Number
+LinTotal	Number
+UnQty	Number

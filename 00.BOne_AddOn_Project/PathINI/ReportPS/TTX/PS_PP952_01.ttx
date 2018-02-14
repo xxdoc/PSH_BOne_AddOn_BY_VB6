@@ -1,0 +1,11 @@
+OrdNum		String	50
+CardCode	String	50
+CardName	String	100
+OutYN		String	1
+ORDRQty	Number
+PP080Qty	Number
+DueDate		String	10
+DayDiff		Number
+Comment	String	100
+DocDate		String	10
+OutYN2		String	5

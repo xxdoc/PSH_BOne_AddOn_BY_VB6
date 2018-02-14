@@ -1,0 +1,7 @@
+JAKBUN	String	20
+DocEntry	Short
+FrgnName	String	30
+SIZE	String	100
+SELWT	Short
+DATE	string	8
+CardName	string	50

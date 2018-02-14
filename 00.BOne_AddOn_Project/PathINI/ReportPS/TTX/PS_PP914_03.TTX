@@ -1,0 +1,6 @@
+NCode	String	20
+NName	String	100
+CpCode	String	20
+CpName	String	100
+Ntime	Number
+TEST	NUmber

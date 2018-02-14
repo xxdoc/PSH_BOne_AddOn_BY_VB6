@@ -1,0 +1,11 @@
+ItemCode	String	20
+ItemName	String	100
+OutSize	String	100
+IQty	Number
+HQty	Number
+Remark	String	100
+LineNum	String	10
+MItemCod	String	20
+MItemNam	String	100
+Qty	Number
+Weight	Number

@@ -1,0 +1,16 @@
+Minor	String	10
+Cnt	Number
+Pumtxt	String	30
+WorkTime	Number
+YQty	Number
+Cost01	Number
+Cost02	Number
+Cost05	Number
+Cost03	Number
+Cost06	Number
+Cost04	Number
+JajeSum	Number
+GagoSum	Number
+ToTal	Number
+LinTotal	Number
+Sonik	Number

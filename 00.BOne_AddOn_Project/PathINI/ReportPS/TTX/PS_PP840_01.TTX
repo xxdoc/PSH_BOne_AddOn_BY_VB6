@@ -1,0 +1,4 @@
+DocDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+Wgt	Number

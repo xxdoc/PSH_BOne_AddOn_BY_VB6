@@ -1,0 +1,10 @@
+ItemCode	String	30
+ItemName	String	100
+CardName	String	100
+LotNo	String	30
+BPLName	String	1
+CallSize	String	5
+OrdNum	String	30
+InspPrsn	String	20
+CardName	String	100
+InspDate	DateTime

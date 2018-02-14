@@ -1,0 +1,18 @@
+DocNum		Short
+DocDate		DateTime
+CgDate		DateTime
+CGNo		String	20
+DueDate		DateTime
+Note			String	50
+Qty			Number
+LinTotal		Number
+ItemCode	String	20
+ItemName	String	100
+Size			String	30
+Unit			String	10
+Price			Number
+Temp01		String	200
+Comments	String	200
+PrePrice		Number
+CntcCode	String	50
+CntcName	String	100

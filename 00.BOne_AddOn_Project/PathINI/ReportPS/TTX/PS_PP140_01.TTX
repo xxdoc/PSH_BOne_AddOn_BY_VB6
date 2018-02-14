@@ -1,0 +1,9 @@
+DocDate	DateTime
+DocEntry	String	20
+ItemCode	String	30
+ItemName	String	50
+OrdNum	String	30
+CardCode	String	30
+CardName	String	50
+YQty	Number
+YWeight	Number

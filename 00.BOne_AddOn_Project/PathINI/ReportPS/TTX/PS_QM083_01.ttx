@@ -1,0 +1,118 @@
+Code	String	20
+DocDate	DateTime
+BaseCode	String	20
+InDate	DateTime
+ItemCode	String	20
+ItemName	String	100
+CItemCod	String	20
+CItemNam	String	100
+StdNum	String	20
+LotNo	String	20
+Qty	Number
+Weight	Number
+ExSize1	Number
+ExSize2	Number
+ExSize3	Number
+ExSize4	Number
+ExSize5	Number
+ExSize6	Number
+ExSize7	String	100
+Weight1	Number
+Weight2	Number
+Weight3	Number
+Weight4	Number
+Weight5	Number
+Weight6	Number
+Weight7	String	100
+Length1	Number
+Length2	Number
+Length3	Number
+Length4	Number
+Length5	Number
+Length6	Number
+Length7	String	100
+Exterio1	Number
+Exterio2	Number
+Exterio3	Number
+Exterio4	Number
+Exterio5	Number
+Exterio6	Number
+Exterio7	String	100
+Parall1	Number
+Parall2	Number
+Parall3	Number
+Parall4	Number
+Parall5	Number
+Parall6	Number
+Parall7	String	100
+Comments	String	100
+M_C	Number
+M_Mn	Number
+M_P	Number
+M_S	Number
+M_Si	Number
+M_Ni	Number
+M_Cr	Number
+M_Mo	Number
+M_Fe	Number
+M_Cu	Number
+M_Mg	Number
+M_Zn	Number
+M_Ti	Number
+M_ZrTi	Number
+M_Other	Number
+M_Al	Number
+M_TS_min	Number
+M_TS_max	Number
+M_YS_min	Number
+M_YS_max	Number
+M_EL_min	Number
+M_EL_max	Number
+M_HD_min	Number
+M_HD_max	Number
+M_GS_min	Number
+M_GS_max	Number
+M_Cn_min	Number
+M_Cn_max	Number
+M_METCH	String	100
+C_Min	Number
+C_Max	Number
+Mn_Min	Number
+Mn_Max	Number
+P_Min	Number
+S_Min	Number
+Si_Min	Number
+Si_Max	Number
+Ni_Min	Number
+Mi_Max	Number
+Cr_Min	Number
+Cr_Max	Number
+Mo_Min	Number
+Mo_Max	Number
+Fe_Min	Number
+Cu_Min	Number
+Cu_Max	Number
+Mg_Min	Number
+Mg_Max	Number
+Zn_Min	Number
+Ti_Min	Number
+ZrTi_Min	Number
+Other	Number
+Al	Number
+TS_Min	Number
+TS_Max	Number
+YS_Min	Number
+YS_Max	Number
+EL_Min	Number
+EL_Max	Number
+HARD_Min	Number
+HARD_Max	Number
+GS_Min	Number
+GS_Max	Number
+Clean	String	100
+METCH	String	100
+Exsize	String	100
+Weight_c	String	100
+Length	String	100
+Exterior	String	100
+Parallel	String	100

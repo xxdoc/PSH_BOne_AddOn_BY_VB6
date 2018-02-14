@@ -1,0 +1,9 @@
+ManageNo	String	15,
+DocDate	String	10,
+LoanBank	String	200,
+LoanName	String	200,
+LoanIntr	Number,
+LoanSDat	String	10,
+LoanEDat	String	10,
+LoanAmt	Number,
+RepayAmt	Number

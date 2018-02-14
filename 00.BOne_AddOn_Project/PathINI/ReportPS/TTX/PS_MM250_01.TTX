@@ -1,0 +1,14 @@
+DocNum	String	10
+ItemCode	String	50
+ItemName	String	100
+Size	String	100
+Main	String	100
+CardCode	String	50
+CardName	String	100
+LinTotal	Number
+Price	Number
+Unit	String	10
+Weight	Number
+Comments	String	50
+DocDate	DateTime
+DueDate	DateTime

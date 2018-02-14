@@ -1,0 +1,8 @@
+CardCode	String	100
+CardName	String	150
+DocDate	DateTime
+KiWgt	Number
+GjWgt	Number
+BnWgt	Number
+LossWgt	Number
+JgWgt	Number

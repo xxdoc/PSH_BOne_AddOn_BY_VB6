@@ -1,0 +1,14 @@
+BPLId	String	100
+DocDate	DateTime
+CardCode	String	20
+CardName	String	100
+Credit	Number
+Security	Number
+CreditP	Number
+MiSuP	Number
+Bill	Number
+Budo	Number
+TotAmt	Number
+OutPreP	Number
+RequestP	Number
+Comment	String	100

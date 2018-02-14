@@ -1,0 +1,17 @@
+OrdNum	String	40
+ItemCode	String	20
+ItemName	String	60
+Selwt	Number
+JISURANG	Number
+CpCode	String	30
+CpName	String	60
+Sequence	Number
+PQty	Number
+OutQty	Number
+NQty	Number
+GONGSENG	Number
+DocDate	DateTime
+JEGONG	Number
+JEGONGWGT	Number
+SEOULDE	Number
+SEOULJE	Number

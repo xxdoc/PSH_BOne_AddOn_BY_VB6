@@ -1,0 +1,12 @@
+ItemCode	String	30
+ItemName	String	50
+OrdNum		String	20
+PKCnt		Number
+PKTotal		Number
+PKAmt		Number
+DGCnt		Number
+DGTotal		Number
+DGAmt		Number
+FailName	String	50
+CsCpName	String	50
+CsWkName	String	10

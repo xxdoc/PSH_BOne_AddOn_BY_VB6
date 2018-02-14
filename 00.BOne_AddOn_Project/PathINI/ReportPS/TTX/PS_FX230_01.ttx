@@ -1,0 +1,13 @@
+ClasCode	String	20
+ClasName	String	100
+PostDate	DateTime
+FixCode	String	20
+FixName	String	100
+PostQty	Number
+PostAmt	Number
+TeamCode	String	20
+TeamNm	String	100
+RspCode	String	20
+RspNm	String	100
+Place	String	100
+Comments	String	20

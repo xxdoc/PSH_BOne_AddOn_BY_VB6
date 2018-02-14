@@ -1,0 +1,9 @@
+ItemCode	String	20	
+ItemName	String	100
+CardCode	String	20
+CardName	String	100
+D_GQty	NUmber
+D_BQty	NUmber
+M_GQty	NUmber
+M_BQty	NUmber
+BPer	NUmber

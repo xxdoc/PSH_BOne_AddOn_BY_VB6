@@ -1,0 +1,8 @@
+ItemCode	String	30
+ItemName	String	100
+OrdNum	String	30
+BatchNum	String	30
+BPLName	String	1
+CallSize	String	5
+Yqty	Number
+DocDate	DateTime

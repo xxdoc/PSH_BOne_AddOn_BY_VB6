@@ -1,0 +1,8 @@
+ItemCode	String	30
+ItemName	String	100
+FrgnName	String	100
+Spec1	Number
+UnWeight	Number
+Qty	Number
+Wgt	Number
+ComWgt	Number	

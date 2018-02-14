@@ -1,0 +1,9 @@
+DocTypeCd	String	5
+DocType		String	50
+DocCode	String	10
+DeptCode	String	10
+DeptName	String	50
+CrtDate		String	10
+EmpCode	String	20
+EmpName	String	20
+CrtCmt		String	4000

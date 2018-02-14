@@ -1,0 +1,19 @@
+DocDateFr	DateTime
+DocDateTo	DateTime
+TextPurchase	String	30
+BPLId	String	10
+CardCode	String	20
+CardName	String	100
+DocNum	String	10
+DocDate	DateTime
+Purchase	String	20
+DueDate	DateTime
+CgNum	String	20
+Note	String	200
+ItemCode	String	20
+ItemName	String	100
+Qty	Number
+Weight	Number
+Price	Number
+LinTotal	Number
+Unit	String	10

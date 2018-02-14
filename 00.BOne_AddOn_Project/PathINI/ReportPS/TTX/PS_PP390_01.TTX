@@ -1,0 +1,10 @@
+U_DocDate	DateTime
+U_OrdNum	String	30
+U_PItemCod	String	30
+U_PItemNam	String	100
+U_CItemCod	String	30
+U_CItemNam	String	200
+U_PQty	Number
+U_PWeight	Number
+U_IssueQty	Number
+U_IssueWt	Number

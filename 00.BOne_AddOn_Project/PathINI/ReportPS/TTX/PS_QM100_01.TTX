@@ -1,0 +1,27 @@
+CdNaming	String	50
+Pum	String	10
+GInQty	Number
+GBadQty	Number
+GBadyul	Number
+TInQty	Number
+TBadQty	Number
+TBadyul	Number
+PInQty	Number
+PBadQty	Number
+PBadyul	Number
+MInQty	Number
+MBadQty	Number
+MBadyul	Number
+JInQty	Number
+JBadQty	Number
+JBadyul	Number
+DInQty	Number
+DBadQty	Number
+DBadyul	Number
+Imga	String	20
+Gage	String	20
+Molde	String	20
+Jangbi	String	20
+Bupum	String	20
+Gonggu	String	20
+ItemCode	String	5

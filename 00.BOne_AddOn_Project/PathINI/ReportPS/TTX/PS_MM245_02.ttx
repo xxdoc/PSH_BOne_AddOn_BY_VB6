@@ -1,0 +1,13 @@
+CardCode	String	20
+CardName	String	100
+ItemCode	String	20
+ItemName	String	100
+DocDate	String	10
+GiChoQty	Number
+GiChoWt	Number
+OutQty	Number
+OutWt	Number
+InQty	Number
+InWt	Number
+BadWt	Number
+ScrapWt	Number

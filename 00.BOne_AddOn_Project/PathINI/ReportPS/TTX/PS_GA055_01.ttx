@@ -1,0 +1,20 @@
+CntcCode		String	20
+CntcName		String	50
+BPLId				String	1
+BPLName		String	50
+TeamCode		String	20
+TeamName		String	50
+RspCode		String	20
+RspName		String	50
+Age				Number
+StdDt				DateTime
+CodeLv1			String	20
+NameLv1		String	50
+CodeLv2			String	20
+NameLv2		String	50
+Cts				String	4000
+AfterCts			String	4000
+Note				String	4000
+FrDt				String	10
+ToDt				String	10
+ConName		String	20

@@ -1,0 +1,7 @@
+CpCode	String	20
+CpName	String	100
+JsCode	String	20
+JsName	String	100
+WorkTime	Number
+GaTime	Number
+NwTime	Number

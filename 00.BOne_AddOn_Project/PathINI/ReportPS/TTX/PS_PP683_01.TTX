@@ -1,0 +1,9 @@
+WorkCode	String	10
+WorkName	String	10
+CpCode	String	10
+CpName	String	100
+PQty	Number
+Cnt	Number
+Ymd	Number
+IlPQty	Number
+IlCnt	Number

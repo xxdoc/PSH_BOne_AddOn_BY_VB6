@@ -1,0 +1,6 @@
+ItemCode	String	20
+Dscription	String	100
+DocDate	DateTime
+BatchNum	String	100
+Quantity	Number
+ToTal	Number	

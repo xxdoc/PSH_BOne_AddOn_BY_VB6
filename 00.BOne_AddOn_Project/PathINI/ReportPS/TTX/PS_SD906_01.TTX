@@ -1,0 +1,12 @@
+regNum	String	20
+FrgnName	String	100
+ItemCode	String	20
+ItemName	String	100
+RegDate	DateTime
+DueDate	DateTime
+Qty	Number
+Wgt	Number
+mkqty	Number
+mkwgt	Number
+jqty	Number
+jwgt	Number

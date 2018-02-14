@@ -1,0 +1,21 @@
+U_CardCode	String	30
+U_CardName	String	100
+U_GRDocNum	String	30
+U_GRLinNum	String	30
+U_PODocNum	String	30
+U_ItemCode	String	30
+U_ItemName	String	100
+U_Size	String	100
+U_Unit	String	20
+U_ItmBsort	String	10
+BName	String	30
+U_ImDate	DateTime
+U_DueDate	DateTime
+RName	String	30
+U_Qty	Number
+U_Weight	Number
+U_LinTotal	Number
+U_LateDay	String	30
+U_RepayP	Number
+U_RepayRsn	String	100
+U_Comments	String	100

@@ -1,0 +1,8 @@
+DocEntry	Short
+LineId	Number
+CpBName	String	100
+CpName	String	100
+Unit	String	10
+StdHour	Number
+AMT	Number
+ReDate	String	8

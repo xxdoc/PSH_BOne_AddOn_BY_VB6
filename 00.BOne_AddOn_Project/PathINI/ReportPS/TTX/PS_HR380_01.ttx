@@ -1,0 +1,10 @@
+TeamNm	String	50
+FETask	String	200
+KPINm	String	200
+UnitNm	String	50
+CclFml	String	100
+CrtMTrgt	String	100
+Rslt	String	100
+CmYN	String	10
+EvalScr	Number
+PrgCts	String	200

@@ -1,0 +1,14 @@
+DocEntry	String	10
+JAKBUN	String	20
+CpName	String	50
+ItemCode030H	String	30
+ItemName030H	String	50
+Size030H	String	30
+ItemCode030L	String	30
+ItemName030L	String	50
+Size030L	String	30
+DocDate	DateTime
+DueDate	DateTime
+SelWt	Short
+BatchNum	String	50
+YMD	String	10

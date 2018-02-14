@@ -1,0 +1,6 @@
+ItmBsort	String	20
+BPLid	String	20
+ItemCode	String	30
+ItemName	String	100
+Quantity	Number
+Coil	Number

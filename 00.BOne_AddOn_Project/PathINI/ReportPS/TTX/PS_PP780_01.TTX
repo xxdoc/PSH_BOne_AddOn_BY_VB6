@@ -1,0 +1,17 @@
+ItemCode	String	30
+ItemName	String	100
+janil	Number
+jqty	Number
+sqty	Number
+bqty	Number
+totjqty	Number
+jjqty	Number
+comqty	Number
+pojqty	Number
+apoqty	Number
+Stkjj	Number
+hjqty	Number
+chqty6	Number
+chqty12	Number
+chmaxqty	Number
+chminqty	Number

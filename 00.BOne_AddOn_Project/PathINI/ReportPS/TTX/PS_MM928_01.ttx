@@ -1,0 +1,42 @@
+ItemCode	String	20
+ItemName	STring	100
+Size	String	100
+MonQty01	Number
+MonQty02	Number
+MonQty03	Number
+MonQty04	Number
+MonQty05	Number
+MonQty06	Number
+MonQty07	Number
+MonQty08	Number
+MonQty09	Number
+MonQty10	Number
+MonQty11	Number
+MonQty12	Number
+MonWt01	Number
+MonWt02	Number
+MonWt03	Number
+MonWt04	Number
+MonWt05	Number
+MonWt06	Number
+MonWt07	Number
+MonWt08	Number
+MonWt09	Number
+MonWt10	Number
+MonWt11	Number
+MonWt12	Number
+MonLT01	Number
+MonLT02	Number
+MonLT03	Number
+MonLT04	Number
+MonLT05	Number
+MonLT06	Number
+MonLT07	Number
+MonLT08	Number
+MonLT09	Number
+MonLT10	Number
+MonLT11	Number
+MonLT12	Number
+MonQtySum	Number
+MonWtSum	Number
+MonLTSum	Number

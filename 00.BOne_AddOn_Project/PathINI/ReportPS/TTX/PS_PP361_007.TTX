@@ -1,0 +1,6 @@
+CpCode	String	50
+CpName	String	50
+LinTotal	Number
+JunGi	DateTime
+JiSi	DateTime
+WalRyo	DateTime

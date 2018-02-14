@@ -1,0 +1,12 @@
+DocEntry	Short
+ItemCode	String	20
+ItemName	String	60
+OrdNum	String	10
+ItmMsort	String	10
+CardCode	String	20
+CdarName	String	60
+SelQty	Number
+SelWt	Number
+
+
+

@@ -1,0 +1,111 @@
+
+**** ERROR file opened at , SAP-REL 710,0,0 RFC-VER 3 880476 MT-SL
+T:4404 Error in program 'vb6': ======>      단위 PL을(를) 언어 KO(으)로 생성하지 않았습니다                                 
+T:4404 Error in program 'vb6': <* RfcReceive [1] : returns 3:RFC_SYS_EXCEPTION
+T:4404 Error in program 'vb6': <* RfcCallReceive [1] : returns 3:RFC_SYS_EXCEPTION
+>TS> Thu Feb 10 10:27:17 2011
+T:4404 Error in program 'vb6': ======>      단위 PL을(를) 언어 KO(으)로 생성하지 않았습니다                                 
+T:4404 Error in program 'vb6': <* RfcReceive [2] : returns 3:RFC_SYS_EXCEPTION
+T:4404 Error in program 'vb6': <* RfcCallReceive [2] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:1508 Error in program 'vb6': ======>      단위 SET을(를) 언어 KO(으)로 생성하지 않았습니다                                
+T:1508 Error in program 'vb6': <* RfcReceive [1] : returns 3:RFC_SYS_EXCEPTION
+T:1508 Error in program 'vb6': <* RfcCallReceive [1] : returns 3:RFC_SYS_EXCEPTION
+>TS> Fri Jan 25 18:05:14 2013
+T:1508 Error in program 'vb6': ======>      단위 SET을(를) 언어 KO(으)로 생성하지 않았습니다                                
+T:1508 Error in program 'vb6': <* RfcReceive [2] : returns 3:RFC_SYS_EXCEPTION
+T:1508 Error in program 'vb6': <* RfcCallReceive [2] : returns 3:RFC_SYS_EXCEPTION
+>TS> Fri Jan 25 18:05:43 2013
+T:1508 Error in program 'vb6': ======>      단위 SET을(를) 언어 KO(으)로 생성하지 않았습니다                                
+T:1508 Error in program 'vb6': <* RfcReceive [3] : returns 3:RFC_SYS_EXCEPTION
+T:1508 Error in program 'vb6': <* RfcCallReceive [3] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:97688 Error in program 'vb6': ======> SAP_CMINIT3 : rc=20 > Connect to SAP gateway failed
+Connect_PM  GWHOST=192.1.1.7, GWSERV=sapgw00, SYSNR=00
+
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       partner '192.1.1.7:3300' not reached
+
+TIME        Mon Jan 27 14:48:04 2014
+RELEASE     710
+COMPONENT   NI (network interface)
+VERSION     39
+RC          -10
+MODULE      nixxi.cpp
+LINE        3058
+DETAIL      NiPConnect2: 192.1.1.7:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     1
+
+>TS> Mon Jan 27 15:47:26 2014
+T:97688 Error in program 'vb6': <* RfcReceive [9] : returns 3:RFC_SYS_EXCEPTION
+T:97688 Error in program 'vb6': <* RfcCallReceive [9] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:27064 Error in program 'vb6': <* RfcGetFunctionInfoAsTable [2] : returns 2:RFC_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:6096 Error in program 'vb6': ======> A table is unknown or does not exist.
+T:6096 Error in program 'vb6': <* RfcReceive [2] : returns 3:RFC_SYS_EXCEPTION
+T:6096 Error in program 'vb6': <* RfcCallReceive [2] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:5196 Error in program 'vb6': ======> 해당 시스템에서 710 클라이언트를 사용할 수 없습니다.
+T:5196 Error in program 'vb6': <* RfcReceive [7] : returns 3:RFC_SYS_EXCEPTION
+>TS> Wed Jun 24 15:21:02 2015
+T:5196 Error in program 'vb6': ======> 해당 시스템에서 710 클라이언트를 사용할 수 없습니다.
+T:5196 Error in program 'vb6': <* RfcReceive [8] : returns 3:RFC_SYS_EXCEPTION
+>TS> Wed Jun 24 15:22:12 2015
+T:5196 Error in program 'vb6': ======> 해당 시스템에서 710 클라이언트를 사용할 수 없습니다.
+T:5196 Error in program 'vb6': <* RfcReceive [9] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:7340 Error in program 'vb6': ======> SAP_CMINIT3 : rc=20 > Connect to SAP gateway failed
+Connect_PM  GWHOST=192.1.11.217, GWSERV=sapgw00, SYSNR=00
+
+LOCATION    CPIC (TCP/IP) on local host
+ERROR       partner '192.1.11.217:3300' not reached
+
+TIME        Thu Jul 02 09:16:00 2015
+RELEASE     710
+COMPONENT   NI (network interface)
+VERSION     39
+RC          -10
+MODULE      nixxi.cpp
+LINE        3058
+DETAIL      NiPConnect2: 192.1.11.217:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     1
+
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:24860 Error in program 'vb6': ======> Exception condition "CNTL_ERROR" raised.
+T:24860 Error in program 'vb6': <* RfcReceive [1] : returns 3:RFC_SYS_EXCEPTION
+T:24860 Error in program 'vb6': <* RfcCallReceive [1] : returns 3:RFC_SYS_EXCEPTION
+>TS> Mon Jul 20 15:25:51 2015
+T:24860 Error in program 'vb6': ======> Exception condition "CNTL_ERROR" raised.
+T:24860 Error in program 'vb6': <* RfcReceive [3] : returns 3:RFC_SYS_EXCEPTION
+T:24860 Error in program 'vb6': <* RfcCallReceive [3] : returns 3:RFC_SYS_EXCEPTION
+
+**** ERROR file opened at , SAP-REL 710,0,14 RFC-VER 3 908857 MT-SL
+T:14388 Error in program 'vb6': ======> Incorrect parameter with CALL FUNCTION.
+T:14388 Error in program 'vb6': <* RfcReceive [1] : returns 3:RFC_SYS_EXCEPTION
+T:14388 Error in program 'vb6': <* RfcCallReceive [1] : returns 3:RFC_SYS_EXCEPTION
+>TS> Tue Nov 24 09:18:03 2015
+T:14388 Error in program 'vb6': ======> Incorrect parameter with CALL FUNCTION.
+T:14388 Error in program 'vb6': <* RfcReceive [2] : returns 3:RFC_SYS_EXCEPTION
+T:14388 Error in program 'vb6': <* RfcCallReceive [2] : returns 3:RFC_SYS_EXCEPTION
+>TS> Tue Nov 24 09:35:26 2015
+T:14388 Error in program 'vb6': ======> Incorrect parameter with CALL FUNCTION.
+T:14388 Error in program 'vb6': <* RfcReceive [3] : returns 3:RFC_SYS_EXCEPTION
+T:14388 Error in program 'vb6': <* RfcCallReceive [3] : returns 3:RFC_SYS_EXCEPTION
+>TS> Tue Nov 24 09:43:07 2015
+T:14388 Error in program 'vb6': ======> Incorrect parameter with CALL FUNCTION.
+T:14388 Error in program 'vb6': <* RfcReceive [4] : returns 3:RFC_SYS_EXCEPTION
+T:14388 Error in program 'vb6': <* RfcCallReceive [4] : returns 3:RFC_SYS_EXCEPTION

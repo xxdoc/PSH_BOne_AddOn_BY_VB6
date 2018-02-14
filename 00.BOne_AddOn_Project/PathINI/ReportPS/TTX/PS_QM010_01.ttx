@@ -1,0 +1,64 @@
+CardCode	String	20
+CardName	String	100
+ItemCode	String	20
+ItemName	String	100
+U_TS_min	Number
+U_TS_max	Number
+U_Elong	Number
+U_Hard_min	Number
+U_Hard_max	Number
+U_C_Fe_min	Number
+U_C_Fe_max	Number
+U_C_P_min	Number
+U_C_P_max	Number
+U_Chem_Zn	Number
+U_Chem_Pb	Number
+U_Chem_Ni	Number
+U_A_Pl	Number
+U_A_Mi	Number
+U_A_Val	Number
+U_B_Pl	Number
+U_B_Mi	Number
+U_B_Val	Number
+U_B1_Pl	Number
+U_B1_Mi	Number
+U_B1_Val	Number
+U_C_Pl	Number
+U_C_Mi	Number
+U_C_Val	Number
+U_D_Pl	Number
+U_D_Mi	Number
+U_D_Val	Number
+U_EE1_Val	Number
+U_F_Pl	Number
+U_F_Mi	Number
+U_F_Val	Number
+U_F1_Pl	Number
+U_F1_Mi	Number
+U_F1_Val	Number
+U_G_Pl	Number
+U_G_Mi	Number
+U_G_Val	Number
+U_G1_Pl	Number
+U_G1_Mi	Number
+U_G1_Val	Number
+U_AG1_Pl	Number
+U_AG1_Mi	Number
+U_AG1_Val	Number
+U_HH1_Val	Number
+U_I_Pl	Number
+U_I_Mi	Number
+U_I_Val	Number
+U_I1_Pl	Number
+U_I1_Mi	Number
+U_I1_Val	Number
+U_JJ1_Val	Number
+U_EdgeBurr	Number
+U_Camber_C	Number
+U_Camber_M	Number
+U_Surface	Number
+U_CrossBow	Number
+U_CR_Val	Number
+U_CR_Pl	Number
+U_CR_Mi	Number
+Comments	String	200

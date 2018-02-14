@@ -1,0 +1,9 @@
+ItemCode	String	20
+ItemName	String	100
+CpCode	String	20
+CpName	String	100
+Sequence	String	20
+YQty	Number
+NQty	Number
+WorkTime	Number
+CntcName	String	30

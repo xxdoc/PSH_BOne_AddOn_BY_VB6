@@ -1,0 +1,4 @@
+WorkName	String	100
+NCode	String	20
+NCodeNm	String	100
+NTime	Number

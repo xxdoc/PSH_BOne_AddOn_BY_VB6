@@ -1,0 +1,20 @@
+CardCode	String	100
+CardName	String	150
+PurType		String	15
+DueDate		String	30
+PONum		String	20
+GADocLin	String	20
+ItemCode	String	50
+ItemName	String	150
+Size			String	150
+PRNum		String	20
+CntcName	String	15
+DocDate		String	30
+Gubun		String	30
+Unit			String	15
+POQty		Number
+POWeight	Number
+GRQty		Number
+GRWeight	Number
+POPrice		Number
+GRPrice		Number
