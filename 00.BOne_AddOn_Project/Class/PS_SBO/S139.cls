@@ -468,7 +468,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                 
                     If oMat01.VisualRowCount > 1 Then
                     
-                        If oForm01.Items("2001").Specific.VALUE = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
+                        If Trim(oForm01.Items("2001").Specific.VALUE) = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
                         
                             '동래공장이면서 문서상태가 취소,종료가 아닐경우에 작번을 변경하려고 할 때만 체크
                             '저장하려는 작번으로 등록된 작업지시가 있는지 체크_S(2012.04.09 송명규 수정)
@@ -792,7 +792,7 @@ On Error GoTo PS_S139_FormItemEnabled_Error
         oForm01.Items("DCardNam").Enabled = False
     ElseIf (oForm01.Mode = fm_OK_MODE) Then
         '//각모드에따른 아이템설정
-        If oForm01.Items("2001").Specific.VALUE = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
+        If Trim(oForm01.Items("2001").Specific.VALUE) = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
             '//동래공장인 경우 수정가능토록 취소, 종료가 아닐경우
             oForm01.Items("TradeType").Enabled = True
         Else
@@ -802,7 +802,7 @@ On Error GoTo PS_S139_FormItemEnabled_Error
     End If
     If Status = True Then
         If oForm01.Mode = fm_UPDATE_MODE Then
-            If oForm01.Items("2001").Specific.VALUE = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
+            If Trim(oForm01.Items("2001").Specific.VALUE) = "2" And oForm01.Items("81").Specific.VALUE <> "3" And oForm01.Items("81").Specific.VALUE <> "4" Then
                 oForm01.Items("TradeType").Enabled = True
             Else
                 oForm01.Items("TradeType").Enabled = False
@@ -855,7 +855,7 @@ On Error GoTo PS_S139_DataValidCheck_Error
         oForm01.Items("4").Click ct_Regular
         PS_S139_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE = "" Then
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm01.Items("2001").Click ct_Regular
         PS_S139_DataValidCheck = False
@@ -865,7 +865,7 @@ On Error GoTo PS_S139_DataValidCheck_Error
         oForm01.Items("TradeType").Click ct_Regular
         PS_S139_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
         Sbo_Application.SetStatusBarMessage "창원사업장이 아닌경우 임가공거래가 불가능합니다.", bmt_Short, True
         PS_S139_DataValidCheck = False
         Exit Function

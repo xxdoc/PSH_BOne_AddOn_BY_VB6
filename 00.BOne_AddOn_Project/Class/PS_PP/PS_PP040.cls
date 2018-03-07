@@ -2052,7 +2052,7 @@ On Error GoTo PS_PP040_AddMatrixRow01_Error
         oDS_PS_PP040L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP040L.offset = oRow
+    oDS_PS_PP040L.Offset = oRow
     oDS_PS_PP040L.setValue "U_LineNum", oRow, oRow + 1
     oDS_PS_PP040L.setValue "U_WorkCls", oRow, "A" '작업구분을 기본으로 선택(2014.04.15 송명규 추가)
     oMat01.LoadFromDataSource
@@ -2070,7 +2070,7 @@ On Error GoTo PS_PP040_AddMatrixRow02_Error
         oDS_PS_PP040M.InsertRecord (oRow)
     End If
     oMat02.AddRow
-    oDS_PS_PP040M.offset = oRow
+    oDS_PS_PP040M.Offset = oRow
     oDS_PS_PP040M.setValue "U_LineNum", oRow, oRow + 1
     oMat02.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -2087,7 +2087,7 @@ On Error GoTo PS_PP040_AddMatrixRow03_Error
         oDS_PS_PP040N.InsertRecord (oRow)
     End If
     oMat03.AddRow
-    oDS_PS_PP040N.offset = oRow
+    oDS_PS_PP040N.Offset = oRow
     oDS_PS_PP040N.setValue "U_LineNum", oRow, oRow + 1
     oMat03.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -2184,7 +2184,7 @@ On Error GoTo PS_PP040_DataValidCheck_Error
     End If
     
     '마감상태 체크_S(2017.11.23 송명규 추가)
-    If MDC_PS_Common.Check_Finish_Status(oForm01.Items("BPLId").Specific.VALUE, oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
+    If MDC_PS_Common.Check_Finish_Status(Trim(oForm01.Items("BPLId").Specific.VALUE), oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
         Call Sbo_Application.SetStatusBarMessage("마감상태가 잠금입니다. 해당 일자로 등록할 수 없습니다. 작업일보일자를 확인하고, 회계부서로 문의하세요.", bmt_Short, True)
         PS_PP040_DataValidCheck = False
         Exit Function
@@ -2373,7 +2373,7 @@ On Error GoTo PS_PP040_MTX01_Error
         If i <> 0 Then
             oDS_PS_PP040L.InsertRecord (i)
         End If
-        oDS_PS_PP040L.offset = i
+        oDS_PS_PP040L.Offset = i
         Call oDS_PS_PP040L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_PP040L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext

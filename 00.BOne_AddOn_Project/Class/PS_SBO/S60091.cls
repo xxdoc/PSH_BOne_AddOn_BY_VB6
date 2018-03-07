@@ -248,7 +248,7 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
             If (pval.ColUID = "1") Then '//품목코드 변경시
                 If pval.CharPressed = 9 Then
                     Dim TradeType As String
-                    TradeType = oForm01.Items("TradeType").Specific.Selected.Value
+                    TradeType = oForm01.Items("TradeType").Specific.Selected.VALUE
                     
                     Dim ChildForm01 As Variant
                     Set ChildForm01 = New PS_SM020
@@ -345,53 +345,53 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
         If pval.ItemChanged = True Then
             If (pval.ItemUID = "38") Then '//매트릭스
                 Dim ItemCode01 As String
-                ItemCode01 = oMat01.Columns("1").Cells(pval.Row).Specific.Value
+                ItemCode01 = oMat01.Columns("1").Cells(pval.Row).Specific.VALUE
                 If (pval.ColUID = "U_Qty") Then '//수량필드 값변경시
-                    If (Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) <= 0) Then
-                        oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value = 0 '//수량
-                        oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1 '//중량
+                    If (Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) <= 0) Then
+                        oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE = 0 '//수량
+                        oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1 '//중량
                     Else
                         If (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "101") Then '//EA자체품
-                            oMat01.Columns("11").Cells(pval.Row).Specific.Value = Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value)
+                            oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE)
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "102") Then '//EAUOM
-                            If Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_Unit1(ItemCode01)) = 0 Then
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1
+                            If Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_Unit1(ItemCode01)) = 0 Then
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1
                             Else
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_Unit1(ItemCode01))
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_Unit1(ItemCode01))
                             End If
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "201") Then '//KGSPEC
-                            If (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) = 0 Then
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1
+                            If (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) = 0 Then
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1
                             Else
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value)
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE)
                             End If
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "202") Then '//KG단중
-                            If Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0) = 0 Then
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1
+                            If Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0) = 0 Then
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1
                             Else
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0)
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0)
                             End If
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "203") Then '//KG입력
                         End If
                     End If
                 ElseIf (pval.ColUID = "11") Then
-                    If (Val(oMat01.Columns("11").Cells(pval.Row).Specific.Value) <= 0) Then
-                        oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value = 0 '//수량
-                        oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1 '//중량
+                    If (Val(oMat01.Columns("11").Cells(pval.Row).Specific.VALUE) <= 0) Then
+                        oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE = 0 '//수량
+                        oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1 '//중량
                     Else
                         If (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "101") Then '//EA자체품
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "102") Then '//EAUOM
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "201") Then '//KGSPEC
-                            If (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) = 0 Then
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1
+                            If (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) = 0 Then
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1
                             Else
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value)
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = (Val(MDC_PS_Common.GetItem_Spec1(ItemCode01)) - Val(MDC_PS_Common.GetItem_Spec2(ItemCode01))) * Val(MDC_PS_Common.GetItem_Spec2(ItemCode01)) * 0.02808 * (Val(MDC_PS_Common.GetItem_Spec3(ItemCode01)) / 1000) * Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE)
                             End If
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "202") Then '//KG단중
-                            If Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0) = 0 Then
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = 1
+                            If Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0) = 0 Then
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = 1
                             Else
-                                oMat01.Columns("11").Cells(pval.Row).Specific.Value = Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.Value) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0)
+                                oMat01.Columns("11").Cells(pval.Row).Specific.VALUE = Round(Val(oMat01.Columns("U_Qty").Cells(pval.Row).Specific.VALUE) * Val(MDC_PS_Common.GetItem_UnWeight(ItemCode01)) / 1000, 0)
                             End If
                         ElseIf (MDC_PS_Common.GetItem_SbasUnit(ItemCode01) = "203") Then '//KG입력
                         End If
@@ -404,7 +404,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                     End If
                 End If
             ElseIf pval.ItemUID = "DCardCod" Then
-                oForm01.Items("DCardNam").Specific.Value = MDC_PS_Common.GetValue("SELECT CardName FROM OCRD WHERE CardCode = '" & oForm01.Items("DCardCod").Specific.Value & "'", 0, 1)
+                oForm01.Items("DCardNam").Specific.VALUE = MDC_PS_Common.GetValue("SELECT CardName FROM OCRD WHERE CardCode = '" & oForm01.Items("DCardCod").Specific.VALUE & "'", 0, 1)
             End If
         End If
         Sbo_Application.Forms.GetForm("-" & oForm01.Type, oForm01.TypeCount).Update
@@ -450,7 +450,7 @@ On Error GoTo Raise_EVENT_CHOOSE_FROM_LIST_Error
     If pval.BeforeAction = True Then
         If pval.ItemUID = "38" Then
             If pval.ColUID = "1" Then
-                If MDC_PS_Common.GetValue("SELECT COUNT(*) FROM [OITM] WHERE ItemCode = '" & oMat01.Columns("1").Cells(pval.Row).Specific.Value & "'", 0, 1) > 0 Then
+                If MDC_PS_Common.GetValue("SELECT COUNT(*) FROM [OITM] WHERE ItemCode = '" & oMat01.Columns("1").Cells(pval.Row).Specific.VALUE & "'", 0, 1) > 0 Then
                 Else
                     BubbleEvent = False
                 End If
@@ -706,11 +706,11 @@ On Error GoTo PS_S60091_Print_Report01_Error
     Dim sQry                        As String
     
     Call ConnectODBC
-    DocNum = oForm01.Items("8").Specific.Value
-    WinTitle = "PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.Value & ""
-    ReportName = "PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.Value & ".rpt"
+    DocNum = oForm01.Items("8").Specific.VALUE
+    WinTitle = "PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.VALUE & ""
+    ReportName = "PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.VALUE & ".rpt"
     
-    sQry = "EXEC PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.Value & " '" & oForm01.Items("8").Specific.Value & "'"
+    sQry = "EXEC PS_S60091_" & oForm01.Items("Combo01").Specific.Selected.VALUE & " '" & oForm01.Items("8").Specific.VALUE & "'"
     ReDim gRpt_Formula(1)
     ReDim gRpt_Formula_Value(1)
     ReDim gRpt_SRptSqry(1)
@@ -731,22 +731,22 @@ Function PS_S60091_DataValidCheck() As Boolean
 On Error GoTo PS_S60091_DataValidCheck_Error
     PS_S60091_DataValidCheck = False
     Dim i As Long
-    If oForm01.Items("4").Specific.Value = "" Then
+    If oForm01.Items("4").Specific.VALUE = "" Then
         Sbo_Application.SetStatusBarMessage "고객은 필수입니다.", bmt_Short, True
         oForm01.Items("4").Click ct_Regular
         PS_S60091_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.Value = "" Then
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm01.Items("2001").Click ct_Regular
         PS_S60091_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("TradeType").Specific.Value = "" Then
+    ElseIf oForm01.Items("TradeType").Specific.VALUE = "" Then
         Sbo_Application.SetStatusBarMessage "거래형태는 필수입니다.", bmt_Short, True
         oForm01.Items("TradeType").Click ct_Regular
         PS_S60091_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.Value <> "1" And oForm01.Items("TradeType").Specific.Selected.Value = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
         Sbo_Application.SetStatusBarMessage "창원사업장이 아닌경우 임가공거래가 불가능합니다.", bmt_Short, True
         PS_S60091_DataValidCheck = False
         Exit Function
@@ -757,7 +757,7 @@ On Error GoTo PS_S60091_DataValidCheck_Error
         Exit Function
     End If
     For i = 1 To oMat01.VisualRowCount - 1
-        If (oMat01.Columns("1").Cells(i).Specific.Value = "") Then
+        If (oMat01.Columns("1").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "품목은 필수입니다.", bmt_Short, True
             oMat01.Columns("1").Cells(i).Click ct_Regular
             PS_S60091_DataValidCheck = False
@@ -769,42 +769,42 @@ On Error GoTo PS_S60091_DataValidCheck_Error
 '            PS_S60091_DataValidCheck = False
 '            Exit Function
 '        End If
-        If (Val(oMat01.Columns("11").Cells(i).Specific.Value) <= 0) Then
+        If (Val(oMat01.Columns("11").Cells(i).Specific.VALUE) <= 0) Then
             Sbo_Application.SetStatusBarMessage "수량(중량)은 필수입니다.", bmt_Short, True
             oMat01.Columns("11").Cells(i).Click ct_Regular
             PS_S60091_DataValidCheck = False
             Exit Function
         End If
-        If (oMat01.Columns("14").Cells(i).Specific.Value = "") Then
+        If (oMat01.Columns("14").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "단가는 필수입니다.", bmt_Short, True
             oMat01.Columns("14").Cells(i).Click ct_Regular
             PS_S60091_DataValidCheck = False
             Exit Function
         End If
-        If oForm01.Items("70").Specific.Selected.Value = "S" Or oForm01.Items("70").Specific.Selected.Value = "L" Then '//현지,시스템통화
-            If "KRW" <> Right(oMat01.Columns("14").Cells(i).Specific.Value, 3) Then
+        If oForm01.Items("70").Specific.Selected.VALUE = "S" Or oForm01.Items("70").Specific.Selected.VALUE = "L" Then '//현지,시스템통화
+            If "KRW" <> Right(oMat01.Columns("14").Cells(i).Specific.VALUE, 3) Then
                 Sbo_Application.SetStatusBarMessage "헤더와 라인의 통화가 다릅니다.", bmt_Short, True
                 PS_S60091_DataValidCheck = False
                 Exit Function
             End If
         End If
-        If oForm01.Items("70").Specific.Selected.Value = "C" Then '//BP통화
-            If oForm01.Items("63").Specific.Value <> Right(oMat01.Columns("14").Cells(i).Specific.Value, 3) Then '//DocCur 과 Price의 마지막3자리 비교
+        If oForm01.Items("70").Specific.Selected.VALUE = "C" Then '//BP통화
+            If oForm01.Items("63").Specific.VALUE <> Right(oMat01.Columns("14").Cells(i).Specific.VALUE, 3) Then '//DocCur 과 Price의 마지막3자리 비교
                 Sbo_Application.SetStatusBarMessage "헤더와 라인의 통화가 다릅니다.", bmt_Short, True
                 PS_S60091_DataValidCheck = False
                 Exit Function
             End If
         End If
-        If oForm01.Items("TradeType").Specific.Selected.Value = "1" Then '//일반일때는
-            If MDC_PS_Common.GetItem_TradeType(oMat01.Columns("1").Cells(i).Specific.Value) = "2" Then '//품목은 임가공
+        If oForm01.Items("TradeType").Specific.Selected.VALUE = "1" Then '//일반일때는
+            If MDC_PS_Common.GetItem_TradeType(oMat01.Columns("1").Cells(i).Specific.VALUE) = "2" Then '//품목은 임가공
                 Sbo_Application.SetStatusBarMessage "문서의 거래형태와 품목의 거래형태가 다릅니다.", bmt_Short, True
                 oMat01.Columns("1").Cells(i).Click ct_Regular
                 PS_S60091_DataValidCheck = False
                 Exit Function
             End If
         End If
-        If oForm01.Items("TradeType").Specific.Selected.Value = "2" Then '//임가공일때는
-            If MDC_PS_Common.GetItem_TradeType(oMat01.Columns("1").Cells(i).Specific.Value) = "1" Then '//품목은 일반
+        If oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//임가공일때는
+            If MDC_PS_Common.GetItem_TradeType(oMat01.Columns("1").Cells(i).Specific.VALUE) = "1" Then '//품목은 일반
                 Sbo_Application.SetStatusBarMessage "문서의 거래형태와 품목의 거래형태가 다릅니다.", bmt_Short, True
                 oMat01.Columns("1").Cells(i).Click ct_Regular
                 PS_S60091_DataValidCheck = False

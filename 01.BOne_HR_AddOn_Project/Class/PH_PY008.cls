@@ -2638,7 +2638,8 @@ Private Sub PH_PY008_SAVE()
                             
                             Else
                                 '//전문직, 계약직 이며 위해코드가 없으면 위해코드를 기타로..
-                                If (JIGTYP = "04" Or JIGTYP = "05") And DangerCD = "" Then
+                                ' JIGCOD 73 추가 20180201 황영수 사무계약직의 경우 추가 안되도록 수정 김택근과장 요청
+                                If (JIGTYP = "04" Or JIGTYP = "05") And DangerCD = "" And JIGCOD <> "73" Then
                                     If CLTCOD = "1" Then '창원사업장만 적용(2013.10.02 송명규 수정)
                                         DangerCD = "31"
                                     End If
@@ -2652,7 +2653,8 @@ Private Sub PH_PY008_SAVE()
                                 End If
                             Else
                                 '//근무시간이 없으면 위해코드를 기타로.
-                                If CLTCOD = "1" Then '창원사업장만 적용(2015.04.24 노근용 추가)
+                                 ' JIGCOD 73 추가 20180201 황영수 사무계약직의 경우 추가 안되도록 수정 김택근과장 요청
+                                If CLTCOD = "1" And JIGCOD <> "73" Then '창원사업장만 적용(2015.04.24 노근용 추가)
                                     If Trim(DangerCD) <> "" Then
                                         DangerCD = "31"
                                     End If

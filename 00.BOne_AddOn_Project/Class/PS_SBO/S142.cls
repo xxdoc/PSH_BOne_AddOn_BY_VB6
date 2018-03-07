@@ -671,7 +671,7 @@ On Error GoTo PS_S142_DataValidCheck_Error
         oForm01.Items("4").Click ct_Regular
         PS_S142_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE = "" Then
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm01.Items("2001").Click ct_Regular
         PS_S142_DataValidCheck = False
@@ -681,7 +681,7 @@ On Error GoTo PS_S142_DataValidCheck_Error
         oForm01.Items("TradeType").Click ct_Regular
         PS_S142_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
         Sbo_Application.SetStatusBarMessage "창원사업장이 아닌경우 임가공거래가 불가능합니다.", bmt_Short, True
         PS_S142_DataValidCheck = False
         Exit Function

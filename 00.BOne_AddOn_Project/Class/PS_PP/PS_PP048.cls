@@ -313,7 +313,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                If oForm01.Items("Div").Specific.VALUE = "10" Then
+                If Trim(oForm01.Items("Div").Specific.VALUE) = "10" Then
                     If PS_PP048_DI_API01 = False Then
                         Call PS_PP048_AddMatrixRow(oMat01.VisualRowCount)
                         BubbleEvent = False
@@ -322,7 +322,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                         
                     End If
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_PP048_DataValidCheck = False Then
                     BubbleEvent = False

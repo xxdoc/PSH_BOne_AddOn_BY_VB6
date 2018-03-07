@@ -664,7 +664,7 @@ On Error GoTo PH_PY650_Print_Report01_Error
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
-    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß‘...", 100, False)
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß?..", 100, False)
     
      '/ ODBC ¿¬°á Ã¼Å©
     If ConnectODBC = False Then

@@ -736,12 +736,12 @@ On Error GoTo PS_S180_DataValidCheck_Error
         oForm01.Items("4").Click ct_Regular
         PS_S180_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE = "" Then
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm01.Items("2001").Click ct_Regular
         PS_S180_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("TradeType").Specific.VALUE = "" Then
+    ElseIf Trim(oForm01.Items("TradeType").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "거래형태는 필수입니다.", bmt_Short, True
         oForm01.Items("TradeType").Click ct_Regular
         PS_S180_DataValidCheck = False

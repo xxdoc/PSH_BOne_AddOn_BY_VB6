@@ -59,7 +59,9 @@ Private C_BUYCNT    As String
 '2014년기준 1580 BYTE  re
 '2015년귀속 1610 BYTE
 '2016년귀속 1620 BYTE
+'2017년귀속 1620 BYTE
 
+'/ A 제출자 레코드
 Private Type A_record
         A001   As String * 1     '레코드구분
         A002   As String * 2     '자료구분
@@ -80,6 +82,7 @@ Private Type A_record
 End Type
 Dim A_rec As A_record
 
+'/ B 원천징수의무자별 집계 레코드
 Private Type B_record
         B001   As String * 1     '레코드구분
         B002   As String * 2     '자료구분
@@ -102,6 +105,7 @@ Private Type B_record
 End Type
 Dim B_rec As B_record
 
+'/ C 주(현)근무지 레코드
 Private Type C_record
         C001   As String * 1     '레코드구분
         C002   As String * 2     '자료구분
@@ -157,12 +161,12 @@ Private Type C_record
         C049   As String * 10    '비과세(O01:야간근로수당)
         C050   As String * 10    '비과세(Q01:출산보육수당)
         C051   As String * 10    '비과세(R10:근로장학금)
-        C052   As String * 10    '비과세(S01:주식매수선택권)
-        C053   As String * 10    '비과세(T01:외국인기술자)
-        C054   As String * 10    '비과세(Y02:우리사주조합인출금50%)
-        C055   As String * 10    '비과세(Y03:우리사주조합인출금75%)
-        C055A  As String * 10    '비과세(Y03:우리사주조합인출금100%)
-        C056   As String * 10    '비과세(Y21:장기미취업자중소기업취업)
+        C052   As String * 10    '비과세(R11:직무발명보상금)
+        C053   As String * 10    '비과세(S01:주식매수선택권)
+        C054   As String * 10    '비과세(T01:외국인기술자)
+        C055   As String * 10    '비과세(Y02:우리사주조합인출금50%)
+        C056   As String * 10    '비과세(Y03:우리사주조합인출금75%)
+        C056A  As String * 10    '비과세(Y03:우리사주조합인출금100%)
         C057   As String * 10    '비과세(Y22:전공의수련보조수당)
         C058   As String * 10    '비과세(T10:중소기업취업청년소득세감면100%)
         C058A  As String * 10    '비과세(T10:중소기업취업청년소득세감면50%)
@@ -223,7 +227,7 @@ Private Type C_record
         C105   As String * 10    '우리사주조합출연금
        'C106   As String * 11    '우리사주조합기부금(2014년이전기부금)'0'  2016삭제
         C107   As String * 10    '고용유지중소기업근로자소득공제
-        C108   As String * 10    '목돈안드는전세이자상환액공제
+       'C108   As String * 10    '목돈안드는전세이자상환액공제 2017삭제
         C109   As String * 10    '장기집합투자증권저축
         C110   As String * 11    '그밖의소득공제계
         C111   As String * 11    '소득공제종합한도초과액
@@ -297,10 +301,13 @@ Private Type C_record
         C169_2 As String * 10    '지방소득세
         C170_1 As String * 1     '농특세(기호 음수1, 양수0)
         C170_2 As String * 10    '농특세
-        C171   As String * 15    '공란
+        C171   As String * 1     '사업자단위과세자여부 '2'부
+        C172   As String * 4     '종사업장일련번호 '공란'
+        C173   As String * 20    '공란
 End Type
 Dim C_rec As C_record
 
+'/ D 종(전)근무지 레코드
 Private Type D_Record
         D001   As String * 1    '레코드구분
         D002   As String * 2    '자료구분
@@ -346,12 +353,12 @@ Private Type D_Record
         D042   As String * 10   '비과세(O01:야간근로수당)
         D043   As String * 10   '비과세(Q01:출산보육수당)
         D044   As String * 10   '비과세(R10:근로장학금)
-        D045   As String * 10   '비과세(S01:주식매수선택권)
-        D046   As String * 10   '비과세(T01:외국인기술자)
-        D047   As String * 10   '비과세(Y02:우리사주조합인출금50%)
-        D048   As String * 10   '비과세(Y03:우리사주조합인출금75%)
-        D048A  As String * 10   '비과세(Y03:우리사주조합인출금100%)
-        D049   As String * 10   '비과세(Y21:장기미취업자중소기업취업)
+        D045   As String * 10   '비과세(R11:직무발명보상금)
+        D046   As String * 10   '비과세(S01:주식매수선택권)
+        D047   As String * 10   '비과세(T01:외국인기술자)
+        D048   As String * 10   '비과세(Y02:우리사주조합인출금50%)
+        D049   As String * 10   '비과세(Y03:우리사주조합인출금75%)
+        D049A  As String * 10   '비과세(Y03:우리사주조합인출금100%)
         D050   As String * 10   '비과세(Y22:전공의수련보조수당)
         D051   As String * 10   '비과세(T10:중소기업취업청년소득세감면100%)
         D051A  As String * 10   '비과세(T10:중소기업취업청년소득세감면50%)
@@ -368,6 +375,7 @@ Private Type D_Record
 End Type
 Dim D_rec As D_Record
 
+'/ E 소득공제명세 레코드
 Private Type E_Record
         E001   As String * 1    '레코드구분
         E002   As String * 2    '자료구분
@@ -388,33 +396,35 @@ Private Type E_Record
         E015(1 To 5) As String * 1    '한부모공제
         E016(1 To 5) As String * 1    '출산.입양공제
         E017(1 To 5) As String * 1    '6세이하공제
-        E018(1 To 5) As String * 10   '국세청-보험료_건강,고용
-        E019(1 To 5) As String * 10   '국세청-보험료_보장성
-        E020(1 To 5) As String * 10   '국세청-보험료_장애인전용보장성
-        E021(1 To 5) As String * 10   '국세청-의료비
-        E022(1 To 5) As String * 10   '국세청-교육비
-        E023(1 To 5) As String * 10   '국세청-신용카드
-        E024(1 To 5) As String * 10   '국세청-직불카드
-        E025(1 To 5) As String * 10   '국세청-현금영수증
-        E026(1 To 5) As String * 10   '국세청-전통시장사용액
-        E027(1 To 5) As String * 10   '국세청-대중교통이용액
-        E028(1 To 5) As String * 13   '국세청-기부금
-        E029(1 To 5) As String * 10   '기타-보험료_건강,고용
-        E030(1 To 5) As String * 10   '기타-보험료_보장성
-        E031(1 To 5) As String * 10   '기타-보험료_장애인전용보장성
-        E032(1 To 5) As String * 10   '기타-의료비
-        E033(1 To 5) As String * 10   '기타-교육비
-        E034(1 To 5) As String * 10   '기타-신용카드
-        E035(1 To 5) As String * 10   '기타-직불카드
-        E036(1 To 5) As String * 10   '기타-전통시장사용액
-        E037(1 To 5) As String * 10   '기타-대중교통이용액
-        E038(1 To 5) As String * 13   '기부금
+        E018(1 To 5) As String * 1    '교육비공제 1,2,3,4,5
+        E019(1 To 5) As String * 10   '국세청-보험료_건강,고용
+        E020(1 To 5) As String * 10   '국세청-보험료_보장성
+        E021(1 To 5) As String * 10   '국세청-보험료_장애인전용보장성
+        E022(1 To 5) As String * 10   '국세청-의료비
+        E023(1 To 5) As String * 10   '국세청-교육비
+        E024(1 To 5) As String * 10   '국세청-신용카드
+        E025(1 To 5) As String * 10   '국세청-직불카드
+        E026(1 To 5) As String * 10   '국세청-현금영수증
+        E027(1 To 5) As String * 10   '국세청-전통시장사용액
+        E028(1 To 5) As String * 10   '국세청-대중교통이용액
+        E029(1 To 5) As String * 13   '국세청-기부금
+        E030(1 To 5) As String * 10   '기타-보험료_건강,고용
+        E031(1 To 5) As String * 10   '기타-보험료_보장성
+        E032(1 To 5) As String * 10   '기타-보험료_장애인전용보장성
+        E033(1 To 5) As String * 10   '기타-의료비
+        E034(1 To 5) As String * 10   '기타-교육비
+        E035(1 To 5) As String * 10   '기타-신용카드
+        E036(1 To 5) As String * 10   '기타-직불카드
+        E037(1 To 5) As String * 10   '기타-전통시장사용액
+        E038(1 To 5) As String * 10   '기타-대중교통이용액
+        E039(1 To 5) As String * 13   '기부금
         
-        E167   As String * 2          '부양가족레코드일련번호
-        E168   As String * 293        '공란
+        E172   As String * 2          '부양가족레코드일련번호
+        E173   As String * 288        '공란
 End Type
 Dim E_rec As E_Record
 
+'/ F 연금.저축 등 소득.세액 공제명세 레코드
 Private Type F_Record
         F001   As String * 1    '레코드구분
         F002   As String * 2    '자료구분
@@ -434,6 +444,7 @@ Private Type F_Record
 End Type
 Dim F_rec As F_Record
 
+'/ G 월세.거주자간 주택임차차임금 원리금 상환액 소득공제명세 레코드
 Private Type G_Record
         G001   As String * 1    '레코드구분
         G002   As String * 2    '자료구분
@@ -527,6 +538,56 @@ Private Type G_Record
         G086   As String * 284  '공란
 End Type
 Dim G_rec As G_Record
+
+'/ H 기부조정명세 레코드
+Private Type H_record
+        H001   As String * 1     '레코드구분
+        H002   As String * 2     '자료구분
+        H003   As String * 3     '세무서
+        H004   As String * 6     '일련번호
+        H005   As String * 10    '사업자번호
+        H006   As String * 13    '소득자주민등록번호
+        H007   As String * 1     '내,외국인코드
+        H008   As String * 30    '성명
+        H009   As String * 2     '유형코드
+        H010   As String * 4     '기부년도
+        H011   As String * 13    '기부금액
+        H012   As String * 13    '전년까지공제된금액
+        H013   As String * 13    '공제대상금액
+        H014   As String * 13    '해당년도공제금액 필요경비 '0'  2016
+        H015   As String * 13    '해당년도공제금액세액(소득)공제금액  2016
+        H016   As String * 13    '해당년도에공제받지못한금액_소멸금액
+        H017   As String * 13    '해당년도에공제받지못한금액_이월금액
+        H018   As String * 5     '기부조정명세일련번호
+        H019   As String * 1452  '공란
+End Type
+Dim H_rec As H_record
+
+'/ I 해당년도 기부명세 레코드
+Private Type I_Record
+        I001   As String * 1    '레코드구분
+        I002   As String * 2    '자료구분
+        I003   As String * 3    '세무서
+        I004   As String * 6    '일련번호
+        I005   As String * 10   '사업자등록번호
+        I006   As String * 13   '주민등록번호
+        I007   As String * 2    '유형코드
+        I008   As String * 13   '기부처-사업자등록번호
+        I009   As String * 30   '기부처-법인명(상호)
+        I010   As String * 1    '관계
+        I011   As String * 1    '내,외국인코드
+        I012   As String * 20   '성명
+        I013   As String * 13   '주민등록번호
+        I014   As String * 5    '건수
+        I015   As String * 13   '기부금합계금액
+        I016   As String * 13   '공제대상기부금액
+        I017   As String * 13   '기부장려금신청금액
+        I018   As String * 13   '기타
+        I019   As String * 5    '해당연도기부명세일련번호
+        I020   As String * 1443 '공란
+End Type
+Dim I_rec As I_Record
+
 
 '*******************************************************************
 ' .srf 파일로부터 폼을 로드한다.
@@ -1066,12 +1127,12 @@ On Error GoTo Error_Message
         C_rec.C053 = Format$(oRecordSet.Fields("C053").VALUE, String$(Len(C_rec.C053), "0"))
         C_rec.C054 = Format$(oRecordSet.Fields("C054").VALUE, String$(Len(C_rec.C054), "0"))
         C_rec.C055 = Format$(oRecordSet.Fields("C055").VALUE, String$(Len(C_rec.C055), "0"))
-        C_rec.C055A = Format$(oRecordSet.Fields("C055A").VALUE, String$(Len(C_rec.C055A), "0"))  '2016
         C_rec.C056 = Format$(oRecordSet.Fields("C056").VALUE, String$(Len(C_rec.C056), "0"))
+        C_rec.C056A = Format$(oRecordSet.Fields("C056A").VALUE, String$(Len(C_rec.C056A), "0"))
         C_rec.C057 = Format$(oRecordSet.Fields("C057").VALUE, String$(Len(C_rec.C057), "0"))
         C_rec.C058 = Format$(oRecordSet.Fields("C058").VALUE, String$(Len(C_rec.C058), "0"))
-        C_rec.C058A = Format$(oRecordSet.Fields("C058A").VALUE, String$(Len(C_rec.C058A), "0")) '2016
-        C_rec.C058B = Format$(oRecordSet.Fields("C058B").VALUE, String$(Len(C_rec.C058B), "0")) '2016
+        C_rec.C058A = Format$(oRecordSet.Fields("C058A").VALUE, String$(Len(C_rec.C058A), "0"))
+        C_rec.C058B = Format$(oRecordSet.Fields("C058B").VALUE, String$(Len(C_rec.C058B), "0"))
         C_rec.C059 = Format$(oRecordSet.Fields("C059").VALUE, String$(Len(C_rec.C059), "0"))
         C_rec.C060 = Format$(oRecordSet.Fields("C060").VALUE, String$(Len(C_rec.C060), "0"))
         C_rec.C061 = Format$(oRecordSet.Fields("C061").VALUE, String$(Len(C_rec.C061), "0"))
@@ -1121,7 +1182,7 @@ On Error GoTo Error_Message
         C_rec.C105 = Format$(oRecordSet.Fields("C105").VALUE, String$(Len(C_rec.C105), "0"))
         'C_rec.C106 = Format$(oRecordSet.Fields("C106").VALUE, String$(Len(C_rec.C106), "0")) 2016
         C_rec.C107 = Format$(oRecordSet.Fields("C107").VALUE, String$(Len(C_rec.C107), "0"))
-        C_rec.C108 = Format$(oRecordSet.Fields("C108").VALUE, String$(Len(C_rec.C108), "0"))
+        'C_rec.C108 = Format$(oRecordSet.Fields("C108").VALUE, String$(Len(C_rec.C108), "0")) 2017
         C_rec.C109 = Format$(oRecordSet.Fields("C109").VALUE, String$(Len(C_rec.C109), "0"))
         C_rec.C110 = Format$(oRecordSet.Fields("C110").VALUE, String$(Len(C_rec.C110), "0"))
         C_rec.C111 = Format$(oRecordSet.Fields("C111").VALUE, String$(Len(C_rec.C111), "0"))
@@ -1191,7 +1252,8 @@ On Error GoTo Error_Message
         C_rec.C170_1 = Format$(oRecordSet.Fields("C170_1").VALUE, String$(Len(C_rec.C170_1), "0"))
         C_rec.C170_2 = Format$(oRecordSet.Fields("C170_2").VALUE, String$(Len(C_rec.C170_2), "0"))
         C_rec.C171 = oRecordSet.Fields("C171").VALUE
-        
+        C_rec.C172 = oRecordSet.Fields("C172").VALUE
+        C_rec.C173 = oRecordSet.Fields("C173").VALUE
         
         '예제
         'C_rec.PERNBR = Replace(oRecordSet.Fields("U_PERNBR").VALUE, "-", "")
@@ -1205,24 +1267,24 @@ On Error GoTo Error_Message
         'C_rec.C022 = Format$(oRecordSet.Fields("C022").VALUE, , String$(Len(C_rec.C022), "0"))
         
       
-        Print #1, MDC_SetMod.sStr(C_rec.C001) & MDC_SetMod.sStr(C_rec.C002) & MDC_SetMod.sStr(C_rec.C003) & MDC_SetMod.sStr(C_rec.C004) & MDC_SetMod.sStr(C_rec.C005) & MDC_SetMod.sStr(C_rec.C006) & MDC_SetMod.sStr(C_rec.C007) & MDC_SetMod.sStr(C_rec.C008) & MDC_SetMod.sStr(C_rec.C009) & MDC_SetMod.sStr(C_rec.C009A) & MDC_SetMod.sStr(C_rec.C010) & _
-                  MDC_SetMod.sStr(C_rec.C011) & MDC_SetMod.sStr(C_rec.C012) & MDC_SetMod.sStr(C_rec.C013) & MDC_SetMod.sStr(C_rec.C014) & MDC_SetMod.sStr(C_rec.C015) & MDC_SetMod.sStr(C_rec.C016) & MDC_SetMod.sStr(C_rec.C017) & MDC_SetMod.sStr(C_rec.C018) & MDC_SetMod.sStr(C_rec.C019) & MDC_SetMod.sStr(C_rec.C020) & _
-                  MDC_SetMod.sStr(C_rec.C021) & MDC_SetMod.sStr(C_rec.C022) & MDC_SetMod.sStr(C_rec.C023) & MDC_SetMod.sStr(C_rec.C024) & MDC_SetMod.sStr(C_rec.C025) & MDC_SetMod.sStr(C_rec.C026) & MDC_SetMod.sStr(C_rec.C027) & MDC_SetMod.sStr(C_rec.C028) & MDC_SetMod.sStr(C_rec.C029) & MDC_SetMod.sStr(C_rec.C030) & _
-                  MDC_SetMod.sStr(C_rec.C031) & MDC_SetMod.sStr(C_rec.C032) & MDC_SetMod.sStr(C_rec.C033) & MDC_SetMod.sStr(C_rec.C034) & MDC_SetMod.sStr(C_rec.C035) & MDC_SetMod.sStr(C_rec.C036) & MDC_SetMod.sStr(C_rec.C037) & MDC_SetMod.sStr(C_rec.C038) & MDC_SetMod.sStr(C_rec.C039) & MDC_SetMod.sStr(C_rec.C040) & _
-                  MDC_SetMod.sStr(C_rec.C041) & MDC_SetMod.sStr(C_rec.C042) & MDC_SetMod.sStr(C_rec.C043) & MDC_SetMod.sStr(C_rec.C044) & MDC_SetMod.sStr(C_rec.C045) & MDC_SetMod.sStr(C_rec.C046) & MDC_SetMod.sStr(C_rec.C047) & MDC_SetMod.sStr(C_rec.C048) & MDC_SetMod.sStr(C_rec.C049) & MDC_SetMod.sStr(C_rec.C050) & _
-                  MDC_SetMod.sStr(C_rec.C051) & MDC_SetMod.sStr(C_rec.C052) & MDC_SetMod.sStr(C_rec.C053) & MDC_SetMod.sStr(C_rec.C054) & MDC_SetMod.sStr(C_rec.C055) & MDC_SetMod.sStr(C_rec.C055A) & MDC_SetMod.sStr(C_rec.C056) & MDC_SetMod.sStr(C_rec.C057) & MDC_SetMod.sStr(C_rec.C058) & MDC_SetMod.sStr(C_rec.C058A) & MDC_SetMod.sStr(C_rec.C058B) & MDC_SetMod.sStr(C_rec.C059) & MDC_SetMod.sStr(C_rec.C060) & _
-                  MDC_SetMod.sStr(C_rec.C061) & MDC_SetMod.sStr(C_rec.C063) & MDC_SetMod.sStr(C_rec.C064) & MDC_SetMod.sStr(C_rec.C065) & MDC_SetMod.sStr(C_rec.C066) & MDC_SetMod.sStr(C_rec.C067) & MDC_SetMod.sStr(C_rec.C068) & MDC_SetMod.sStr(C_rec.C069) & MDC_SetMod.sStr(C_rec.C070) & _
-                  MDC_SetMod.sStr(C_rec.C071) & MDC_SetMod.sStr(C_rec.C072) & MDC_SetMod.sStr(C_rec.C073) & MDC_SetMod.sStr(C_rec.C074) & MDC_SetMod.sStr(C_rec.C075) & MDC_SetMod.sStr(C_rec.C076) & MDC_SetMod.sStr(C_rec.C077) & MDC_SetMod.sStr(C_rec.C078) & MDC_SetMod.sStr(C_rec.C079) & MDC_SetMod.sStr(C_rec.C080) & _
-                  MDC_SetMod.sStr(C_rec.C081) & MDC_SetMod.sStr(C_rec.C082) & MDC_SetMod.sStr(C_rec.C083) & MDC_SetMod.sStr(C_rec.C084) & MDC_SetMod.sStr(C_rec.C085) & MDC_SetMod.sStr(C_rec.C086) & MDC_SetMod.sStr(C_rec.C087) & MDC_SetMod.sStr(C_rec.C088) & MDC_SetMod.sStr(C_rec.C089) & MDC_SetMod.sStr(C_rec.C090) & _
-                  MDC_SetMod.sStr(C_rec.C091) & MDC_SetMod.sStr(C_rec.C092) & MDC_SetMod.sStr(C_rec.C093) & MDC_SetMod.sStr(C_rec.C094) & MDC_SetMod.sStr(C_rec.C096) & MDC_SetMod.sStr(C_rec.C097) & MDC_SetMod.sStr(C_rec.C098) & MDC_SetMod.sStr(C_rec.C099) & MDC_SetMod.sStr(C_rec.C100) & _
-                  MDC_SetMod.sStr(C_rec.C101) & MDC_SetMod.sStr(C_rec.C102) & MDC_SetMod.sStr(C_rec.C103) & MDC_SetMod.sStr(C_rec.C104) & MDC_SetMod.sStr(C_rec.C105) & MDC_SetMod.sStr(C_rec.C107) & MDC_SetMod.sStr(C_rec.C108) & MDC_SetMod.sStr(C_rec.C109) & MDC_SetMod.sStr(C_rec.C110) & _
-                  MDC_SetMod.sStr(C_rec.C111) & MDC_SetMod.sStr(C_rec.C112) & MDC_SetMod.sStr(C_rec.C113) & MDC_SetMod.sStr(C_rec.C114) & MDC_SetMod.sStr(C_rec.C115) & MDC_SetMod.sStr(C_rec.C116) & MDC_SetMod.sStr(C_rec.C117) & MDC_SetMod.sStr(C_rec.C119) & MDC_SetMod.sStr(C_rec.C120) & _
-                  MDC_SetMod.sStr(C_rec.C121) & MDC_SetMod.sStr(C_rec.C122) & MDC_SetMod.sStr(C_rec.C123) & MDC_SetMod.sStr(C_rec.C124) & MDC_SetMod.sStr(C_rec.C125) & MDC_SetMod.sStr(C_rec.C126) & MDC_SetMod.sStr(C_rec.C127) & MDC_SetMod.sStr(C_rec.C128) & MDC_SetMod.sStr(C_rec.C129) & MDC_SetMod.sStr(C_rec.C130) & _
-                  MDC_SetMod.sStr(C_rec.C131) & MDC_SetMod.sStr(C_rec.C132) & MDC_SetMod.sStr(C_rec.C133) & MDC_SetMod.sStr(C_rec.C134) & MDC_SetMod.sStr(C_rec.C135) & MDC_SetMod.sStr(C_rec.C136) & MDC_SetMod.sStr(C_rec.C137) & MDC_SetMod.sStr(C_rec.C138) & MDC_SetMod.sStr(C_rec.C139) & MDC_SetMod.sStr(C_rec.C140) & _
-                  MDC_SetMod.sStr(C_rec.C141) & MDC_SetMod.sStr(C_rec.C142) & MDC_SetMod.sStr(C_rec.C143) & MDC_SetMod.sStr(C_rec.C144) & MDC_SetMod.sStr(C_rec.C145) & MDC_SetMod.sStr(C_rec.C146) & MDC_SetMod.sStr(C_rec.C147) & MDC_SetMod.sStr(C_rec.C148) & MDC_SetMod.sStr(C_rec.C149) & MDC_SetMod.sStr(C_rec.C150) & MDC_SetMod.sStr(C_rec.C150A) & MDC_SetMod.sStr(C_rec.C150B) & _
-                  MDC_SetMod.sStr(C_rec.C151) & MDC_SetMod.sStr(C_rec.C152) & MDC_SetMod.sStr(C_rec.C153) & MDC_SetMod.sStr(C_rec.C154) & MDC_SetMod.sStr(C_rec.C155) & MDC_SetMod.sStr(C_rec.C156) & MDC_SetMod.sStr(C_rec.C157) & MDC_SetMod.sStr(C_rec.C158) & MDC_SetMod.sStr(C_rec.C159) & MDC_SetMod.sStr(C_rec.C160) & _
-                  MDC_SetMod.sStr(C_rec.C161) & MDC_SetMod.sStr(C_rec.C162) & MDC_SetMod.sStr(C_rec.C163) & MDC_SetMod.sStr(C_rec.C164) & MDC_SetMod.sStr(C_rec.C165) & MDC_SetMod.sStr(C_rec.C166) & MDC_SetMod.sStr(C_rec.C167) & _
-                  MDC_SetMod.sStr(C_rec.C168_1) & MDC_SetMod.sStr(C_rec.C168_2) & MDC_SetMod.sStr(C_rec.C169_1) & MDC_SetMod.sStr(C_rec.C169_2) & MDC_SetMod.sStr(C_rec.C170_1) & MDC_SetMod.sStr(C_rec.C170_2) & MDC_SetMod.sStr(C_rec.C171)
+        Print #1, MDC_SetMod.sStr(C_rec.C001) & MDC_SetMod.sStr(C_rec.C002) & MDC_SetMod.sStr(C_rec.C003) & MDC_SetMod.sStr(C_rec.C004) & MDC_SetMod.sStr(C_rec.C005) & MDC_SetMod.sStr(C_rec.C006) & MDC_SetMod.sStr(C_rec.C007) & MDC_SetMod.sStr(C_rec.C008) & MDC_SetMod.sStr(C_rec.C009) & MDC_SetMod.sStr(C_rec.C009A) & _
+                  MDC_SetMod.sStr(C_rec.C010) & MDC_SetMod.sStr(C_rec.C011) & MDC_SetMod.sStr(C_rec.C012) & MDC_SetMod.sStr(C_rec.C013) & MDC_SetMod.sStr(C_rec.C014) & MDC_SetMod.sStr(C_rec.C015) & MDC_SetMod.sStr(C_rec.C016) & MDC_SetMod.sStr(C_rec.C017) & MDC_SetMod.sStr(C_rec.C018) & MDC_SetMod.sStr(C_rec.C019) & _
+                  MDC_SetMod.sStr(C_rec.C020) & MDC_SetMod.sStr(C_rec.C021) & MDC_SetMod.sStr(C_rec.C022) & MDC_SetMod.sStr(C_rec.C023) & MDC_SetMod.sStr(C_rec.C024) & MDC_SetMod.sStr(C_rec.C025) & MDC_SetMod.sStr(C_rec.C026) & MDC_SetMod.sStr(C_rec.C027) & MDC_SetMod.sStr(C_rec.C028) & MDC_SetMod.sStr(C_rec.C029) & _
+                  MDC_SetMod.sStr(C_rec.C030) & MDC_SetMod.sStr(C_rec.C031) & MDC_SetMod.sStr(C_rec.C032) & MDC_SetMod.sStr(C_rec.C033) & MDC_SetMod.sStr(C_rec.C034) & MDC_SetMod.sStr(C_rec.C035) & MDC_SetMod.sStr(C_rec.C036) & MDC_SetMod.sStr(C_rec.C037) & MDC_SetMod.sStr(C_rec.C038) & MDC_SetMod.sStr(C_rec.C039) & _
+                  MDC_SetMod.sStr(C_rec.C040) & MDC_SetMod.sStr(C_rec.C041) & MDC_SetMod.sStr(C_rec.C042) & MDC_SetMod.sStr(C_rec.C043) & MDC_SetMod.sStr(C_rec.C044) & MDC_SetMod.sStr(C_rec.C045) & MDC_SetMod.sStr(C_rec.C046) & MDC_SetMod.sStr(C_rec.C047) & MDC_SetMod.sStr(C_rec.C048) & MDC_SetMod.sStr(C_rec.C049) & _
+                  MDC_SetMod.sStr(C_rec.C050) & MDC_SetMod.sStr(C_rec.C051) & MDC_SetMod.sStr(C_rec.C052) & MDC_SetMod.sStr(C_rec.C053) & MDC_SetMod.sStr(C_rec.C054) & MDC_SetMod.sStr(C_rec.C055) & MDC_SetMod.sStr(C_rec.C056) & MDC_SetMod.sStr(C_rec.C056A) & MDC_SetMod.sStr(C_rec.C057) & MDC_SetMod.sStr(C_rec.C058) & _
+                  MDC_SetMod.sStr(C_rec.C058A) & MDC_SetMod.sStr(C_rec.C058B) & MDC_SetMod.sStr(C_rec.C059) & MDC_SetMod.sStr(C_rec.C060) & MDC_SetMod.sStr(C_rec.C061) & MDC_SetMod.sStr(C_rec.C063) & MDC_SetMod.sStr(C_rec.C064) & MDC_SetMod.sStr(C_rec.C065) & MDC_SetMod.sStr(C_rec.C066) & MDC_SetMod.sStr(C_rec.C067) & _
+                  MDC_SetMod.sStr(C_rec.C068) & MDC_SetMod.sStr(C_rec.C069) & MDC_SetMod.sStr(C_rec.C070) & MDC_SetMod.sStr(C_rec.C071) & MDC_SetMod.sStr(C_rec.C072) & MDC_SetMod.sStr(C_rec.C073) & MDC_SetMod.sStr(C_rec.C074) & MDC_SetMod.sStr(C_rec.C075) & MDC_SetMod.sStr(C_rec.C076) & MDC_SetMod.sStr(C_rec.C077) & _
+                  MDC_SetMod.sStr(C_rec.C078) & MDC_SetMod.sStr(C_rec.C079) & MDC_SetMod.sStr(C_rec.C080) & MDC_SetMod.sStr(C_rec.C081) & MDC_SetMod.sStr(C_rec.C082) & MDC_SetMod.sStr(C_rec.C083) & MDC_SetMod.sStr(C_rec.C084) & MDC_SetMod.sStr(C_rec.C085) & MDC_SetMod.sStr(C_rec.C086) & MDC_SetMod.sStr(C_rec.C087) & _
+                  MDC_SetMod.sStr(C_rec.C088) & MDC_SetMod.sStr(C_rec.C089) & MDC_SetMod.sStr(C_rec.C090) & MDC_SetMod.sStr(C_rec.C091) & MDC_SetMod.sStr(C_rec.C092) & MDC_SetMod.sStr(C_rec.C093) & MDC_SetMod.sStr(C_rec.C094) & MDC_SetMod.sStr(C_rec.C096) & MDC_SetMod.sStr(C_rec.C097) & MDC_SetMod.sStr(C_rec.C098) & _
+                  MDC_SetMod.sStr(C_rec.C099) & MDC_SetMod.sStr(C_rec.C100) & MDC_SetMod.sStr(C_rec.C101) & MDC_SetMod.sStr(C_rec.C102) & MDC_SetMod.sStr(C_rec.C103) & MDC_SetMod.sStr(C_rec.C104) & MDC_SetMod.sStr(C_rec.C105) & MDC_SetMod.sStr(C_rec.C107) & MDC_SetMod.sStr(C_rec.C109) & MDC_SetMod.sStr(C_rec.C110) & _
+                  MDC_SetMod.sStr(C_rec.C111) & MDC_SetMod.sStr(C_rec.C112) & MDC_SetMod.sStr(C_rec.C113) & MDC_SetMod.sStr(C_rec.C114) & MDC_SetMod.sStr(C_rec.C115) & MDC_SetMod.sStr(C_rec.C116) & MDC_SetMod.sStr(C_rec.C117) & MDC_SetMod.sStr(C_rec.C119) & MDC_SetMod.sStr(C_rec.C120) & MDC_SetMod.sStr(C_rec.C121) & _
+                  MDC_SetMod.sStr(C_rec.C122) & MDC_SetMod.sStr(C_rec.C123) & MDC_SetMod.sStr(C_rec.C124) & MDC_SetMod.sStr(C_rec.C125) & MDC_SetMod.sStr(C_rec.C126) & MDC_SetMod.sStr(C_rec.C127) & MDC_SetMod.sStr(C_rec.C128) & MDC_SetMod.sStr(C_rec.C129) & MDC_SetMod.sStr(C_rec.C130) & MDC_SetMod.sStr(C_rec.C131) & _
+                  MDC_SetMod.sStr(C_rec.C132) & MDC_SetMod.sStr(C_rec.C133) & MDC_SetMod.sStr(C_rec.C134) & MDC_SetMod.sStr(C_rec.C135) & MDC_SetMod.sStr(C_rec.C136) & MDC_SetMod.sStr(C_rec.C137) & MDC_SetMod.sStr(C_rec.C138) & MDC_SetMod.sStr(C_rec.C139) & MDC_SetMod.sStr(C_rec.C140) & MDC_SetMod.sStr(C_rec.C141) & _
+                  MDC_SetMod.sStr(C_rec.C142) & MDC_SetMod.sStr(C_rec.C143) & MDC_SetMod.sStr(C_rec.C144) & MDC_SetMod.sStr(C_rec.C145) & MDC_SetMod.sStr(C_rec.C146) & MDC_SetMod.sStr(C_rec.C147) & MDC_SetMod.sStr(C_rec.C148) & MDC_SetMod.sStr(C_rec.C149) & MDC_SetMod.sStr(C_rec.C150) & MDC_SetMod.sStr(C_rec.C150A) & _
+                  MDC_SetMod.sStr(C_rec.C150B) & MDC_SetMod.sStr(C_rec.C151) & MDC_SetMod.sStr(C_rec.C152) & MDC_SetMod.sStr(C_rec.C153) & MDC_SetMod.sStr(C_rec.C154) & MDC_SetMod.sStr(C_rec.C155) & MDC_SetMod.sStr(C_rec.C156) & MDC_SetMod.sStr(C_rec.C157) & MDC_SetMod.sStr(C_rec.C158) & MDC_SetMod.sStr(C_rec.C159) & _
+                  MDC_SetMod.sStr(C_rec.C160) & MDC_SetMod.sStr(C_rec.C161) & MDC_SetMod.sStr(C_rec.C162) & MDC_SetMod.sStr(C_rec.C163) & MDC_SetMod.sStr(C_rec.C164) & MDC_SetMod.sStr(C_rec.C165) & MDC_SetMod.sStr(C_rec.C166) & MDC_SetMod.sStr(C_rec.C167) & MDC_SetMod.sStr(C_rec.C168_1) & MDC_SetMod.sStr(C_rec.C168_2) & _
+                  MDC_SetMod.sStr(C_rec.C169_1) & MDC_SetMod.sStr(C_rec.C169_2) & MDC_SetMod.sStr(C_rec.C170_1) & MDC_SetMod.sStr(C_rec.C170_2) & MDC_SetMod.sStr(C_rec.C171) & MDC_SetMod.sStr(C_rec.C172) & MDC_SetMod.sStr(C_rec.C173)
                    
         
         '/ D레코드: 종전근무처 레코드
@@ -1248,6 +1310,18 @@ On Error GoTo Error_Message
         '/ G레코드
         If File_Create_G_record = False Then
            ErrNum = 5
+           GoTo Error_Message
+        End If
+        
+        '/ H레코드
+        If File_Create_H_record = False Then
+           ErrNum = 6
+           GoTo Error_Message
+        End If
+        
+        '/ I레코드
+        If File_Create_I_record = False Then
+           ErrNum = 7
            GoTo Error_Message
         End If
         
@@ -1283,6 +1357,10 @@ Error_Message:
         Sbo_Application.StatusBar.SetText "F레코드(연금.저축 레코드) 생성 실패.", bmt_Short, smt_Error
     ElseIf ErrNum = 5 Then
         Sbo_Application.StatusBar.SetText "G레코드(월세액.주택자료 레코드) 생성 실패.", bmt_Short, smt_Error
+    ElseIf ErrNum = 6 Then
+        Sbo_Application.StatusBar.SetText "H레코드(기부금조정명세 레코드) 생성 실패.", bmt_Short, smt_Error
+    ElseIf ErrNum = 7 Then
+        Sbo_Application.StatusBar.SetText "I레코드(해당연도 기부금명세 레코드) 생성 실패.", bmt_Short, smt_Error
     Else
         Call Matrix_AddRow("C레코드오류: " & Err.Description, False)
     End If
@@ -1310,6 +1388,7 @@ On Error GoTo Error_Message
         ErrNum = 1
         GoTo Error_Message
     End If
+    
     Do Until oRecordSet.EOF
     
         'D RECORD MOVE
@@ -1362,8 +1441,8 @@ On Error GoTo Error_Message
         D_rec.D046 = Format$(oRecordSet.Fields("D046").VALUE, String$(Len(D_rec.D046), "0"))
         D_rec.D047 = Format$(oRecordSet.Fields("D047").VALUE, String$(Len(D_rec.D047), "0"))
         D_rec.D048 = Format$(oRecordSet.Fields("D048").VALUE, String$(Len(D_rec.D048), "0"))
-        D_rec.D048A = Format$(oRecordSet.Fields("D048A").VALUE, String$(Len(D_rec.D048A), "0"))  '2016
         D_rec.D049 = Format$(oRecordSet.Fields("D049").VALUE, String$(Len(D_rec.D049), "0"))
+        D_rec.D049A = Format$(oRecordSet.Fields("D049A").VALUE, String$(Len(D_rec.D049A), "0"))
         D_rec.D050 = Format$(oRecordSet.Fields("D050").VALUE, String$(Len(D_rec.D050), "0"))
         D_rec.D051 = Format$(oRecordSet.Fields("D051").VALUE, String$(Len(D_rec.D051), "0"))
         D_rec.D051A = Format$(oRecordSet.Fields("D051A").VALUE, String$(Len(D_rec.D051A), "0"))  '2016
@@ -1382,8 +1461,9 @@ On Error GoTo Error_Message
                   MDC_SetMod.sStr(D_rec.D011) & MDC_SetMod.sStr(D_rec.D012) & MDC_SetMod.sStr(D_rec.D013) & MDC_SetMod.sStr(D_rec.D014) & MDC_SetMod.sStr(D_rec.D015) & MDC_SetMod.sStr(D_rec.D016) & MDC_SetMod.sStr(D_rec.D017) & MDC_SetMod.sStr(D_rec.D018) & MDC_SetMod.sStr(D_rec.D019) & MDC_SetMod.sStr(D_rec.D020) & _
                   MDC_SetMod.sStr(D_rec.D021) & MDC_SetMod.sStr(D_rec.D022) & MDC_SetMod.sStr(D_rec.D023) & MDC_SetMod.sStr(D_rec.D024) & MDC_SetMod.sStr(D_rec.D025) & MDC_SetMod.sStr(D_rec.D026) & MDC_SetMod.sStr(D_rec.D027) & MDC_SetMod.sStr(D_rec.D028) & MDC_SetMod.sStr(D_rec.D029) & MDC_SetMod.sStr(D_rec.D030) & _
                   MDC_SetMod.sStr(D_rec.D031) & MDC_SetMod.sStr(D_rec.D032) & MDC_SetMod.sStr(D_rec.D033) & MDC_SetMod.sStr(D_rec.D034) & MDC_SetMod.sStr(D_rec.D035) & MDC_SetMod.sStr(D_rec.D036) & MDC_SetMod.sStr(D_rec.D037) & MDC_SetMod.sStr(D_rec.D038) & MDC_SetMod.sStr(D_rec.D039) & MDC_SetMod.sStr(D_rec.D040) & _
-                  MDC_SetMod.sStr(D_rec.D041) & MDC_SetMod.sStr(D_rec.D042) & MDC_SetMod.sStr(D_rec.D043) & MDC_SetMod.sStr(D_rec.D044) & MDC_SetMod.sStr(D_rec.D045) & MDC_SetMod.sStr(D_rec.D046) & MDC_SetMod.sStr(D_rec.D047) & MDC_SetMod.sStr(D_rec.D048) & MDC_SetMod.sStr(D_rec.D048A) & MDC_SetMod.sStr(D_rec.D049) & MDC_SetMod.sStr(D_rec.D050) & _
-                  MDC_SetMod.sStr(D_rec.D051) & MDC_SetMod.sStr(D_rec.D051A) & MDC_SetMod.sStr(D_rec.D051B) & MDC_SetMod.sStr(D_rec.D052) & MDC_SetMod.sStr(D_rec.D053) & MDC_SetMod.sStr(D_rec.D054) & MDC_SetMod.sStr(D_rec.D055) & MDC_SetMod.sStr(D_rec.D056) & MDC_SetMod.sStr(D_rec.D057) & MDC_SetMod.sStr(D_rec.D058) & MDC_SetMod.sStr(D_rec.D059) & MDC_SetMod.sStr(D_rec.D060)
+                  MDC_SetMod.sStr(D_rec.D041) & MDC_SetMod.sStr(D_rec.D042) & MDC_SetMod.sStr(D_rec.D043) & MDC_SetMod.sStr(D_rec.D044) & MDC_SetMod.sStr(D_rec.D045) & MDC_SetMod.sStr(D_rec.D046) & MDC_SetMod.sStr(D_rec.D047) & MDC_SetMod.sStr(D_rec.D048) & MDC_SetMod.sStr(D_rec.D049) & MDC_SetMod.sStr(D_rec.D049A) & _
+                  MDC_SetMod.sStr(D_rec.D050) & MDC_SetMod.sStr(D_rec.D051) & MDC_SetMod.sStr(D_rec.D051A) & MDC_SetMod.sStr(D_rec.D051B) & MDC_SetMod.sStr(D_rec.D052) & MDC_SetMod.sStr(D_rec.D053) & MDC_SetMod.sStr(D_rec.D054) & MDC_SetMod.sStr(D_rec.D055) & MDC_SetMod.sStr(D_rec.D056) & MDC_SetMod.sStr(D_rec.D057) & _
+                  MDC_SetMod.sStr(D_rec.D058) & MDC_SetMod.sStr(D_rec.D059) & MDC_SetMod.sStr(D_rec.D060)
 
         oRecordSet.MoveNext
     Loop
@@ -1465,8 +1545,8 @@ On Error GoTo Error_Message
                     E_rec.E015(i) = Space$(Len(E_rec.E015(i)))
                     E_rec.E016(i) = Space$(Len(E_rec.E016(i)))
                     E_rec.E017(i) = Space$(Len(E_rec.E017(i)))
+                    E_rec.E018(i) = Space$(Len(E_rec.E018(i)))
                     
-                    E_rec.E018(i) = Format$(0, String$(Len(E_rec.E018(i)), "0"))
                     E_rec.E019(i) = Format$(0, String$(Len(E_rec.E019(i)), "0"))
                     E_rec.E020(i) = Format$(0, String$(Len(E_rec.E020(i)), "0"))
                     E_rec.E021(i) = Format$(0, String$(Len(E_rec.E021(i)), "0"))
@@ -1487,6 +1567,7 @@ On Error GoTo Error_Message
                     E_rec.E036(i) = Format$(0, String$(Len(E_rec.E036(i)), "0"))
                     E_rec.E037(i) = Format$(0, String$(Len(E_rec.E037(i)), "0"))
                     E_rec.E038(i) = Format$(0, String$(Len(E_rec.E038(i)), "0"))
+                    E_rec.E039(i) = Format$(0, String$(Len(E_rec.E039(i)), "0"))
                 Next i
             End If
             
@@ -1501,7 +1582,7 @@ On Error GoTo Error_Message
             E_rec.E015(BUYCNT) = oRecordSet.Fields("E015").VALUE
             E_rec.E016(BUYCNT) = oRecordSet.Fields("E016").VALUE
             E_rec.E017(BUYCNT) = oRecordSet.Fields("E017").VALUE
-            E_rec.E018(BUYCNT) = Format$(oRecordSet.Fields("E018").VALUE, String$(Len(E_rec.E018(BUYCNT)), "0"))
+            E_rec.E018(BUYCNT) = oRecordSet.Fields("E018").VALUE
             E_rec.E019(BUYCNT) = Format$(oRecordSet.Fields("E019").VALUE, String$(Len(E_rec.E019(BUYCNT)), "0"))
             E_rec.E020(BUYCNT) = Format$(oRecordSet.Fields("E020").VALUE, String$(Len(E_rec.E020(BUYCNT)), "0"))
             E_rec.E021(BUYCNT) = Format$(oRecordSet.Fields("E021").VALUE, String$(Len(E_rec.E021(BUYCNT)), "0"))
@@ -1522,32 +1603,34 @@ On Error GoTo Error_Message
             E_rec.E036(BUYCNT) = Format$(oRecordSet.Fields("E036").VALUE, String$(Len(E_rec.E036(BUYCNT)), "0"))
             E_rec.E037(BUYCNT) = Format$(oRecordSet.Fields("E037").VALUE, String$(Len(E_rec.E037(BUYCNT)), "0"))
             E_rec.E038(BUYCNT) = Format$(oRecordSet.Fields("E038").VALUE, String$(Len(E_rec.E038(BUYCNT)), "0"))
+            E_rec.E039(BUYCNT) = Format$(oRecordSet.Fields("E039").VALUE, String$(Len(E_rec.E039(BUYCNT)), "0"))
             
             
             oRecordSet.MoveNext
             
             'If BUYCNT = 5 Then    '5개면 인쇄
             If BUYCNT = 5 Or oRecordSet.EOF Then   '5개나 끝이면 인쇄
-                E_rec.E167 = Format$(FAMCNT, String$(Len(E_rec.E167), "0"))
-                E_rec.E168 = Space$(Len(E_rec.E168))
+                E_rec.E172 = Format$(FAMCNT, String$(Len(E_rec.E172), "0"))
+                E_rec.E173 = Space$(Len(E_rec.E173))
                 '/ E레코드삽입
                 Print #1, MDC_SetMod.sStr(E_rec.E001) & MDC_SetMod.sStr(E_rec.E002) & MDC_SetMod.sStr(E_rec.E003) & MDC_SetMod.sStr(E_rec.E004) & MDC_SetMod.sStr(E_rec.E005) & MDC_SetMod.sStr(E_rec.E006) & _
                           MDC_SetMod.sStr(E_rec.E007(1)) & MDC_SetMod.sStr(E_rec.E008(1)) & MDC_SetMod.sStr(E_rec.E009(1)) & MDC_SetMod.sStr(E_rec.E010(1)) & MDC_SetMod.sStr(E_rec.E011(1)) & MDC_SetMod.sStr(E_rec.E012(1)) & MDC_SetMod.sStr(E_rec.E013(1)) & MDC_SetMod.sStr(E_rec.E014(1)) & MDC_SetMod.sStr(E_rec.E015(1)) & MDC_SetMod.sStr(E_rec.E016(1)) & _
                           MDC_SetMod.sStr(E_rec.E017(1)) & MDC_SetMod.sStr(E_rec.E018(1)) & MDC_SetMod.sStr(E_rec.E019(1)) & MDC_SetMod.sStr(E_rec.E020(1)) & MDC_SetMod.sStr(E_rec.E021(1)) & MDC_SetMod.sStr(E_rec.E022(1)) & MDC_SetMod.sStr(E_rec.E023(1)) & MDC_SetMod.sStr(E_rec.E024(1)) & MDC_SetMod.sStr(E_rec.E025(1)) & MDC_SetMod.sStr(E_rec.E026(1)) & _
-                          MDC_SetMod.sStr(E_rec.E027(1)) & MDC_SetMod.sStr(E_rec.E028(1)) & MDC_SetMod.sStr(E_rec.E029(1)) & MDC_SetMod.sStr(E_rec.E030(1)) & MDC_SetMod.sStr(E_rec.E031(1)) & MDC_SetMod.sStr(E_rec.E032(1)) & MDC_SetMod.sStr(E_rec.E033(1)) & MDC_SetMod.sStr(E_rec.E034(1)) & MDC_SetMod.sStr(E_rec.E035(1)) & MDC_SetMod.sStr(E_rec.E036(1)) & MDC_SetMod.sStr(E_rec.E037(1)) & MDC_SetMod.sStr(E_rec.E038(1)) & _
-                          MDC_SetMod.sStr(E_rec.E007(2)) & MDC_SetMod.sStr(E_rec.E008(2)) & MDC_SetMod.sStr(E_rec.E009(2)) & MDC_SetMod.sStr(E_rec.E010(2)) & MDC_SetMod.sStr(E_rec.E011(2)) & MDC_SetMod.sStr(E_rec.E012(2)) & MDC_SetMod.sStr(E_rec.E013(2)) & MDC_SetMod.sStr(E_rec.E014(2)) & MDC_SetMod.sStr(E_rec.E015(2)) & MDC_SetMod.sStr(E_rec.E016(2)) & _
-                          MDC_SetMod.sStr(E_rec.E017(2)) & MDC_SetMod.sStr(E_rec.E018(2)) & MDC_SetMod.sStr(E_rec.E019(2)) & MDC_SetMod.sStr(E_rec.E020(2)) & MDC_SetMod.sStr(E_rec.E021(2)) & MDC_SetMod.sStr(E_rec.E022(2)) & MDC_SetMod.sStr(E_rec.E023(2)) & MDC_SetMod.sStr(E_rec.E024(2)) & MDC_SetMod.sStr(E_rec.E025(2)) & MDC_SetMod.sStr(E_rec.E026(2)) & _
-                          MDC_SetMod.sStr(E_rec.E027(2)) & MDC_SetMod.sStr(E_rec.E028(2)) & MDC_SetMod.sStr(E_rec.E029(2)) & MDC_SetMod.sStr(E_rec.E030(2)) & MDC_SetMod.sStr(E_rec.E031(2)) & MDC_SetMod.sStr(E_rec.E032(2)) & MDC_SetMod.sStr(E_rec.E033(2)) & MDC_SetMod.sStr(E_rec.E034(2)) & MDC_SetMod.sStr(E_rec.E035(2)) & MDC_SetMod.sStr(E_rec.E036(2)) & MDC_SetMod.sStr(E_rec.E037(2)) & MDC_SetMod.sStr(E_rec.E038(2)) & _
-                          MDC_SetMod.sStr(E_rec.E007(3)) & MDC_SetMod.sStr(E_rec.E008(3)) & MDC_SetMod.sStr(E_rec.E009(3)) & MDC_SetMod.sStr(E_rec.E010(3)) & MDC_SetMod.sStr(E_rec.E011(3)) & MDC_SetMod.sStr(E_rec.E012(3)) & MDC_SetMod.sStr(E_rec.E013(3)) & MDC_SetMod.sStr(E_rec.E014(3)) & MDC_SetMod.sStr(E_rec.E015(3)) & MDC_SetMod.sStr(E_rec.E016(3)) & _
-                          MDC_SetMod.sStr(E_rec.E017(3)) & MDC_SetMod.sStr(E_rec.E018(3)) & MDC_SetMod.sStr(E_rec.E019(3)) & MDC_SetMod.sStr(E_rec.E020(3)) & MDC_SetMod.sStr(E_rec.E021(3)) & MDC_SetMod.sStr(E_rec.E022(3)) & MDC_SetMod.sStr(E_rec.E023(3)) & MDC_SetMod.sStr(E_rec.E024(3)) & MDC_SetMod.sStr(E_rec.E025(3)) & MDC_SetMod.sStr(E_rec.E026(3)) & _
-                          MDC_SetMod.sStr(E_rec.E027(3)) & MDC_SetMod.sStr(E_rec.E028(3)) & MDC_SetMod.sStr(E_rec.E029(3)) & MDC_SetMod.sStr(E_rec.E030(3)) & MDC_SetMod.sStr(E_rec.E031(3)) & MDC_SetMod.sStr(E_rec.E032(3)) & MDC_SetMod.sStr(E_rec.E033(3)) & MDC_SetMod.sStr(E_rec.E034(3)) & MDC_SetMod.sStr(E_rec.E035(3)) & MDC_SetMod.sStr(E_rec.E036(3)) & MDC_SetMod.sStr(E_rec.E037(3)) & MDC_SetMod.sStr(E_rec.E038(3)) & _
-                          MDC_SetMod.sStr(E_rec.E007(4)) & MDC_SetMod.sStr(E_rec.E008(4)) & MDC_SetMod.sStr(E_rec.E009(4)) & MDC_SetMod.sStr(E_rec.E010(4)) & MDC_SetMod.sStr(E_rec.E011(4)) & MDC_SetMod.sStr(E_rec.E012(4)) & MDC_SetMod.sStr(E_rec.E013(4)) & MDC_SetMod.sStr(E_rec.E014(4)) & MDC_SetMod.sStr(E_rec.E015(4)) & MDC_SetMod.sStr(E_rec.E016(4)) & _
-                          MDC_SetMod.sStr(E_rec.E017(4)) & MDC_SetMod.sStr(E_rec.E018(4)) & MDC_SetMod.sStr(E_rec.E019(4)) & MDC_SetMod.sStr(E_rec.E020(4)) & MDC_SetMod.sStr(E_rec.E021(4)) & MDC_SetMod.sStr(E_rec.E022(4)) & MDC_SetMod.sStr(E_rec.E023(4)) & MDC_SetMod.sStr(E_rec.E024(4)) & MDC_SetMod.sStr(E_rec.E025(4)) & MDC_SetMod.sStr(E_rec.E026(4)) & _
-                          MDC_SetMod.sStr(E_rec.E027(4)) & MDC_SetMod.sStr(E_rec.E028(4)) & MDC_SetMod.sStr(E_rec.E029(4)) & MDC_SetMod.sStr(E_rec.E030(4)) & MDC_SetMod.sStr(E_rec.E031(4)) & MDC_SetMod.sStr(E_rec.E032(4)) & MDC_SetMod.sStr(E_rec.E033(4)) & MDC_SetMod.sStr(E_rec.E034(4)) & MDC_SetMod.sStr(E_rec.E035(4)) & MDC_SetMod.sStr(E_rec.E036(4)) & MDC_SetMod.sStr(E_rec.E037(4)) & MDC_SetMod.sStr(E_rec.E038(4)) & _
-                          MDC_SetMod.sStr(E_rec.E007(5)) & MDC_SetMod.sStr(E_rec.E008(5)) & MDC_SetMod.sStr(E_rec.E009(5)) & MDC_SetMod.sStr(E_rec.E010(5)) & MDC_SetMod.sStr(E_rec.E011(5)) & MDC_SetMod.sStr(E_rec.E012(5)) & MDC_SetMod.sStr(E_rec.E013(5)) & MDC_SetMod.sStr(E_rec.E014(5)) & MDC_SetMod.sStr(E_rec.E015(5)) & MDC_SetMod.sStr(E_rec.E016(5)) & _
-                          MDC_SetMod.sStr(E_rec.E017(5)) & MDC_SetMod.sStr(E_rec.E018(5)) & MDC_SetMod.sStr(E_rec.E019(5)) & MDC_SetMod.sStr(E_rec.E020(5)) & MDC_SetMod.sStr(E_rec.E021(5)) & MDC_SetMod.sStr(E_rec.E022(5)) & MDC_SetMod.sStr(E_rec.E023(5)) & MDC_SetMod.sStr(E_rec.E024(5)) & MDC_SetMod.sStr(E_rec.E025(5)) & MDC_SetMod.sStr(E_rec.E026(5)) & _
-                          MDC_SetMod.sStr(E_rec.E027(5)) & MDC_SetMod.sStr(E_rec.E028(5)) & MDC_SetMod.sStr(E_rec.E029(5)) & MDC_SetMod.sStr(E_rec.E030(5)) & MDC_SetMod.sStr(E_rec.E031(5)) & MDC_SetMod.sStr(E_rec.E032(5)) & MDC_SetMod.sStr(E_rec.E033(5)) & MDC_SetMod.sStr(E_rec.E034(5)) & MDC_SetMod.sStr(E_rec.E035(5)) & MDC_SetMod.sStr(E_rec.E036(5)) & MDC_SetMod.sStr(E_rec.E037(5)) & MDC_SetMod.sStr(E_rec.E038(5)) & _
-                          MDC_SetMod.sStr(E_rec.E167) & MDC_SetMod.sStr(E_rec.E168)
+                          MDC_SetMod.sStr(E_rec.E027(1)) & MDC_SetMod.sStr(E_rec.E028(1)) & MDC_SetMod.sStr(E_rec.E029(1)) & MDC_SetMod.sStr(E_rec.E030(1)) & MDC_SetMod.sStr(E_rec.E031(1)) & MDC_SetMod.sStr(E_rec.E032(1)) & MDC_SetMod.sStr(E_rec.E033(1)) & MDC_SetMod.sStr(E_rec.E034(1)) & MDC_SetMod.sStr(E_rec.E035(1)) & MDC_SetMod.sStr(E_rec.E036(1)) & _
+                          MDC_SetMod.sStr(E_rec.E037(1)) & MDC_SetMod.sStr(E_rec.E038(1)) & MDC_SetMod.sStr(E_rec.E039(1)) & MDC_SetMod.sStr(E_rec.E007(2)) & MDC_SetMod.sStr(E_rec.E008(2)) & MDC_SetMod.sStr(E_rec.E009(2)) & MDC_SetMod.sStr(E_rec.E010(2)) & MDC_SetMod.sStr(E_rec.E011(2)) & MDC_SetMod.sStr(E_rec.E012(2)) & MDC_SetMod.sStr(E_rec.E013(2)) & _
+                          MDC_SetMod.sStr(E_rec.E014(2)) & MDC_SetMod.sStr(E_rec.E015(2)) & MDC_SetMod.sStr(E_rec.E016(2)) & MDC_SetMod.sStr(E_rec.E017(2)) & MDC_SetMod.sStr(E_rec.E018(2)) & MDC_SetMod.sStr(E_rec.E019(2)) & MDC_SetMod.sStr(E_rec.E020(2)) & MDC_SetMod.sStr(E_rec.E021(2)) & MDC_SetMod.sStr(E_rec.E022(2)) & MDC_SetMod.sStr(E_rec.E023(2)) & _
+                          MDC_SetMod.sStr(E_rec.E024(2)) & MDC_SetMod.sStr(E_rec.E025(2)) & MDC_SetMod.sStr(E_rec.E026(2)) & MDC_SetMod.sStr(E_rec.E027(2)) & MDC_SetMod.sStr(E_rec.E028(2)) & MDC_SetMod.sStr(E_rec.E029(2)) & MDC_SetMod.sStr(E_rec.E030(2)) & MDC_SetMod.sStr(E_rec.E031(2)) & MDC_SetMod.sStr(E_rec.E032(2)) & MDC_SetMod.sStr(E_rec.E033(2)) & _
+                          MDC_SetMod.sStr(E_rec.E034(2)) & MDC_SetMod.sStr(E_rec.E035(2)) & MDC_SetMod.sStr(E_rec.E036(2)) & MDC_SetMod.sStr(E_rec.E037(2)) & MDC_SetMod.sStr(E_rec.E038(2)) & MDC_SetMod.sStr(E_rec.E039(2)) & MDC_SetMod.sStr(E_rec.E007(3)) & MDC_SetMod.sStr(E_rec.E008(3)) & MDC_SetMod.sStr(E_rec.E009(3)) & MDC_SetMod.sStr(E_rec.E010(3)) & _
+                          MDC_SetMod.sStr(E_rec.E011(3)) & MDC_SetMod.sStr(E_rec.E012(3)) & MDC_SetMod.sStr(E_rec.E013(3)) & MDC_SetMod.sStr(E_rec.E014(3)) & MDC_SetMod.sStr(E_rec.E015(3)) & MDC_SetMod.sStr(E_rec.E016(3)) & MDC_SetMod.sStr(E_rec.E017(3)) & MDC_SetMod.sStr(E_rec.E018(3)) & MDC_SetMod.sStr(E_rec.E019(3)) & MDC_SetMod.sStr(E_rec.E020(3)) & _
+                          MDC_SetMod.sStr(E_rec.E021(3)) & MDC_SetMod.sStr(E_rec.E022(3)) & MDC_SetMod.sStr(E_rec.E023(3)) & MDC_SetMod.sStr(E_rec.E024(3)) & MDC_SetMod.sStr(E_rec.E025(3)) & MDC_SetMod.sStr(E_rec.E026(3)) & MDC_SetMod.sStr(E_rec.E027(3)) & MDC_SetMod.sStr(E_rec.E028(3)) & MDC_SetMod.sStr(E_rec.E029(3)) & MDC_SetMod.sStr(E_rec.E030(3)) & _
+                          MDC_SetMod.sStr(E_rec.E031(3)) & MDC_SetMod.sStr(E_rec.E032(3)) & MDC_SetMod.sStr(E_rec.E033(3)) & MDC_SetMod.sStr(E_rec.E034(3)) & MDC_SetMod.sStr(E_rec.E035(3)) & MDC_SetMod.sStr(E_rec.E036(3)) & MDC_SetMod.sStr(E_rec.E037(3)) & MDC_SetMod.sStr(E_rec.E038(3)) & MDC_SetMod.sStr(E_rec.E039(3)) & MDC_SetMod.sStr(E_rec.E007(4)) & _
+                          MDC_SetMod.sStr(E_rec.E008(4)) & MDC_SetMod.sStr(E_rec.E009(4)) & MDC_SetMod.sStr(E_rec.E010(4)) & MDC_SetMod.sStr(E_rec.E011(4)) & MDC_SetMod.sStr(E_rec.E012(4)) & MDC_SetMod.sStr(E_rec.E013(4)) & MDC_SetMod.sStr(E_rec.E014(4)) & MDC_SetMod.sStr(E_rec.E015(4)) & MDC_SetMod.sStr(E_rec.E016(4)) & MDC_SetMod.sStr(E_rec.E017(4)) & _
+                          MDC_SetMod.sStr(E_rec.E018(4)) & MDC_SetMod.sStr(E_rec.E019(4)) & MDC_SetMod.sStr(E_rec.E020(4)) & MDC_SetMod.sStr(E_rec.E021(4)) & MDC_SetMod.sStr(E_rec.E022(4)) & MDC_SetMod.sStr(E_rec.E023(4)) & MDC_SetMod.sStr(E_rec.E024(4)) & MDC_SetMod.sStr(E_rec.E025(4)) & MDC_SetMod.sStr(E_rec.E026(4)) & MDC_SetMod.sStr(E_rec.E027(4)) & _
+                          MDC_SetMod.sStr(E_rec.E028(4)) & MDC_SetMod.sStr(E_rec.E029(4)) & MDC_SetMod.sStr(E_rec.E030(4)) & MDC_SetMod.sStr(E_rec.E031(4)) & MDC_SetMod.sStr(E_rec.E032(4)) & MDC_SetMod.sStr(E_rec.E033(4)) & MDC_SetMod.sStr(E_rec.E034(4)) & MDC_SetMod.sStr(E_rec.E035(4)) & MDC_SetMod.sStr(E_rec.E036(4)) & MDC_SetMod.sStr(E_rec.E037(4)) & _
+                          MDC_SetMod.sStr(E_rec.E038(4)) & MDC_SetMod.sStr(E_rec.E039(4)) & MDC_SetMod.sStr(E_rec.E007(5)) & MDC_SetMod.sStr(E_rec.E008(5)) & MDC_SetMod.sStr(E_rec.E009(5)) & MDC_SetMod.sStr(E_rec.E010(5)) & MDC_SetMod.sStr(E_rec.E011(5)) & MDC_SetMod.sStr(E_rec.E012(5)) & MDC_SetMod.sStr(E_rec.E013(5)) & MDC_SetMod.sStr(E_rec.E014(5)) & _
+                          MDC_SetMod.sStr(E_rec.E015(5)) & MDC_SetMod.sStr(E_rec.E016(5)) & MDC_SetMod.sStr(E_rec.E017(5)) & MDC_SetMod.sStr(E_rec.E018(5)) & MDC_SetMod.sStr(E_rec.E019(5)) & MDC_SetMod.sStr(E_rec.E020(5)) & MDC_SetMod.sStr(E_rec.E021(5)) & MDC_SetMod.sStr(E_rec.E022(5)) & MDC_SetMod.sStr(E_rec.E023(5)) & MDC_SetMod.sStr(E_rec.E024(5)) & _
+                          MDC_SetMod.sStr(E_rec.E025(5)) & MDC_SetMod.sStr(E_rec.E026(5)) & MDC_SetMod.sStr(E_rec.E027(5)) & MDC_SetMod.sStr(E_rec.E028(5)) & MDC_SetMod.sStr(E_rec.E029(5)) & MDC_SetMod.sStr(E_rec.E030(5)) & MDC_SetMod.sStr(E_rec.E031(5)) & MDC_SetMod.sStr(E_rec.E032(5)) & MDC_SetMod.sStr(E_rec.E033(5)) & MDC_SetMod.sStr(E_rec.E034(5)) & _
+                          MDC_SetMod.sStr(E_rec.E035(5)) & MDC_SetMod.sStr(E_rec.E036(5)) & MDC_SetMod.sStr(E_rec.E037(5)) & MDC_SetMod.sStr(E_rec.E038(5)) & MDC_SetMod.sStr(E_rec.E039(5)) & MDC_SetMod.sStr(E_rec.E172) & MDC_SetMod.sStr(E_rec.E173)
                 '/ 다음줄넘김
                 BUYCNT = 0
                 FAMCNT = FAMCNT + 1
@@ -1831,6 +1914,143 @@ Error_Message:
    
     Call Matrix_AddRow("G레코드오류: " & Err.Source & " " & Err.Description, False)
     File_Create_G_record = False
+End Function
+
+Private Function File_Create_H_record() As Boolean
+On Error GoTo Error_Message
+    Dim ErrNum      As Integer
+    Dim oRecordSet  As SAPbobsCOM.Recordset
+    Dim sQry        As String
+    Dim CheckH      As String
+    Dim JONCNT      As Integer
+    Dim HCount      As Integer
+    
+    CheckH = False  '/체크필요유무
+    ErrNum = 0
+    
+    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
+    
+    '/ H_RECORE QUERY
+    sQry = "EXEC PH_PY980_H '" & C_SAUP & "', '" & C_YYYY & "', '" & C_SABUN & "'"
+    oRecordSet.DoQuery sQry
+    
+    HCount = 0
+    
+    If oRecordSet.RecordCount > 0 Then
+       Do Until oRecordSet.EOF
+    
+        'H RECORD MOVE
+        
+        HCount = HCount + 1
+        
+        H_rec.H001 = oRecordSet.Fields("H001").VALUE
+        H_rec.H002 = oRecordSet.Fields("H002").VALUE
+        H_rec.H003 = oRecordSet.Fields("H003").VALUE
+        H_rec.H004 = Format$(C_rec.C004, String$(Len(H_rec.H004), "0"))  '/ 일련번호
+        H_rec.H005 = oRecordSet.Fields("H005").VALUE
+        H_rec.H006 = oRecordSet.Fields("H006").VALUE
+        H_rec.H007 = oRecordSet.Fields("H007").VALUE
+        H_rec.H008 = oRecordSet.Fields("H008").VALUE
+        H_rec.H009 = oRecordSet.Fields("H009").VALUE
+        H_rec.H010 = oRecordSet.Fields("H010").VALUE
+        
+        H_rec.H011 = Format$(oRecordSet.Fields("H011").VALUE, String$(Len(H_rec.H011), "0"))
+        H_rec.H012 = Format$(oRecordSet.Fields("H012").VALUE, String$(Len(H_rec.H012), "0"))
+        H_rec.H013 = Format$(oRecordSet.Fields("H013").VALUE, String$(Len(H_rec.H013), "0"))
+        H_rec.H014 = Format$(oRecordSet.Fields("H014").VALUE, String$(Len(H_rec.H014), "0"))
+        H_rec.H015 = Format$(oRecordSet.Fields("H015").VALUE, String$(Len(H_rec.H015), "0"))
+        H_rec.H016 = Format$(oRecordSet.Fields("H016").VALUE, String$(Len(H_rec.H016), "0"))
+        H_rec.H017 = Format$(oRecordSet.Fields("H017").VALUE, String$(Len(H_rec.H017), "0"))
+        H_rec.H018 = Format$(HCount, String$(Len(H_rec.H018), "0"))  '/ 일련번호
+        H_rec.H019 = oRecordSet.Fields("H019").VALUE
+        
+        Print #1, MDC_SetMod.sStr(H_rec.H001) & MDC_SetMod.sStr(H_rec.H002) & MDC_SetMod.sStr(H_rec.H003) & MDC_SetMod.sStr(H_rec.H004) & MDC_SetMod.sStr(H_rec.H005) & MDC_SetMod.sStr(H_rec.H006) & MDC_SetMod.sStr(H_rec.H007) & MDC_SetMod.sStr(H_rec.H008) & MDC_SetMod.sStr(H_rec.H009) & MDC_SetMod.sStr(H_rec.H010) & _
+                  MDC_SetMod.sStr(H_rec.H011) & MDC_SetMod.sStr(H_rec.H012) & MDC_SetMod.sStr(H_rec.H013) & MDC_SetMod.sStr(H_rec.H014) & MDC_SetMod.sStr(H_rec.H015) & MDC_SetMod.sStr(H_rec.H016) & MDC_SetMod.sStr(H_rec.H017) & MDC_SetMod.sStr(H_rec.H018) & MDC_SetMod.sStr(H_rec.H019)
+        oRecordSet.MoveNext
+      Loop
+      
+    End If
+    
+    If CheckH = False Then
+        File_Create_H_record = True
+    Else
+        File_Create_H_record = False
+    End If
+    Set oRecordSet = Nothing
+    Exit Function
+'///////////////////////////////////////////////////////////////////////////////////////////////////////
+Error_Message:
+    Set oRecordSet = Nothing
+    Call Matrix_AddRow("H레코드오류: " & Err.Description, False)
+    File_Create_H_record = False
+End Function
+
+Private Function File_Create_I_record() As Boolean
+On Error GoTo Error_Message
+    Dim ErrNum      As Integer
+    Dim oRecordSet  As SAPbobsCOM.Recordset
+    Dim sQry        As String
+    Dim CheckI      As String
+    Dim JONCNT      As Integer
+    Dim ICount      As Integer
+    
+    CheckI = False  '/체크필요유무
+    ErrNum = 0
+    
+    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
+    
+    '/ I_RECORE QUERY
+    sQry = "EXEC PH_PY980_I '" & C_SAUP & "', '" & C_YYYY & "', '" & C_SABUN & "'"
+    oRecordSet.DoQuery sQry
+    
+    ICount = 0
+    
+    If oRecordSet.RecordCount > 0 Then
+       Do Until oRecordSet.EOF
+    
+        'I RECORD MOVE
+        
+        ICount = ICount + 1
+        
+        I_rec.I001 = oRecordSet.Fields("I001").VALUE
+        I_rec.I002 = oRecordSet.Fields("I002").VALUE
+        I_rec.I003 = oRecordSet.Fields("I003").VALUE
+        I_rec.I004 = Format$(C_rec.C004, String$(Len(I_rec.I004), "0"))  '/ C레코드의 일련번호
+        I_rec.I005 = oRecordSet.Fields("I005").VALUE
+        I_rec.I006 = oRecordSet.Fields("I006").VALUE
+        I_rec.I007 = oRecordSet.Fields("I007").VALUE
+        I_rec.I008 = oRecordSet.Fields("I008").VALUE
+        I_rec.I009 = oRecordSet.Fields("I009").VALUE
+        I_rec.I010 = oRecordSet.Fields("I010").VALUE
+        I_rec.I011 = oRecordSet.Fields("I011").VALUE
+        I_rec.I012 = oRecordSet.Fields("I012").VALUE
+        I_rec.I013 = oRecordSet.Fields("I013").VALUE
+        I_rec.I014 = Format$(oRecordSet.Fields("I014").VALUE, String$(Len(I_rec.I014), "0"))
+        I_rec.I015 = Format$(oRecordSet.Fields("I015").VALUE, String$(Len(I_rec.I015), "0"))
+        I_rec.I016 = Format$(oRecordSet.Fields("I016").VALUE, String$(Len(I_rec.I016), "0"))
+        I_rec.I017 = Format$(oRecordSet.Fields("I017").VALUE, String$(Len(I_rec.I017), "0"))
+        I_rec.I018 = Format$(oRecordSet.Fields("I018").VALUE, String$(Len(I_rec.I018), "0"))
+        I_rec.I019 = Format$(ICount, String$(Len(I_rec.I019), "0"))  '/일련번호
+        I_rec.I020 = oRecordSet.Fields("I020").VALUE
+        
+        Print #1, MDC_SetMod.sStr(I_rec.I001) & MDC_SetMod.sStr(I_rec.I002) & MDC_SetMod.sStr(I_rec.I003) & MDC_SetMod.sStr(I_rec.I004) & MDC_SetMod.sStr(I_rec.I005) & MDC_SetMod.sStr(I_rec.I006) & MDC_SetMod.sStr(I_rec.I007) & MDC_SetMod.sStr(I_rec.I008) & MDC_SetMod.sStr(I_rec.I009) & MDC_SetMod.sStr(I_rec.I010) & _
+                  MDC_SetMod.sStr(I_rec.I011) & MDC_SetMod.sStr(I_rec.I012) & MDC_SetMod.sStr(I_rec.I013) & MDC_SetMod.sStr(I_rec.I014) & MDC_SetMod.sStr(I_rec.I015) & MDC_SetMod.sStr(I_rec.I016) & MDC_SetMod.sStr(I_rec.I017) & MDC_SetMod.sStr(I_rec.I018) & MDC_SetMod.sStr(I_rec.I019) & MDC_SetMod.sStr(I_rec.I020)
+     
+        oRecordSet.MoveNext
+       Loop
+    End If
+    If CheckI = False Then
+        File_Create_I_record = True
+    Else
+        File_Create_I_record = False
+    End If
+    Set oRecordSet = Nothing
+    Exit Function
+'///////////////////////////////////////////////////////////////////////////////////////////////////////
+Error_Message:
+    Set oRecordSet = Nothing
+    Call Matrix_AddRow("I레코드오류: " & Err.Description, False)
+    File_Create_I_record = False
 End Function
 
 Private Sub Matrix_AddRow(ByVal MatrixMsg As String, Optional Insert_YN As Boolean, Optional MatrixErr As Boolean)

@@ -771,13 +771,13 @@ On Error GoTo PS_MM965_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß...", 100, False)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    Purchase = oForm01.Items("Purchase").Specific.VALUE
-    OrderYN = oForm01.Items("OrderYN").Specific.VALUE
-    InputYN = oForm01.Items("InputYN").Specific.VALUE
-    Class = oForm01.Items("Class").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    Purchase = Trim(oForm01.Items("Purchase").Specific.VALUE)
+    OrderYN = Trim(oForm01.Items("OrderYN").Specific.VALUE)
+    InputYN = Trim(oForm01.Items("InputYN").Specific.VALUE)
+    Class = Trim(oForm01.Items("Class").Specific.VALUE)
     
     If Purchase = "10" Then
     

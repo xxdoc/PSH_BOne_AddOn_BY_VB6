@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '//  Desc           : 퇴직소득지급명세서자료 전산매체수록
 '//  FormType       :
 '//  Create Date    : 2014.02.04
-'//  Modified Date  : 2015.02.10
+'//  Modified Date  : 2017.01.25
 '//  Creator        : NGY
 '//  Modifier       :
 '//  Copyright  (c) Poongsan Holdings
@@ -58,6 +58,7 @@ Private C_BUYCNT    As String
 '2013년기준 1400 BYTE
 '2014년기준 1090 BYTE
 '2016년기준 1110 BYTE
+'2017년기준 1110 BYTE
 
 Private Type A_record
         A001   As String * 1     '레코드구분
@@ -65,7 +66,7 @@ Private Type A_record
         A003   As String * 3     '세무서
         A004   As String * 8     '제출일자
         A005   As String * 1     '제출자구분 (1;세무대리인, 2;법인, 3;개인)
-        A006   As String * 6     '세무대리인
+        A006   As String * 6     '세무대리인관리번호
         A007   As String * 20    '홈텍스ID
         A008   As String * 4     '세무프로그램코드
         A009   As String * 10    '사업자번호
@@ -194,13 +195,13 @@ Private Type C_record
         C073   As String * 4     '가산월수
         C074   As String * 4     '중복월수
         C075   As String * 4     '근속연수
-        '/개정규정에따른계산방법-과세표준계산 2016
+        '/개정규정에따른계산방법-과세표준계산
         C076   As String * 11    '퇴직소득
         C077   As String * 11    '근속연수공제
         C078   As String * 11    '환산급여
         C079   As String * 11    '환산급여별공제
         C080   As String * 11    '퇴직소득과세표준
-        '/개정규정에따른계산방법-세액계산 2016
+        '/개정규정에따른계산방법-세액계산
         C081   As String * 11    '환산산출세액
         C082   As String * 11    '산출세액
         '/종전규정에 따른 계산 방법 - 과세표준계산

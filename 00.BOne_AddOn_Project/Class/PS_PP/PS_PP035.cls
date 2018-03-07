@@ -1261,7 +1261,7 @@ On Error GoTo Chk_Data1_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-If oForm01.Items("OrdGbn").Specific.VALUE = "105" Or oForm01.Items("OrdGbn").Specific.VALUE = "106" Then
+If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "105" Or Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "106" Then
     
     '문서번호 입력된 임시테이블 삭제
     sQry = "DELETE Temp_LBG11"
@@ -1299,7 +1299,7 @@ If oForm01.Items("OrdGbn").Specific.VALUE = "105" Or oForm01.Items("OrdGbn").Spe
     ReDim gRpt_SFormula(2, 2)
     ReDim gRpt_SFormula_Value(2, 2)
 
-ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "101" Or oForm01.Items("OrdGbn").Specific.VALUE = "102" Then
+ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "101" Or Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "102" Then
     
     sQry = "DELETE Temp_LBG12"
     oRecordSet01.DoQuery sQry
@@ -1332,7 +1332,7 @@ ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "101" Or oForm01.Items("OrdGbn")
     ReDim gRpt_SFormula(1, 1)
     ReDim gRpt_SFormula_Value(1, 1)
 
-ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "107" Then
+ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "107" Then
     
     sQry = "DELETE Temp_LBG13"
     oRecordSet01.DoQuery sQry
@@ -1365,7 +1365,7 @@ ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "107" Then
     ReDim gRpt_SFormula(1, 1)
     ReDim gRpt_SFormula_Value(1, 1)
 
-ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "104" Then
+ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "104" Then
     
     sQry = "DELETE Temp_LBG14"
     oRecordSet01.DoQuery sQry

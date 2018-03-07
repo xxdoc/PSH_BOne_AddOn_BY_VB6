@@ -423,7 +423,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
                     oForm01.Items("BatchNum").Enabled = False
                 End If
         
-               oQuery = "Select U_RelCd FROM [@PS_SY001L] b Where b.Code = 'P204' and b.U_Minor = '" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"
+               oQuery = "Select U_RelCd FROM [@PS_SY001L] b Where b.Code = 'P204' and b.U_Minor = '" & Trim(oForm01.Items(pval.ItemUID).Specific.VALUE) & "'"
                oRecordSet.DoQuery oQuery
                oForm01.Items("BoxKg").Specific.String = Trim(oRecordSet.Fields(0).VALUE)
                
@@ -432,7 +432,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
                End If
                
                If Trim(oForm01.Items("InspNo").Specific.VALUE) <> "" Then
-                  Box = oForm01.Items("BoxDiv").Specific.VALUE
+                  Box = Trim(oForm01.Items("BoxDiv").Specific.VALUE)
                   BatchNum = Box + Right(oForm01.Items("InspNo").Specific.VALUE, 8)
                   oForm01.Items("BatchNum").Specific.String = BatchNum
                 End If
@@ -624,9 +624,9 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             '//검사의뢰번호
             If pval.ItemUID = "InspNo" Then
                 If oForm01.Items(pval.ItemUID).Specific.VALUE <> "" Then
-                    Box = oForm01.Items("BoxDiv").Specific.VALUE
-                    Boxkg = Int(oForm01.Items("BoxKg").Specific.VALUE)
-                    DocDate = oForm01.Items("DocDate").Specific.VALUE
+                    Box = Trim(oForm01.Items("BoxDiv").Specific.VALUE)
+                    Boxkg = Trim(Int(oForm01.Items("BoxKg").Specific.VALUE))
+                    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
                     oQuery = "Select Isnull(Right(Max(Right(Batchnum,8)),2),'') From Z_PACKING_PD Where DocDate = '" & DocDate & "'"
                     oRecordSet.DoQuery oQuery
                     If (Boxkg < 100) Then

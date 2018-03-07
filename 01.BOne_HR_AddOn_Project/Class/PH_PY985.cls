@@ -18,8 +18,8 @@ Attribute VB_Exposed = False
 '//  Desc           : 의료비지급명세서자료 전산매체수록
 '//  FormType       :
 '//  Create Date    : 2014.01.28
-'//  Modified Date  : 2016.01.10
-'//  Creator        : NGY
+'//  Modified Date  : 2017.01.24
+'//  Creator        : Hys
 '//  Modifier       :
 '//  Copyright  (c) Poongsan Holdings
 '//****************************************************************************
@@ -54,6 +54,8 @@ Private C_BUYCNT    As String
 
 '2013년기준 250 BYTE
 '2015년기준 251 BYTE
+'2017년기준 251 BYTE
+
 Private Type A_record
         A001   As String * 1     '레코드구분 'A'
         A002   As String * 2     '자료구분   '26'

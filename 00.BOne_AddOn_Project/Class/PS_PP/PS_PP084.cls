@@ -1247,7 +1247,7 @@ On Error GoTo PS_PP084_AddMatrixRow_Error
         oDS_PS_PP084L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP084L.offset = oRow
+    oDS_PS_PP084L.Offset = oRow
     oDS_PS_PP084L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -1334,7 +1334,7 @@ On Error GoTo PS_PP084_DataValidCheck_Error
     End If
     
     '마감상태 체크_S(2017.11.23 송명규 추가)
-    If MDC_PS_Common.Check_Finish_Status(oForm01.Items("BPLId").Specific.VALUE, oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
+    If MDC_PS_Common.Check_Finish_Status(Trim(oForm01.Items("BPLId").Specific.VALUE), oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
         Call Sbo_Application.SetStatusBarMessage("마감상태가 잠금입니다. 해당 일자로 등록할 수 없습니다. 완료일자를 확인하고, 회계부서로 문의하세요.", bmt_Short, True)
         PS_PP084_DataValidCheck = False
         Exit Function
@@ -1517,7 +1517,7 @@ On Error GoTo PS_PP084_MTX01_Error
         If i <> 0 Then
             oDS_PS_PP084L.InsertRecord (i)
         End If
-        oDS_PS_PP084L.offset = i
+        oDS_PS_PP084L.Offset = i
         Call oDS_PS_PP084L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_PP084L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
@@ -1890,7 +1890,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat02.AddRow
-        oDS_PS_PP0841L.offset = i
+        oDS_PS_PP0841L.Offset = i
         oDS_PS_PP0841L.setValue "U_ColNum01", i, i + 1
         oDS_PS_PP0841L.setValue "U_ColDt01", i, Trim(oRecordSet01.Fields("DocDate").VALUE)
         oDS_PS_PP0841L.setValue "U_ColReg01", i, Trim(oRecordSet01.Fields("PP030No").VALUE)

@@ -665,7 +665,7 @@ On Error GoTo PS_S141_DataValidCheck_Error
         oForm01.Items("4").Click ct_Regular
         PS_S141_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE = "" Then
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm01.Items("2001").Click ct_Regular
         PS_S141_DataValidCheck = False
@@ -675,14 +675,14 @@ On Error GoTo PS_S141_DataValidCheck_Error
         oForm01.Items("TradeType").Click ct_Regular
         PS_S141_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("2001").Specific.VALUE <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
+    ElseIf Trim(oForm01.Items("2001").Specific.VALUE) <> "1" And oForm01.Items("TradeType").Specific.Selected.VALUE = "2" Then '//창원이 아닌데 임가공이 선택된경우 에러
         Sbo_Application.SetStatusBarMessage "창원사업장이 아닌경우 임가공거래가 불가능합니다.", bmt_Short, True
         PS_S141_DataValidCheck = False
         Exit Function
     End If
     
     '마감상태 체크_S(2017.11.23 송명규 추가)
-    If MDC_PS_Common.Check_Finish_Status(oForm01.Items("2001").Specific.VALUE, oForm01.Items("10").Specific.VALUE, oForm01.TypeEx) = False Then
+    If MDC_PS_Common.Check_Finish_Status(Trim(oForm01.Items("2001").Specific.VALUE), oForm01.Items("10").Specific.VALUE, oForm01.TypeEx) = False Then
         Call Sbo_Application.SetStatusBarMessage("마감상태가 잠금입니다. 해당 일자로 등록할 수 없습니다. 전기일을 확인하고, 회계부서로 문의하세요.", bmt_Short, True)
         PS_S141_DataValidCheck = False
         Exit Function

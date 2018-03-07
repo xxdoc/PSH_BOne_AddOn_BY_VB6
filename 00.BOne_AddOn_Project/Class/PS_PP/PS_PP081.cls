@@ -285,15 +285,15 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
 
-				'Addon만등록 시 주석_S
-               	If PS_PP081_DI_API01 = False Then
+                'Addon만등록 시 주석_S
+                If PS_PP081_DI_API01 = False Then
                     Call PS_PP081_AddMatrixRow(oMat01.VisualRowCount)
                     BubbleEvent = False
                     Exit Sub
                 End If
 
                 oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
-				'Addon만등록 시 주석_E
+                'Addon만등록 시 주석_E
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_PP081_DataValidCheck = False Then
                     BubbleEvent = False
@@ -1093,7 +1093,7 @@ On Error GoTo PS_PP081_AddMatrixRow_Error
         oDS_PS_PP081L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP081L.offset = oRow
+    oDS_PS_PP081L.Offset = oRow
     oDS_PS_PP081L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -1187,7 +1187,7 @@ On Error GoTo PS_PP081_DataValidCheck_Error
     End If
     
     '마감상태 체크_S(2017.11.23 송명규 추가)
-    If MDC_PS_Common.Check_Finish_Status(oForm01.Items("BPLId").Specific.VALUE, oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
+    If MDC_PS_Common.Check_Finish_Status(Trim(oForm01.Items("BPLId").Specific.VALUE), oForm01.Items("DocDate").Specific.VALUE, oForm01.TypeEx) = False Then
         Call Sbo_Application.SetStatusBarMessage("마감상태가 잠금입니다. 해당 일자로 등록할 수 없습니다. 작성일자를 확인하고, 회계부서로 문의하세요.", bmt_Short, True)
         PS_PP081_DataValidCheck = False
         Exit Function
@@ -1301,7 +1301,7 @@ On Error GoTo PS_PP081_MTX01_Error
         If i <> 0 Then
             oDS_PS_PP081L.InsertRecord (i)
         End If
-        oDS_PS_PP081L.offset = i
+        oDS_PS_PP081L.Offset = i
         Call oDS_PS_PP081L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_PP081L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
@@ -1675,7 +1675,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat02.AddRow
-        oDS_PS_PP0811L.offset = i
+        oDS_PS_PP0811L.Offset = i
         oDS_PS_PP0811L.setValue "U_ColReg01", i, Trim(oRecordSet01.Fields("PP030No").VALUE)
         oDS_PS_PP0811L.setValue "U_ColReg02", i, Trim(oRecordSet01.Fields("ItemName").VALUE)
         oDS_PS_PP0811L.setValue "U_ColReg03", i, Trim(oRecordSet01.Fields("Lotno").VALUE)

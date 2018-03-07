@@ -1357,7 +1357,7 @@ On Error GoTo PS_PP095_Print_Report03_Error
     Set oRecordset02 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim FilePath As String
-    FilePath = "\\191.1.1.220\ERP_Project\img\QRCODE"
+    FilePath = "\\191.1.1.220\ERP_Project\img\QRCODE" '\\191.1.1.138\b1_shr\QRCODE
     
 '    If oForm01.Items("ProgStat").Specific.Selected.VALUE <> "3" Then
 '        Call MDC_Com.MDC_GF_Message("문서상태가 납품이 아닙니다.", "W")
@@ -1440,7 +1440,7 @@ On Error GoTo PS_PP095_Print_Report04_Error
     Dim Sum As Long
     
 '    FilePath = "C:\QRCODEIMG"
-    FilePath = "\\191.1.1.220\B1_SHR\QRCODE_PACKING"
+    FilePath = "\\191.1.1.220\B1_SHR\QRCODE_PACKING" ' \\191.1.1.138\B1_SHR\QRCODE_PACKING
     
 '    If oForm01.Items("ProgStat").Specific.Selected.VALUE <> "3" Then
 '        Call MDC_Com.MDC_GF_Message("문서상태가 납품이 아닙니다.", "W")
