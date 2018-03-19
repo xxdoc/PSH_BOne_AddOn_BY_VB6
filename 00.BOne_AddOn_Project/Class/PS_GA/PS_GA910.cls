@@ -901,16 +901,16 @@ On Error GoTo PS_GA910_MTX01_Error
     Call oForm01.Freeze(True)
     Dim i           As Long
     Dim sQry        As String
-    Dim BPLId        As String
+    Dim BPLID        As String
     Dim DocDate       As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = oForm01.Items("BPLId").Specific.VALUE
     DocDate = oForm01.Items("DocDate").Specific.VALUE
     
-    sQry = " EXEC [PS_GA910_01]  '" & BPLId & "', '" & DocDate & "'"
+    sQry = " EXEC [PS_GA910_01]  '" & BPLID & "', '" & DocDate & "'"
     
     oGrid01.DataTable.Clear
     oGrid02.DataTable.Clear
@@ -1122,8 +1122,8 @@ Private Sub PS_GA910_SAVE()
     Dim i       As Long
     Dim Seqncom As Integer
     Dim sQry    As String
-    Dim ym      As String
-    Dim BPLId$, DocDate$, VisitNo$, LineNum$, MSTCOD$, FULLNAME$, TeamCode$, RspCode$, CoRegNum$, CustNm$, Location$, Visitant$, BirthDat$
+    Dim YM      As String
+    Dim BPLID$, DocDate$, VisitNo$, LineNum$, MSTCOD$, FULLNAME$, TeamCode$, RspCode$, CoRegNum$, CustNm$, Location$, Visitant$, BirthDat$
     Dim Addr$, DateFrom$, DateTo$, Purpose$, Remark$
     
     
@@ -1133,7 +1133,7 @@ Private Sub PS_GA910_SAVE()
     
     On Error GoTo PS_GA910_SAVE_Error
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDate = oForm01.Items("DocDate").Specific.VALUE
     VisitNo = oForm01.Items("VisitNo").Specific.VALUE
     LineNum = oForm01.Items("LineNum").Specific.VALUE
@@ -1169,7 +1169,7 @@ Private Sub PS_GA910_SAVE()
     
     
     
-    If Trim(BPLId) = "" Then
+    If Trim(BPLID) = "" Then
         Call MDC_Com.MDC_GF_Message("사업장에러. 확인바랍니다..", "E")
         GoTo PS_GA910_SAVE_Exit
     End If
@@ -1232,13 +1232,13 @@ Private Sub PS_GA910_SAVE()
         '//신규
         '순번 계산
         If VisitNo = "" Then
-            ym = Left(DocDate, 6)
+            YM = Left(DocDate, 6)
             
-            sQry = " Select Max(VisitNo) From [Z_PS_GA910H] Where BPLId = '" & BPLId & "' and Left(Convert(Char(6), DocDate, 112),6) = '" & ym & "'"
+            sQry = " Select Max(VisitNo) From [Z_PS_GA910H] Where BPLId = '" & BPLID & "' and Left(Convert(Char(6), DocDate, 112),6) = '" & YM & "'"
             oRecordSet.DoQuery sQry
             
             If Trim(oRecordSet.Fields(0).VALUE) = "" Then
-                VisitNo = BPLId + Left(DocDate, 6) + "001"
+                VisitNo = BPLID + Left(DocDate, 6) + "001"
             Else
                 VisitNo = Trim(oRecordSet.Fields(0).VALUE) + 1
             End If
@@ -1277,7 +1277,7 @@ Private Sub PS_GA910_SAVE()
         sQry = sQry & " ) "
         sQry = sQry & "VALUES("
 
-        sQry = sQry & "'" & BPLId & "',"
+        sQry = sQry & "'" & BPLID & "',"
         sQry = sQry & "'" & DocDate & "',"
         sQry = sQry & "'" & VisitNo & "',"
         sQry = sQry & LineNum & ","
@@ -1400,7 +1400,7 @@ On Error GoTo PS_GA910_FlushToItemValue_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim TeamCode As String
     Dim RspCode As String
     
@@ -1409,7 +1409,7 @@ On Error GoTo PS_GA910_FlushToItemValue_Error
         Case "BPLId"
             
             'BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
-            BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             
             If oForm01.Items("TeamCode").Specific.ValidValues.Count > 0 Then
                 For i = oForm01.Items("TeamCode").Specific.ValidValues.Count - 1 To 0 Step -1
@@ -1424,7 +1424,7 @@ On Error GoTo PS_GA910_FlushToItemValue_Error
             sQry = sQry & "  FROM       [@PS_HR200L]"
             sQry = sQry & "  WHERE      Code = '1'"
             sQry = sQry & "                 AND U_UseYN = 'Y'"
-            sQry = sQry & "                 AND U_Char2 = '" & BPLId & "'"
+            sQry = sQry & "                 AND U_Char2 = '" & BPLID & "'"
             sQry = sQry & "  ORDER BY  U_Seq"
             Call MDC_SetMod.Set_ComboList(oForm01.Items("TeamCode").Specific, sQry, "", False, False)
             Call oForm01.Items("TeamCode").Specific.Select(0, psk_Index)

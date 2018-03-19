@@ -625,7 +625,7 @@ On Error GoTo PS_QM141_AddMatrixRow_Error
         oDS_PS_QM141L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_QM141L.Offset = oRow
+    oDS_PS_QM141L.offset = oRow
 '    oDS_PS_QM141L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -727,7 +727,7 @@ On Error GoTo PS_QM141_MTX01_Error
         If loopCount <> 0 Then
            Call oDS_PS_QM141L.InsertRecord(loopCount)
         End If
-        oDS_PS_QM141L.Offset = loopCount
+        oDS_PS_QM141L.offset = loopCount
         
         Call oDS_PS_QM141L.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_QM141L.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Class").VALUE) '구분

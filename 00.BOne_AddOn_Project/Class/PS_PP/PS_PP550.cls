@@ -1622,10 +1622,10 @@ On Error GoTo Print_Query_Error
     Dim ItemType As String
     Dim StdYM As String '기준년월
     
-    BPLID = oForm01.Items("BPLID02").Specific.VALUE
-    CardType = oForm01.Items("CardType02").Specific.VALUE
-    ItemType = oForm01.Items("ItemType02").Specific.VALUE
-    StdYM = oForm01.Items("StdYM02").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLID02").Specific.VALUE)
+    CardType = Trim(oForm01.Items("CardType02").Specific.VALUE)
+    ItemType = Trim(oForm01.Items("ItemType02").Specific.VALUE)
+    StdYM = Trim(oForm01.Items("StdYM02").Specific.VALUE)
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_PP550] 레포트"

@@ -1015,7 +1015,7 @@ On Error GoTo PS_MM135_FormItemEnabled_Error
         oForm01.Items("DocEntry").Enabled = False
         
         oForm01.Items("OutDoc").Enabled = False
-        oForm01.Items("Print").Enabled = False
+       ' oForm01.Items("Print").Enabled = False
         oForm01.Items("BOM_CHECK").Specific.Checked = True
         If Trim(oDS_PS_MM135H.GetValue("U_OKYNC", 0)) = "C" Or Trim(oDS_PS_MM135H.GetValue("U_OKYNC", 0)) = "Y" Then
             Call oForm01.EnableMenu("1284", False)       '//√Îº“

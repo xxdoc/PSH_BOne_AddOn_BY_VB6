@@ -427,6 +427,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim ActCode     As String
     Dim CLTCOD      As String
     Dim MSTCOD      As String
+    Dim YYYY        As String
+    Dim Result      As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim oColumn     As SAPbouiCOM.Column
@@ -454,7 +456,20 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 
                 
                 If pval.ItemUID = "Btn01" Then
-                    Call PH_PY401_SAVE
+                
+                    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                    YYYY = oForm.Items("Year").Specific.VALUE
+                    sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & YYYY & CLTCOD & "'"
+                    oRecordSet.DoQuery sQry
+                       
+                    Result = oRecordSet.Fields(0).VALUE
+                    If Result <> "" Then
+                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
+                    End If
+                    If Result = "" Then
+                        Call PH_PY401_SAVE
+                    End If
+                    
                     
                 End If
                 

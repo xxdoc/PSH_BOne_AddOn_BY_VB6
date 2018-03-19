@@ -128,7 +128,7 @@ Private Function PH_PY106_CreateItems() As Boolean
     '// 헤더 설정
     '//----------------------------------------------------------------------------------------------
      '/ 귀속년월
-     oForm.Items("YM").Specific.Value = Format$(Now, "YYYYMM")
+     oForm.Items("YM").Specific.VALUE = Format$(Now, "YYYYMM")
      
      '//사업장
     Set oCombo = oForm.Items("CLTCOD").Specific
@@ -214,7 +214,7 @@ Private Sub PH_PY106_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY106_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -246,7 +246,7 @@ Sub PH_PY106_FormItemEnabled()
         Call CLTCOD_Select(oForm, "CLTCOD")
         
         '/ 귀속년월
-        oForm.Items("YM").Specific.Value = Format$(Now, "YYYYMM")
+        oForm.Items("YM").Specific.VALUE = Format$(Now, "YYYYMM")
         
         '// 1.근속년수 계산기준
         Set oCombo = oForm.Items("GNSGBN").Specific
@@ -317,7 +317,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Select Case pval.EventType
         Case et_ITEM_PRESSED: '//1
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "1" Then
+                If pval.ItemUID = "1" Then
                     If oForm.Mode = fm_ADD_MODE Or oForm.Mode = fm_UPDATE_MODE Then
                         If PH_PY106_DataValidCheck = False Then
                             BubbleEvent = False
@@ -330,20 +330,20 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End If
             ElseIf pval.BeforeAction = False Then
-                If pval.ItemUid = "FLD01" Or pval.ItemUid = "FLD02" Then
-                    oForm.PaneLevel = Right(pval.ItemUid, 2)
+                If pval.ItemUID = "FLD01" Or pval.ItemUID = "FLD02" Then
+                    oForm.PaneLevel = Right(pval.ItemUID, 2)
                 End If
-                If pval.ItemUid = "1" And pval.ActionSuccess = True And oForm.Mode = fm_ADD_MODE Then
+                If pval.ItemUID = "1" And pval.ActionSuccess = True And oForm.Mode = fm_ADD_MODE Then
                     oForm.Mode = fm_OK_MODE
                     Call Sbo_Application.ActivateMenuItem("1282")   '/문서추가
-                ElseIf pval.ItemUid = "Btn1" Then  '/ 가져오기
+                ElseIf pval.ItemUID = "Btn1" Then  '/ 가져오기
                         If PH_PY106_DataValidCheck = False Then
                             BubbleEvent = False
                             Exit Sub
                         Else
                             Call Display_PH_PY102
                         End If
-                ElseIf pval.ItemUid = "Btn2" Then '/ 공식 검증
+                ElseIf pval.ItemUID = "Btn2" Then '/ 공식 검증
                     Call PH_PY106_Display_CsuItem
                 End If
             End If
@@ -352,7 +352,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
             '//추가모드에서 코드이벤트가 코드에서 일어 났을때
             'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-             If pval.BeforeAction = True And pval.ItemUid = "YM" And pval.CharPressed = 9 And pval.FormMode <> fm_FIND_MODE Then
+             If pval.BeforeAction = True And pval.ItemUID = "YM" And pval.CharPressed = 9 And pval.FormMode <> fm_FIND_MODE Then
                 If oMat1.RowCount > 0 Then
                     oMat1.Columns("LINSEQ").Cells(oMat1.VisualRowCount).CLICK ct_Regular
                     BubbleEvent = False
@@ -365,15 +365,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
              End If
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat1"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -394,15 +394,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_CLICK: '//6
             If pval.FormUID = oForm.uniqueID And pval.BeforeAction = True And oLastItemUID = "Mat1" And oLastColUID = "LINSEQ" And oLastColRow > 0 _
-                And (oLastItemUID <> pval.ColUID Or oLastColRow <> pval.Row) And pval.ItemUid <> "1000001" And pval.ItemUid <> "2" Then
+                And (oLastItemUID <> pval.ColUID Or oLastColRow <> pval.Row) And pval.ItemUID <> "1000001" And pval.ItemUID <> "2" Then
                 If oLastColRow > oMat1.VisualRowCount Then
                     Exit Sub
                 End If
             ElseIf pval.FormMode <> fm_FIND_MODE And pval.BeforeAction = False Then
-                If pval.ItemUid = "Mat1" And pval.Row > 0 Then
-                   oForm.DataSources.UserDataSources("DISSIL").ValueEx = oMat1.Columns("SILCUN").Cells(pval.Row).Specific.Value
-                ElseIf pval.ItemUid = "Mat2" And pval.Row > 0 Then
-                    oForm.DataSources.UserDataSources("DISSIL").ValueEx = oForm.DataSources.UserDataSources("DISSIL").ValueEx & oMat2.Columns("FILCOD").Cells(pval.Row).Specific.Value
+                If pval.ItemUID = "Mat1" And pval.Row > 0 Then
+                   oForm.DataSources.UserDataSources("DISSIL").ValueEx = oMat1.Columns("SILCUN").Cells(pval.Row).Specific.VALUE
+                ElseIf pval.ItemUID = "Mat2" And pval.Row > 0 Then
+                    oForm.DataSources.UserDataSources("DISSIL").ValueEx = oForm.DataSources.UserDataSources("DISSIL").ValueEx & oMat2.Columns("FILCOD").Cells(pval.Row).Specific.VALUE
                 End If
             End If
 '----------------------------------------------------------
@@ -420,13 +420,13 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
        
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    If pval.ItemUid = "Mat1" Then
+                    If pval.ItemUID = "Mat1" Then
                         If pval.ColUID = "CSUCOD" Then
                             Call PH_PY106_AddMatrixRow
                             oMat1.Columns(pval.ColUID).Cells(pval.Row).CLICK ct_Regular
                         End If
                     End If
-                    If pval.ItemUid = "Mat3" Then
+                    If pval.ItemUID = "Mat3" Then
                         If pval.ColUID = "CSUCOD" Then
                             Call PH_PY106_AddMatrixRow
                             oMat3.Columns(pval.ColUID).Cells(pval.Row).CLICK ct_Regular
@@ -570,7 +570,7 @@ Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM
                     oMat1.FlushToDataSource
 
                     While (i <= oDS_PH_PY106B.Size - 1)
-                        If oDS_PH_PY106B.GetValue("U_FILD01", i) = "" Then
+                        If oDS_PH_PY106B.GetValue("U_LINSEQ", i) = "" Then
                             oDS_PH_PY106B.RemoveRecord (i)
                             i = 0
                         Else
@@ -579,7 +579,7 @@ Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM
                     Wend
 
                     For i = 0 To oDS_PH_PY106B.Size
-                        Call oDS_PH_PY106B.setValue("U_LineNum", i, i + 1)
+                        Call oDS_PH_PY106B.setValue("U_LINSEQ", i, i + 1)
                     Next i
 
                     oMat1.LoadFromDataSource
@@ -647,15 +647,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat1"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -772,9 +772,9 @@ On Error GoTo PH_PY106_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY106'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY106_FormClear_Error:
@@ -838,7 +838,7 @@ Function PH_PY106_DataValidCheck() As Boolean
         oRecordSet.DoQuery sQry
         
         If oRecordSet.Fields.Count > 0 Then
-            ExistYN = Trim$(oRecordSet.Fields(0).Value)
+            ExistYN = Trim$(oRecordSet.Fields(0).VALUE)
         End If
         
         If ExistYN <> "" And Trim$(oDS_PH_PY106A.GetValue("Code", 0)) <> ExistYN Then
@@ -959,7 +959,7 @@ On Error GoTo PH_PY106_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY106A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY106A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY106_Validate = False
         GoTo PH_PY106_Validate_Exit
@@ -1019,12 +1019,12 @@ On Error GoTo Error_Message
         oDS_PH_PY106B.Offset = i
         oDS_PH_PY106B.setValue "U_LineNum", i, i + 1
         oDS_PH_PY106B.setValue "U_LINSEQ", i, ""
-        oDS_PH_PY106B.setValue "U_CSUCOD", i, Trim(oRecordSet.Fields(0).Value)
-        oDS_PH_PY106B.setValue "U_CSUNAM", i, Trim(oRecordSet.Fields(1).Value)
+        oDS_PH_PY106B.setValue "U_CSUCOD", i, Trim(oRecordSet.Fields(0).VALUE)
+        oDS_PH_PY106B.setValue "U_CSUNAM", i, Trim(oRecordSet.Fields(1).VALUE)
         oDS_PH_PY106B.setValue "U_SILCOD", i, ""
         oDS_PH_PY106B.setValue "U_SILCUN", i, ""
         oDS_PH_PY106B.setValue "U_BNSBAS", i, "N"
-        oDS_PH_PY106B.setValue "U_REMARK", i, Trim(oRecordSet.Fields(3).Value)
+        oDS_PH_PY106B.setValue "U_REMARK", i, Trim(oRecordSet.Fields(3).VALUE)
         oRecordSet.MoveNext
         i = i + 1
     Loop
@@ -1037,12 +1037,12 @@ On Error GoTo Error_Message
         If i + 1 > oDS_PH_PY106B.Size Then
             oDS_PH_PY106B.InsertRecord (i)
         End If
-        CSUCOD = Trim(oRecordSet.Fields("U_CSUCOD").Value)
+        CSUCOD = Trim(oRecordSet.Fields("U_CSUCOD").VALUE)
         oDS_PH_PY106B.Offset = i
         oDS_PH_PY106B.setValue "U_LineNum", i, i + 1
         oDS_PH_PY106B.setValue "U_LINSEQ", i, i - cnt + 1
         oDS_PH_PY106B.setValue "U_CSUCOD", i, CSUCOD
-        oDS_PH_PY106B.setValue "U_CSUNAM", i, Trim(oRecordSet.Fields("U_CSUNAM").Value)
+        oDS_PH_PY106B.setValue "U_CSUNAM", i, Trim(oRecordSet.Fields("U_CSUNAM").VALUE)
         oDS_PH_PY106B.setValue "U_SILCOD", i, ""
         oDS_PH_PY106B.setValue "U_BNSBAS", i, "N"
         oDS_PH_PY106B.setValue "U_REMARK", i, ""
@@ -1102,10 +1102,10 @@ On Error GoTo Error_Message
             oDS_PH_PY106C.InsertRecord (i)
         End If
         oDS_PH_PY106C.Offset = i
-        oDS_PH_PY106C.setValue "Code", i, Trim(oRecordSet.Fields(0).Value)
-        oDS_PH_PY106C.setValue "Name", i, Trim(oRecordSet.Fields(1).Value)
-        oDS_PH_PY106C.setValue "U_FILCOD", i, Trim(oRecordSet.Fields(2).Value)
-        oDS_PH_PY106C.setValue "U_REMARK", i, Trim(oRecordSet.Fields(3).Value)
+        oDS_PH_PY106C.setValue "Code", i, Trim(oRecordSet.Fields(0).VALUE)
+        oDS_PH_PY106C.setValue "Name", i, Trim(oRecordSet.Fields(1).VALUE)
+        oDS_PH_PY106C.setValue "U_FILCOD", i, Trim(oRecordSet.Fields(2).VALUE)
+        oDS_PH_PY106C.setValue "U_REMARK", i, Trim(oRecordSet.Fields(3).VALUE)
         i = i + 1
         oRecordSet.MoveNext
     Loop

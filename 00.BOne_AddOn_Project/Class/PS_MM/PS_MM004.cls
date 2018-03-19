@@ -878,10 +878,10 @@ On Error GoTo FlushToItemValue_Error
                 sQry = sQry + "   And " & TWeight & " Between b.U_KgF And b.U_KgT "
                 oRecordSet01.DoQuery sQry
                 
-                If oForm01.Items("Way").Specific.VALUE = "10" Then
+                If Trim(oForm01.Items("Way").Specific.VALUE) = "10" Then
                     oForm01.Items("Amt").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
                     
-                ElseIf oForm01.Items("Way").Specific.VALUE = "20" Then
+                ElseIf Trim(oForm01.Items("Way").Specific.VALUE) = "20" Then
                     oForm01.Items("Amt").Specific.VALUE = (oRecordSet01.Fields(0).VALUE * 0.8)
                 End If
             End If

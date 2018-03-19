@@ -1210,9 +1210,9 @@ On Error GoTo Print_Query_Error
     Dim MachCode As String '장비코드
     
     BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
-    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE) '작업구분
-    FrYM = Trim(oForm01.Items("FrYM").Specific.VALUE) '기준년월(시작)
-    ToYM = Trim(oForm01.Items("ToYM").Specific.VALUE) '기준년월(종료)
+    OrdGbn = Trim(oForm01.Items("WorkGbn").Specific.Selected.VALUE) '작업구분
+    FrYM = Trim(oForm01.Items("FrDt").Specific.VALUE) '기준년월(시작)
+    ToYM = Trim(oForm01.Items("ToDt").Specific.VALUE) '기준년월(종료)
     MachCode = Trim(oForm01.Items("MachCode").Specific.VALUE) '장비코드
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -1233,7 +1233,7 @@ On Error GoTo Print_Query_Error
     
         ReportName = "PS_PP063_02.rpt"
     
-        sQry = "         EXEC PS_PP063_52 '"
+        sQry = "EXEC PS_PP063_52 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & OrdGbn & "','"
         sQry = sQry & FrYM & "','"
@@ -1244,7 +1244,7 @@ On Error GoTo Print_Query_Error
     
         ReportName = "PS_PP063_03.rpt"
     
-        sQry = "         EXEC PS_PP063_53 '"
+        sQry = "EXEC PS_PP063_53 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & OrdGbn & "','"
         sQry = sQry & FrYM & "','"

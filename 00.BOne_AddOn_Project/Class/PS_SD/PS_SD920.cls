@@ -859,19 +859,37 @@ End Sub
 
 Private Function Add_oReturns_oDeliveryNotes(ChkType As Integer) As Boolean
 On Error GoTo Add_oReturns_oDeliveryNotes_Error
+
     Dim DI_oReturns As SAPbobsCOM.Documents                 '//반품 문서객체
     Dim DI_oDeliveryNotes As SAPbobsCOM.Documents           '//납품 문서객체
 
-    Dim i&, j&, K&, l&, m&, LineCounter&
-    Dim ErrNum&, ErrCode As Long, ErrMsg$, RetVal&
-    Dim oRecordSet01      As SAPbobsCOM.Recordset
-    Dim sQry            As String
-    Dim lTypeCount As Integer   '전체 StockInfo 구조체배열의 RowCount
+    Dim i As Long
+    Dim j As Long
+    Dim K As Long
+    Dim l As Long
+    Dim m As Long
+    
+    Dim LineCounter As Long
+    
+    Dim ErrNum  As Long
+    Dim ErrCode As Long
+    Dim ErrMsg  As String
+    Dim RetVal  As Long
+    
+    Dim sQry          As String
+    Dim lTypeCount    As Integer   '전체 StockInfo 구조체배열의 RowCount
     Dim LineNum(1000) As Integer
-    Dim Line_Count&
-    Dim PT_Error$, PT_Error_Message$
-    Dim ORDNDocDate As Date, ODLNDocDate As Date, DueDate$, ORDNDocEntry$, ODLNDocEntry$, TempI&, BatchYN$
-
+    Dim Line_Count    As Long
+    Dim PT_Error      As String
+    Dim PT_Error_Message As String
+    Dim ORDNDocDate  As Date
+    Dim ODLNDocDate  As Date
+    Dim DueDate      As String
+    Dim ORDNDocEntry As String
+    Dim ODLNDocEntry As String
+    Dim TempI        As Long
+    Dim BatchYN      As String
+    Dim oRecordSet01  As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
     If Sbo_Company.InTransaction = True Then
@@ -881,16 +899,11 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
 
     oMat01.FlushToDataSource
 
-'    TempI = Val(oDS_PS_SD920H.GetValue("U_YYYYMM", 0)) + 1 'Format(oDS_PS_SD920H.GetValue("U_DocDate", 0), "0000-00-00")
-'    TempI = TempI & "01"
-'    ODLNDocDate = Format(TempI, "0000-00-00")
-'    ORDNDocDate = ODLNDocDate - 1
-
     '전기일 처리(2012.01.06 송명규 추가)
     ODLNDocDate = CDate(DateAdd("M", 1, Left(oDS_PS_SD920H.GetValue("U_YYYYMM", 0), 4) & "-" & Right(oDS_PS_SD920H.GetValue("U_YYYYMM", 0), 2) & "-01")) 'Format(TempI, "0000-00-00")
     ORDNDocDate = DateAdd("D", -1, ODLNDocDate)
 
-        For i = 0 To oMat01.RowCount - 1
+    For i = 0 To oMat01.RowCount - 1
         'DI API
         If Trim(oDS_PS_SD920L.GetValue("U_Check", i)) = "Y" Then
             ReDim Preserve oS_PS_SD920L(lTypeCount)
@@ -951,12 +964,9 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
         DI_oReturns.DocDate = ORDNDocDate
         DI_oReturns.DocDueDate = ORDNDocDate
         DI_oReturns.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.VALUE)
-'            DI_oReturns.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-'            DI_oReturns.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-'            DI_oReturns.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
         DI_oReturns.Comments = "이월반품처리 [납품 : " & Trim(oS_PS_SD920L(i).ODLNDocB) & "]"
 
-        '환율처리_S (2011.11.04 송명규 추가)
+        '헤더 환율처리_S (2011.11.04 송명규 추가)
         Dim lclDocCur As String
         Dim lclDocRate As Double
         Dim lclQuery As String
@@ -980,7 +990,7 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
             DI_oReturns.DocRate = lclDocRate
 
         End If
-        '환율처리_E
+        '헤더 환율처리_E
 
         DI_oReturns.Lines.ItemCode = oS_PS_SD920L(i).ItemCode
         DI_oReturns.Lines.Quantity = oS_PS_SD920L(i).OpenQty
@@ -995,18 +1005,14 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
         DI_oReturns.Lines.UserFields("U_BaseEntry").VALUE = oS_PS_SD920L(i).BaseEntry '기준납품문서의 납품처리[SD404]문서번호의 값을 그대로 저장(2016.10.20 송명규 수정)
         DI_oReturns.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).BaseLine '기준납품문서의 납품처리[SD404]문서행번호의 값을 그대로 저장(2016.10.20 송명규 수정)
 
-'        DI_oReturns.Lines.UserFields("U_BaseType").VALUE = "PS_SD920"
-'        DI_oReturns.Lines.UserFields("U_BaseEntry").VALUE = Trim(oDS_PS_SD920H.GetValue("DocEntry", 0)) 'oS_PS_SD920L(i).BaseEntry
-'        DI_oReturns.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).LineNum 'oS_PS_SD920L(i).BaseLine
-
-        '환율처리_S
+        '라인 환율처리_S
         If lclDocCur <> "KRW" Then
 
             DI_oReturns.Lines.Currency = lclDocCur
             DI_oReturns.Lines.rate = lclDocRate
 
         End If
-        '환율처리_E
+        '라인 환율처리_E
 
         If BatchYN = "Y" Then
             m = 0
@@ -1017,7 +1023,6 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
 
                 DI_oReturns.Lines.BatchNumbers.BatchNumber = Trim(oRecordSet01.Fields("BatchNum").VALUE)
                 DI_oReturns.Lines.BatchNumbers.Quantity = oS_PS_SD920L(i).OpenQty 'oRecordSet01.Fields("Quantity").VALUE 'oS_PS_SD920L(i).OpenQty 가용재고로 입력되도록 수정 20170307
-                'oRecordSet01.Fields("Quantity").VALUE ' oS_PS_SD920L(i).OpenQty  'oRecordSet01.Fields("Quantity").VALUE
                 oRecordSet01.MoveNext
                 m = m + 1
             Loop
@@ -1029,48 +1034,42 @@ On Error GoTo Add_oReturns_oDeliveryNotes_Error
         DI_oDeliveryNotes.DocDate = ODLNDocDate
         DI_oDeliveryNotes.DocDueDate = ODLNDocDate
         DI_oDeliveryNotes.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.VALUE)
-'            DI_oDeliveryNotes.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-'            DI_oDeliveryNotes.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-'            DI_oDeliveryNotes.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
         DI_oDeliveryNotes.Comments = "이월반품처리 [판매오더 : " & Trim(oS_PS_SD920L(i).ODLNDocB) & "]"
 
-        '환율처리_S (2011.11.04 송명규 추가)
+        '헤더 환율처리_S (2011.11.04 송명규 추가)
         If lclDocCur <> "KRW" Then
 
             DI_oDeliveryNotes.DocCurrency = lclDocCur
             DI_oDeliveryNotes.DocRate = lclDocRate
 
         End If
-        '환율처리_E
-
+        '헤더 환율처리_E
 
         DI_oDeliveryNotes.Lines.ItemCode = oS_PS_SD920L(i).ItemCode
         DI_oDeliveryNotes.Lines.Quantity = oS_PS_SD920L(i).OpenQty
         DI_oDeliveryNotes.Lines.WarehouseCode = oS_PS_SD920L(i).WhsCode
         DI_oDeliveryNotes.Lines.UnitPrice = oS_PS_SD920L(i).Price
         DI_oDeliveryNotes.Lines.LineTotal = oS_PS_SD920L(i).LineTotal
-        If oS_PS_SD920L(i).ORDRDoc > 0 Then
-            DI_oDeliveryNotes.Lines.BaseType = 17
-            DI_oDeliveryNotes.Lines.BaseEntry = oS_PS_SD920L(i).ORDRDoc
-            DI_oDeliveryNotes.Lines.BaseLine = oS_PS_SD920L(i).RDR1Line
-        End If
+        '9.2 버전에서는 코드 오류 남(이미 마감된 판매오더 번호는 등록 불가한 것 같음, 따라서 주석 처리(2018.03.07 송명규))
+'        If oS_PS_SD920L(i).ORDRDoc > 0 Then
+'            DI_oDeliveryNotes.Lines.BaseType = 17
+'            DI_oDeliveryNotes.Lines.BaseEntry = oS_PS_SD920L(i).ORDRDoc
+'            DI_oDeliveryNotes.Lines.BaseLine = oS_PS_SD920L(i).RDR1Line
+'        End If
+        '9.2 버전에서는 코드 오류 남(이미 마감된 판매오더 번호는 등록 불가한 것 같음, 따라서 주석 처리(2018.03.07 송명규))
         DI_oDeliveryNotes.Lines.UserFields("U_Qty").VALUE = oS_PS_SD920L(i).Qty
         DI_oDeliveryNotes.Lines.UserFields("U_BaseType").VALUE = oS_PS_SD920L(i).BaseType '기준납품문서의 값을 그대로 저장(2016.10.20 송명규 수정)
         DI_oDeliveryNotes.Lines.UserFields("U_BaseEntry").VALUE = oS_PS_SD920L(i).BaseEntry '기준납품문서의 납품처리[SD404]문서번호의 값을 그대로 저장(2016.10.20 송명규 수정)
         DI_oDeliveryNotes.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).BaseLine '기준납품문서의 납품처리[SD404]문서행번호의 값을 그대로 저장(2016.10.20 송명규 수정)
-
-'        DI_oDeliveryNotes.Lines.UserFields("U_BaseType").VALUE = "PS_SD920"
-'        DI_oDeliveryNotes.Lines.UserFields("U_BaseEntry").VALUE = Trim(oDS_PS_SD920H.GetValue("DocEntry", 0)) 'oS_PS_SD920L(i).BaseEntry
-'        DI_oDeliveryNotes.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).LineNum 'oS_PS_SD920L(i).BaseLine
-
-        '환율처리_S
+        
+        '라인 환율처리_S
         If lclDocCur <> "KRW" Then
 
             DI_oDeliveryNotes.Lines.Currency = lclDocCur
             DI_oDeliveryNotes.Lines.rate = lclDocRate
 
         End If
-        '환율처리_E
+        '라인 환율처리_E
 
         If BatchYN = "Y" Then
             m = 0
@@ -1120,10 +1119,6 @@ Add_Line_Again:
                 DI_oReturns.Lines.UserFields("U_BaseEntry").VALUE = oS_PS_SD920L(i).BaseEntry '기준납품문서의 납품처리[SD404]문서번호의 값을 그대로 저장(2016.10.20 송명규 수정)
                 DI_oReturns.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).BaseLine '기준납품문서의 납품처리[SD404]문서행번호의 값을 그대로 저장(2016.10.20 송명규 수정)
 
-'                DI_oReturns.Lines.UserFields("U_BaseType").VALUE = "PS_SD920"
-'                DI_oReturns.Lines.UserFields("U_BaseEntry").VALUE = Trim(oDS_PS_SD920H.GetValue("DocEntry", 0)) 'oS_PS_SD920L(i).BaseEntry
-'                DI_oReturns.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).LineNum 'oS_PS_SD920L(i).BaseLine
-
                 '환율처리_S
                 If lclDocCur <> "KRW" Then
 
@@ -1154,20 +1149,18 @@ Add_Line_Again:
                 DI_oDeliveryNotes.Lines.WarehouseCode = oS_PS_SD920L(i).WhsCode
                 DI_oDeliveryNotes.Lines.UnitPrice = oS_PS_SD920L(i).Price
                 DI_oDeliveryNotes.Lines.LineTotal = oS_PS_SD920L(i).LineTotal
-                If oS_PS_SD920L(i).ORDRDoc > 0 Then
-                    DI_oDeliveryNotes.Lines.BaseType = 17
-                    DI_oDeliveryNotes.Lines.BaseEntry = oS_PS_SD920L(i).ORDRDoc
-                    DI_oDeliveryNotes.Lines.BaseLine = oS_PS_SD920L(i).RDR1Line
-                End If
+                '9.2 버전에서는 코드 오류 남(이미 마감된 판매오더 번호는 등록 불가한 것 같음, 따라서 주석 처리(2018.03.07 송명규))
+'                If oS_PS_SD920L(i).ORDRDoc > 0 Then
+'                    DI_oDeliveryNotes.Lines.BaseType = 17
+'                    DI_oDeliveryNotes.Lines.BaseEntry = oS_PS_SD920L(i).ORDRDoc
+'                    DI_oDeliveryNotes.Lines.BaseLine = oS_PS_SD920L(i).RDR1Line
+'                End If
+                '9.2 버전에서는 코드 오류 남(이미 마감된 판매오더 번호는 등록 불가한 것 같음, 따라서 주석 처리(2018.03.07 송명규))
                 DI_oDeliveryNotes.Lines.UserFields("U_Qty").VALUE = oS_PS_SD920L(i).Qty
                 DI_oDeliveryNotes.Lines.UserFields("U_BaseType").VALUE = oS_PS_SD920L(i).BaseType '기준납품문서의 값을 그대로 저장(2016.10.20 송명규 수정)
                 DI_oDeliveryNotes.Lines.UserFields("U_BaseEntry").VALUE = oS_PS_SD920L(i).BaseEntry '기준납품문서의 납품처리[SD040]문서번호의 값을 그대로 저장(2016.10.20 송명규 수정)
                 DI_oDeliveryNotes.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).BaseLine '기준납품문서의 납품처리[SD040]문서행번호의 값을 그대로 저장(2016.10.20 송명규 수정)
-
-'                DI_oDeliveryNotes.Lines.UserFields("U_BaseType").VALUE = "PS_SD920"
-'                DI_oDeliveryNotes.Lines.UserFields("U_BaseEntry").VALUE = Trim(oDS_PS_SD920H.GetValue("DocEntry", 0)) 'oS_PS_SD920L(i).BaseEntry
-'                DI_oDeliveryNotes.Lines.UserFields("U_BaseLine").VALUE = oS_PS_SD920L(i).LineNum 'oS_PS_SD920L(i).BaseLine
-
+                
                 '환율처리_S
                 If lclDocCur <> "KRW" Then
 
@@ -1237,9 +1230,15 @@ Add_DI_oReturns_oDeliveryNotes:
             Call oDS_PS_SD920L.setValue("U_RDN1Line", LineNum(l + 1), LineCounter)
             Call oDS_PS_SD920L.setValue("U_ODLNDoc", LineNum(l + 1), ODLNDocEntry)
             Call oDS_PS_SD920L.setValue("U_DLN1Line", LineNum(l + 1), LineCounter)
+            '납품문서 DLN1 (BaseEntry, BaseLine,BaseType 추가함)
+            sQry = "EXECUTE [PS_Z_InsertInfo_ODLN] '" & ODLNDocEntry & "','" & LineCounter & "','" & Trim(oS_PS_SD920L(l).ORDRDoc) & "','" & Trim(oS_PS_SD920L(l).RDR1Line) & "'"
+            
+            oRecordSet01.DoQuery sQry
+            
             LineCounter = LineCounter + 1
             l = l + 1
         Next
+        
         ProgBar01.VALUE = ProgBar01.VALUE + 1
         ProgBar01.Text = ProgBar01.VALUE & "/" & lTypeCount & "건의 납품 반품 문서 생성중...!"
 

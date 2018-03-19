@@ -3455,10 +3455,12 @@ Private Function PH_PY001_OHEM_DI_ADD() As Boolean
         .UserFields.Fields.Item("U_CLTCOD").VALUE = oForm.Items.Item("CLTCOD").Specific.VALUE       '//사업장
         .UserFields.Fields.Item("U_GRPDAT").VALUE = Format(Trim(oForm.Items.Item("GrpDat").Specific.VALUE), "####-##-##")       '//그룹입사일
         .StartDate = Format(Trim(oForm.Items.Item("startDat").Specific.VALUE), "####-##-##")                                    '//입사일자
-        .UserFields.Fields.Item("U_RETDAT").VALUE = Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##")       '//중간정산일
+        If Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##") <> "" Then
+            .UserFields.Fields.Item("U_RETDAT").VALUE = Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##") '//중간정산일 (값이 있을 때만 입력)
+        End If
         .LastName = oForm.Items.Item("lNameKO").Specific.VALUE                                     '//한글 성
         .FirstName = oForm.Items.Item("fNameKO").Specific.VALUE                                    '//한글 명
-        .UserFields.Fields.Item("U_FullName").VALUE = Trim(.LastName) & Trim(.FirstName)           '//성명(풀네임)
+        .UserFields.Fields.Item("U_FULLNAME").VALUE = Trim(.LastName) & Trim(.FirstName)           '//성명(풀네임)
         .UserFields.Fields.Item("U_lNameTW").VALUE = oForm.Items.Item("lNameTW").Specific.VALUE    '//한자 성
         .UserFields.Fields.Item("U_fNameTW").VALUE = oForm.Items.Item("fNameTW").Specific.VALUE    '//한자 명
         .UserFields.Fields.Item("U_lNameEN").VALUE = oForm.Items.Item("lNameEN").Specific.VALUE    '//영문 성
@@ -3481,6 +3483,7 @@ Private Function PH_PY001_OHEM_DI_ADD() As Boolean
         .UserFields.Fields.Item("U_RspCode").VALUE = oForm.Items.Item("RspCode").Specific.VALUE    '//담당
         .UserFields.Fields.Item("U_ClsCode").VALUE = oForm.Items.Item("ClsCode").Specific.VALUE    '//반
         .HomePhone = oForm.Items.Item("homeTel").Specific.VALUE                                    '//전화번호
+        .OfficePhone = oForm.Items.Item("OffcTel").Specific.VALUE                                  '//사무실전화
         .MobilePhone = oForm.Items.Item("mobile").Specific.VALUE                                   '//휴대전화
         .StatusCode = oForm.Items.Item("status").Specific.VALUE                                    '//재직구분
     
@@ -3496,11 +3499,11 @@ Private Function PH_PY001_OHEM_DI_ADD() As Boolean
     
         If oForm.Items.Item("martStat").Specific.VALUE = "Y" Then                                       '//혼인구분
             .MartialStatus = mts_Married
+            .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//결혼기념일
         Else '// "N"
             .MartialStatus = mts_Single
         End If
-    
-        .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//결혼기념일
+        
         .CountryOfBirth = oForm.Items.Item("brthCntr").Specific.VALUE                              '//국적
         .UserFields.Fields.Item("U_ShiftTyp").VALUE = oForm.Items.Item("ShiftDat").Specific.VALUE  '//근무형태
         .UserFields.Fields.Item("U_GNMUJO").VALUE = oForm.Items.Item("GNMUJO").Specific.VALUE      '//근무조
@@ -3550,7 +3553,7 @@ Private Function PH_PY001_OHEM_DI_ADD() As Boolean
             PH_PY001_OHEM_DI_ADD = True
             Sbo_Application.SetStatusBarMessage oForm.Items.Item("Code").Specific.VALUE & "사원마스터가 생성되었습니다.", bmt_Short, False
             
-            Call oDS_PH_PY001A.setValue("U_FullName", 0, oOHEM.UserFields.Fields.Item("U_FullName").VALUE)
+            Call oDS_PH_PY001A.setValue("U_FullName", 0, oOHEM.UserFields.Fields.Item("U_FULLNAME").VALUE)
         End If
         
     End With
@@ -3608,10 +3611,12 @@ Private Function PH_PY001_OHEM_DI_UPDATE() As Boolean
             .UserFields.Fields.Item("U_CLTCOD").VALUE = oForm.Items.Item("CLTCOD").Specific.VALUE       '//사업장
             .UserFields.Fields.Item("U_GRPDAT").VALUE = Format(Trim(oForm.Items.Item("GrpDat").Specific.VALUE), "####-##-##")       '//그룹입사일
             .StartDate = Format(Trim(oForm.Items.Item("startDat").Specific.VALUE), "####-##-##")                                 '//입사일자
-            .UserFields.Fields.Item("U_RETDAT").VALUE = Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##")      '//중간정산일
+            If Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##") <> "" Then
+                .UserFields.Fields.Item("U_RETDAT").VALUE = Format(Trim(oForm.Items.Item("RetDat").Specific.VALUE), "####-##-##")      '//중간정산일
+            End If
             .LastName = oForm.Items.Item("lNameKO").Specific.VALUE                                     '//한글 성
             .FirstName = oForm.Items.Item("fNameKO").Specific.VALUE                                    '//한글 명
-            .UserFields.Fields.Item("U_FullName").VALUE = Trim(.LastName) & Trim(.FirstName)           '//성명(풀네임)
+            .UserFields.Fields.Item("U_FULLNAME").VALUE = Trim(.LastName) & Trim(.FirstName)           '//성명(풀네임)
             .UserFields.Fields.Item("U_lNameTW").VALUE = oForm.Items.Item("lNameTW").Specific.VALUE    '//한자 성
             .UserFields.Fields.Item("U_fNameTW").VALUE = oForm.Items.Item("fNameTW").Specific.VALUE    '//한자 명
             .UserFields.Fields.Item("U_lNameEN").VALUE = oForm.Items.Item("lNameEN").Specific.VALUE    '//영문 성
@@ -3649,11 +3654,11 @@ Private Function PH_PY001_OHEM_DI_UPDATE() As Boolean
         
             If oForm.Items.Item("martStat").Specific.VALUE = "Y" Then                                   '//혼인구분
                 oOHEM.MartialStatus = mts_Married
+                .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//결혼기념일
             Else '// "N"
                 oOHEM.MartialStatus = mts_Single
             End If
     
-            .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//결혼기념일
             .CountryOfBirth = oForm.Items.Item("brthCntr").Specific.VALUE                              '//국적
             .UserFields.Fields.Item("U_ShiftTyp").VALUE = oForm.Items.Item("ShiftDat").Specific.VALUE  '//근무형태
             .UserFields.Fields.Item("U_GNMUJO").VALUE = oForm.Items.Item("GNMUJO").Specific.VALUE      '//근무조

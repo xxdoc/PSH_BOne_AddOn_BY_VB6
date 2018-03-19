@@ -2469,7 +2469,7 @@ On Error GoTo PS_PP044_MTX01_Error
         End If
 
         oMat04.AddRow
-        oDS_PS_PP044T.offset = i
+        oDS_PS_PP044T.Offset = i
         
         oDS_PS_PP044T.setValue "U_LineNum", i, i + 1
         oDS_PS_PP044T.setValue "U_ColReg01", i, "N"

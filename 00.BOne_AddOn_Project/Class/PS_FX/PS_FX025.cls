@@ -524,7 +524,7 @@ On Error GoTo MTX01_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_FX025L.offset = i
+        oDS_PS_FX025L.Offset = i
         oDS_PS_FX025L.setValue "U_LineNum", i, i + 1
         oDS_PS_FX025L.setValue "U_ClasCode", i, Trim(oRecordSet01.Fields("ClasCode").VALUE)
         oDS_PS_FX025L.setValue "U_ClasName", i, Trim(oRecordSet01.Fields("ClasName").VALUE)
@@ -617,7 +617,7 @@ On Error GoTo MatrixSpaceLineDel_Error
     If oMat01.VisualRowCount > 0 Then
         
     For i = 0 To oMat01.VisualRowCount - 2
-        oDS_PS_FX025L.offset = i
+        oDS_PS_FX025L.Offset = i
             Select Case True
                 Case oDS_PS_FX025L.GetValue("U_AcctCode", i) = ""
                     ErrNum = 2
@@ -762,7 +762,7 @@ On Error GoTo Create_oJournalEntries
                 .Lines.UserFields("U_BillCode").VALUE = "P90010" '법정지출증빙코드
                 .Lines.UserFields("U_BillName").VALUE = "규정" '법정지출증빙명
                 
-                .UserFields("U_BPLId").VALUE = oForm01.Items("BPLId").Specific.VALUE '사업장
+                .UserFields("U_BPLId").VALUE = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
             End If
         Next
          

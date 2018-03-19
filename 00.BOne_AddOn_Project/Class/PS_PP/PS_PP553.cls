@@ -1147,7 +1147,7 @@ On Error GoTo Print_Query_Error
     Dim MachCode As String '장비코드
     
     BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
-    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE) '작업구분
+    OrdGbn = Trim(oForm01.Items("WorkGbn").Specific.Selected.VALUE) '작업구분
     FrYM = Trim(oForm01.Items("FrYM").Specific.VALUE) '기준년월(시작)
     ToYM = Trim(oForm01.Items("ToYM").Specific.VALUE) '기준년월(종료)
     MachCode = Trim(oForm01.Items("MachCode").Specific.VALUE) '장비코드

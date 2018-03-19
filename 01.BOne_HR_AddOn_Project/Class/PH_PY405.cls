@@ -373,8 +373,10 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim FullName    As String
     Dim kname       As String
     Dim rel         As String
-    Dim yyyy        As String
+    Dim YYYY        As String
     Dim juminno     As String
+    Dim YY          As String
+    Dim Result      As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim oColumn     As SAPbouiCOM.Column
@@ -399,13 +401,21 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Call PH_PY405_MTX01
                 End If
                 
+                    If pval.ItemUID = "Btn01" Then
                 
-                
-                If pval.ItemUID = "Btn01" Then
-                    Call PH_PY405_SAVE
-                    
+                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        YY = oForm.Items("Year").Specific.VALUE
+                        sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & YY & CLTCOD & "'"
+                        oRecordSet.DoQuery sQry
+                           
+                        Result = oRecordSet.Fields(0).VALUE
+                    If Result <> "" Then
+                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
+                    End If
+                    If Result = "" Then
+                        Call PH_PY405_SAVE
+                    End If
                 End If
-                
                                 
                 If pval.ItemUID = "Btn_del" Then
                     Call PH_PY405_Delete
@@ -480,7 +490,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '                        If oForm.Items("rel").Specific.VALUE = "01" Then
                             CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
                             MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
-                            yyyy = oForm.Items("Year").Specific.VALUE
+                            YYYY = oForm.Items("Year").Specific.VALUE
                             
                             If oForm.Items("rel").Specific.VALUE <> "" Then
                                 oForm.DataSources.UserDataSources.Item("kname").VALUE = ""
@@ -493,7 +503,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             sQry = sQry + " and sabun = '" + MSTCOD + "'"
                             sQry = sQry + " and div In ('10','70') "
                             sQry = sQry + " and relate = '" & oForm.Items("rel").Specific.VALUE & "'"
-                            sQry = sQry + " and yyyy = '" & yyyy & "'"
+                            sQry = sQry + " and yyyy = '" & YYYY & "'"
                               
                             oRecordSet.DoQuery sQry
                             
@@ -634,7 +644,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
                             rel = oForm.Items("rel").Specific.VALUE
                             kname = oForm.Items("kname").Specific.VALUE
-                            yyyy = oForm.Items("Year").Specific.VALUE
+                            YYYY = oForm.Items("Year").Specific.VALUE
                             
                             oForm.Items("juminno").Specific.VALUE = ""
                             
@@ -644,7 +654,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             sQry = sQry + " and sabun = '" + MSTCOD + "'"
                             sQry = sQry + " and relate = '" + rel + "'"
                             sQry = sQry + " and kname = '" + kname + "'"
-                            sQry = sQry + " and yyyy = '" + yyyy + "'"
+                            sQry = sQry + " and yyyy = '" + YYYY + "'"
                               
                             oRecordSet.DoQuery sQry
                             
@@ -658,8 +668,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     
                                     '//65세 경로우대 의료비 체크
                                     sQry = "select Cnt = Count(*) from p_seoybase a "
-                                    sQry = sQry + " Where a.yyyy = '" & yyyy & "'"
-                                    sQry = sQry + " and datediff(yy, Left(a.birthymd,4) + '1231', '" & yyyy & "1231'" & " ) >= 65"
+                                    sQry = sQry + " Where a.yyyy = '" & YYYY & "'"
+                                    sQry = sQry + " and datediff(yy, Left(a.birthymd,4) + '1231', '" & YYYY & "1231'" & " ) >= 65"
                                     sQry = sQry + " And a.juminno = '" & juminno & "'"
                                     oRecordSet.DoQuery sQry
                                     
@@ -672,7 +682,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     Set oCombo = oForm.Items("deform").Specific
                                     '//장애자인경우
                                     sQry = " Select Cnt = Count(*) From p_seoybase "
-                                    sQry = sQry + " Where yyyy = '" & yyyy & "'"
+                                    sQry = sQry + " Where yyyy = '" & YYYY & "'"
                                     sQry = sQry + " and div = '20' and target = '220'"
                                     sQry = sQry + " And juminno = '" & juminno & "'"
                                     oRecordSet.DoQuery sQry
@@ -1195,11 +1205,11 @@ Private Sub PH_PY405_SAVE()
     Dim i       As Long
     Dim sQry    As String
     
-    Dim saup$, yyyy$, sabun$, kname$, juminno$, custnm$, payymd$, rel$, empdiv$, entno$, Gubun$, olddiv$, deform$, nanim$
+    Dim saup$, YYYY$, sabun$, kname$, juminno$, custnm$, payymd$, rel$, empdiv$, entno$, Gubun$, olddiv$, deform$, nanim$
     Dim medcex, ntamt, cont As Double
     
     saup = oForm.Items("CLTCOD").Specific.VALUE
-    yyyy = oForm.Items("Year").Specific.VALUE
+    YYYY = oForm.Items("Year").Specific.VALUE
     sabun = Trim(oForm.Items("MSTCOD").Specific.VALUE)
         
     rel = oForm.Items("rel").Specific.VALUE
@@ -1224,7 +1234,7 @@ Private Sub PH_PY405_SAVE()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If Trim(yyyy) = "" Then
+    If Trim(YYYY) = "" Then
         Call MDC_Com.MDC_GF_Message("년도가 없습니다. 확인바랍니다..", "E")
         GoTo PH_PY405_SAVE_Exit
     End If
@@ -1268,7 +1278,7 @@ Private Sub PH_PY405_SAVE()
     End If
     
             
-    sQry = " Select Count(*) From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
+    sQry = " Select Count(*) From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
     oRecordSet.DoQuery sQry
     
     If oRecordSet.Fields(0).VALUE > 0 Then
@@ -1292,7 +1302,7 @@ Private Sub PH_PY405_SAVE()
         sQry = sQry + "deform = '" & deform & "',"
         sQry = sQry + "nanim = '" & nanim & "'"
         
-        sQry = sQry + " Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
+        sQry = sQry + " Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
         
         oRecordSet.DoQuery sQry
         
@@ -1323,7 +1333,7 @@ Private Sub PH_PY405_SAVE()
         sQry = sQry & "VALUES("
 
         sQry = sQry & "'" & saup & "',"
-        sQry = sQry & "'" & yyyy & "',"
+        sQry = sQry & "'" & YYYY & "',"
         sQry = sQry & "'" & sabun & "',"
         sQry = sQry & "'" & rel & "',"
         sQry = sQry & "'" & kname & "',"
@@ -1372,7 +1382,7 @@ End Sub
 Private Sub PH_PY405_Delete()
     '//선택된 자료 삭제
     
-    Dim saup$, yyyy$, sabun$, kname$, juminno$, custnm$, payymd$, rel$, empdiv$, entno$, Gubun$, olddiv$, deform$
+    Dim saup$, YYYY$, sabun$, kname$, juminno$, custnm$, payymd$, rel$, empdiv$, entno$, Gubun$, olddiv$, deform$
     Dim medcex, ntamt, cont As Double
     
     
@@ -1392,7 +1402,7 @@ Private Sub PH_PY405_Delete()
     kname = oForm.Items("kname").Specific.VALUE
     
     saup = oForm.Items("CLTCOD").Specific.VALUE
-    yyyy = oForm.Items("Year").Specific.VALUE
+    YYYY = oForm.Items("Year").Specific.VALUE
     sabun = Trim(oForm.Items("MSTCOD").Specific.VALUE)
         
     juminno = oForm.Items("juminno").Specific.VALUE
@@ -1400,13 +1410,13 @@ Private Sub PH_PY405_Delete()
     entno = oForm.Items("entno").Specific.VALUE
     payymd = oForm.Items("payymd").Specific.VALUE
     
-    sQry = " Select Count(*) From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
+    sQry = " Select Count(*) From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
     oRecordSet.DoQuery sQry
     
     cnt = oRecordSet.Fields(0).VALUE
     If cnt > 0 Then
     
-        If Trim(yyyy) = "" Then
+        If Trim(YYYY) = "" Then
             Call MDC_Com.MDC_GF_Message("년도가 없습니다. 확인바랍니다..", "E")
             GoTo PH_PY405_Delete_Exit
         End If
@@ -1422,7 +1432,7 @@ Private Sub PH_PY405_Delete()
         
         
         If Sbo_Application.MessageBox(" 선택한라인('" & kname & "')을 삭제하시겠습니까? ?", "2", "예", "아니오") = "1" Then
-            sQry = "Delete From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
+            sQry = "Delete From [p_seoymedhis] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And juminno = '" & juminno & "' And custnm = '" & custnm & "' And payymd = '" & payymd & "' And entno = '" & entno & "'"
             oRecordSet.DoQuery sQry
         End If
     End If

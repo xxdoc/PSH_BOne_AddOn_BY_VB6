@@ -546,7 +546,7 @@ On Error GoTo Print_Query_Error
     Dim sQry            As String
     Dim Sub_sQry        As String
     
-    Dim BPLId       As String
+    Dim BPLID       As String
     Dim CardCode    As String
     Dim Pumtxt    As String
     Dim DocDateFr       As String
@@ -564,7 +564,7 @@ On Error GoTo Print_Query_Error
     Call ConnectODBC
     
     '// 조회조건문
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     Pumtxt = Trim(oForm01.Items("Pumtxt").Specific.VALUE)
     DocDateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
@@ -609,13 +609,13 @@ End If
     
 '    '/ Procedure 실행"
 If oForm01.DataSources.UserDataSources("RadioBtn").VALUE = "D" Then
-    sQry = "EXEC [PS_PP520_01] '" & BPLId & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
+    sQry = "EXEC [PS_PP520_01] '" & BPLID & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
 ElseIf oForm01.DataSources.UserDataSources("RadioBtn").VALUE = "A" Then
-    sQry = "EXEC [PS_PP520_02] '" & BPLId & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
+    sQry = "EXEC [PS_PP520_02] '" & BPLID & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
 ElseIf oForm01.DataSources.UserDataSources("RadioBtn").VALUE = "B" Then
-    sQry = "EXEC [PS_PP520_03] '" & BPLId & "', '" & Pumtxt & "', '" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
+    sQry = "EXEC [PS_PP520_03] '" & BPLID & "', '" & Pumtxt & "', '" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
 ElseIf oForm01.DataSources.UserDataSources("RadioBtn").VALUE = "C" Then
-    sQry = "EXEC [PS_PP520_04] '" & BPLId & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
+    sQry = "EXEC [PS_PP520_04] '" & BPLID & "', '" & CardCode & "','" & Pumtxt & "','" & DocDateFr & "', '" & DocDateTo & "','" & InOutGbn & "'"
 End If
 
 '    oRecordset.DoQuery sQry

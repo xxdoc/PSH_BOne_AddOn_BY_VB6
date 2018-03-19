@@ -499,7 +499,7 @@ Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM
             Case "1288", "1289", "1290", "1291":
                 Call PH_PY105_FormItemEnabled
             Case "1293" '// «‡ªË¡¶
-                Call Raise_EVENT_ROW_DELETE(FormUID, pval, BubbleEvent, oMat1, oDS_PH_PY105B, "U_CODNBR")
+                Call Raise_EVENT_ROW_DELETE(FormUID, pval, BubbleEvent, oMat1, oDS_PH_PY105B, "U_JIGCOD")
                 Call PH_PY105_AddMatrixRow
         End Select
     End If

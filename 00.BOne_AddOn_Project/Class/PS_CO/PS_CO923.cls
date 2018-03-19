@@ -116,6 +116,8 @@ On Error GoTo LoadForm_Error
     '//Call PS_CO923_FormClear '//UDO방식일때
     '//Call PS_CO923_AddMatrixRow(0, True) '//UDO방식일때
     
+    oForm01.Items("BtnPrt11").Visible = False '출력 버튼 비활성(2018.03.12 송명규)
+    
     oForm01.Items("FrMt").Specific.VALUE = Format(Now, "YYYYMM")
     oForm01.Items("ToMt").Specific.VALUE = Format(Now, "YYYYMM")
     

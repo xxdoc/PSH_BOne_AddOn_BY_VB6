@@ -1053,7 +1053,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM005H.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM005H.offset = oRow
+    oDS_PS_MM005H.Offset = oRow
     oDS_PS_MM005H.setValue "DocNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1768,7 +1768,7 @@ On Error GoTo MatrixSpaceLineDel_Error
         End Select
         
         '마감상태 체크_S(2017.11.22 송명규 추가)
-        If MDC_PS_Common.Check_Finish_Status(oForm01.Items("BPLId").Specific.VALUE, oDS_PS_MM005H.GetValue("U_DocDate", i), oForm01.TypeEx) = False Then
+        If MDC_PS_Common.Check_Finish_Status(Trim(oForm01.Items("BPLId").Specific.VALUE), oDS_PS_MM005H.GetValue("U_DocDate", i), oForm01.TypeEx) = False Then
             ErrNum = 12
             GoTo MatrixSpaceLineDel_Error
         End If
@@ -2376,7 +2376,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_MM005H.offset = i
+        oDS_PS_MM005H.Offset = i
                 
         oDS_PS_MM005H.setValue "DocNum", i, i + 1
         oDS_PS_MM005H.setValue "U_PP030DL", i, Trim(oRecordSet01.Fields("U_PP030DL").VALUE)

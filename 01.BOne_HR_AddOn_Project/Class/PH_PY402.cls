@@ -408,6 +408,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim Div         As String
     Dim target      As String
     Dim relate      As String
+    Dim YYYY        As String
+    Dim Result      As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim oColumn     As SAPbouiCOM.Column
@@ -431,11 +433,21 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 If pval.ItemUID = "Btn_ret" Then
                     Call PH_PY402_MTX01
                 End If
+                    If pval.ItemUID = "Btn01" Then
                 
-                
-                
-                If pval.ItemUID = "Btn01" Then
-                    Call PH_PY402_SAVE
+                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        YYYY = oForm.Items("Year").Specific.VALUE
+                        sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & YYYY & CLTCOD & "'"
+                        oRecordSet.DoQuery sQry
+                           
+                        Result = oRecordSet.Fields(0).VALUE
+                    If Result <> "" Then
+                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
+                    End If
+                    If Result = "" Then
+                        Call PH_PY402_SAVE
+                    End If
+                    
                     
                 End If
                 
@@ -1461,7 +1473,7 @@ Private Sub PH_PY402_SAVE()
     Dim Div$, target$, relate$, kname$, juminno$, addr$, birthymd$, hdcode$
     Dim CheckDate1$, CheckDate2$
     
-    Dim amt, ntsamt, ntsamt24, ntsamt44, bcard_t, bcard44, bbcard_t, bbcard44, adgong24, mart24, trans24, mart44, trans44 As Double
+    Dim Amt, ntsamt, ntsamt24, ntsamt44, bcard_t, bcard44, bbcard_t, bbcard44, adgong24, mart24, trans24, mart44, trans44 As Double
     
     Dim oRecordSet As SAPbobsCOM.Recordset
     Dim vReturnValue$
@@ -1476,7 +1488,7 @@ Private Sub PH_PY402_SAVE()
     addr = oForm.Items("addr").Specific.VALUE
     birthymd = oForm.Items("birthymd").Specific.VALUE
     hdcode = oForm.Items("hdcode").Specific.VALUE
-    amt = oForm.Items("amt").Specific.VALUE
+    Amt = oForm.Items("amt").Specific.VALUE
     ntsamt = oForm.Items("ntsamt").Specific.VALUE
     ntsamt24 = oForm.Items("ntsamt24").Specific.VALUE
     'ntsamt44 = oForm.Items("ntsamt44").Specific.VALUE
@@ -1535,7 +1547,7 @@ Private Sub PH_PY402_SAVE()
     adgong24 = oForm.Items("adgong24").Specific.VALUE
     
     'If Trim(juminno) = "" Or (Div <> "70" And Val(amt) + Val(ntsamt) + Val(mart24) + Val(trans24) + Val(mart44) + Val(trans44) + Val(bcard_t) + Val(bcard44) + Val(bbcard_t) + Val(bbcard44) = 0) Then
-    If Trim(juminno) = "" Or (Div <> "70" And Val(amt) + Val(ntsamt) + Val(mart24) + Val(trans24) + Val(adgong24) + Val(bcard_t) + Val(bbcard_t) + Val(bbcard44) = 0) Then
+    If Trim(juminno) = "" Or (Div <> "70" And Val(Amt) + Val(ntsamt) + Val(mart24) + Val(trans24) + Val(adgong24) + Val(bcard_t) + Val(bbcard_t) + Val(bbcard44) = 0) Then
         Call MDC_Com.MDC_GF_Message("정상적인 자료가 아닙니다. 확인바랍니다..", "E")
         GoTo PH_PY402_SAVE_Exit
     End If
@@ -1590,7 +1602,7 @@ Private Sub PH_PY402_SAVE()
         sQry = sQry + "addr = '" & addr & "',"
         sQry = sQry + "birthymd = '" & birthymd & "',"
         sQry = sQry + "hdcode = '" & hdcode & "',"
-        sQry = sQry + "amt = " & amt & ","
+        sQry = sQry + "amt = " & Amt & ","
         sQry = sQry + "ntsamt =" & ntsamt & ","
         sQry = sQry + "ntsamt24 =" & ntsamt24 & ","
         'sQry = sQry + "ntsamt44 =" & ntsamt44 & ","
@@ -1651,7 +1663,7 @@ Private Sub PH_PY402_SAVE()
         sQry = sQry & "'" & addr & "',"
         sQry = sQry & "'" & birthymd & "',"
         sQry = sQry & "'" & hdcode & "',"
-        sQry = sQry & amt & ","
+        sQry = sQry & Amt & ","
         sQry = sQry & ntsamt & ", 0 ,"
         
         sQry = sQry & ntsamt24 & ","

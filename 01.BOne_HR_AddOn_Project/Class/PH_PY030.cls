@@ -866,7 +866,7 @@ On Error GoTo PH_PY030_FlushToItemValue_Error
             
             oForm.Items("STeamCode").DisplayDesc = True
         Case "Destinat"
-            If oForm.Items.Item("CLTCOD").Specific.VALUE = "1" Then
+            If Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) = "1" Then
                 sQry = "Select Distance = U_Num2 From [@PS_HR200L] Where Code = 'P217' And U_Code = '" & oForm.Items.Item("Destinat").Specific.VALUE & "' and U_Char1 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
                 Call oRecordSet01.DoQuery(sQry)
                 oForm.Items.Item("Distance").Specific.VALUE = oRecordSet01.Fields("Distance").VALUE

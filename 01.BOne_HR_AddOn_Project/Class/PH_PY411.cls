@@ -319,8 +319,10 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim FullName    As String
     Dim seqn        As String
     Dim bcode       As String
+    Dim YY          As String
+    Dim Result      As String
     
-    Dim amt         As Long
+    Dim Amt         As Long
     Dim gamt        As Long
     Dim samt        As Long
     
@@ -347,13 +349,21 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Call PH_PY411_MTX01
                 End If
                 
+                    If pval.ItemUID = "Btn01" Then
                 
-                
-                If pval.ItemUID = "Btn01" Then
-                    Call PH_PY411_SAVE
-                    
+                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        YY = oForm.Items("Year").Specific.VALUE
+                        sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & YY & CLTCOD & "'"
+                        oRecordSet.DoQuery sQry
+                           
+                        Result = oRecordSet.Fields(0).VALUE
+                    If Result <> "" Then
+                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
+                    End If
+                    If Result = "" Then
+                        Call PH_PY411_SAVE
+                    End If
                 End If
-                
                                 
                 If pval.ItemUID = "Btn_del" Then
                     Call PH_PY411_Delete
@@ -582,7 +592,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             YEAR = oForm.Items("Year").Specific.VALUE
                             MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
                             seqn = oForm.Items("seqn").Specific.VALUE
-                            amt = 0
+                            Amt = 0
                             gamt = 0
                             
                             Dim Gubun As String
@@ -622,12 +632,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '                                   gamt = oRecordSet.Fields(0).VALUE
                                     
                                     If samt <= 55000000 Then  '5500백기준
-                                       amt = Round(gamt * 0.15, 0)   '15%
-                                       oForm.Items("gamt").Specific.VALUE = amt
+                                       Amt = Round(gamt * 0.15, 0)   '15%
+                                       oForm.Items("gamt").Specific.VALUE = Amt
                                        
                                     Else
-                                       amt = Round(gamt * 0.12, 0)   '12%
-                                       oForm.Items("gamt").Specific.VALUE = amt
+                                       Amt = Round(gamt * 0.12, 0)   '12%
+                                       oForm.Items("gamt").Specific.VALUE = Amt
                                     End If
                                     oForm.Items("amt").Specific.VALUE = gamt
                                
@@ -636,12 +646,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     oRecordSet.DoQuery sQry
                                     gamt = oRecordSet.Fields(0).VALUE
                                     
-                                    amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
+                                    Amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
                                     
-                                    If gamt + amt > 720000 Then
+                                    If gamt + Amt > 720000 Then
                                        oForm.Items("gamt").Specific.VALUE = 720000 - gamt
                                     Else
-                                       oForm.Items("gamt").Specific.VALUE = amt
+                                       oForm.Items("gamt").Specific.VALUE = Amt
                                     End If
                                     
                                     If oForm.Items("gamt").Specific.VALUE < 0 Then
@@ -654,12 +664,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     oRecordSet.DoQuery sQry
                                     gamt = oRecordSet.Fields(0).VALUE
                                     
-                                    amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
+                                    Amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
                                 
-                                    If gamt + amt > 480000 Then
+                                    If gamt + Amt > 480000 Then
                                        oForm.Items("gamt").Specific.VALUE = 480000 - gamt
                                     Else
-                                       oForm.Items("gamt").Specific.VALUE = amt
+                                       oForm.Items("gamt").Specific.VALUE = Amt
                                     End If
                                     
                                     If oForm.Items("gamt").Specific.VALUE < 0 Then
@@ -671,12 +681,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     oRecordSet.DoQuery sQry
                                     gamt = oRecordSet.Fields(0).VALUE
                                     
-                                    amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
+                                    Amt = Round(oForm.Items("amt").Specific.VALUE * 0.4, 0)
                                 
-                                    If gamt + amt > 2400000 Then
+                                    If gamt + Amt > 2400000 Then
                                        oForm.Items("gamt").Specific.VALUE = 2400000 - gamt
                                     Else
-                                       oForm.Items("gamt").Specific.VALUE = amt
+                                       oForm.Items("gamt").Specific.VALUE = Amt
                                     End If
                                     
                                     If oForm.Items("gamt").Specific.VALUE < 0 Then
@@ -1155,11 +1165,11 @@ Private Sub PH_PY411_SAVE()
     Dim seqncom As Integer
     Dim sQry    As String
     
-    Dim saup$, yyyy$, sabun$, seqn$, Gubun$, bcode$, bname$, bnum$
-    Dim yuncha, amt, gamt As Double
+    Dim saup$, YYYY$, sabun$, seqn$, Gubun$, bcode$, bname$, bnum$
+    Dim yuncha, Amt, gamt As Double
     
     saup = oForm.Items("CLTCOD").Specific.VALUE
-    yyyy = oForm.Items("Year").Specific.VALUE
+    YYYY = oForm.Items("Year").Specific.VALUE
     sabun = Trim(oForm.Items("MSTCOD").Specific.VALUE)
         
     seqn = oForm.Items("seqn").Specific.VALUE
@@ -1168,7 +1178,7 @@ Private Sub PH_PY411_SAVE()
     bname = oForm.Items("bname").Specific.VALUE
     bnum = oForm.Items("bnum").Specific.VALUE
     yuncha = oForm.Items("yuncha").Specific.VALUE
-    amt = oForm.Items("amt").Specific.VALUE
+    Amt = oForm.Items("amt").Specific.VALUE
     gamt = oForm.Items("gamt").Specific.VALUE
     
     Dim oRecordSet As SAPbobsCOM.Recordset
@@ -1178,7 +1188,7 @@ Private Sub PH_PY411_SAVE()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If Trim(yyyy) = "" Then
+    If Trim(YYYY) = "" Then
         Call MDC_Com.MDC_GF_Message("년도가 없습니다. 확인바랍니다..", "E")
         GoTo PH_PY411_SAVE_Exit
     End If
@@ -1194,13 +1204,13 @@ Private Sub PH_PY411_SAVE()
     End If
     
     
-    If Trim(Gubun) = "" Or Trim(bcode) = "" Or Trim(bnum) = "" Or amt = 0 Then
+    If Trim(Gubun) = "" Or Trim(bcode) = "" Or Trim(bnum) = "" Or Amt = 0 Then
         Call MDC_Com.MDC_GF_Message("정상적인 자료가 아닙니다. 확인바랍니다..", "E")
         GoTo PH_PY411_SAVE_Exit
     End If
     
             
-    sQry = " Select Count(*) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
+    sQry = " Select Count(*) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
     oRecordSet.DoQuery sQry
     
     If oRecordSet.Fields(0).VALUE > 0 Then
@@ -1213,17 +1223,17 @@ Private Sub PH_PY411_SAVE()
         sQry = sQry + "bnum = '" & bnum & "',"
         
         sQry = sQry + "yuncha = " & yuncha & ","
-        sQry = sQry + "amt = " & amt & ","
+        sQry = sQry + "amt = " & Amt & ","
         sQry = sQry + "gamt = " & gamt & ""
         
-        sQry = sQry + " Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
+        sQry = sQry + " Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
         
         oRecordSet.DoQuery sQry
         
     Else
         '//신규
         '순번 계산
-        sQry = " Select Convert(int,Max(seqn)) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "'"
+        sQry = " Select Convert(int,Max(seqn)) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "'"
         oRecordSet.DoQuery sQry
         seqncom = oRecordSet.Fields(0).VALUE
         seqncom = seqncom + 1
@@ -1247,7 +1257,7 @@ Private Sub PH_PY411_SAVE()
         sQry = sQry & "VALUES("
 
         sQry = sQry & "'" & saup & "',"
-        sQry = sQry & "'" & yyyy & "',"
+        sQry = sQry & "'" & YYYY & "',"
         sQry = sQry & "'" & sabun & "',"
         sQry = sQry & "'" & seqn & "',"
         sQry = sQry & "'" & Gubun & "',"
@@ -1256,7 +1266,7 @@ Private Sub PH_PY411_SAVE()
         sQry = sQry & "'" & bnum & "',"
         
         sQry = sQry & yuncha & ","
-        sQry = sQry & amt & ","
+        sQry = sQry & Amt & ","
         sQry = sQry & gamt & ""
         sQry = sQry & " ) "
 
@@ -1288,7 +1298,7 @@ End Sub
 Private Sub PH_PY411_Delete()
     '//선택된 자료 삭제
     
-    Dim saup$, yyyy$, sabun$, seqn$
+    Dim saup$, YYYY$, sabun$, seqn$
     Dim medcex, ntamt, cont As Double
     
     
@@ -1307,18 +1317,18 @@ Private Sub PH_PY411_Delete()
     
     
     saup = oForm.Items("CLTCOD").Specific.VALUE
-    yyyy = oForm.Items("Year").Specific.VALUE
+    YYYY = oForm.Items("Year").Specific.VALUE
     sabun = Trim(oForm.Items("MSTCOD").Specific.VALUE)
         
     seqn = oForm.Items("seqn").Specific.VALUE
     
-    sQry = " Select Count(*) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
+    sQry = " Select Count(*) From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
     oRecordSet.DoQuery sQry
     
     cnt = oRecordSet.Fields(0).VALUE
     If cnt > 0 Then
     
-        If Trim(yyyy) = "" Then
+        If Trim(YYYY) = "" Then
             Call MDC_Com.MDC_GF_Message("년도가 없습니다. 확인바랍니다..", "E")
             GoTo PH_PY411_Delete_Exit
         End If
@@ -1334,7 +1344,7 @@ Private Sub PH_PY411_Delete()
         
         
         If Sbo_Application.MessageBox(" 선택한라인('" & seqn & "')을 삭제하시겠습니까? ?", "2", "예", "아니오") = "1" Then
-            sQry = "Delete From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & yyyy & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
+            sQry = "Delete From [p_seoybank] Where saup = '" & saup & "' And yyyy = '" & YYYY & "' And sabun = '" & sabun & "' And seqn = '" & seqn & "'"
             oRecordSet.DoQuery sQry
         End If
     End If

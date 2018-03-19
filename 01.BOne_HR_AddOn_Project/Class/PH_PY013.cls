@@ -250,7 +250,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End If
                 If pval.ItemUID = "Btn_Save" Then
-                    If oForm.Items("CLTCOD").Specific.VALUE = "2" Then
+                    If Trim(oForm.Items("CLTCOD").Specific.VALUE) = "2" Then
                         If PH_PY013_DataSave = False Then
                             BubbleEvent = False
                         End If

@@ -1258,7 +1258,7 @@ On Error GoTo Print_Query_Error
 
     Dim StdYM As String '기준년월
     
-    StdYM = Trim(oForm01.Items("StdYM").Specific.VALUE)  '기준년월
+    StdYM = Trim(oForm01.Items("StdYM01").Specific.VALUE)  '기준년월
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_GA502] 레포트"

@@ -1556,13 +1556,13 @@ On Error GoTo PS_MM138_DI_API01_Error
     Set oDIObject = Sbo_Company.GetBusinessObject(oInventoryGenEntry)
     oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     
-    oDIObject.Lines.ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    oDIObject.Lines.WarehouseCode = "10" + oForm01.Items("BPLId").Specific.VALUE
-    oDIObject.Lines.Quantity = oForm01.Items("Qty").Specific.VALUE
+    oDIObject.Lines.ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    oDIObject.Lines.WarehouseCode = "10" + Trim(oForm01.Items("BPLId").Specific.VALUE)
+    oDIObject.Lines.Quantity = Trim(oForm01.Items("Qty").Specific.VALUE)
             
     oDIObject.UserFields("U_OrdTyp").VALUE = "30"
-    oDIObject.UserFields("U_CardCode").VALUE = oForm01.Items("CardCode").Specific.VALUE '//입고취소 문서번호
-    oDIObject.UserFields("U_CardName").VALUE = oForm01.Items("CardName").Specific.VALUE '//입고취소 문서번호
+    oDIObject.UserFields("U_CardCode").VALUE = Trim(oForm01.Items("CardCode").Specific.VALUE) '//입고취소 문서번호
+    oDIObject.UserFields("U_CardName").VALUE = Trim(oForm01.Items("CardName").Specific.VALUE) '//입고취소 문서번호
     
     RetVal = oDIObject.Add
     If RetVal = 0 Then
@@ -1614,14 +1614,14 @@ On Error GoTo PS_MM138_DI_API02_Error
     
     Set oDIObject = Sbo_Company.GetBusinessObject(oInventoryGenExit)
     oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
-    oDIObject.UserFields("U_CancDoc").VALUE = oForm01.Items("OIGNNo").Specific.VALUE
+    oDIObject.UserFields("U_CancDoc").VALUE = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
     oDIObject.UserFields("U_OrdTyp").VALUE = "30"
-    oDIObject.UserFields("U_CardCode").VALUE = oForm01.Items("CardCode").Specific.VALUE '//거래처코드
-    oDIObject.UserFields("U_CardName").VALUE = oForm01.Items("CardName").Specific.VALUE '//거래처명
+    oDIObject.UserFields("U_CardCode").VALUE = Trim(oForm01.Items("CardCode").Specific.VALUE) '//거래처코드
+    oDIObject.UserFields("U_CardName").VALUE = Trim(oForm01.Items("CardName").Specific.VALUE) '//거래처명
     
-    oDIObject.Lines.ItemCode = oForm01.Items("ItemCode").Specific.VALUE '//품목코드
-    oDIObject.Lines.WarehouseCode = "10" + oForm01.Items("BPLId").Specific.VALUE
-    oDIObject.Lines.Quantity = oForm01.Items("Qty").Specific.VALUE '//수량
+    oDIObject.Lines.ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '//품목코드
+    oDIObject.Lines.WarehouseCode = "10" + Trim(oForm01.Items("BPLId").Specific.VALUE)
+    oDIObject.Lines.Quantity = Trim(oForm01.Items("Qty").Specific.VALUE) '//수량
     
     RetVal = oDIObject.Add
     If RetVal = 0 Then
