@@ -453,7 +453,7 @@ On Error GoTo CreateItems_Error
      oDS_PS_MM170H.setValue "U_JdtDate", 0, Format(Now, "yyyymmdd")
      
     '// 사업장 리스트
-    sQry = "SELECT BPLId, BPLName FROM [OBPL]"
+    sQry = "SELECT BPLId, BPLName From [OBPL] order by BPLId"
     
     oRecordSet01.DoQuery sQry
     

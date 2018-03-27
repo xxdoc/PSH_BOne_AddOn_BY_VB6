@@ -693,7 +693,7 @@ On Error GoTo PS_PP191_ComboBox_Setting_Error
     Call oForm01.Freeze(True)
         
         '사업장 콤보박스 세팅_S
-        Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+        Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL] order by 1", "", False, False)
         Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId, psk_ByValue)
         '사업장 콤보박스 세팅_E
         

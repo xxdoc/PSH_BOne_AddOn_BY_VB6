@@ -1120,7 +1120,7 @@ Private Sub Adjust_Value() '//계수조정 처리
                 sQry = sQry + " and [@PS_HR410L].U_Complet1 = 'Y'"
                 sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
                 sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
-                sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='' then 'N' else 'Y' end)"
+                sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
                 
             Case "2"
                 sQry = " Update [@PS_HR410L] "
@@ -1134,7 +1134,7 @@ Private Sub Adjust_Value() '//계수조정 처리
                 sQry = sQry + " and [@PS_HR410L].U_Group = '" & Group & "'"
                 sQry = sQry + " and [@PS_HR410L].U_Complet2 = 'Y'"
                 sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
-                sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='' then 'N' else 'Y' end)"
+                sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
                 
 
 
@@ -1162,7 +1162,7 @@ Private Sub Adjust_Value() '//계수조정 처리
                     sQry = sQry + " and [@PS_HR410L].U_Complet3 = 'Y'"
                     sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
                     sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
-                    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='' then 'N' else 'Y' end)"
+                    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
                     
                     
                 Else
@@ -1179,7 +1179,7 @@ Private Sub Adjust_Value() '//계수조정 처리
                     sQry = sQry + " and [@PS_HR410L].U_Complet3 = 'Y'"
                     sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
                     sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
-                    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='' then 'N' else 'Y' end)"
+                    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
                 End If
         End Select
         
@@ -1290,4 +1290,6 @@ Adjust_Cancel_Error:
     Set oRecordSet = Nothing
     MDC_Com.MDC_GF_Message "Adjust_Cancel_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
+
+
 

@@ -2806,3 +2806,5 @@ PS_SD040_CheckDate_Error:
     PS_SD040_CheckDate = False
     Call Sbo_Application.SetStatusBarMessage("PS_SD040_CheckDate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True)
 End Function
+
+

@@ -329,10 +329,10 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
-                oOrdGbn = oForm01.Items("OrdGbn").Specific.VALUE '//작업구분
-                oSequence = oMat01.Columns("Sequence").Cells(1).Specific.VALUE
+                oOrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE) '//작업구분
+                oSequence = Trim(oMat01.Columns("Sequence").Cells(1).Specific.VALUE)
                 oDocdate = oForm01.Items("DocDate").Specific.VALUE
-                oGubun = oForm01.Items("Gubun").Specific.Selected.VALUE  '//선택한 반을 다시 선택하도록
+                oGubun = Trim(oForm01.Items("Gubun").Specific.Selected.VALUE)  '//선택한 반을 다시 선택하도록
                 oFormMode01 = oForm01.Mode
                 '//해야할일 작업
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then

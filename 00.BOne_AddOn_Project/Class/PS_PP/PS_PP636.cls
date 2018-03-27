@@ -156,7 +156,7 @@ On Error GoTo ComboBox_Setting_Error
     Set oCombo = oForm01.Items("BPLId").Specific
     Call oCombo.ValidValues.Add("0", "전체사업장")
 
-    sQry = "SELECT BPLId, BPLName From [OBPL] Where BPLId In ('1','2')"
+    sQry = "SELECT BPLId, BPLName From [OBPL] Where BPLId In ('1','2') order by 1"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).Value), Trim(oRecordSet01.Fields(1).Value)

@@ -537,7 +537,7 @@ On Error GoTo PS_FI190_ComboBox_Setting_Error
     Call oForm01.Freeze(True)
     '//콤보에 기본값설정
 
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL] order by BPLId", "", False, False)
     Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
 '    Call oForm01.Items("Div").Specific.ValidValues.Add("1", "원가요소배부금액오류")

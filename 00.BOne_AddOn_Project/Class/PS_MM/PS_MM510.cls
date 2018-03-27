@@ -639,7 +639,7 @@ On Error GoTo PS_MM510_ComboBox_Setting_Error
     
     '// »ç¾÷Àå
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL order by BPLId"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -841,14 +841,14 @@ On Error GoTo PS_MM510_MTX01_Error
     Dim Param07 As String
     Dim Param08 As String
     
-    Param01 = oForm01.Items("BPLId").Specific.VALUE
-    Param02 = oForm01.Items("DocDateFr").Specific.VALUE
-    Param03 = oForm01.Items("DocDateTo").Specific.VALUE
-    Param04 = oForm01.Items("TeamCode").Specific.VALUE
-    Param05 = oForm01.Items("RspCode").Specific.VALUE
-    Param06 = oForm01.Items("CntcCode").Specific.VALUE
-    Param07 = oForm01.Items("ItmsGrp").Specific.VALUE
-    Param08 = oForm01.Items("Status").Specific.VALUE
+    Param01 = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("TeamCode").Specific.VALUE)
+    Param05 = Trim(oForm01.Items("RspCode").Specific.VALUE)
+    Param06 = Trim(oForm01.Items("CntcCode").Specific.VALUE)
+    Param07 = Trim(oForm01.Items("ItmsGrp").Specific.VALUE)
+    Param08 = Trim(oForm01.Items("Status").Specific.VALUE)
     
     Query01 = "EXEC PS_MM510_01 '" & Param01 & "', '" & Param02 & "', '" & Param03 & "', '" & Param04 & "', '" & Param05 & "', '" & Param06 & "','" & Param07 & "','" & Param08 & "'"
     

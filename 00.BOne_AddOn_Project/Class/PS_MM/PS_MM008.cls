@@ -133,12 +133,12 @@ On Error GoTo Raise_ItemEvent_Error
                             Exit Sub
                         End If
                         
-                        Dim Code$, BPLID$, YM$, ItmBSort$
+                        Dim Code$, BPLID$, YM$, ItmBsort$
                         BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                         YM = Trim(Right(oForm01.Items("YM").Specific.VALUE, 4))
-                        ItmBSort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+                        ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
                         
-                        Code = YM & BPLID & ItmBSort
+                        Code = YM & BPLID & ItmBsort
                         Call oDS_PS_MM008H.setValue("Code", 0, Code)
                     End If
                 End If
@@ -446,7 +446,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// »ç¾÷Àå
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From [OBPL]"
+    sQry = "SELECT BPLId, BPLName From [OBPL] order by BPLId"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)

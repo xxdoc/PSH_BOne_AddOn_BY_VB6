@@ -553,7 +553,7 @@ On Error GoTo PS_MM946_ComboBox_Setting_Error
 '    Call MDC_PS_Common.Combo_ValidValues_Insert("PS_PS_MM946", "Mat01", "ItemCode", "02", "반제품")
 '    Call MDC_PS_Common.Combo_ValidValues_SetValueColumn(oMat01.Columns("Column"), "PS_MM946", "Mat01", "ItemCode")
 
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName From [OBPL] order by 1", "", False, False)
     Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
    ' Call oForm01.Items("ItmBsort").Specific.ValidValues.Add("%", "선택")

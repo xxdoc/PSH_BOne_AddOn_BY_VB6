@@ -3499,9 +3499,12 @@ Private Function PH_PY001_OHEM_DI_ADD() As Boolean
     
         If oForm.Items.Item("martStat").Specific.VALUE = "Y" Then                                       '//È¥ÀÎ±¸ºÐ
             .MartialStatus = mts_Married
-            .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//°áÈ¥±â³äÀÏ
         Else '// "N"
             .MartialStatus = mts_Single
+        End If
+        
+        If Trim(oForm.Items.Item("weddingD").Specific.VALUE) <> "" Then
+            .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//°áÈ¥±â³äÀÏ
         End If
         
         .CountryOfBirth = oForm.Items.Item("brthCntr").Specific.VALUE                              '//±¹Àû
@@ -3652,9 +3655,12 @@ Private Function PH_PY001_OHEM_DI_UPDATE() As Boolean
             .UserFields.Fields.Item("U_CallName").VALUE = oForm.Items.Item("CallName").Specific.VALUE  '//Àü¹®Á÷È£Äª
             .UserFields.Fields.Item("U_preCode").VALUE = oForm.Items.Item("preCode").Specific.VALUE    '//º¯°æÀü»ç¹ø
         
+            If Trim(oForm.Items.Item("weddingD").Specific.VALUE) <> "" Then
+                .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//°áÈ¥±â³äÀÏ
+            End If
+        
             If oForm.Items.Item("martStat").Specific.VALUE = "Y" Then                                   '//È¥ÀÎ±¸ºÐ
                 oOHEM.MartialStatus = mts_Married
-                .UserFields.Fields.Item("U_weddingD").VALUE = Format(Trim(oForm.Items.Item("weddingD").Specific.VALUE), "####-##-##")  '//°áÈ¥±â³äÀÏ
             Else '// "N"
                 oOHEM.MartialStatus = mts_Single
             End If

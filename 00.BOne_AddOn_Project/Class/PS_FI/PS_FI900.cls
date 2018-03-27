@@ -325,7 +325,7 @@ On Error GoTo CreateItems_Error
     oForm01.DataSources.DataTables.Add ("Grid01")
     
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From [OBPL]"
+    sQry = "SELECT BPLId, BPLName From [OBPL] order by BPLId"
     oRecordset.DoQuery sQry
     Do Until oRecordset.EOF
         oCombo.ValidValues.Add Trim(oRecordset.Fields(0).VALUE), Trim(oRecordset.Fields(1).VALUE)

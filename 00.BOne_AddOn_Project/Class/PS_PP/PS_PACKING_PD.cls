@@ -415,7 +415,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
         If pval.ItemChanged = True Then
             '포장단위
             If pval.ItemUID = "BoxDiv" Then
-                If oForm01.Items("BoxDiv").Specific.VALUE = "S" Then
+                If Trim(oForm01.Items("BoxDiv").Specific.VALUE) = "S" Then
                     oForm01.Items("BoxKg").Enabled = True
                     oForm01.Items("BatchNum").Enabled = True
                 Else

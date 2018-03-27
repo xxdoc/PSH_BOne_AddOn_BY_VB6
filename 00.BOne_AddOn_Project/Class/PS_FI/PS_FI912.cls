@@ -131,7 +131,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From [OBPL]"
+    sQry = "SELECT BPLId, BPLName From [OBPL] order by BPLId"
     oRecordSet01.DoQuery sQry
     oCombo.ValidValues.Add "0", "전체사업장"
     Do Until oRecordSet01.EOF

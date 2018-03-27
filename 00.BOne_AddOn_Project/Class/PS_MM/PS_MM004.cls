@@ -834,10 +834,10 @@ On Error GoTo FlushToItemValue_Error
                 sQry = sQry + "   And " & TWeight & " Between b.U_KgF And b.U_KgT "
                 oRecordSet01.DoQuery sQry
                 
-                If oForm01.Items("Way").Specific.VALUE = "10" Then
+                If Trim(oForm01.Items("Way").Specific.VALUE) = "10" Then
                     oForm01.Items("Amt").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
                     
-                ElseIf oForm01.Items("Way").Specific.VALUE = "20" Then
+                ElseIf Trim(oForm01.Items("Way").Specific.VALUE) = "20" Then
                     oForm01.Items("Amt").Specific.VALUE = (oRecordSet01.Fields(0).VALUE * 0.8)
                 End If
             End If
@@ -1272,22 +1272,22 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
                     sQry = sQry + "   And " & TWeight & " Between b.U_KgF And b.U_KgT "
                     oRecordSet01.DoQuery sQry
                     
-                    If oForm01.Items("Way").Specific.VALUE = "10" Then
+                    If Trim(oForm01.Items("Way").Specific.VALUE) = "10" Then
                         oForm01.Items("Amt").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
 '                        oForm01.Items("TotAmt").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE) + oForm01.Items("PassAmt").Specific.VALUE
-                    ElseIf oForm01.Items("Way").Specific.VALUE = "20" Then
+                    ElseIf Trim(oForm01.Items("Way").Specific.VALUE) = "20" Then
                         oForm01.Items("Amt").Specific.VALUE = (oRecordSet01.Fields(0).VALUE * 0.8)
 '                        oForm01.Items("TotAmt").Specific.VALUE = (oRecordSet01.Fields(0).VALUE * 0.8) + oForm01.Items("PassAmt").Specific.VALUE
                     End If
                     
                 End If
                 
-                If oForm01.Items("Way").Specific.VALUE = "10" Then
+                If Trim(oForm01.Items("Way").Specific.VALUE) = "10" Then
                     oForm01.Items("SectionF").Specific.VALUE = ""
                     oForm01.Items("SectionT").Specific.VALUE = ""
                     oForm01.Items("ItemName").Specific.VALUE = ""
                     oForm01.Items("Destin").Specific.VALUE = ""
-                ElseIf oForm01.Items("Way").Specific.VALUE = "20" Then
+                ElseIf Trim(oForm01.Items("Way").Specific.VALUE) = "20" Then
                     oForm01.Items("ItmBsort").Specific.VALUE = "102"
                     oForm01.Items("LocCode").Specific.VALUE = "07"
                     oForm01.Items("SectionF").Specific.VALUE = "¾È°­"

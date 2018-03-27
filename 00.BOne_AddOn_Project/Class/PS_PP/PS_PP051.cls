@@ -168,7 +168,7 @@ On Error GoTo ComboBox_Setting_Error
        
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From [OBPL]"
+    sQry = "SELECT BPLId, BPLName From [OBPL] order by 1"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -416,7 +416,7 @@ On Error GoTo Print_Query_Error
     Dim sQry            As String
     Dim Sub_sQry        As String
     
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim DocDateFr       As String
     Dim DocDateTo       As String
     Dim ItemCode        As String
@@ -430,7 +430,7 @@ On Error GoTo Print_Query_Error
             
     '// 조회조건문
     
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
     DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -474,11 +474,11 @@ On Error GoTo Print_Query_Error
     If oForm01.Items("Rad01").Specific.Selected = True Then
         WinTitle = "[PS_PP051_01] M/G생산작업지시발행현황"
         ReportName = "PS_PP051_01.RPT"
-        sQry = "EXEC [PS_PP051_01] '" & BPLId & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & ItemCode & "'"
+        sQry = "EXEC [PS_PP051_01] '" & BPLID & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & ItemCode & "'"
     Else
         WinTitle = "[PS_PP051_01] M/G생산작업지시발행현황"
         ReportName = "PS_PP051_02.RPT"
-        sQry = "EXEC [PS_PP051_02] '" & BPLId & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & ItemCode & "'"
+        sQry = "EXEC [PS_PP051_02] '" & BPLID & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & ItemCode & "'"
     End If
 
     

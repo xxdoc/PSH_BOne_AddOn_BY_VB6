@@ -577,7 +577,7 @@ On Error GoTo PS_MM255_ComboBox_Setting_Error
     
     '// »ç¾÷Àå
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL OBPL order by BPLId"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -755,14 +755,14 @@ On Error GoTo PS_MM255_MTX01_Error
     Dim Param07 As String
     Dim Param08 As String
     
-    Param01 = oForm01.Items("BPLId").Specific.VALUE
-    Param02 = oForm01.Items("DocDateFr").Specific.VALUE
-    Param03 = oForm01.Items("DocDateTo").Specific.VALUE
-    Param04 = oForm01.Items("OrdType").Specific.VALUE
-    Param05 = oForm01.Items("ItemName").Specific.VALUE
-    Param06 = oForm01.Items("Size").Specific.VALUE
-    Param07 = oForm01.Items("ItemCode").Specific.VALUE
-    Param08 = oForm01.Items("CardCode").Specific.VALUE
+    Param01 = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("OrdType").Specific.VALUE)
+    Param05 = Trim(oForm01.Items("ItemName").Specific.VALUE)
+    Param06 = Trim(oForm01.Items("Size").Specific.VALUE)
+    Param07 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    Param08 = Trim(oForm01.Items("CardCode").Specific.VALUE)
     
     Query01 = "EXEC PS_MM255_01 '" & Param01 & "', '" & Param02 & "', '" & Param03 & "', '" & Param04 & "', '" & Param05 & "', '" & Param06 & "','" & Param07 & "','" & Param08 & "'"
     

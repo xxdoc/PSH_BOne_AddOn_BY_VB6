@@ -24,8 +24,8 @@ Private WithEvents Sbo_Application      As SAPbouiCOM.Application   'SBO applica
 Attribute Sbo_Application.VB_VarHelpID = -1
 
 Private Sub Class_Initialize()
-    MDC_Globals.ProgramType = "Local"
-  '  MDC_Globals.ProgramType = "Server"
+    'MDC_Globals.ProgramType = "Local"
+    MDC_Globals.ProgramType = "Server"
     Call Initialize '//초기화
     Call SetApplication '//Sbo_Application초기화
     Call ConnectToSBO '//Sbo_Company초기화
