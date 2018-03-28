@@ -1122,9 +1122,9 @@ On Error GoTo PS_QM008_Print_Report01_Error
 
     Call ConnectODBC
     
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE
-    VIEWYN = oForm01.Items("VIEWYN").Specific.VALUE
-    SoviewYN = oForm01.Items("SOVIEWYN").Specific.VALUE
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
+    VIEWYN = Trim(oForm01.Items("VIEWYN").Specific.VALUE)
+    SoviewYN = Trim(oForm01.Items("SOVIEWYN").Specific.VALUE)
     
     WinTitle = "[PS_QM008_01] 검사성적서 출력(한글)"
     

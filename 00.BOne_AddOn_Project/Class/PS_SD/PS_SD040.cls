@@ -6,6 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
+
 Attribute VB_Name = "PS_SD040"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
@@ -2806,5 +2807,3 @@ PS_SD040_CheckDate_Error:
     PS_SD040_CheckDate = False
     Call Sbo_Application.SetStatusBarMessage("PS_SD040_CheckDate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True)
 End Function
-
-

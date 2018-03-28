@@ -577,7 +577,7 @@ On Error GoTo PS_QM242_ComboBox_Setting_Error
     Call MDC_SetMod.Set_ComboList(oForm01.Items("Div").Specific, "SELECT b.U_Minor, b.U_CdName From [@PS_SY001H] a Inner Join [@PS_SY001L] b On a.Code = b.Code Where a.Code = 'Q008' Order by b.U_Minor", "", False, False)
     Call oForm01.Items("Div").Specific.Select(0, psk_Index)
     
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName From [OBPL] order by 1", "", False, False)
     Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
     'oForm01.Items("ItemCode").Click ct_Regular

@@ -674,11 +674,11 @@ On Error GoTo PS_PP909_ComboBox_Setting_Error
     Call oForm01.Freeze(True)
 
     '사업장_S
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", MDC_PS_Common.User_BPLId(), False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName From [OBPL] order by 1", MDC_PS_Common.User_BPLId(), False, False)
     '사업장_E
     
     '사업장02_S
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID02").Specific, "SELECT BPLId, BPLName FROM [OBPL]", MDC_PS_Common.User_BPLId(), False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID02").Specific, "SELECT BPLId, BPLName From [OBPL] order by 1", MDC_PS_Common.User_BPLId(), False, False)
     '사업장02_E
 
     Call oForm01.Freeze(False)

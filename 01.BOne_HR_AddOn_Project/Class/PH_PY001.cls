@@ -4014,8 +4014,8 @@ Public Sub PH_PY001_LoadPic()
     
     '//사진 폴더 생성
     'SaveFolders = "\\191.1.1.220\b1_shr\PathINI\PicturePS"
-    SaveFolders = "\\191.1.1.220\인사급여_Project\HR_PIC"
-    If Dir(SaveFolders, vbDirectory) = "" Then MkDir SaveFolders
+    SaveFolders = "\\191.1.1.220\HR_Pic"
+'    If Dir(SaveFolders, vbDirectory) = "" Then MkDir SaveFolders '폴더가 없을 경우 폴더 만들기(2018.03.28 송명규 주석처리) 폴더는 수동으로 생성
     
     '//사진 불러오기
     sFilePath = FileListBoxForm.OpenDialog(FileListBoxForm, "*.BMP", "파일선택", "C:\")

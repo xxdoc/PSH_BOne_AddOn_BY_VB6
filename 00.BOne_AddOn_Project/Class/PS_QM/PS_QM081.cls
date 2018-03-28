@@ -131,7 +131,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// »ç¾÷Àå
 '    Set oCombo = oForm01.Items("BPLId").Specific
-'    sQry = "SELECT BPLId, BPLName From [OBPL]"
+'    sQry = "SELECT BPLId, BPLName From [OBPL] order by 1"
 '    oRecordset01.DoQuery sQry
 '    Do Until oRecordset01.EOF
 '        oCombo.ValidValues.Add Trim(oRecordset01.Fields(0).Value), Trim(oRecordset01.Fields(1).Value)

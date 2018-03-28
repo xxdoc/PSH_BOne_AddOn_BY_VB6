@@ -343,6 +343,7 @@ Private Sub KEY_DOWN(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters As 
     oFilter.AddEx "PH_PY203"            '교육실적등록
     oFilter.AddEx "PH_PY204"            '교육계획등록
     oFilter.AddEx "PH_PY205"            '교육계획VS실적조회
+    oFilter.AddEx "PH_PY695"            '인사기록카드
     
     '근태관리 - 리포트
     oFilter.AddEx "PH_PY580"            '개인근태월보

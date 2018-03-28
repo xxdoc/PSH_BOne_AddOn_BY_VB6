@@ -545,7 +545,7 @@ On Error GoTo PS_QM067_ComboBox_Setting_Error
     '//콤보에 기본값설정
     
     '//사업장
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL] order by 1", "", False, False)
     Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
     

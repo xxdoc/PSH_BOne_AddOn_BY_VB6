@@ -589,7 +589,7 @@ On Error GoTo PS_HR375_ComboBox_Setting_Error
      
         '사업장 콤보박스 세팅_S
         Set oCombo = oForm01.Items("AttBPLId").Specific
-        sQry = "Select BPLId, BPLName From [OBPL]"
+        sQry = "SELECT BPLId, BPLName From [OBPL] order by 1"
         oRecordSet01.DoQuery sQry
         
         Do Until oRecordSet01.EOF

@@ -48,8 +48,10 @@ On Error GoTo LoadForm_Error
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_QM020.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
+            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
+            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -71,6 +73,9 @@ On Error GoTo LoadForm_Error
     Else
         oForm01.Mode = fm_ADD_MODE
     End If
+    
+    
+    
     
     '////////////////////////////////////////////////////////////////////////////////////////////////////////////
     '************************************************************************************************************
@@ -104,6 +109,8 @@ On Error GoTo LoadForm_Error
         Call oForm01.Items("1").Click
         
     End If
+    
+    
     
     oForm01.Visible = True
     

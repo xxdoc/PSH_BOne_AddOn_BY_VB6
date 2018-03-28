@@ -116,13 +116,19 @@ Private Function PH_PY695_CreateItems() As Boolean
     Call SetReDataCombo(oForm, sQry, oCombo)
     oForm.Items("CLTCOD").DisplayDesc = True
     
+    '사번
+    Call oForm.DataSources.UserDataSources.Add("Code", dt_SHORT_TEXT, 20)
+    Call oForm.Items("Code").Specific.DataBind.SetBound(True, "", "Code")
+    
+    '성명
+    Call oForm.DataSources.UserDataSources.Add("CodeName", dt_SHORT_TEXT, 50)
+    Call oForm.Items("CodeName").Specific.DataBind.SetBound(True, "", "CodeName")
+    
     '// 접속자에 따른 사업장 선택
     oForm.DataSources.UserDataSources.Item("CLTCOD").VALUE = MDC_SetMod.Get_ReData("Branch", "USER_CODE", "OUSR", "'" & oCompany.UserName & "'")
     
-    
     '//커서를 첫번째 ITEM으로 지정
     oForm.ActiveItem = "CLTCOD"
-        
     
     Set oCheck = Nothing
     Set oEdit = Nothing
@@ -211,13 +217,13 @@ End Sub
 
 
 Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormItemEvent_Error
+
     Dim sQry        As String
     Dim i           As Long
     Dim oCombo      As SAPbouiCOM.ComboBox
+    
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo Raise_FormItemEvent_Error
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Select Case pval.EventType
@@ -235,6 +241,14 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_KEY_DOWN: '//2
 
+            If pval.BeforeAction = True Then
+    
+                Call MDC_PS_Common.ActiveUserDefineValue(oForm, pval, BubbleEvent, "Code", "")
+            
+            ElseIf pval.BeforeAction = False Then
+    
+            End If
+            
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
             Select Case pval.ItemUID
@@ -256,8 +270,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_COMBO_SELECT: '//5
             Call oForm.Freeze(True)
             If pval.BeforeAction = True Then
-                
-                
                 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
@@ -347,6 +359,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
 '----------------------------------------------------------
         Case et_MATRIX_COLLAPSE_PRESSED '//9
+        
 '----------------------------------------------------------
         Case et_VALIDATE: '//10
             Call oForm.Freeze(True)
@@ -364,6 +377,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 End If
             End If
             Call oForm.Freeze(False)
+            
 '----------------------------------------------------------
         Case et_MATRIX_LOAD: '//11
             If pval.BeforeAction = True Then
@@ -444,7 +458,6 @@ Raise_FormItemEvent_Error:
     Set oRecordSet = Nothing
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
     Dim i As Long
@@ -695,30 +708,28 @@ PH_PY695_Validate_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY695_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Sub PH_PY695_Print_Report01()
+On Error GoTo PH_PY695_Print_Report01_Error
 
-    Dim DocNum          As String
-    Dim ErrNum          As Integer
-    Dim WinTitle        As String
-    Dim ReportName      As String
-    Dim sQry            As String
-    Dim oRecordSet      As SAPbobsCOM.Recordset
+    Dim DocNum      As String
+    Dim ErrNum      As Integer
+    Dim WinTitle    As String
+    Dim ReportName  As String
+    Dim sQry        As String
+    Dim CLTCOD      As String
+    Dim Div         As String
+    Dim Code        As String
     
-    On Error GoTo PH_PY695_Print_Report01_Error
-    
-    Dim CLTCOD           As String
-    Dim Div              As String
-    Dim Code             As String
-    
+    Dim oRecordSet  As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+
      '/ ODBC 연결 체크
     If ConnectODBC = False Then
         GoTo PH_PY695_Print_Report01_Error
     End If
-    
     
     '//인자 MOVE , Trim 시키기..
     CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
@@ -726,21 +737,26 @@ Private Sub PH_PY695_Print_Report01()
     
     Dim strid As String
     Dim fs As Object
+    Dim HR_Pic_Path As String
+    
+    HR_Pic_Path = "\\191.1.1.220\HR_Pic\" '"\\191.1.1.221\인사급여_Project\HR_PIC\" '"\\191.1.1.220\HR_Pic\"
     
     Set fs = CreateObject("Scripting.FileSystemObject")
+
+    If fs.FileExists(HR_Pic_Path & Code & ".bmp") = True Then
     
-    If fs.FileExists("\\191.1.1.220\인사급여_Project\HR_PIC\" & Code & ".bmp") = True Then
-    
-        If fs.FileExists("\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp") = True Then
-            Kill "\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp"
-            fs.CopyFile "\\191.1.1.220\인사급여_Project\HR_PIC\" & Code & ".bmp", "\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp"
+        If fs.FileExists(HR_Pic_Path & "PIC.bmp") = True Then
+            Kill HR_Pic_Path & "PIC.bmp"
+            fs.CopyFile HR_Pic_Path & Code & ".bmp", HR_Pic_Path & "PIC.bmp"
         Else
-            fs.CopyFile "\\191.1.1.220\인사급여_Project\HR_PIC\" & Code & ".bmp", "\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp"
+            fs.CopyFile HR_Pic_Path & Code & ".bmp", HR_Pic_Path & "PIC.bmp"
         End If
+        
     Else
-        Kill "\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp"
-        fs.CopyFile "\\191.1.1.220\인사급여_Project\HR_PIC\NULL.bmp", "\\191.1.1.220\인사급여_Project\HR_PIC\PIC.bmp"
+        Kill HR_Pic_Path & "PIC.bmp"
+        fs.CopyFile HR_Pic_Path & "NULL.bmp", HR_Pic_Path & "PIC.bmp"
     End If
+    
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
     WinTitle = "[PH_PY695] 인사기록카드"
@@ -754,7 +770,6 @@ Private Sub PH_PY695_Print_Report01()
     sQry = "SELECT U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P144' AND U_UseYN= 'Y' AND U_Code = '" & CLTCOD & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(1) = oRecordSet.Fields(0).VALUE
-    
     
     '/ SubReport
     ReDim gRpt_SRptSqry(8)
@@ -798,28 +813,31 @@ Private Sub PH_PY695_Print_Report01()
     '/ Procedure 실행"
     sQry = "EXEC [PH_PY695_01] '" & CLTCOD & "', '" & Code & "'"
     
-    
-    oRecordSet.DoQuery sQry
-    If oRecordSet.RecordCount = 0 Then
-        ErrNum = 1
-        GoTo PH_PY695_Print_Report01_Error
-    End If
+'    oRecordSet.DoQuery sQry
+'    If oRecordSet.RecordCount = 0 Then
+'        ErrNum = 1
+'        GoTo PH_PY695_Print_Report01_Error
+'    End If
     
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "Y", sQry, "1", "Y", "V", , 2) = False Then
         Sbo_Application.SetStatusBarMessage "gCryReport_Action : 실패!", bmt_Short, True
     End If
     
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
     Set oRecordSet = Nothing
     Exit Sub
     
 PH_PY695_Print_Report01_Error:
-    If ErrNum = 1 Then
-        Set oRecordSet = Nothing
-        MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
-    Else
+
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
     Set oRecordSet = Nothing
+    
     Sbo_Application.SetStatusBarMessage "PH_PY695_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
-    End If
     
 End Sub
 
