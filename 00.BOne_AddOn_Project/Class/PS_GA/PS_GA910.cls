@@ -907,8 +907,8 @@ On Error GoTo PS_GA910_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     sQry = " EXEC [PS_GA910_01]  '" & BPLID & "', '" & DocDate & "'"
     
@@ -1134,7 +1134,7 @@ Private Sub PS_GA910_SAVE()
     On Error GoTo PS_GA910_SAVE_Error
     
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     VisitNo = oForm01.Items("VisitNo").Specific.VALUE
     LineNum = oForm01.Items("LineNum").Specific.VALUE
     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
@@ -1472,7 +1472,7 @@ Private Sub PS_GA910_Form_ini()
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim DocDate     As String
     
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     '화면청소 ㅋ
     If Trim(DocDate) = "" Then

@@ -733,7 +733,7 @@ On Error GoTo FlushToItemValue_Error
                 End If
                 
                 RegNum = Trim(oMat01.Columns("RegNum").Cells(oRow).Specific.VALUE)
-                ItmBsort = oForm01.Items("ItmBSort").Specific.VALUE
+                ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
                 
                 sQry = "        Select  IsNull(U_SjDocLin, '') "
                 sQry = sQry & " From    [@PS_SD010H] "

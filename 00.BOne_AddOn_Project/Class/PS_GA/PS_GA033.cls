@@ -127,8 +127,8 @@ On Error GoTo PS_GA033_MTX01_Error
     Dim BPLID      As String '사업장
     Dim StdYear    As String '기준년도
     
-    BPLID = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
         
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", RecordSet01.RecordCount, False)
@@ -890,8 +890,8 @@ On Error GoTo Print_Query_Error
     Dim BPLID      As String '사업장
     Dim StdYear    As String '기준년도
     
-    BPLID = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     
     WinTitle = "[PS_GA033] 레포트"
     

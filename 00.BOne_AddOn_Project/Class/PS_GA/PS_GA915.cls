@@ -772,16 +772,16 @@ On Error GoTo PS_GA915_MTX01_Error
     Call oForm01.Freeze(True)
     Dim i           As Long
     Dim sQry        As String
-    Dim BPLId        As String
+    Dim BPLID        As String
     Dim DocDate       As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
-    sQry = " EXEC [PS_GA915_01]  '" & BPLId & "', '" & DocDate & "', '0'"
+    sQry = " EXEC [PS_GA915_01]  '" & BPLID & "', '" & DocDate & "', '0'"
     
     oGrid01.DataTable.Clear
     oGrid02.DataTable.Clear
@@ -792,7 +792,7 @@ On Error GoTo PS_GA915_MTX01_Error
     
     oGrid01.DataTable.ExecuteQuery (sQry)
     
-    sQry = " EXEC [PS_GA915_01]  '" & BPLId & "', '" & DocDate & "', '1'"
+    sQry = " EXEC [PS_GA915_01]  '" & BPLID & "', '" & DocDate & "', '1'"
     
     oGrid02.DataTable.ExecuteQuery (sQry)
     
@@ -905,9 +905,9 @@ Private Sub PS_GA915_SAVE()
     '//데이타 저장
     
     Dim i       As Long
-    Dim seqncom As Integer
+    Dim Seqncom As Integer
     Dim sQry    As String
-    Dim ym      As String
+    Dim YM      As String
     Dim VisitNo$, Status$
     
     Dim oRecordSet As SAPbobsCOM.Recordset

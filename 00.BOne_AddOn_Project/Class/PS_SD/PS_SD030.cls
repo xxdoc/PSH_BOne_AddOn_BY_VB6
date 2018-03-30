@@ -309,7 +309,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 Call Sbo_Application.ActivateMenuItem("1281")
-'                DocEntry = oForm01.Items("DocEntry").Specific.Value
+'                DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                oForm01.Mode = fm_FIND_MODE
 '                oForm01.Items("DocEntry").Specific.Value = DocEntry
 '                oForm01.Items("1").Click ct_Regular
@@ -340,7 +340,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     End If
                     Call Sbo_Application.ActivateMenuItem("1281")
                 End If
-'                DocEntry = oForm01.Items("DocEntry").Specific.Value
+'                DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                oForm01.Mode = fm_FIND_MODE
 '                oForm01.Items("DocEntry").Specific.Value = DocEntry
 '                oForm01.Items("1").Click ct_Regular
@@ -757,8 +757,8 @@ On Error GoTo Raise_EVENT_RECORD_MOVE_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Dim DocEntry As String
     Dim DocEntryNext As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
-    DocEntryNext = oForm01.Items("DocEntry").Specific.VALUE '//다음문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
+    DocEntryNext = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//다음문서
     
     If pval.MenuUID = "1288" Then '//다음
         If pval.BeforeAction = True Then
@@ -849,10 +849,10 @@ On Error GoTo PS_SD030_CreateItems_Error
 '    Call oForm01.Items("WhsCode").Specific.DataBind.SetBound(True, "", "WhsCode")
     
     If (oDocType01 = "출하요청") Then
-        oForm01.title = "출하요청[PS_SD030]"
+        oForm01.Title = "출하요청[PS_SD030]"
         Call oForm01.Items("DocType").Specific.Select("1", psk_ByValue)
     ElseIf (oDocType01 = "선출요청") Then
-        oForm01.title = "선출요청[PS_SD031]"
+        oForm01.Title = "선출요청[PS_SD031]"
         Call oForm01.Items("DocType").Specific.Select("2", psk_ByValue)
     End If
     
@@ -1325,10 +1325,10 @@ On Error GoTo PS_SD030_SetDocument_Error
         Call PS_SD030_AddMatrixRow(0, True) '//UDO방식일때
     Else
         If (MDC_PS_Common.GetValue("SELECT U_DocType FROM [@PS_SD030H] WHERE DocEntry = '" & oFromDocEntry01 & "'", 0, 1) = "1") Then
-            oForm01.title = "출하요청[PS_SD030]"
+            oForm01.Title = "출하요청[PS_SD030]"
             Call oForm01.Items("DocType").Specific.Select("1", psk_ByValue)
         ElseIf (MDC_PS_Common.GetValue("SELECT U_DocType FROM [@PS_SD030H] WHERE DocEntry = '" & oFromDocEntry01 & "'", 0, 1) = "2") Then
-            oForm01.title = "선출요청[PS_SD031]"
+            oForm01.Title = "선출요청[PS_SD031]"
             Call oForm01.Items("DocType").Specific.Select("2", psk_ByValue)
         End If
         oForm01.Mode = fm_FIND_MODE
@@ -1420,10 +1420,10 @@ On Error GoTo PS_SD030_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1503,11 +1503,11 @@ On Error GoTo PS_SD030_DI_API_01_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
-    oDIObject.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-    oDIObject.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-    oDIObject.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.UserFields("U_DCardCod").VALUE = Trim(oForm01.Items("DCardCod").Specific.VALUE)
+    oDIObject.UserFields("U_DCardNam").VALUE = Trim(oForm01.Items("DCardNam").Specific.VALUE)
+    oDIObject.UserFields("U_TradeType").VALUE = Trim(oForm01.Items("TrType").Specific.Selected.VALUE)
     If oForm01.Items("DocDate").Specific.VALUE <> "" Then
         oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     End If
@@ -1608,11 +1608,11 @@ On Error GoTo PS_SD030_DI_API_02_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oReturns)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
-    oDIObject.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-    oDIObject.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-    oDIObject.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.UserFields("U_DCardCod").VALUE = Trim(oForm01.Items("DCardCod").Specific.VALUE)
+    oDIObject.UserFields("U_DCardNam").VALUE = Trim(oForm01.Items("DCardNam").Specific.VALUE)
+    oDIObject.UserFields("U_TradeType").VALUE = Trim(oForm01.Items("TrType").Specific.Selected.VALUE)
     If oForm01.Items("DocDate").Specific.VALUE <> "" Then
         oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     End If
@@ -1685,7 +1685,7 @@ On Error GoTo PS_SD030_FindValidateDocument_Error
     
     Dim i As Long
     Dim DocEntry As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
     
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)

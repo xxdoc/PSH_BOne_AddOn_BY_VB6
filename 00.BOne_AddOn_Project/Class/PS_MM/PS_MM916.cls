@@ -456,7 +456,7 @@ On Error GoTo PS_MM916_ComboBox_Setting_Error
     Call oForm01.Freeze(True)
     
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -594,7 +594,7 @@ On Error GoTo PS_MM916_Print_Report01_Error
     Dim WinTitle                    As String
     Dim ReportName                  As String
     Dim sQry                        As String
-    Dim BPLId                       As String
+    Dim BPLID                       As String
     Dim DocDateFr                   As String
     Dim DocDateTo                   As String
     Dim CardCode                    As String
@@ -604,7 +604,7 @@ On Error GoTo PS_MM916_Print_Report01_Error
     Call ConnectODBC
     
     
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     DocDateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
     DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
     CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
@@ -624,7 +624,7 @@ On Error GoTo PS_MM916_Print_Report01_Error
     ReDim gRpt_Formula_Value(3)
     
     gRpt_Formula(1) = "BPLId"
-    sQry = "SELECT BPLName FROM [OBPL] WHERE BPLId = '" & BPLId & "'"
+    sQry = "SELECT BPLName FROM [OBPL] WHERE BPLId = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(1) = oRecordSet.Fields(0).VALUE
     
@@ -635,7 +635,7 @@ On Error GoTo PS_MM916_Print_Report01_Error
     gRpt_Formula_Value(3) = Format(DocDateTo, "####-##-##")
     
     
-    sQry = "EXEC PS_MM916_01 '" & BPLId & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & CardCode & "'"
+    sQry = "EXEC PS_MM916_01 '" & BPLID & "', '" & DocDateFr & "', '" & DocDateTo & "', '" & CardCode & "'"
     
 
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "Y", sQry, "1", "Y", "V") = False Then

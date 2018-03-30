@@ -516,7 +516,7 @@ On Error GoTo PS_MM004_UpdateData_Error
     Dim TotAmt As Double '총운임
     Dim Comments As String '비고
 
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '관리번호
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '관리번호
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
     DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE) '일자
     ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE) '품목분류코드

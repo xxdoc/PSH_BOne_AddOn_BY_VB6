@@ -402,7 +402,7 @@ On Error GoTo Print_Query_Error
     Dim CardCode        As String
     Dim StrDate         As String
     Dim EndDate         As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim Gbn01           As String
     
     Dim oRecordSet      As SAPbobsCOM.Recordset
@@ -414,9 +414,9 @@ On Error GoTo Print_Query_Error
     '// 조회조건문
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     Gbn01 = oForm01.Items("Gbn01").Specific.Selected.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     
     
     If StrDate = "" Then StrDate = "19000101"
@@ -443,7 +443,7 @@ On Error GoTo Print_Query_Error
     gRpt_Formula_Value(2) = IIf(EndDate = "21001231", "All", Format(EndDate, "0000-00-00"))
     
     gRpt_Formula(3) = "BPLId"
-    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLId & "'"
+    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(3) = oRecordSet.Fields(0).VALUE
     
@@ -460,10 +460,10 @@ On Error GoTo Print_Query_Error
     
     '/ Procedure 실행"
     If Gbn01 = "1" Then
-        sQry = "EXEC [PS_MM173_01] '" & BPLId & "', '" & StrDate & "' , '" & EndDate & "', '" & CardCode & "'"
+        sQry = "EXEC [PS_MM173_01] '" & BPLID & "', '" & StrDate & "' , '" & EndDate & "', '" & CardCode & "'"
         
     ElseIf Gbn01 = "2" Then
-        sQry = "EXEC [PS_MM173_02] '" & BPLId & "', '" & StrDate & "' , '" & EndDate & "', '" & CardCode & "'"
+        sQry = "EXEC [PS_MM173_02] '" & BPLID & "', '" & StrDate & "' , '" & EndDate & "', '" & CardCode & "'"
         
     End If
     

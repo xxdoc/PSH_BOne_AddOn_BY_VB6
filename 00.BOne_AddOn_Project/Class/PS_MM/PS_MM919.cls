@@ -385,7 +385,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
     Dim oRecordSet01      As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim DocDateF As String
     Dim DocDateT As String
     Dim sCount As Integer
@@ -402,16 +402,16 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                 sSeq = sSeq - 1
             Next i
             
-            BPLId = oForm01.Items("BPLId").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             DocDateF = oForm01.Items("DocDateFr").Specific.VALUE
             DocDateT = oForm01.Items("DocDateTo").Specific.VALUE
             
              '//사용처
             Set oCombo = oForm01.Items("OcrCode").Specific
-            sQry = " Select g.PrcName, g.PrcName From (select Distinct PrcName = CASE When ISNULL(d.U_Part,'') = '' Then (Case When Isnull(d.U_Dept,'') = '' Then d.U_BusArea Else ISNULL(d.U_dept,'') End) Else ISNULL(d.U_Part,'') End, BPLId = '" & BPLId & "'"
+            sQry = " Select g.PrcName, g.PrcName From (select Distinct PrcName = CASE When ISNULL(d.U_Part,'') = '' Then (Case When Isnull(d.U_Dept,'') = '' Then d.U_BusArea Else ISNULL(d.U_dept,'') End) Else ISNULL(d.U_Part,'') End, BPLId = '" & BPLID & "'"
             sQry = sQry + " from OINM a Inner Join OITM b On a.ItemCode = b.ItemCode"
             sQry = sQry + " Left Join OPRC d On a.OcrCode = d.PrcCode And d.Locked = 'N'"
-            sQry = sQry + " where right(a.Warehouse,1) = '" & BPLId & "'"
+            sQry = sQry + " where right(a.Warehouse,1) = '" & BPLID & "'"
             sQry = sQry + " and a.DocDate Between '" & DocDateF & "' and '" & DocDateT & "'"
             sQry = sQry + " and isnull(a.ApplObj,0) <> '911'"
             sQry = sQry + " and b.U_ItmBsort = '401'"
@@ -591,7 +591,7 @@ On Error GoTo PS_MM919_ComboBox_Setting_Error
     Dim oRecordSet01      As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim DocDateF As String
     Dim DocDateT As String
         
@@ -600,7 +600,7 @@ On Error GoTo PS_MM919_ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -608,16 +608,16 @@ On Error GoTo PS_MM919_ComboBox_Setting_Error
     Loop
     Call oCombo.Select(0, psk_Index)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDateF = oForm01.Items("DocDateFr").Specific.VALUE
     DocDateT = oForm01.Items("DocDateTo").Specific.VALUE
 
      '//사용처
     Set oCombo = oForm01.Items("OcrCode").Specific
-    sQry = " Select g.PrcName, g.PrcName From (select Distinct PrcName = CASE When ISNULL(d.U_Part,'') = '' Then (Case When Isnull(d.U_Dept,'') = '' Then d.U_BusArea Else ISNULL(d.U_dept,'') End) Else ISNULL(d.U_Part,'') End, BPLId = '" & BPLId & "'"
+    sQry = " Select g.PrcName, g.PrcName From (select Distinct PrcName = CASE When ISNULL(d.U_Part,'') = '' Then (Case When Isnull(d.U_Dept,'') = '' Then d.U_BusArea Else ISNULL(d.U_dept,'') End) Else ISNULL(d.U_Part,'') End, BPLId = '" & BPLID & "'"
     sQry = sQry + " from OINM a Inner Join OITM b On a.ItemCode = b.ItemCode"
     sQry = sQry + " Left Join OPRC d On a.OcrCode = d.PrcCode And d.Locked = 'N'"
-    sQry = sQry + " where right(a.Warehouse,1) = '" & BPLId & "'"
+    sQry = sQry + " where right(a.Warehouse,1) = '" & BPLID & "'"
     sQry = sQry + " and a.DocDate Between '" & DocDateF & "' and '" & DocDateT & "'"
     sQry = sQry + " and isnull(a.ApplObj,0) <> '911'"
     sQry = sQry + " and b.U_ItmBsort = '401'"
@@ -786,7 +786,7 @@ On Error GoTo PS_MM919_MTX01_Error
     Dim Param07 As String
     
     
-    Param01 = oForm01.Items("BPLId").Specific.VALUE
+    Param01 = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Param02 = oForm01.Items("DocDateFr").Specific.VALUE
     Param03 = oForm01.Items("DocDateTo").Specific.VALUE
     Param04 = oForm01.Items("OcrCode").Specific.VALUE
@@ -847,8 +847,8 @@ Private Function PS_MM919_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -858,7 +858,7 @@ Private Function PS_MM919_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

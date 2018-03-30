@@ -136,7 +136,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("0", "전체 사업장")
     Do Until oRecordSet01.EOF
@@ -463,7 +463,7 @@ On Error GoTo Print_Query_Error
     Dim ItmMsort        As String
     Dim Option01        As String
     Dim Option02        As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     
     Dim oRecordSet      As SAPbobsCOM.Recordset
     
@@ -479,7 +479,7 @@ On Error GoTo Print_Query_Error
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
     Option01 = Trim(oForm01.Items("Option01").Specific.Selected.VALUE)
     Option02 = Trim(oForm01.Items("Option02").Specific.Selected.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     
 '    If StrDate = "" Then StrDate = "19000101"
 '    If EndDate = "" Then EndDate = "21001231"
@@ -539,7 +539,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_SD914_01] '" & StrDate & "','" & EndDate & "','" & ItmBsort & "','" & ItmMsort & "','" & Option01 & "','" & Option02 & "','" & BPLId & "'"
+    sQry = "EXEC [PS_SD914_01] '" & StrDate & "','" & EndDate & "','" & ItmBsort & "','" & ItmMsort & "','" & Option01 & "','" & Option02 & "','" & BPLID & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1

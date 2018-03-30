@@ -326,7 +326,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
 '                        Exit Sub
 '                End Select
                 '//2010.12.30 yjh 추가 end-----------------------------------------------
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 '//해야할일 작업
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -334,7 +334,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 '//해야할일 작업
             ElseIf oForm01.Mode = fm_OK_MODE Then
@@ -748,10 +748,10 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                             Call oDS_PS_PP043L.setValue("U_" & pval.ColUID, pval.Row - 1, "")
                         Else '//작업지시가 선택된상태
                             If oForm01.Items("OrdType").Specific.Selected.VALUE = "10" Or oForm01.Items("OrdType").Specific.Selected.VALUE = "50" Then '//작업타입이 일반,조정
-                                BPLID = oForm01.Items("BPLId").Specific.VALUE
-                                CpCode = oForm01.Items("CpCode").Specific.VALUE
-                                CpName = oForm01.Items("CpName").Specific.VALUE
-                                OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
+                                BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                                CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
+                                CpName = Trim(oForm01.Items("CpName").Specific.VALUE)
+                                OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
                                 
                                 
                                 For i = 1 To oMat01.RowCount
@@ -1316,8 +1316,8 @@ On Error GoTo Raise_EVENT_RECORD_MOVE_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Dim DocEntry As String
     Dim DocEntryNext As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
-    DocEntryNext = oForm01.Items("DocEntry").Specific.VALUE '//다음문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
+    DocEntryNext = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//다음문서
     
     If pval.MenuUID = "1288" Then '//다음
         If pval.BeforeAction = True Then
@@ -2119,10 +2119,10 @@ On Error GoTo PS_PP043_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -2202,8 +2202,8 @@ On Error GoTo PS_PP043_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -2213,7 +2213,7 @@ On Error GoTo PS_PP043_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -2924,8 +2924,8 @@ On Error GoTo PS_PP043_OrderInfoLoad_Error
             GoTo PS_PP043_OrderInfoLoad_Exit
         Else
             '//작업구분선택
-            oForm01.Items("CpCode").Specific.VALUE = oForm01.Items("SCpCode").Specific.VALUE
-            oForm01.Items("CpName").Specific.VALUE = oForm01.Items("SCpName").Specific.VALUE
+            oForm01.Items("CpCode").Specific.VALUE = Trim(oForm01.Items("SCpCode").Specific.VALUE)
+            oForm01.Items("CpName").Specific.VALUE = Trim(oForm01.Items("SCpName").Specific.VALUE)
             
             If oForm01.Items("SOrdGbn").Specific.Selected.VALUE = "선택" Then '//값이 선택되어 있지 않다면 기본으로
                 Call oForm01.Items("OrdGbn").Specific.Select(MDC_PS_Common.GetValue("SELECT U_ItmBsort FROM [@PS_PP001L] WHERE U_CpCode = '" & oForm01.Items("SCpCode").Specific.VALUE & "'", 0, 1), psk_ByValue)
@@ -3014,7 +3014,7 @@ On Error GoTo PS_PP043_FindValidateDocument_Error
     
     Dim i As Long
     Dim DocEntry As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
     
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)

@@ -1082,13 +1082,13 @@ Sub PH_PY001_FormItemEnabled()
             sQry = sQry & "                 U_Seq AS [Seq]"
             sQry = sQry & " FROM        [@PS_HR200L] "
             sQry = sQry & " WHERE       Code = '1' "
-            sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+            sQry = sQry & "                 AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & "                 AND U_UseYN = 'Y'"
             sQry = sQry & " ORDER BY   Seq"
         
         
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " ORDER BY U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If
@@ -1115,13 +1115,13 @@ Sub PH_PY001_FormItemEnabled()
             sQry = sQry & "                 U_Seq AS [Seq]"
             sQry = sQry & " FROM        [@PS_HR200L] "
             sQry = sQry & " WHERE       Code = '2' "
-            sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+            sQry = sQry & "                 AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & "                 AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
             sQry = sQry & "                 AND U_UseYN = 'Y'"
             sQry = sQry & " ORDER BY   Seq"
         
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " Order By U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If
@@ -1148,14 +1148,14 @@ Sub PH_PY001_FormItemEnabled()
             sQry = sQry & "                 U_Seq AS [Seq]"
             sQry = sQry & " FROM        [@PS_HR200L] "
             sQry = sQry & " WHERE       Code = '9' "
-            sQry = sQry & "                 AND U_Char3 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+            sQry = sQry & "                 AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
             sQry = sQry & "                 AND U_Char1 = '" & oForm.Items.Item("RspCode").Specific.VALUE & "'"
             sQry = sQry & "                 AND U_UseYN = 'Y'"
             sQry = sQry & " ORDER BY   Seq"
         
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code='9' AND U_Char3 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code='9' AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " ORDER BY U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If
@@ -1210,7 +1210,7 @@ Sub PH_PY001_FormItemEnabled()
 '
 '        If oDS_PH_PY001A.GetValue("U_CLTCOD", 0) <> "" Then
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " ORDER BY U_Code"
 '            Call SetReDataCombo(oForm, sQry, oCombo)
 '        End If
@@ -1227,7 +1227,7 @@ Sub PH_PY001_FormItemEnabled()
 '
 '        If oForm.Items.Item("CLTCOD").Specific.Value <> "" Then
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " Order By U_Code"
 '            Call SetReDataCombo(oForm, sQry, oCombo)
 '        End If
@@ -1420,7 +1420,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         sQry = sQry & "                 U_Seq AS [Seq]"
                         sQry = sQry & " FROM        [@PS_HR200L] "
                         sQry = sQry & " WHERE       Code = '1' "
-                        sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                        sQry = sQry & "                 AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & "                 AND U_UseYN = 'Y'"
                         sQry = sQry & " ORDER BY   Seq"
                         Call SetReDataCombo(oForm, sQry, oCombo)
@@ -1449,14 +1449,14 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         sQry = sQry & "                 U_Seq AS [Seq]"
                         sQry = sQry & " FROM        [@PS_HR200L] "
                         sQry = sQry & " WHERE       Code = '2' "
-                        sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                        sQry = sQry & "                 AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & "                 AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
                         sQry = sQry & "                 AND U_UseYN = 'Y'"
                         sQry = sQry & " ORDER BY   Seq"
                         
                         
 '                        sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '                        sQry = sQry & " Order By U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         
@@ -1484,14 +1484,14 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         sQry = sQry & "                 U_Seq AS [Name]"
                         sQry = sQry & " FROM        [@PS_HR200L] "
                         sQry = sQry & " WHERE       Code = '9' "
-                        sQry = sQry & "                 AND U_Char3 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                        sQry = sQry & "                 AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & "                 AND U_Char2 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
                         sQry = sQry & "                 AND U_Char1 = '" & oForm.Items.Item("RspCode").Specific.VALUE & "'"
                         sQry = sQry & "                 AND U_UseYN = 'Y'"
                         sQry = sQry & " ORDER BY   Seq"
                         
 '                        sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'                        sQry = sQry & " WHERE Code='9' AND U_Char3 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'                        sQry = sQry & " WHERE Code='9' AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '                        sQry = sQry & " ORDER BY U_Code"
                         
                         Call SetReDataCombo(oForm, sQry, oCombo)

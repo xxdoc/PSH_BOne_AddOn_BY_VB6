@@ -1038,14 +1038,14 @@ On Error GoTo PS_PP004_MTX01_Error
     Dim Param04 As String
     If oForm01.Items("ItmBsort").Specific.Selected Is Nothing Then
     Else
-        Param01 = oForm01.Items("ItmBsort").Specific.Selected.VALUE '//대분류
+        Param01 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE) '//대분류
     End If
     If oForm01.Items("ItmMsort").Specific.Selected Is Nothing Then '//중분류
     Else
-        Param02 = oForm01.Items("ItmMsort").Specific.Selected.VALUE
+        Param02 = Trim(oForm01.Items("ItmMsort").Specific.Selected.VALUE)
     End If
-    Param03 = oForm01.Items("ItemCode").Specific.VALUE '//품목코드
-    'Param04 = oForm01.Items("Param01").Specific.Value
+    Param03 = Trim(oForm01.Items("ItemCode").Specific.VALUE) '//품목코드
+    'Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "EXEC PS_PP004_01 '" & Param01 & "','" & Param02 & "','" & Param03 & "'"
     Call RecordSet01.DoQuery(Query01)
@@ -1093,7 +1093,7 @@ On Error GoTo PS_PP004_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS01.InsertRecord (i)
         End If
-        oDS_PS_USERDS01.offset = i
+        oDS_PS_USERDS01.Offset = i
         Call oDS_PS_USERDS01.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS01.setValue("U_ColReg01", i, RecordSet01.Fields("ItemCode").VALUE)
         Call oDS_PS_USERDS01.setValue("U_ColReg02", i, RecordSet01.Fields("ItemName").VALUE)
@@ -1130,7 +1130,7 @@ On Error GoTo PS_PP004_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS02.InsertRecord (i)
         End If
-        oDS_PS_USERDS02.offset = i
+        oDS_PS_USERDS02.Offset = i
         Call oDS_PS_USERDS02.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS02.setValue("U_ColReg01", i, RecordSet01.Fields("CpBCode").VALUE)
         Call oDS_PS_USERDS02.setValue("U_ColReg02", i, RecordSet01.Fields("CpBName").VALUE)
@@ -1179,9 +1179,9 @@ On Error GoTo PS_PP004_MTX02_Error
     Dim Param03 As String
     Dim Param04 As String
     Param01 = oMat01.Columns("ItemCode").Cells(oMat01Row01).Specific.VALUE
-'    Param02 = oForm01.Items("Param01").Specific.Value
-'    Param03 = oForm01.Items("Param01").Specific.Value
-'    Param04 = oForm01.Items("Param01").Specific.Value
+'    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+'    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+'    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "EXEC PS_PP004_03 '" & Param01 & "'"
     Call RecordSet01.DoQuery(Query01)
@@ -1201,7 +1201,7 @@ On Error GoTo PS_PP004_MTX02_Error
         If i <> 0 Then
             oDS_PS_USERDS03.InsertRecord (i)
         End If
-        oDS_PS_USERDS03.offset = i
+        oDS_PS_USERDS03.Offset = i
         Call oDS_PS_USERDS03.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS03.setValue("U_ColNum01", i, RecordSet01.Fields("Sequence").VALUE)
         Call oDS_PS_USERDS03.setValue("U_ColReg01", i, RecordSet01.Fields("ItemCode").VALUE)
@@ -1271,8 +1271,8 @@ On Error GoTo PS_PP004_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -1282,7 +1282,7 @@ On Error GoTo PS_PP004_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

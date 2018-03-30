@@ -774,13 +774,13 @@ On Error GoTo PS_PP916_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim OrdGbn As String '작업구분
     Dim FrYM As String '기준년월(시작)
     Dim ToYM As String '기준년월(종료)
     Dim MachCode As String '장비코드
     
-    BPLId = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
     OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE) '작업구분
     FrYM = Trim(oForm01.Items("FrYM").Specific.VALUE) '기준년월(시작)
     ToYM = Trim(oForm01.Items("ToYM").Specific.VALUE) '기준년월(종료)
@@ -792,7 +792,7 @@ On Error GoTo PS_PP916_MTX01_Error
     If OrdGbn = "104" Then 'MG
     
         Query01 = "              EXEC PS_PP916_01 '"
-        Query01 = Query01 & BPLId & "','"
+        Query01 = Query01 & BPLID & "','"
         Query01 = Query01 & OrdGbn & "','"
         Query01 = Query01 & FrYM & "','"
         Query01 = Query01 & ToYM & "','"
@@ -801,7 +801,7 @@ On Error GoTo PS_PP916_MTX01_Error
     ElseIf OrdGbn = "105" Then '기계공구
     
         Query01 = "              EXEC PS_PP916_02 '"
-        Query01 = Query01 & BPLId & "','"
+        Query01 = Query01 & BPLID & "','"
         Query01 = Query01 & OrdGbn & "','"
         Query01 = Query01 & FrYM & "','"
         Query01 = Query01 & ToYM & "','"
@@ -810,7 +810,7 @@ On Error GoTo PS_PP916_MTX01_Error
     ElseIf OrdGbn = "102" Then '부품
     
         Query01 = "              EXEC PS_PP916_03 '"
-        Query01 = Query01 & BPLId & "','"
+        Query01 = Query01 & BPLID & "','"
         Query01 = Query01 & OrdGbn & "','"
         Query01 = Query01 & FrYM & "','"
         Query01 = Query01 & ToYM & "','"
@@ -904,8 +904,8 @@ Private Function PS_PP916_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLID").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -915,7 +915,7 @@ Private Function PS_PP916_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1017,13 +1017,13 @@ On Error GoTo Print_Query_Error
 
     Call ConnectODBC
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim OrdGbn As String '작업구분
     Dim FrYM As String '기준년월(시작)
     Dim ToYM As String '기준년월(종료)
     Dim MachCode As String '장비코드
     
-    BPLId = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
     OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE) '작업구분
     FrYM = Trim(oForm01.Items("FrYM").Specific.VALUE) '기준년월(시작)
     ToYM = Trim(oForm01.Items("ToYM").Specific.VALUE) '기준년월(종료)
@@ -1037,7 +1037,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP916_01.rpt"
     
         sQry = "         EXEC PS_PP916_51 '"
-        sQry = sQry & BPLId & "','"
+        sQry = sQry & BPLID & "','"
         sQry = sQry & OrdGbn & "','"
         sQry = sQry & FrYM & "','"
         sQry = sQry & ToYM & "','"
@@ -1048,7 +1048,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP916_02.rpt"
     
         sQry = "         EXEC PS_PP916_52 '"
-        sQry = sQry & BPLId & "','"
+        sQry = sQry & BPLID & "','"
         sQry = sQry & OrdGbn & "','"
         sQry = sQry & FrYM & "','"
         sQry = sQry & ToYM & "','"
@@ -1059,7 +1059,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP916_03.rpt"
     
         sQry = "         EXEC PS_PP916_53 '"
-        sQry = sQry & BPLId & "','"
+        sQry = sQry & BPLID & "','"
         sQry = sQry & OrdGbn & "','"
         sQry = sQry & FrYM & "','"
         sQry = sQry & ToYM & "','"
@@ -1149,7 +1149,7 @@ On Error GoTo PS_PP916_GetDetail_Error
         End If
      Next
 
-'    BPLID = oForm01.Items("BPLID").Specific.VALUE
+'    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
 '    FrDt = oForm01.Items("DocDatefr").Specific.VALUE
 '    ToDt = oForm01.Items("DocDateto").Specific.VALUE
 

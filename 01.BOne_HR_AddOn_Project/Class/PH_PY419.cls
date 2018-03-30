@@ -422,7 +422,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Select Case pval.ItemUID
 
                         Case "MSTCOD"
-                            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                             MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
                             
                             sQry = "Select Code,"
@@ -683,7 +683,7 @@ Private Sub PH_PY419_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("Year").Specific.VALUE
         
     If Trim(Param01) = "" Then
@@ -851,7 +851,7 @@ Private Sub PH_PY419_SAVE()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YEAR = oForm.Items("Year").Specific.VALUE
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     FullName = oForm.Items("FullName").Specific.VALUE
@@ -987,7 +987,7 @@ Private Sub PH_PY419_Delete()
     
     Call oForm.Freeze(True)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YEAR = oForm.Items("Year").Specific.VALUE
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     

@@ -752,7 +752,7 @@ Private Sub PH_PY415_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("Year").Specific.VALUE
     Param03 = oForm.Items("MSTCOD").Specific.VALUE
     
@@ -884,7 +884,7 @@ Private Sub PH_PY415_Calc()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("Year").Specific.VALUE
         
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar

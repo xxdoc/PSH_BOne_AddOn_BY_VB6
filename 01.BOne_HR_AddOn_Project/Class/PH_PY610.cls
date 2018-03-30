@@ -139,7 +139,7 @@ Private Function PH_PY610_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("TeamCode", dt_SHORT_TEXT, 10)
     Set oCombo = oForm.Items("TeamCode").Specific
     oCombo.DataBind.SetBound True, "", "TeamCode"
-    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
     Call SetReDataCombo(oForm, sQry, oCombo, "Y")
     oForm.Items("TeamCode").DisplayDesc = True
     
@@ -147,7 +147,7 @@ Private Function PH_PY610_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("RspCode", dt_SHORT_TEXT, 10)
     Set oCombo = oForm.Items("RspCode").Specific
     oCombo.DataBind.SetBound True, "", "RspCode"
-    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
     Call SetReDataCombo(oForm, sQry, oCombo, "Y")
     oForm.Items("RspCode").DisplayDesc = True
     
@@ -304,7 +304,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                    Next i
                                 End If
                                 '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                                 Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                                 
                                 '//담당
@@ -315,7 +315,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                    Next i
                                 End If
                                 '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                                 Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                                 
                            '//부서가 바뀌면 담당 재설정
@@ -328,7 +328,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                    Next i
                                 End If
                                 '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                                 Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                            
                     End Select

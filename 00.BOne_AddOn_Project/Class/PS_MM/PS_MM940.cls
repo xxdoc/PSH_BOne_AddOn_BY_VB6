@@ -708,7 +708,7 @@ On Error GoTo PS_MM940_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CardCode As String '거래처
     Dim ItemCode As String '품목코드(작번)
     Dim POType As String '품의형태
@@ -717,13 +717,13 @@ On Error GoTo PS_MM940_MTX01_Error
     Dim ToDt As String '납기일종료
     Dim Chk01 As String '지체건만 조회
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    CardCode = oForm01.Items("CardCode").Specific.VALUE '거래처
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE '품목코드(작번)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE) '거래처
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '품목코드(작번)
     POType = IIf(oForm01.Items("POType").Specific.VALUE = "%", "", oForm01.Items("POType").Specific.VALUE) '품의형태
     Purchase = IIf(oForm01.Items("Purchase").Specific.VALUE = "%", "", oForm01.Items("Purchase").Specific.VALUE) '품의구분
-    FrDt = oForm01.Items("FrDt").Specific.VALUE '납기일시작
-    ToDt = oForm01.Items("ToDt").Specific.VALUE '납기일종료
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '납기일시작
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '납기일종료
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0") '지체건만 조회
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -731,7 +731,7 @@ On Error GoTo PS_MM940_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_MM940_01 '" & BPLId & "','" & CardCode & "','" & ItemCode & "','" & POType & "','" & Purchase & "','" & FrDt & "','" & ToDt & "','" & Chk01 & "'"
+    Query01 = "EXEC PS_MM940_01 '" & BPLID & "','" & CardCode & "','" & ItemCode & "','" & POType & "','" & Purchase & "','" & FrDt & "','" & ToDt & "','" & Chk01 & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -872,7 +872,7 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CardCode As String '거래처
     Dim ItemCode As String '품목코드(작번)
     Dim POType As String '품의형태
@@ -881,13 +881,13 @@ On Error GoTo Print_Query_Error
     Dim ToDt As String '납기일종료
     Dim Chk01 As String '지체건만 조회
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    CardCode = oForm01.Items("CardCode").Specific.VALUE '거래처
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE '품목코드(작번)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE) '거래처
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '품목코드(작번)
     POType = IIf(oForm01.Items("POType").Specific.VALUE = "%", "", oForm01.Items("POType").Specific.VALUE) '품의형태
     Purchase = IIf(oForm01.Items("Purchase").Specific.VALUE = "%", "", oForm01.Items("Purchase").Specific.VALUE) '품의구분
-    FrDt = oForm01.Items("FrDt").Specific.VALUE '납기일시작
-    ToDt = oForm01.Items("ToDt").Specific.VALUE '납기일종료
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '납기일시작
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '납기일종료
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0") '지체건만 조회
     
     
@@ -900,7 +900,7 @@ On Error GoTo Print_Query_Error
     ReDim gRpt_Formula_Value(2)
     
     gRpt_Formula(1) = "BPLId"
-    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLId & "'"
+    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(1) = oRecordSet.Fields(0).VALUE
        
@@ -915,7 +915,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_MM940_01 '" & BPLId & "','" & CardCode & "','" & ItemCode & "','" & POType & "','" & Purchase & "','" & FrDt & "','" & ToDt & "','" & Chk01 & "'"
+    sQry = "EXEC PS_MM940_01 '" & BPLID & "','" & CardCode & "','" & ItemCode & "','" & POType & "','" & Purchase & "','" & FrDt & "','" & ToDt & "','" & Chk01 & "'"
 
     Call oRecordSet.DoQuery(sQry)
     If oRecordSet.RecordCount = 0 Then

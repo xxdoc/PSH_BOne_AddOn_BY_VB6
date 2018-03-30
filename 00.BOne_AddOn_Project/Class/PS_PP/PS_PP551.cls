@@ -1499,8 +1499,8 @@ Private Function PS_PP551_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLID").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -1510,7 +1510,7 @@ Private Function PS_PP551_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

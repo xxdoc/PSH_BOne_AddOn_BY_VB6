@@ -689,15 +689,15 @@ On Error GoTo PS_CO520_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim YmFrom As String
     Dim YmTo As String
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
-    YmFrom = oForm01.Items("YmFrom").Specific.VALUE
-    YmTo = oForm01.Items("YmTo").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    YmFrom = Trim(oForm01.Items("YmFrom").Specific.VALUE)
+    YmTo = Trim(oForm01.Items("YmTo").Specific.VALUE)
     
-    Query01 = "EXEC PS_CO520_01 '" & BPLId & "','" & YmFrom & "','" & YmTo & "'"
+    Query01 = "EXEC PS_CO520_01 '" & BPLID & "','" & YmFrom & "','" & YmTo & "'"
     
     oGrid01.DataTable.Clear
     

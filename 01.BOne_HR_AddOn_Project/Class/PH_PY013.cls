@@ -653,7 +653,7 @@ On Error GoTo PH_PY013_DataSave_Error
     
     PH_PY013_DataSave = False
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     
@@ -749,7 +749,7 @@ Private Sub PH_PY013_TitleSetting(iRow As Long)
     COLNAM(8) = "위해일수"
     COLNAM(9) = "위해코드"
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     For i = 0 To UBound(COLNAM)

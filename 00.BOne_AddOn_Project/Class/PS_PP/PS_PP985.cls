@@ -130,7 +130,7 @@ On Error GoTo PS_PP985_Add_MatrixRow01_Error
     End If
     
     oMat01.AddRow
-    oDS_PS_PP985A.offset = oRow
+    oDS_PS_PP985A.Offset = oRow
     oDS_PS_PP985A.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
@@ -148,7 +148,7 @@ On Error GoTo PS_PP985_Add_MatrixRow02_Error
     End If
     
     oMat02.AddRow
-    oDS_PS_PP985B.offset = oRow
+    oDS_PS_PP985B.Offset = oRow
     oDS_PS_PP985B.setValue "U_LineNum", oRow, oRow + 1
     
     oMat02.LoadFromDataSource
@@ -166,7 +166,7 @@ On Error GoTo PS_PP985_Add_MatrixRow03_Error
     End If
     
     oMat03.AddRow
-    oDS_PS_PP985C.offset = oRow
+    oDS_PS_PP985C.Offset = oRow
     oDS_PS_PP985C.setValue "U_LineNum", oRow, oRow + 1
     
     oMat03.LoadFromDataSource
@@ -184,7 +184,7 @@ On Error GoTo PS_PP985_Add_MatrixRow04_Error
     End If
     
     oMat04.AddRow
-    oDS_PS_PP985D.offset = oRow
+    oDS_PS_PP985D.Offset = oRow
     oDS_PS_PP985D.setValue "U_LineNum", oRow, oRow + 1
     
     oMat04.LoadFromDataSource
@@ -202,7 +202,7 @@ On Error GoTo PS_PP985_Add_MatrixRow05_Error
     End If
     
     oMat05.AddRow
-    oDS_PS_PP985E.offset = oRow
+    oDS_PS_PP985E.Offset = oRow
     oDS_PS_PP985E.setValue "U_LineNum", oRow, oRow + 1
     
     oMat05.LoadFromDataSource
@@ -220,7 +220,7 @@ On Error GoTo PS_PP985_Add_MatrixRow06_Error
     End If
     
     oMat06.AddRow
-    oDS_PS_PP985F.offset = oRow
+    oDS_PS_PP985F.Offset = oRow
     oDS_PS_PP985F.setValue "U_LineNum", oRow, oRow + 1
     
     oMat06.LoadFromDataSource
@@ -561,7 +561,7 @@ On Error GoTo PS_PP985_Select1_Error
         End If
     
         oMat01.AddRow
-        oDS_PS_PP985A.offset = i
+        oDS_PS_PP985A.Offset = i
     
         Call oDS_PS_PP985A.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985A.setValue("U_ColReg02", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
@@ -666,7 +666,7 @@ On Error GoTo PS_PP985_Select2_Error
         End If
     
         oMat02.AddRow
-        oDS_PS_PP985B.offset = i
+        oDS_PS_PP985B.Offset = i
     
         Call oDS_PS_PP985B.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985B.setValue("U_ColReg08", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
@@ -774,7 +774,7 @@ On Error GoTo PS_PP985_Select3_Error
         End If
     
         oMat03.AddRow
-        oDS_PS_PP985C.offset = i
+        oDS_PS_PP985C.Offset = i
     
         Call oDS_PS_PP985C.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985C.setValue("U_ColReg03", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
@@ -879,7 +879,7 @@ On Error GoTo PS_PP985_Select4_Error
         End If
     
         oMat04.AddRow
-        oDS_PS_PP985D.offset = i
+        oDS_PS_PP985D.Offset = i
     
         Call oDS_PS_PP985D.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985D.setValue("U_ColReg03", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
@@ -984,7 +984,7 @@ On Error GoTo PS_PP985_Select5_Error
         End If
     
         oMat05.AddRow
-        oDS_PS_PP985E.offset = i
+        oDS_PS_PP985E.Offset = i
     
         Call oDS_PS_PP985E.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985E.setValue("U_ColReg05", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
@@ -1090,7 +1090,7 @@ On Error GoTo PS_PP985_Select6_Error
         End If
     
         oMat06.AddRow
-        oDS_PS_PP985F.offset = i
+        oDS_PS_PP985F.Offset = i
     
         Call oDS_PS_PP985F.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP985F.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("StdYear").VALUE)) '년도
@@ -1219,7 +1219,7 @@ On Error GoTo PS_PP985_FlushToItemValue_Error
     
     If oUID = "OrdNum" Or oUID = "SubNo1" Or oUID = "SubNo2" Then
         
-        OrdNum = oForm01.Items("OrdNum").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
         SubNo1 = oForm01.Items("SubNo1").Specific.VALUE
         SubNo2 = oForm01.Items("SubNo2").Specific.VALUE
 

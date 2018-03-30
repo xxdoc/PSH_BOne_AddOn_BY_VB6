@@ -300,7 +300,7 @@ On Error GoTo Raise_EVENT_CHOOSE_FROM_LIST_Error
     ElseIf pval.BeforeAction = False Then
         If (pval.ItemUID = "GRDocNum") Then
             Set oDataTable01 = pval.SelectedObjects
-            oForm01.DataSources.UserDataSources("GRDocNum").Value = oDataTable01.Columns(0).Cells(0).Value
+            oForm01.DataSources.UserDataSources("GRDocNum").VALUE = oDataTable01.Columns(0).Cells(0).VALUE
         End If
         oForm01.Update
     End If
@@ -443,11 +443,11 @@ On Error GoTo PS_MM171_CreateItems_Error
     
     Call oForm01.DataSources.UserDataSources.Add("CardCode", dt_SHORT_TEXT, 30)
     oForm01.Items("CardCode").Specific.DataBind.SetBound True, "", "CardCode"
-    oForm01.DataSources.UserDataSources.Item("CardCode").Value = oBaseForm01.Items("CardCode").Specific.Value
+    oForm01.DataSources.UserDataSources.Item("CardCode").VALUE = oBaseForm01.Items("CardCode").Specific.VALUE
 
     Call oForm01.DataSources.UserDataSources.Add("BPLId", dt_SHORT_TEXT, 30)
     oForm01.Items("BPLId").Specific.DataBind.SetBound True, "", "BPLId"
-    oForm01.DataSources.UserDataSources.Item("BPLId").Value = oBaseForm01.Items("BPLId").Specific.Value
+    oForm01.DataSources.UserDataSources.Item("BPLId").VALUE = oBaseForm01.Items("BPLId").Specific.VALUE
         
     Set oRecordSet01 = Nothing
     Exit Function
@@ -560,9 +560,9 @@ On Error GoTo PS_MM171_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_MM171'", "")
     If DocEntry = 0 Then
-        oForm01.Items("DocEntry").Specific.Value = 1
+        oForm01.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm01.Items("DocEntry").Specific.Value = DocEntry
+        oForm01.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PS_MM171_FormClear_Error:
@@ -623,8 +623,8 @@ On Error GoTo PS_MM171_MTX01_Error
     Dim Param01 As String
     Dim Param02 As String
     
-    Param01 = oForm01.Items("CardCode").Specific.Value
-    Param02 = oForm01.Items("BPLId").Specific.Value
+    Param01 = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("BPLId").Specific.VALUE)
       
     Query01 = "EXEC PS_MM171_01 '" & Param01 & "','" & Param02 & "'"
     Call RecordSet01.DoQuery(Query01)
@@ -643,7 +643,7 @@ On Error GoTo PS_MM171_MTX01_Error
     j = 0
     
     For i = 0 To RecordSet01.RecordCount - 1
-        If RecordSet01.Fields("RepayP").Value > 0 Then
+        If RecordSet01.Fields("RepayP").VALUE > 0 Then
         
             If j <> 0 Then
                 oDS_PS_MM171L.InsertRecord (j)
@@ -652,37 +652,37 @@ On Error GoTo PS_MM171_MTX01_Error
             oDS_PS_MM171L.Offset = j
             Call oDS_PS_MM171L.setValue("U_LineNum", j, j + 1)
             Call oDS_PS_MM171L.setValue("U_ColReg01", j, False)
-            Call oDS_PS_MM171L.setValue("U_ColReg02", j, RecordSet01.Fields("GRDocNum").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg03", j, RecordSet01.Fields("GRLinNum").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg04", j, RecordSet01.Fields("CardCode").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg05", j, RecordSet01.Fields("CardName").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg06", j, RecordSet01.Fields("ItemCode").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg07", j, RecordSet01.Fields("ItemName").Value)
-            Call oDS_PS_MM171L.setValue("U_ColSum01", j, RecordSet01.Fields("LinTotal").Value)
-            Call oDS_PS_MM171L.setValue("U_ColDt01", j, Format(RecordSet01.Fields("ImDate").Value, "YYYYMMDD"))
-            Call oDS_PS_MM171L.setValue("U_ColDt02", j, Format(RecordSet01.Fields("DueDate").Value, "YYYYMMDD"))
-            Call oDS_PS_MM171L.setValue("U_ColReg08", j, RecordSet01.Fields("LateDay").Value)
-            Call oDS_PS_MM171L.setValue("U_ColSum02", j, RecordSet01.Fields("RepayP").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg09", j, RecordSet01.Fields("DocType").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg10", j, RecordSet01.Fields("CntcName").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg11", j, RecordSet01.Fields("PODocNum").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg12", j, RecordSet01.Fields("Unit").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg13", j, RecordSet01.Fields("Size").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg14", j, RecordSet01.Fields("Qty").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg15", j, RecordSet01.Fields("Unweight").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg16", j, RecordSet01.Fields("ItmBsort").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg17", j, RecordSet01.Fields("ItmMsort").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg18", j, RecordSet01.Fields("ItemType").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg19", j, RecordSet01.Fields("Quality").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg20", j, RecordSet01.Fields("Mark").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg21", j, RecordSet01.Fields("CallSize").Value)
-            Call oDS_PS_MM171L.setValue("U_ColReg22", j, RecordSet01.Fields("ObasUnit").Value)
+            Call oDS_PS_MM171L.setValue("U_ColReg02", j, RecordSet01.Fields("GRDocNum").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg03", j, RecordSet01.Fields("GRLinNum").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg04", j, RecordSet01.Fields("CardCode").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg05", j, RecordSet01.Fields("CardName").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg06", j, RecordSet01.Fields("ItemCode").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg07", j, RecordSet01.Fields("ItemName").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColSum01", j, RecordSet01.Fields("LinTotal").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColDt01", j, Format(RecordSet01.Fields("ImDate").VALUE, "YYYYMMDD"))
+            Call oDS_PS_MM171L.setValue("U_ColDt02", j, Format(RecordSet01.Fields("DueDate").VALUE, "YYYYMMDD"))
+            Call oDS_PS_MM171L.setValue("U_ColReg08", j, RecordSet01.Fields("LateDay").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColSum02", j, RecordSet01.Fields("RepayP").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg09", j, RecordSet01.Fields("DocType").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg10", j, RecordSet01.Fields("CntcName").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg11", j, RecordSet01.Fields("PODocNum").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg12", j, RecordSet01.Fields("Unit").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg13", j, RecordSet01.Fields("Size").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg14", j, RecordSet01.Fields("Qty").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg15", j, RecordSet01.Fields("Unweight").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg16", j, RecordSet01.Fields("ItmBsort").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg17", j, RecordSet01.Fields("ItmMsort").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg18", j, RecordSet01.Fields("ItemType").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg19", j, RecordSet01.Fields("Quality").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg20", j, RecordSet01.Fields("Mark").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg21", j, RecordSet01.Fields("CallSize").VALUE)
+            Call oDS_PS_MM171L.setValue("U_ColReg22", j, RecordSet01.Fields("ObasUnit").VALUE)
             j = j + 1
         End If
         
         RecordSet01.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & RecordSet01.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & RecordSet01.RecordCount & "건 조회중...!"
     Next
     
     oMat01.LoadFromDataSource
@@ -720,19 +720,19 @@ On Error GoTo PS_MM171_DI_API_Error
     ItemInformationCount = 0
     For i = 1 To oMat01.VisualRowCount
         ReDim Preserve ItemInformation(ItemInformationCount)
-        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).LotNo = oMat01.Columns("LotNo").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.Value
+        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).LotNo = oMat01.Columns("LotNo").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.VALUE
         ItemInformation(ItemInformationCount).Check = False
         ItemInformationCount = ItemInformationCount + 1
     Next
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     '//oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "YYYY-MM-DD")
     For i = 0 To UBound(ItemInformation)
         If ItemInformation(i).Check = True Then
@@ -742,7 +742,7 @@ On Error GoTo PS_MM171_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -807,34 +807,34 @@ On Error GoTo PS_SM010_SetBaseForm_Error
         Set oMat02 = oBaseForm01.Items("Mat01").Specific
         For i = 1 To oMat01.VisualRowCount
             For j = 1 To oMat02.VisualRowCount
-                If oMat01.Columns("GRDocNum").Cells(i).Specific.Value = oMat02.Columns("GRDocNum").Cells(j).Specific.Value Then
+                If oMat01.Columns("GRDocNum").Cells(i).Specific.VALUE = oMat02.Columns("GRDocNum").Cells(j).Specific.VALUE Then
                     ErrNum = 1
                     GoTo PS_SM010_SetBaseForm_Error
                 End If
             Next
                 If oMat01.Columns("V_0").Cells(i).Specific.Checked = True Then
-                    oMat02.Columns("GRDocNum").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("GRDocNum").Cells(i).Specific.Value
-                    oMat02.Columns("GRLinNum").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("GRLinNum").Cells(i).Specific.Value
-                    oMat02.Columns("PODocNum").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("PODocNum").Cells(i).Specific.Value
-                    oMat02.Columns("ItemCode").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("ItemCode").Cells(i).Specific.Value
-                    oMat02.Columns("ItemName").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("ItemName").Cells(i).Specific.Value
-                    oMat02.Columns("LinTotal").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("LinTotal").Cells(i).Specific.Value
-                    oMat02.Columns("ImDate").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("ImDate").Cells(i).Specific.Value
-                    oMat02.Columns("DueDate").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("DueDate").Cells(i).Specific.Value
-                    oMat02.Columns("LateDay").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("LateDay").Cells(i).Specific.Value
-                    oMat02.Columns("Qty").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("Qty").Cells(i).Specific.Value
-                    oMat02.Columns("Unit").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("Unit").Cells(i).Specific.Value
-                    oMat02.Columns("Size").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("Size").Cells(i).Specific.Value
+                    oMat02.Columns("GRDocNum").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("GRDocNum").Cells(i).Specific.VALUE
+                    oMat02.Columns("GRLinNum").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("GRLinNum").Cells(i).Specific.VALUE
+                    oMat02.Columns("PODocNum").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("PODocNum").Cells(i).Specific.VALUE
+                    oMat02.Columns("ItemCode").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("ItemCode").Cells(i).Specific.VALUE
+                    oMat02.Columns("ItemName").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("ItemName").Cells(i).Specific.VALUE
+                    oMat02.Columns("LinTotal").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("LinTotal").Cells(i).Specific.VALUE
+                    oMat02.Columns("ImDate").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("ImDate").Cells(i).Specific.VALUE
+                    oMat02.Columns("DueDate").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("DueDate").Cells(i).Specific.VALUE
+                    oMat02.Columns("LateDay").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("LateDay").Cells(i).Specific.VALUE
+                    oMat02.Columns("Qty").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("Qty").Cells(i).Specific.VALUE
+                    oMat02.Columns("Unit").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("Unit").Cells(i).Specific.VALUE
+                    oMat02.Columns("Size").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("Size").Cells(i).Specific.VALUE
                                  
-                    oMat02.Columns("Weight").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("Unweight").Cells(i).Specific.Value
-                    oMat02.Columns("RepayP").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("RepayP").Cells(i).Specific.Value
-                    Call oMat02.Columns("ItmBsort").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItmBsort").Cells(i).Specific.Value, psk_ByValue)
-                    Call oMat02.Columns("ItmMsort").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItmMsort").Cells(i).Specific.Value, psk_ByValue)
-                    Call oMat02.Columns("ItemType").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItemType").Cells(i).Specific.Value, psk_ByValue)
-                    Call oMat02.Columns("Quality").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("Quality").Cells(i).Specific.Value, psk_ByValue)
-                    Call oMat02.Columns("Mark").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("Mark").Cells(i).Specific.Value, psk_ByValue)
-                    oMat02.Columns("CallSize").Cells(oBaseColRow01).Specific.Value = oMat01.Columns("CallSize").Cells(i).Specific.Value
-                    Call oMat02.Columns("ObasUnit").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ObasUnit").Cells(i).Specific.Value, psk_ByValue)
+                    oMat02.Columns("Weight").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("Unweight").Cells(i).Specific.VALUE
+                    oMat02.Columns("RepayP").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("RepayP").Cells(i).Specific.VALUE
+                    Call oMat02.Columns("ItmBsort").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItmBsort").Cells(i).Specific.VALUE, psk_ByValue)
+                    Call oMat02.Columns("ItmMsort").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItmMsort").Cells(i).Specific.VALUE, psk_ByValue)
+                    Call oMat02.Columns("ItemType").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ItemType").Cells(i).Specific.VALUE, psk_ByValue)
+                    Call oMat02.Columns("Quality").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("Quality").Cells(i).Specific.VALUE, psk_ByValue)
+                    Call oMat02.Columns("Mark").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("Mark").Cells(i).Specific.VALUE, psk_ByValue)
+                    oMat02.Columns("CallSize").Cells(oBaseColRow01).Specific.VALUE = oMat01.Columns("CallSize").Cells(i).Specific.VALUE
+                    Call oMat02.Columns("ObasUnit").Cells(oBaseColRow01).Specific.Select(oMat01.Columns("ObasUnit").Cells(i).Specific.VALUE, psk_ByValue)
         
                    
             

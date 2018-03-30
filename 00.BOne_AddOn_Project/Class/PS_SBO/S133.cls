@@ -248,7 +248,7 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
             If (pval.ColUID = "1") Then '//품목코드 변경시
                 If pval.CharPressed = 9 Then
                     Dim TradeType As String
-                    TradeType = oForm01.Items("TradeType").Specific.Selected.VALUE
+                    TradeType = Trim(oForm01.Items("TradeType").Specific.Selected.VALUE)
                     
                     Dim ChildForm01 As Variant
                     Set ChildForm01 = New PS_SM020

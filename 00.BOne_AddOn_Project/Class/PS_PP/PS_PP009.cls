@@ -1565,7 +1565,7 @@ On Error GoTo PS_PP009_GetSerialNo_Error
     Dim DocDate As String
     Dim BPLID As String
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDate = Left(Trim(oForm01.Items("DocDate").Specific.VALUE), 6)
     
     sQry = "      EXEC PS_PP009_05 '"

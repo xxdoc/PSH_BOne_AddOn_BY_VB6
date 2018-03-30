@@ -52,7 +52,7 @@ Private NEWCNT      As Integer
 Private C_MSTCOD    As String
 
 '/ 퇴직소득 지급명세서-1
-Private Type A_Record
+Private Type A_record
         RECGBN As String * 1     '레코드구분
         DTAGBN As String * 2     '자료  구분
         TAXCOD As String * 3     '세  무  서
@@ -63,7 +63,7 @@ Private Type A_Record
         HOMTID As String * 20    '홈텍스ID
         PGMCOD As String * 4     '세무프로그램코드
         BUSNBR As String * 10    '사업자번호
-        SANGHO As String * 40    '상      호
+        sangho As String * 40    '상      호
         DAMDPT As String * 30    '담당부서명
         DAMNAM As String * 30    '담당 성명
         DAMTEL As String * 15    '담당전화번호
@@ -72,17 +72,17 @@ Private Type A_Record
         HANCOD As String * 3     '한글코드종
         FILLER As String * 812   '공      란
 End Type
-Dim Arec As A_Record
+Dim Arec As A_record
 
 
-Private Type B_Record
+Private Type B_record
         RECGBN As String * 1     '레코드구분
         DTAGBN As String * 2     '자료  구분
         TAXCOD As String * 3     '세  무  서
         BUSCNT As String * 6     '일련  번호
         
         BUSNBR As String * 10    '사업자번호
-        SANGHO As String * 40    '상      호
+        sangho As String * 40    '상      호
         COMPRT As String * 30    '대  표  자
         PERNBR As String * 13    '주민  번호
         
@@ -97,10 +97,10 @@ Private Type B_Record
         RNGCOD As String * 1     '제출대상기간
         FILLER As String * 791   '공      란
 End Type
-Dim Brec As B_Record
+Dim Brec As B_record
 
 '/ 퇴직 주(현) 근무처 레코드 /
-Private Type C_Record
+Private Type C_record
         RECGBN As String * 1     '레코드구분
         DTAGBN As String * 2     '자료  구분
         TAXCOD As String * 3     '세  무  서
@@ -108,7 +108,7 @@ Private Type C_Record
         BUSNBR As String * 10    '사업자번호
         
         BUSNUM As String * 10    '사업자번호(주현)
-        SANGHO As String * 40    '상      호
+        sangho As String * 40    '상      호
         
         JONCNT As String * 2     '종전근무처수
         DWEGBN As String * 1     '거주자구분
@@ -225,7 +225,7 @@ Private Type C_Record
         JONTOT As String * 10    '    세액계
         FILLER As String * 4     '공      란
 End Type
-Dim Crec As C_Record
+Dim Crec As C_record
 
 Private Type D_Record
         RECGBN As String * 1    '레코드구분
@@ -501,7 +501,7 @@ Private Sub ZPY421_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call ZPY421_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -536,7 +536,7 @@ Sub ZPY421_FormItemEnabled()
 '
 '        If oForm.Items("CLTCOD").Specific.Value <> "" Then
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " ORDER BY U_Code"
 '            Call SetReDataCombo(oForm, sQry, oCombo)
 '        End If
@@ -561,7 +561,7 @@ Sub ZPY421_FormItemEnabled()
 '
 '        If oDS_PH_PY001A.GetValue("U_CLTCOD", 0) <> "" Then
 '            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '            sQry = sQry & " ORDER BY U_Code"
 '            Call SetReDataCombo(oForm, sQry, oCombo)
 '        End If
@@ -600,12 +600,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_ITEM_PRESSED: '//1
             
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "CBtn1" Then   '/ ChooseBtn사원리스트
+                If pval.ItemUID = "CBtn1" Then   '/ ChooseBtn사원리스트
                     
                     oForm.Items("MSTCOD").CLICK ct_Regular
                     Sbo_Application.ActivateMenuItem ("7425")
                     BubbleEvent = False
-                ElseIf pval.ItemUid = "1" And oForm.Mode = fm_ADD_MODE Or oForm.Mode = fm_UPDATE_MODE Then
+                ElseIf pval.ItemUID = "1" And oForm.Mode = fm_ADD_MODE Or oForm.Mode = fm_UPDATE_MODE Then
                     If ZPY421_DataValidCheck = False Then
                         BubbleEvent = False
                         Exit Sub
@@ -617,7 +617,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         BubbleEvent = False
                         oForm.Mode = fm_OK_MODE
                     End If
-                ElseIf pval.ItemUid = "Btn1" Then
+                ElseIf pval.ItemUID = "Btn1" Then
                    oFilePath = ZP_Form.vbGetBrowseDirectory(ZP_Form)
                    oForm.DataSources.UserDataSources("Path").ValueEx = oFilePath
                    BubbleEvent = False
@@ -629,7 +629,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
      
 '----------------------------------------------------------
         Case et_KEY_DOWN: '//2
-            If pval.BeforeAction = True And pval.ItemUid = "MSTCOD" And pval.CharPressed = 9 Then
+            If pval.BeforeAction = True And pval.ItemUID = "MSTCOD" And pval.CharPressed = 9 Then
                 If Trim$(oForm.Items("MSTCOD").Specific.String) <> "" And _
                     MDC_SetMod.Value_ChkYn("[@PH_PY001A]", "Code", "'" & Trim$(oForm.Items("MSTCOD").Specific.String) & "'", "") = True Then
                     Sbo_Application.StatusBar.SetText "사원번호를 확인하여 주십시오.", bmt_Short, smt_Error
@@ -638,15 +638,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             End If
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat1", "Grid1"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -660,7 +660,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    If pval.ItemUid = "CLTCOD" Then
+                    If pval.ItemUID = "CLTCOD" Then
                         
                         '//기본사항 - 부서 (사업장에 따른 부서변경)
                         Set oCombo = oForm.Items("DptStr").Specific
@@ -674,7 +674,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -693,7 +693,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -707,10 +707,10 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             Call oForm.Freeze(False)
 '----------------------------------------------------------
         Case et_CLICK: '//6
-            If pval.BeforeAction = True And pval.ItemUid <> "1000001" And pval.ItemUid <> "2" Then
+            If pval.BeforeAction = True And pval.ItemUID <> "1000001" And pval.ItemUID <> "2" Then
                 If oLastItemUID = "STRDAT" Then     '/정산년도
-                    If Trim$(oForm.Items(oLastItemUID).Specific.Value) <> "" Then
-                        If MDC_SetMod.ChkYearMonth(Trim$(CStr((oForm.Items(oLastItemUID).Specific.Value)))) = False Then
+                    If Trim$(oForm.Items(oLastItemUID).Specific.VALUE) <> "" Then
+                        If MDC_SetMod.ChkYearMonth(Trim$(CStr((oForm.Items(oLastItemUID).Specific.VALUE)))) = False Then
                             oForm.Items(oLastItemUID).Update
                             Sbo_Application.StatusBar.SetText "정산년도를 확인하여 주십시오.", bmt_Short, smt_Error
                             BubbleEvent = False
@@ -736,18 +736,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_VALIDATE: '//10
             If pval.BeforeAction = False And pval.ItemChanged = True Then
-                If pval.ItemUid = "STRDAT" Then
+                If pval.ItemUID = "STRDAT" Then
                     'oJsnYear = Mid$(oForm.Items(oUID).Specific.String, 1, 4)
                     oJsnYear = Left$(oForm.DataSources.UserDataSources("STRDAT").ValueEx, 4)
                     oForm.DataSources.UserDataSources("ENDDAT").ValueEx = oJsnYear & "1231"
                     oForm.Items("ENDDAT").Update
                 End If
                 
-                If pval.ItemUid = "ENDDAT" Then
+                If pval.ItemUID = "ENDDAT" Then
                 
                 End If
                 
-                If pval.ItemUid = "MSTCOD" Then
+                If pval.ItemUID = "MSTCOD" Then
                     If oForm.Items("MSTCOD").Specific.String = "" Then
                         oForm.Items("MSTCOD").Specific.String = ""
                         oForm.DataSources.UserDataSources("MSTNAM").ValueEx = ""
@@ -949,15 +949,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat1"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -1018,9 +1018,9 @@ On Error GoTo ZPY421_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'ZPY421'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 ZPY421_FormClear_Error:
@@ -1052,11 +1052,11 @@ On Error GoTo ZPY421_DataValidCheck_Error
         Exit Function
     End If
     
-    DPTSTR = oForm.Items("DptStr").Specific.Selected.Value
+    DPTSTR = oForm.Items("DptStr").Specific.Selected.VALUE
     If DPTSTR = "%" Then DPTSTR = "00000001"
-    DPTEND = oForm.Items("DptEnd").Specific.Selected.Value
+    DPTEND = oForm.Items("DptEnd").Specific.Selected.VALUE
     If DPTEND = "%" Then DPTEND = "ZZZZZZZZ"
-    MSTCOD = oForm.Items("MSTCOD").Specific.Value
+    MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     If Trim$(MSTCOD) = "" Then MSTCOD = "%"
 '    oJsnGbn = oForm.Items("JsnGbn").Specific.Selected.Value
     
@@ -1089,7 +1089,7 @@ On Error GoTo ZPY421_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@ZPY421A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@ZPY421A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         ZPY421_Validate = False
         GoTo ZPY421_Validate_Exit
@@ -1141,7 +1141,7 @@ Private Sub ZPY421_Print_Report01()
 
     WinTitle = "[S142] 발주서"
     ReportName = "S142_1.rpt"
-    sQry = "EXEC ZPY421_1 '" & oForm.Items("8").Specific.Value & "'"
+    sQry = "EXEC ZPY421_1 '" & oForm.Items("8").Specific.VALUE & "'"
     
     '/ Formula 수식필드
     ReDim gRpt_Formula(1)
@@ -1214,24 +1214,24 @@ On Error GoTo Error_Message
         '/ A레코드: 갑근 원천징수의무자별 집계 레코드
         Print #1, MDC_SetMod.sStr(Arec.RECGBN) & MDC_SetMod.sStr(Arec.DTAGBN) & MDC_SetMod.sStr(Arec.TAXCOD) & MDC_SetMod.sStr(Arec.PRTDAT) & _
                   MDC_SetMod.sStr(Arec.RPTGBN) & MDC_SetMod.sStr(Arec.TAXAGE) & MDC_SetMod.sStr(Arec.HOMTID) & MDC_SetMod.sStr(Arec.PGMCOD) & _
-                  MDC_SetMod.sStr(Arec.BUSNBR) & MDC_SetMod.sStr(Arec.SANGHO) & MDC_SetMod.sStr(Arec.DAMDPT) & MDC_SetMod.sStr(Arec.DAMNAM) & _
+                  MDC_SetMod.sStr(Arec.BUSNBR) & MDC_SetMod.sStr(Arec.sangho) & MDC_SetMod.sStr(Arec.DAMDPT) & MDC_SetMod.sStr(Arec.DAMNAM) & _
                   MDC_SetMod.sStr(Arec.DAMTEL) & MDC_SetMod.sStr(Arec.BUSCNT) & MDC_SetMod.sStr(Arec.HANCOD) & _
                   MDC_SetMod.sStr(Arec.FILLER)
             
         Call Matrix_AddRow("제출자 레코드 생성 완료!", True)
         '/ B레코드: 갑근 집계 레코드 /***********************************************/
         sQry = "SELECT Code, U_TAXCODE, U_BUSNUM, U_CLTNAME, U_COMPRT, U_PERNUM FROM [@PH_PY005A] T0 "
-        sQry = sQry & " WHERE U_WCHCLT = '" & oForm.Items("CLTCOD").Specific.Selected.Value & "' ORDER BY CODE"
+        sQry = sQry & " WHERE U_WCHCLT = '" & oForm.Items("CLTCOD").Specific.Selected.VALUE & "' ORDER BY CODE"
         sRecordset.DoQuery sQry
         Do Until sRecordset.EOF
             NEWCNT = 0
-            CLTCOD = sRecordset.Fields(0).Value
+            CLTCOD = sRecordset.Fields(0).VALUE
             
-            Brec.TAXCOD = sRecordset.Fields("U_TAXCODE").Value
-            Brec.BUSNBR = Replace(sRecordset.Fields("U_BUSNUM").Value, "-", "")
-            Brec.SANGHO = Trim$(sRecordset.Fields("U_CLTNAME").Value)
-            Brec.COMPRT = Trim$(sRecordset.Fields("U_COMPRT").Value)
-            Brec.PERNBR = Replace(Trim$(sRecordset.Fields("U_PERNUM").Value), "-", "")
+            Brec.TAXCOD = sRecordset.Fields("U_TAXCODE").VALUE
+            Brec.BUSNBR = Replace(sRecordset.Fields("U_BUSNUM").VALUE, "-", "")
+            Brec.sangho = Trim$(sRecordset.Fields("U_CLTNAME").VALUE)
+            Brec.COMPRT = Trim$(sRecordset.Fields("U_COMPRT").VALUE)
+            Brec.PERNBR = Replace(Trim$(sRecordset.Fields("U_PERNUM").VALUE), "-", "")
             
             '/ B레코드: 갑근 집계 레코드
             Select Case File_Create_BRecord
@@ -1260,7 +1260,7 @@ On Error GoTo Error_Message
     Close #1
     Set sRecordset = Nothing
     
-    oForm.DataSources.UserDataSources("Path").Value = FILNAM
+    oForm.DataSources.UserDataSources("Path").VALUE = FILNAM
     Sbo_Application.StatusBar.SetText "전산매체수록이 정상적으로 완료되었습니다.", bmt_Short, smt_Success
     File_Create = True
     
@@ -1307,17 +1307,17 @@ On Error GoTo Error_Message
     sQry = sQry & " FROM [@PH_PY115A] T0  INNER JOIN [@PH_PY001A] T1 ON T0.U_MSTCOD = T1.Code"
     sQry = sQry & " INNER JOIN [@PS_HR200L] T2 ON T1.U_TeamCode = T2.U_Code AND T2.Code = '1'"
     sQry = sQry & " INNER JOIN [@PH_PY005A] T3 ON ISNULL(T1.U_CLTCOD, '') = T3.Code"
-    sQry = sQry & " WHERE   T3.U_WCHCLT = '" & oForm.Items("CLTCOD").Specific.Selected.Value & "'"
+    sQry = sQry & " WHERE   T3.U_WCHCLT = '" & oForm.Items("CLTCOD").Specific.Selected.VALUE & "'"
     sQry = sQry & " AND     T2.U_Code BETWEEN " & "'" & DPTSTR & "'" & " AND " & "'" & DPTEND & "'"
     sQry = sQry & " AND     T0.U_MSTCOD LIKE N'%'"
     sQry = sQry & " AND     T0.U_RETPAY > 0"
-    sQry = sQry & " AND     T0.U_ENDINT >= '" & oForm.Items("STRDAT").Specific.Value & "'"
-    sQry = sQry & " AND     T0.U_ENDINT <= '" & oForm.Items("ENDDAT").Specific.Value & "'"
+    sQry = sQry & " AND     T0.U_ENDINT >= '" & oForm.Items("STRDAT").Specific.VALUE & "'"
+    sQry = sQry & " AND     T0.U_ENDINT <= '" & oForm.Items("ENDDAT").Specific.VALUE & "'"
 
     
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount > 0 Then
-        BUSTOT = oRecordSet.Fields(0).Value
+        BUSTOT = oRecordSet.Fields(0).VALUE
     End If
     If Val(BUSTOT) = 0 Then
         ErrNum = 3
@@ -1325,14 +1325,14 @@ On Error GoTo Error_Message
     End If
     
     '/ 업체정보
-    sQry = "SELECT * FROM [@PH_PY005A] WHERE Code = '" & oForm.Items("CLTCOD").Specific.Selected.Value & "'"
+    sQry = "SELECT * FROM [@PH_PY005A] WHERE Code = '" & oForm.Items("CLTCOD").Specific.Selected.VALUE & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1
         GoTo Error_Message
     Else
      '/ 파일명
-        BUSNUM = Replace(oRecordSet.Fields("U_BUSNUM").Value, "-", "")
+        BUSNUM = Replace(oRecordSet.Fields("U_BUSNUM").VALUE, "-", "")
         If Len(Trim$(BUSNUM)) <> 10 Then
             ErrNum = 2
             GoTo Error_Message
@@ -1342,22 +1342,22 @@ On Error GoTo Error_Message
         FILNAM = oFilePath & "EA" & Mid$(BUSNUM, 1, 7) & "." & Mid$(BUSNUM, 8, 3)     '/ 2010년 변경
         
      '/ B Record /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
-        BUSNUM = Replace(oRecordSet.Fields("U_BUSNUM").Value, "-", "")
+        BUSNUM = Replace(oRecordSet.Fields("U_BUSNUM").VALUE, "-", "")
      '/ A Record /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
         Arec.RECGBN = "A"                                                       '/ 레코드 구분
         'Arec.DTAGBN = IIf(Trim$(oJsnGbn) = "1", "22", "25")
         Arec.DTAGBN = "25"                                                      '/ 자료구분
-        Arec.TAXCOD = oRecordSet.Fields("U_TAXCODE").Value                      '/ 세무서
+        Arec.TAXCOD = oRecordSet.Fields("U_TAXCODE").VALUE                      '/ 세무서
         Arec.PRTDAT = PRTDAT                                                    '/ 제출일자
-        Arec.RPTGBN = oRecordSet.Fields("U_TaxDGbn").Value                      '/ 제출자
-        Arec.TAXAGE = oRecordSet.Fields("U_TaxDCode").Value                     '/ 세무대리인
-        Arec.HOMTID = Trim$(oRecordSet.Fields("U_HOMETID").Value)                '/ 홈텍스ID
+        Arec.RPTGBN = oRecordSet.Fields("U_TaxDGbn").VALUE                      '/ 제출자
+        Arec.TAXAGE = oRecordSet.Fields("U_TaxDCode").VALUE                     '/ 세무대리인
+        Arec.HOMTID = Trim$(oRecordSet.Fields("U_HOMETID").VALUE)                '/ 홈텍스ID
         Arec.PGMCOD = "9000"                                                    '/ 세무프로그램코드
-        Arec.BUSNBR = Replace(oRecordSet.Fields("U_TAXDBUS").Value, "-", "")    '/ 사업자번호
-        Arec.SANGHO = Trim$(oRecordSet.Fields("U_TAXDNAM").Value)                '/ 상호
-        Arec.DAMDPT = Trim$(oRecordSet.Fields("U_CHGDPT").Value)                 '/ 담당부서명
-        Arec.DAMNAM = Trim$(oRecordSet.Fields("U_CHGNAME").Value)                '/ 담당성명
-        Arec.DAMTEL = Trim$(oRecordSet.Fields("U_CHGTEL").Value)                 '/ 담당전화번호
+        Arec.BUSNBR = Replace(oRecordSet.Fields("U_TAXDBUS").VALUE, "-", "")    '/ 사업자번호
+        Arec.sangho = Trim$(oRecordSet.Fields("U_TAXDNAM").VALUE)                '/ 상호
+        Arec.DAMDPT = Trim$(oRecordSet.Fields("U_CHGDPT").VALUE)                 '/ 담당부서명
+        Arec.DAMNAM = Trim$(oRecordSet.Fields("U_CHGNAME").VALUE)                '/ 담당성명
+        Arec.DAMTEL = Trim$(oRecordSet.Fields("U_CHGTEL").VALUE)                 '/ 담당전화번호
         Arec.BUSCNT = Format$(BUSTOT, String$(Len(Arec.BUSCNT), "0"))             '/ 원천징수의무자수
         Arec.HANCOD = "101"                                                     '/ 한글코드 종류
         Arec.FILLER = Space$(Len(Arec.FILLER))
@@ -1375,7 +1375,7 @@ On Error GoTo Error_Message
             Call Matrix_AddRow("A레코드:제출자사업자번호가 누락되었습니다. 입력하여 주십시오.", True, True)
             CheckA = True
         End If
-        If Trim$(Arec.SANGHO) = "" Then
+        If Trim$(Arec.sangho) = "" Then
             Call Matrix_AddRow("A레코드:제출자상호가 누락되었습니다. 입력하여 주십시오.", True, True)
             CheckA = True
         End If
@@ -1438,7 +1438,7 @@ On Error GoTo Error_Message
     sQry = sQry & "  FROM [@PH_PY115A] T0  INNER JOIN [@PH_PY001A] T1 ON T0.U_MSTCOD = T1.Code "
     sQry = sQry & "                        INNER JOIN [OUDP] T2 ON T1.Dept = T2.Code                                  "
     sQry = sQry & "  WHERE   ISNULL(T1.U_CLTCOD, '') = '" & Trim$(CLTCOD) & "'"
-    sQry = sQry & "  AND     ISNULL(T1.Branch, '') LIKE " & "N'" & oForm.Items("BPLId").Specific.Selected.Value & "'"
+    sQry = sQry & "  AND     ISNULL(T1.Branch, '') LIKE " & "N'" & oForm.Items("BPLId").Specific.Selected.VALUE & "'"
     sQry = sQry & "  AND     T1.U_TeamCode BETWEEN " & "'" & DPTSTR & "'" & " AND " & "'" & DPTEND & "'"
     sQry = sQry & "  AND     T0.U_MSTCOD LIKE " & "N'" & Trim$(MSTCOD) & "'"
     sQry = sQry & "  AND     T0.U_RETPAY > 0"
@@ -1448,7 +1448,7 @@ On Error GoTo Error_Message
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1
         GoTo Error_Message
-    ElseIf oRecordSet.Fields(0).Value = 0 Then
+    ElseIf oRecordSet.Fields(0).VALUE = 0 Then
         ErrNum = 1
         GoTo Error_Message
     Else
@@ -1460,19 +1460,19 @@ On Error GoTo Error_Message
         Brec.TAXCOD = Arec.TAXCOD                                           '/ 세무서
         Brec.BUSCNT = Format$(BUSCNT, String$(Len(Brec.BUSCNT), "0"))         '/ 원천징수의무자수 일련번호
         
-        Brec.NEWCNT = Format$(oRecordSet.Fields("SUM_NEWCNT").Value, String$(Len(Brec.NEWCNT), "0"))      'C Record수
-        Brec.OLDCNT = Format$(oRecordSet.Fields("SUM_OLDCNT").Value, String$(Len(Brec.OLDCNT), "0"))      'D Record수
-        Brec.INCOME = Format$(oRecordSet.Fields("SUM_INCOME").Value, String$(Len(Brec.INCOME), "0"))      '소득금액 총액
-        Brec.GULGAB = Format$(oRecordSet.Fields("SUM_GULGAB").Value, String$(Len(Brec.GULGAB), "0"))      '결정 소득세
+        Brec.NEWCNT = Format$(oRecordSet.Fields("SUM_NEWCNT").VALUE, String$(Len(Brec.NEWCNT), "0"))      'C Record수
+        Brec.OLDCNT = Format$(oRecordSet.Fields("SUM_OLDCNT").VALUE, String$(Len(Brec.OLDCNT), "0"))      'D Record수
+        Brec.INCOME = Format$(oRecordSet.Fields("SUM_INCOME").VALUE, String$(Len(Brec.INCOME), "0"))      '소득금액 총액
+        Brec.GULGAB = Format$(oRecordSet.Fields("SUM_GULGAB").VALUE, String$(Len(Brec.GULGAB), "0"))      '결정 소득세
         Brec.GULCOM = Format$(0, String$(Len(Brec.GULCOM), "0"))                                          '공란
-        Brec.GULJUM = Format$(oRecordSet.Fields("SUM_GULJUM").Value, String$(Len(Brec.GULJUM), "0"))      '결정 주민세
-        Brec.GULNON = Format$(oRecordSet.Fields("SUM_GULNON").Value, String$(Len(Brec.GULNON), "0"))      '결정 농특세
-        Brec.GULTOT = Format$(oRecordSet.Fields("SUM_GULGAB").Value + oRecordSet.Fields("SUM_GULJUM").Value + oRecordSet.Fields("SUM_GULNON").Value, String$(Len(Brec.GULTOT), "0"))
-        Brec.RNGCOD = oForm.Items("JSNTYP").Specific.Selected.Value                                     '제출대상 기간
+        Brec.GULJUM = Format$(oRecordSet.Fields("SUM_GULJUM").VALUE, String$(Len(Brec.GULJUM), "0"))      '결정 주민세
+        Brec.GULNON = Format$(oRecordSet.Fields("SUM_GULNON").VALUE, String$(Len(Brec.GULNON), "0"))      '결정 농특세
+        Brec.GULTOT = Format$(oRecordSet.Fields("SUM_GULGAB").VALUE + oRecordSet.Fields("SUM_GULJUM").VALUE + oRecordSet.Fields("SUM_GULNON").VALUE, String$(Len(Brec.GULTOT), "0"))
+        Brec.RNGCOD = oForm.Items("JSNTYP").Specific.Selected.VALUE                                     '제출대상 기간
         Brec.FILLER = Space$(Len(Brec.FILLER))
 
         Print #1, MDC_SetMod.sStr(Brec.RECGBN) & MDC_SetMod.sStr(Brec.DTAGBN) & MDC_SetMod.sStr(Brec.TAXCOD) & _
-                MDC_SetMod.sStr(Brec.BUSCNT) & MDC_SetMod.sStr(Brec.BUSNBR) & MDC_SetMod.sStr(Brec.SANGHO) & _
+                MDC_SetMod.sStr(Brec.BUSCNT) & MDC_SetMod.sStr(Brec.BUSNBR) & MDC_SetMod.sStr(Brec.sangho) & _
                 MDC_SetMod.sStr(Brec.COMPRT) & MDC_SetMod.sStr(Brec.PERNBR) & MDC_SetMod.sStr(Brec.NEWCNT) & _
                 MDC_SetMod.sStr(Brec.OLDCNT) & MDC_SetMod.sStr(Brec.INCOME) & MDC_SetMod.sStr(Brec.GULGAB) & _
                 MDC_SetMod.sStr(Brec.GULCOM) & MDC_SetMod.sStr(Brec.GULJUM) & MDC_SetMod.sStr(Brec.GULNON) & _
@@ -1539,7 +1539,7 @@ On Error GoTo Error_Message
     sQry = sQry & "      INNER JOIN [OHEM] T1 ON T0.U_EmpID = T1.EmpID"
     sQry = sQry & "      INNER JOIN [@PH_PY001A] T4 ON T0.U_MSTCOD = T4.Code"
     sQry = sQry & " WHERE   ISNULL(T1.U_CLTCOD, '') = '" & Trim$(CLTCOD) & "'"
-    sQry = sQry & " AND     ISNULL(T1.Branch, '') LIKE " & "N'" & oForm.Items("BPLId").Specific.Selected.Value & "'"
+    sQry = sQry & " AND     ISNULL(T1.Branch, '') LIKE " & "N'" & oForm.Items("BPLId").Specific.Selected.VALUE & "'"
     sQry = sQry & " AND     T4.U_TeamCode BETWEEN " & "'" & DPTSTR & "'" & " And " & "'" & DPTEND & "'"
     sQry = sQry & " AND     T0.U_MSTCOD LIKE " & "N'" & Trim$(MSTCOD) & "'"
     sQry = sQry & " AND     T0.U_RETPAY > 0"
@@ -1553,7 +1553,7 @@ On Error GoTo Error_Message
     End If
     Do Until oRecordSet.EOF
         NEWCNT = NEWCNT + 1
-        C_MSTCOD = oRecordSet.Fields("U_MSTCOD").Value
+        C_MSTCOD = oRecordSet.Fields("U_MSTCOD").VALUE
         '/ C Record /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
         Crec.RECGBN = "C"
         Crec.DTAGBN = "25"
@@ -1561,63 +1561,63 @@ On Error GoTo Error_Message
         Crec.SQNNBR = Format$(NEWCNT, String$(Len(Crec.SQNNBR), "0"))  '/ 일련번호
         Crec.BUSNBR = Brec.BUSNBR
         Crec.BUSNUM = Brec.BUSNBR
-        Crec.SANGHO = Brec.SANGHO
+        Crec.sangho = Brec.sangho
         
-        If Trim$(oRecordSet.Fields("U_J01NAM").Value) <> "" Then
+        If Trim$(oRecordSet.Fields("U_J01NAM").VALUE) <> "" Then
             Crec.JONCNT = Format$(1, String$(Len(Crec.JONCNT), "0"))   '/ 종전근무처수
         Else
             Crec.JONCNT = Format$(0, String$(Len(Crec.JONCNT), "0"))   '/ 종전근무처수
         End If
-        Crec.DWEGBN = Format$(oRecordSet.Fields("U_DWEGBN").Value, String$(Len(Crec.DWEGBN), "0"))
-        Crec.INTGBN = Format$(oRecordSet.Fields("U_INTGBN").Value, String$(Len(Crec.INTGBN), "0"))
+        Crec.DWEGBN = Format$(oRecordSet.Fields("U_DWEGBN").VALUE, String$(Len(Crec.DWEGBN), "0"))
+        Crec.INTGBN = Format$(oRecordSet.Fields("U_INTGBN").VALUE, String$(Len(Crec.INTGBN), "0"))
         If Crec.DWEGBN <> "1" Then
-            Crec.RGNCOD = oRecordSet.Fields("U_DWECOD").Value  '/ 거주지국
+            Crec.RGNCOD = oRecordSet.Fields("U_DWECOD").VALUE  '/ 거주지국
         ElseIf Crec.INTGBN <> "1" Then
-            Crec.RGNCOD = oRecordSet.Fields("U_INTCOD").Value  '/ 거주지국
+            Crec.RGNCOD = oRecordSet.Fields("U_INTCOD").VALUE  '/ 거주지국
         Else
         'If Crec.DWEGBN = "1" And Crec.INTGBN = "1" Then '/ 비거주자인경우 거주지국코드
             Crec.RGNCOD = ""
         End If
-        Crec.STRINT = Format$(Mid$(Replace(oRecordSet.Fields("U_STRINT").Value, "-", ""), 1, 8), String$(Len(Crec.STRINT), "0"))
-        Crec.ENDINT = Format$(Mid$(Replace(oRecordSet.Fields("U_ENDINT").Value, "-", ""), 1, 8), String$(Len(Crec.ENDINT), "0"))
-        Crec.MSTNAM = oRecordSet.Fields("U_MSTNAM").Value
-        Crec.PERNBR = Replace(oRecordSet.Fields("U_PERNBR").Value, "-", "")
-        Crec.RETRES = Format$(oRecordSet.Fields("U_RETRES").Value, String$(Len(Crec.RETRES), "0"))     '퇴직  사유
-        Crec.TJKPAY = Format$(oRecordSet.Fields("U_TJKPAY").Value, String$(Len(Crec.TJKPAY), "0"))
-        Crec.SUDAMT = Format$(oRecordSet.Fields("U_SUDAMT").Value, String$(Len(Crec.SUDAMT), "0"))
-        Crec.BHMAMT = Format$(oRecordSet.Fields("U_YILPA1").Value, String$(Len(Crec.BHMAMT), "0"))    '/ 퇴직연금일시금
-        Crec.BHMAM1 = Format$(oRecordSet.Fields("U_YILPA2").Value, String$(Len(Crec.BHMAM1), "0"))                  '/ 컬럼을 안만들어놔서 일단 0으로 처리
-        Crec.TOTAMT = Format$(oRecordSet.Fields("U_TJKPAY").Value + oRecordSet.Fields("U_YILPA1").Value, String$(Len(Crec.TOTAMT), "0"))
-        Crec.TOTAM1 = Format$(oRecordSet.Fields("U_SUDAMT").Value + oRecordSet.Fields("U_YILPA2").Value, String$(Len(Crec.TOTAM1), "0"))
-        Crec.BTXPAY = Format$(oRecordSet.Fields("U_BTXPAY").Value, String$(Len(Crec.BTXPAY), "0"))
+        Crec.STRINT = Format$(Mid$(Replace(oRecordSet.Fields("U_STRINT").VALUE, "-", ""), 1, 8), String$(Len(Crec.STRINT), "0"))
+        Crec.ENDINT = Format$(Mid$(Replace(oRecordSet.Fields("U_ENDINT").VALUE, "-", ""), 1, 8), String$(Len(Crec.ENDINT), "0"))
+        Crec.MSTNAM = oRecordSet.Fields("U_MSTNAM").VALUE
+        Crec.PERNBR = Replace(oRecordSet.Fields("U_PERNBR").VALUE, "-", "")
+        Crec.RETRES = Format$(oRecordSet.Fields("U_RETRES").VALUE, String$(Len(Crec.RETRES), "0"))     '퇴직  사유
+        Crec.TJKPAY = Format$(oRecordSet.Fields("U_TJKPAY").VALUE, String$(Len(Crec.TJKPAY), "0"))
+        Crec.SUDAMT = Format$(oRecordSet.Fields("U_SUDAMT").VALUE, String$(Len(Crec.SUDAMT), "0"))
+        Crec.BHMAMT = Format$(oRecordSet.Fields("U_YILPA1").VALUE, String$(Len(Crec.BHMAMT), "0"))    '/ 퇴직연금일시금
+        Crec.BHMAM1 = Format$(oRecordSet.Fields("U_YILPA2").VALUE, String$(Len(Crec.BHMAM1), "0"))                  '/ 컬럼을 안만들어놔서 일단 0으로 처리
+        Crec.TOTAMT = Format$(oRecordSet.Fields("U_TJKPAY").VALUE + oRecordSet.Fields("U_YILPA1").VALUE, String$(Len(Crec.TOTAMT), "0"))
+        Crec.TOTAM1 = Format$(oRecordSet.Fields("U_SUDAMT").VALUE + oRecordSet.Fields("U_YILPA2").VALUE, String$(Len(Crec.TOTAM1), "0"))
+        Crec.BTXPAY = Format$(oRecordSet.Fields("U_BTXPAY").VALUE, String$(Len(Crec.BTXPAY), "0"))
 
-        Crec.MYNACC = Trim$(oRecordSet.Fields("U_MYNACC").Value)
-        Crec.MYNTOT = Format$(oRecordSet.Fields("U_MYNTOT").Value, String$(Len(Crec.MYNTOT), "0"))
-        Crec.MYNWON = Format$(oRecordSet.Fields("U_MYNWON").Value, String$(Len(Crec.MYNWON), "0"))
-        Crec.MYNBUL = Format$(oRecordSet.Fields("U_MYNBUL").Value, String$(Len(Crec.MYNBUL), "0"))
-        Crec.MYNGON = Format$(oRecordSet.Fields("U_MYNGON").Value, String$(Len(Crec.MYNGON), "0"))
-        Crec.MYNYIL = Format$(oRecordSet.Fields("U_YILPAY").Value, String$(Len(Crec.MYNYIL), "0"))
+        Crec.MYNACC = Trim$(oRecordSet.Fields("U_MYNACC").VALUE)
+        Crec.MYNTOT = Format$(oRecordSet.Fields("U_MYNTOT").VALUE, String$(Len(Crec.MYNTOT), "0"))
+        Crec.MYNWON = Format$(oRecordSet.Fields("U_MYNWON").VALUE, String$(Len(Crec.MYNWON), "0"))
+        Crec.MYNBUL = Format$(oRecordSet.Fields("U_MYNBUL").VALUE, String$(Len(Crec.MYNBUL), "0"))
+        Crec.MYNGON = Format$(oRecordSet.Fields("U_MYNGON").VALUE, String$(Len(Crec.MYNGON), "0"))
+        Crec.MYNYIL = Format$(oRecordSet.Fields("U_YILPAY").VALUE, String$(Len(Crec.MYNYIL), "0"))
         
-        Crec.JYNACC = Trim$(oRecordSet.Fields("U_JYNACC").Value)
-        Crec.JYNTOT = Format$(oRecordSet.Fields("U_JYNTOT").Value, String$(Len(Crec.JYNTOT), "0"))
-        Crec.JYNWON = Format$(oRecordSet.Fields("U_JYNWON").Value, String$(Len(Crec.JYNWON), "0"))
-        Crec.JYNBUL = Format$(oRecordSet.Fields("U_JYNBUL").Value, String$(Len(Crec.JYNBUL), "0"))
-        Crec.JYNGON = Format$(oRecordSet.Fields("U_JYNGON").Value, String$(Len(Crec.JYNGON), "0"))
-        Crec.JYITOT = Format$(oRecordSet.Fields("U_JYIL01").Value + oRecordSet.Fields("U_JYIL02").Value, String$(Len(Crec.JYITOT), "0"))
+        Crec.JYNACC = Trim$(oRecordSet.Fields("U_JYNACC").VALUE)
+        Crec.JYNTOT = Format$(oRecordSet.Fields("U_JYNTOT").VALUE, String$(Len(Crec.JYNTOT), "0"))
+        Crec.JYNWON = Format$(oRecordSet.Fields("U_JYNWON").VALUE, String$(Len(Crec.JYNWON), "0"))
+        Crec.JYNBUL = Format$(oRecordSet.Fields("U_JYNBUL").VALUE, String$(Len(Crec.JYNBUL), "0"))
+        Crec.JYNGON = Format$(oRecordSet.Fields("U_JYNGON").VALUE, String$(Len(Crec.JYNGON), "0"))
+        Crec.JYITOT = Format$(oRecordSet.Fields("U_JYIL01").VALUE + oRecordSet.Fields("U_JYIL02").VALUE, String$(Len(Crec.JYITOT), "0"))
         
-        Crec.SH1JIG = Format$(oRecordSet.Fields("U_SH1JIG").Value, String$(Len(Crec.SH1JIG), "0"))
-        Crec.SH3JIG = Format$(oRecordSet.Fields("U_SH3JIG").Value, String$(Len(Crec.SH3JIG), "0"))
-        Crec.SH1IYO = Format$(oRecordSet.Fields("U_SH1IYO").Value, String$(Len(Crec.SH1IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
-        Crec.SH3IYO = Format$(oRecordSet.Fields("U_SH3IYO").Value, String$(Len(Crec.SH3IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
+        Crec.SH1JIG = Format$(oRecordSet.Fields("U_SH1JIG").VALUE, String$(Len(Crec.SH1JIG), "0"))
+        Crec.SH3JIG = Format$(oRecordSet.Fields("U_SH3JIG").VALUE, String$(Len(Crec.SH3JIG), "0"))
+        Crec.SH1IYO = Format$(oRecordSet.Fields("U_SH1IYO").VALUE, String$(Len(Crec.SH1IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
+        Crec.SH3IYO = Format$(oRecordSet.Fields("U_SH3IYO").VALUE, String$(Len(Crec.SH3IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
         Crec.SH1GIS = Format$(0, String$(Len(Crec.SH1GIS), "0"))  '// 올해는 컬럼을 안만들어놔서 일단 0으로 처리.
         Crec.SH3GIS = Format$(0, String$(Len(Crec.SH3GIS), "0"))  '// 올해는 컬럼을 안만들어놔서 일단 0으로 처리.
         If Val(Crec.SH1JIG) + Val(Crec.SH3JIG) > 0 Then
-            Crec.SH1TIL = Format$(oRecordSet.Fields("U_SH1TIL").Value, String$(Len(Crec.SH1TIL), "0"))
-            Crec.SH1SUR = Format$(oRecordSet.Fields("U_SH1SUR").Value, String$(Len(Crec.SH1SUR), "0"))
-            Crec.SH1GON = Format$(oRecordSet.Fields("U_SH1GON").Value, String$(Len(Crec.SH1GON), "0"))
-            Crec.SH1GWA = Format$(oRecordSet.Fields("U_SH1GWA").Value, String$(Len(Crec.SH1GWA), "0"))
-            Crec.SH1YAG = Format$(oRecordSet.Fields("U_SH1YAG").Value, String$(Len(Crec.SH1YAG), "0"))
-            Crec.SH1YAS = Format$(oRecordSet.Fields("U_SH1YAS").Value, String$(Len(Crec.SH1YAS), "0"))
+            Crec.SH1TIL = Format$(oRecordSet.Fields("U_SH1TIL").VALUE, String$(Len(Crec.SH1TIL), "0"))
+            Crec.SH1SUR = Format$(oRecordSet.Fields("U_SH1SUR").VALUE, String$(Len(Crec.SH1SUR), "0"))
+            Crec.SH1GON = Format$(oRecordSet.Fields("U_SH1GON").VALUE, String$(Len(Crec.SH1GON), "0"))
+            Crec.SH1GWA = Format$(oRecordSet.Fields("U_SH1GWA").VALUE, String$(Len(Crec.SH1GWA), "0"))
+            Crec.SH1YAG = Format$(oRecordSet.Fields("U_SH1YAG").VALUE, String$(Len(Crec.SH1YAG), "0"))
+            Crec.SH1YAS = Format$(oRecordSet.Fields("U_SH1YAS").VALUE, String$(Len(Crec.SH1YAS), "0"))
         Else
             Crec.SH1TIL = Format$(0, String$(Len(Crec.SH1TIL), "0"))
             Crec.SH1SUR = Format$(0, String$(Len(Crec.SH1SUR), "0"))
@@ -1627,19 +1627,19 @@ On Error GoTo Error_Message
             Crec.SH1YAS = Format$(0, String$(Len(Crec.SH1YAS), "0"))
         End If
         
-        Crec.SH2JIG = Format$(oRecordSet.Fields("U_SH2JIG").Value, String$(Len(Crec.SH2JIG), "0"))
-        Crec.SH4JIG = Format$(oRecordSet.Fields("U_SH4JIG").Value, String$(Len(Crec.SH4JIG), "0"))
-        Crec.SH2IYO = Format$(oRecordSet.Fields("U_SH2IYO").Value, String$(Len(Crec.SH2IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
-        Crec.SH4IYO = Format$(oRecordSet.Fields("U_SH4IYO").Value, String$(Len(Crec.SH4IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
+        Crec.SH2JIG = Format$(oRecordSet.Fields("U_SH2JIG").VALUE, String$(Len(Crec.SH2JIG), "0"))
+        Crec.SH4JIG = Format$(oRecordSet.Fields("U_SH4JIG").VALUE, String$(Len(Crec.SH4JIG), "0"))
+        Crec.SH2IYO = Format$(oRecordSet.Fields("U_SH2IYO").VALUE, String$(Len(Crec.SH2IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
+        Crec.SH4IYO = Format$(oRecordSet.Fields("U_SH4IYO").VALUE, String$(Len(Crec.SH4IYO), "0"))    '// 컬럼만 만들어놓고 화면에는 아직 없어용
         Crec.SH2GIS = Format$(0, String$(Len(Crec.SH2GIS), "0"))  '// 올해는 컬럼을 안만들어놔서 일단 0으로 처리.
         Crec.SH4GIS = Format$(0, String$(Len(Crec.SH4GIS), "0"))  '// 올해는 컬럼을 안만들어놔서 일단 0으로 처리.
         If Val(Crec.SH2JIG) + Val(Crec.SH4JIG) > 0 Then
-            Crec.SH2TIL = Format$(oRecordSet.Fields("U_SH2TIL").Value, String$(Len(Crec.SH2TIL), "0"))
-            Crec.SH2SUR = Format$(oRecordSet.Fields("U_SH2SUR").Value, String$(Len(Crec.SH2SUR), "0"))
-            Crec.SH2GON = Format$(oRecordSet.Fields("U_SH2GON").Value, String$(Len(Crec.SH2GON), "0"))
-            Crec.SH2GWA = Format$(oRecordSet.Fields("U_SH2GWA").Value, String$(Len(Crec.SH2GWA), "0"))
-            Crec.SH2YAG = Format$(oRecordSet.Fields("U_SH2YAG").Value, String$(Len(Crec.SH2YAG), "0"))
-            Crec.SH2YAS = Format$(oRecordSet.Fields("U_SH2YAS").Value, String$(Len(Crec.SH2YAS), "0"))
+            Crec.SH2TIL = Format$(oRecordSet.Fields("U_SH2TIL").VALUE, String$(Len(Crec.SH2TIL), "0"))
+            Crec.SH2SUR = Format$(oRecordSet.Fields("U_SH2SUR").VALUE, String$(Len(Crec.SH2SUR), "0"))
+            Crec.SH2GON = Format$(oRecordSet.Fields("U_SH2GON").VALUE, String$(Len(Crec.SH2GON), "0"))
+            Crec.SH2GWA = Format$(oRecordSet.Fields("U_SH2GWA").VALUE, String$(Len(Crec.SH2GWA), "0"))
+            Crec.SH2YAG = Format$(oRecordSet.Fields("U_SH2YAG").VALUE, String$(Len(Crec.SH2YAG), "0"))
+            Crec.SH2YAS = Format$(oRecordSet.Fields("U_SH2YAS").VALUE, String$(Len(Crec.SH2YAS), "0"))
         Else
             Crec.SH2TIL = Format$(0, String$(Len(Crec.SH2TIL), "0"))
             Crec.SH2SUR = Format$(0, String$(Len(Crec.SH2SUR), "0"))
@@ -1650,86 +1650,86 @@ On Error GoTo Error_Message
         End If
         
         '/ 법정 주현
-        Crec.INPDAT = Format$(Replace(oRecordSet.Fields("U_STRRET").Value, "-", ""), String$(Len(Crec.INPDAT), "0"))
-        Crec.OUTDAT = Format$(Replace(oRecordSet.Fields("U_ENDRET").Value, "-", ""), String$(Len(Crec.OUTDAT), "0"))
-        Crec.GNMMON = Format$(oRecordSet.Fields("U_GNMMON").Value, String$(Len(Crec.GNMMON), "0"))
-        Crec.EXPMON = Format$(oRecordSet.Fields("U_EXPMON").Value, String$(Len(Crec.EXPMON), "0"))
+        Crec.INPDAT = Format$(Replace(oRecordSet.Fields("U_STRRET").VALUE, "-", ""), String$(Len(Crec.INPDAT), "0"))
+        Crec.OUTDAT = Format$(Replace(oRecordSet.Fields("U_ENDRET").VALUE, "-", ""), String$(Len(Crec.OUTDAT), "0"))
+        Crec.GNMMON = Format$(oRecordSet.Fields("U_GNMMON").VALUE, String$(Len(Crec.GNMMON), "0"))
+        Crec.EXPMON = Format$(oRecordSet.Fields("U_EXPMON").VALUE, String$(Len(Crec.EXPMON), "0"))
         '/ 법정 종전
-        Crec.JIPDAT = Format$(Replace(oRecordSet.Fields("U_JINDAT").Value, "-", ""), String$(Len(Crec.JIPDAT), "0"))
-        Crec.JOTDAT = Format$(Replace(oRecordSet.Fields("U_JOTDAT").Value, "-", ""), String$(Len(Crec.JOTDAT), "0"))
-        Crec.JGMMON = Format$(oRecordSet.Fields("U_GNMDAY").Value, String$(Len(Crec.JGMMON), "0"))  '/ 종전근무월(GNMDAY로대체)
-        Crec.JEXMON = Format$(oRecordSet.Fields("U_JEXMON").Value, String$(Len(Crec.JEXMON), "0"))
-        Crec.DUPMON = Format$(oRecordSet.Fields("U_JMMMON").Value, String$(Len(Crec.DUPMON), "0"))
-        Crec.GNMYER = Format$(oRecordSet.Fields("U_GNMYER").Value, String$(Len(Crec.GNMYER), "0"))
+        Crec.JIPDAT = Format$(Replace(oRecordSet.Fields("U_JINDAT").VALUE, "-", ""), String$(Len(Crec.JIPDAT), "0"))
+        Crec.JOTDAT = Format$(Replace(oRecordSet.Fields("U_JOTDAT").VALUE, "-", ""), String$(Len(Crec.JOTDAT), "0"))
+        Crec.JGMMON = Format$(oRecordSet.Fields("U_GNMDAY").VALUE, String$(Len(Crec.JGMMON), "0"))  '/ 종전근무월(GNMDAY로대체)
+        Crec.JEXMON = Format$(oRecordSet.Fields("U_JEXMON").VALUE, String$(Len(Crec.JEXMON), "0"))
+        Crec.DUPMON = Format$(oRecordSet.Fields("U_JMMMON").VALUE, String$(Len(Crec.DUPMON), "0"))
+        Crec.GNMYER = Format$(oRecordSet.Fields("U_GNMYER").VALUE, String$(Len(Crec.GNMYER), "0"))
         
         '/ 법정외 주현
         
         If Left(Crec.JOTDAT, 4) = Left(Crec.INPDAT, 4) Then '/ 동일년도 중도정산후 퇴사자일경우 주현입사일대신 정산시작일입력함.
-            Crec.FR2DAT = Format$(Replace(oRecordSet.Fields("U_STRRET").Value, "-", ""), String$(Len(Crec.FR2DAT), "0"))
+            Crec.FR2DAT = Format$(Replace(oRecordSet.Fields("U_STRRET").VALUE, "-", ""), String$(Len(Crec.FR2DAT), "0"))
         Else
-            Crec.FR2DAT = Format$(Replace(oRecordSet.Fields("U_INPDAT").Value, "-", ""), String$(Len(Crec.FR2DAT), "0"))
+            Crec.FR2DAT = Format$(Replace(oRecordSet.Fields("U_INPDAT").VALUE, "-", ""), String$(Len(Crec.FR2DAT), "0"))
         End If
-        Crec.TO2DAT = Format$(Replace(oRecordSet.Fields("U_ENDRET").Value, "-", ""), String$(Len(Crec.TO2DAT), "0"))
-        If oRecordSet.Fields("U_GN2MON").Value = 0 Or (Left(Crec.JOTDAT, 4) = Left(Crec.INPDAT, 4)) Then    '/법정외근속월수가 없을경우 법정 근속내용삽입
-            Crec.GN2MON = Format$(oRecordSet.Fields("U_GNMMON").Value, String$(Len(Crec.GN2MON), "0"))
-            Crec.EX2MON = Format$(oRecordSet.Fields("U_EXPMON").Value, String$(Len(Crec.EX2MON), "0"))
-            Crec.GN2YER = Format$(oRecordSet.Fields("U_GNMYER").Value, String$(Len(Crec.GNMYER), "0"))
+        Crec.TO2DAT = Format$(Replace(oRecordSet.Fields("U_ENDRET").VALUE, "-", ""), String$(Len(Crec.TO2DAT), "0"))
+        If oRecordSet.Fields("U_GN2MON").VALUE = 0 Or (Left(Crec.JOTDAT, 4) = Left(Crec.INPDAT, 4)) Then    '/법정외근속월수가 없을경우 법정 근속내용삽입
+            Crec.GN2MON = Format$(oRecordSet.Fields("U_GNMMON").VALUE, String$(Len(Crec.GN2MON), "0"))
+            Crec.EX2MON = Format$(oRecordSet.Fields("U_EXPMON").VALUE, String$(Len(Crec.EX2MON), "0"))
+            Crec.GN2YER = Format$(oRecordSet.Fields("U_GNMYER").VALUE, String$(Len(Crec.GNMYER), "0"))
         Else
-            Crec.GN2MON = Format$(oRecordSet.Fields("U_GN2MON").Value, String$(Len(Crec.GN2MON), "0"))
-            Crec.EX2MON = Format$(oRecordSet.Fields("U_EX2MON").Value, String$(Len(Crec.EX2MON), "0"))
-            Crec.GN2YER = Format$(oRecordSet.Fields("U_GN2YER").Value, String$(Len(Crec.GN2YER), "0"))
+            Crec.GN2MON = Format$(oRecordSet.Fields("U_GN2MON").VALUE, String$(Len(Crec.GN2MON), "0"))
+            Crec.EX2MON = Format$(oRecordSet.Fields("U_EX2MON").VALUE, String$(Len(Crec.EX2MON), "0"))
+            Crec.GN2YER = Format$(oRecordSet.Fields("U_GN2YER").VALUE, String$(Len(Crec.GN2YER), "0"))
         End If
         '/ 법정외 종전
-        Crec.JI2DAT = Format$(Replace(oRecordSet.Fields("ST2RET").Value, "-", ""), String$(Len(Crec.JI2DAT), "0"))    '전  입사일자
-        Crec.JO2DAT = Format$(Replace(oRecordSet.Fields("U_JOTDAT").Value, "-", ""), String$(Len(Crec.JO2DAT), "0"))
-        If oRecordSet.Fields("U_JO2MON").Value = 0 Then  '/ 종전 법정외근속월수가 없을경우 법정 근속내용삽입
-            Crec.JO2MON = Format$(oRecordSet.Fields("U_GNMDAY").Value, String$(Len(Crec.JO2MON), "0")) '    근속월수
-            Crec.JE2MON = Format$(oRecordSet.Fields("U_JEXMON").Value, String$(Len(Crec.JE2MON), "0")) '    제외월수(2007년)
-            Crec.JB2MON = Format$(oRecordSet.Fields("U_JMMMON").Value, String$(Len(Crec.JB2MON), "0"))
+        Crec.JI2DAT = Format$(Replace(oRecordSet.Fields("ST2RET").VALUE, "-", ""), String$(Len(Crec.JI2DAT), "0"))    '전  입사일자
+        Crec.JO2DAT = Format$(Replace(oRecordSet.Fields("U_JOTDAT").VALUE, "-", ""), String$(Len(Crec.JO2DAT), "0"))
+        If oRecordSet.Fields("U_JO2MON").VALUE = 0 Then  '/ 종전 법정외근속월수가 없을경우 법정 근속내용삽입
+            Crec.JO2MON = Format$(oRecordSet.Fields("U_GNMDAY").VALUE, String$(Len(Crec.JO2MON), "0")) '    근속월수
+            Crec.JE2MON = Format$(oRecordSet.Fields("U_JEXMON").VALUE, String$(Len(Crec.JE2MON), "0")) '    제외월수(2007년)
+            Crec.JB2MON = Format$(oRecordSet.Fields("U_JMMMON").VALUE, String$(Len(Crec.JB2MON), "0"))
         Else
-            Crec.JO2MON = Format$(oRecordSet.Fields("U_JO2MON").Value, String$(Len(Crec.JO2MON), "0")) '    근속월수
-            Crec.JE2MON = Format$(oRecordSet.Fields("U_JE2MON").Value, String$(Len(Crec.JE2MON), "0")) '    제외월수(2007년)
-            Crec.JB2MON = Format$(oRecordSet.Fields("U_JB2MON").Value, String$(Len(Crec.JB2MON), "0"))
+            Crec.JO2MON = Format$(oRecordSet.Fields("U_JO2MON").VALUE, String$(Len(Crec.JO2MON), "0")) '    근속월수
+            Crec.JE2MON = Format$(oRecordSet.Fields("U_JE2MON").VALUE, String$(Len(Crec.JE2MON), "0")) '    제외월수(2007년)
+            Crec.JB2MON = Format$(oRecordSet.Fields("U_JB2MON").VALUE, String$(Len(Crec.JB2MON), "0"))
         End If
         
         '/ 법정
-        Crec.JS1RET = Format$(Val(oRecordSet.Fields("U_RETPAY").Value) - Val(oRecordSet.Fields("U_SH2SUR").Value), String$(Len(Crec.JS1RET), "0"))
-        Crec.JS1GON = Format$(Val(oRecordSet.Fields("U_RETGON").Value) - Val(oRecordSet.Fields("U_SH2GON").Value), String$(Len(Crec.JS1GON), "0"))
-        Crec.JS1STD = Format$(Val(oRecordSet.Fields("U_TAXSTD").Value) - Val(oRecordSet.Fields("U_SH2GWA").Value), String$(Len(Crec.JS1STD), "0"))
-        Crec.JS1YSD = Format$(Val(oRecordSet.Fields("U_YTXSTD").Value) - Val(oRecordSet.Fields("U_SH2YAG").Value), String$(Len(Crec.JS1YSD), "0"))
-        Crec.JS1YST = Format$(Val(oRecordSet.Fields("U_YSANTX").Value) - Val(oRecordSet.Fields("U_SH2YAS").Value), String$(Len(Crec.JS1YST), "0"))
-        Crec.JS1SAN = Format$(Val(oRecordSet.Fields("U_SANTAX").Value) - Val(oRecordSet.Fields("U_JS2SAN").Value), String$(Len(Crec.JS1SAN), "0"))
-        Crec.JS1FRN = Format$(Val(oRecordSet.Fields("U_TAXGON").Value) - Val(oRecordSet.Fields("U_JS2TAX").Value), String$(Len(Crec.JS1FRN), "0"))  '/2008년추가 세액(외국납부)공제
+        Crec.JS1RET = Format$(Val(oRecordSet.Fields("U_RETPAY").VALUE) - Val(oRecordSet.Fields("U_SH2SUR").VALUE), String$(Len(Crec.JS1RET), "0"))
+        Crec.JS1GON = Format$(Val(oRecordSet.Fields("U_RETGON").VALUE) - Val(oRecordSet.Fields("U_SH2GON").VALUE), String$(Len(Crec.JS1GON), "0"))
+        Crec.JS1STD = Format$(Val(oRecordSet.Fields("U_TAXSTD").VALUE) - Val(oRecordSet.Fields("U_SH2GWA").VALUE), String$(Len(Crec.JS1STD), "0"))
+        Crec.JS1YSD = Format$(Val(oRecordSet.Fields("U_YTXSTD").VALUE) - Val(oRecordSet.Fields("U_SH2YAG").VALUE), String$(Len(Crec.JS1YSD), "0"))
+        Crec.JS1YST = Format$(Val(oRecordSet.Fields("U_YSANTX").VALUE) - Val(oRecordSet.Fields("U_SH2YAS").VALUE), String$(Len(Crec.JS1YST), "0"))
+        Crec.JS1SAN = Format$(Val(oRecordSet.Fields("U_SANTAX").VALUE) - Val(oRecordSet.Fields("U_JS2SAN").VALUE), String$(Len(Crec.JS1SAN), "0"))
+        Crec.JS1FRN = Format$(Val(oRecordSet.Fields("U_TAXGON").VALUE) - Val(oRecordSet.Fields("U_JS2TAX").VALUE), String$(Len(Crec.JS1FRN), "0"))  '/2008년추가 세액(외국납부)공제
         '/ 법정외
-        Crec.JS2RET = Format$(oRecordSet.Fields("U_SH2SUR").Value, String$(Len(Crec.JS2RET), "0"))
-        Crec.JS2GON = Format$(oRecordSet.Fields("U_SH2GON").Value, String$(Len(Crec.JS2GON), "0"))
-        Crec.JS2STD = Format$(oRecordSet.Fields("U_SH2GWA").Value, String$(Len(Crec.JS2STD), "0"))
-        Crec.JS2YSD = Format$(oRecordSet.Fields("U_SH2YAG").Value, String$(Len(Crec.JS2YSD), "0"))
-        Crec.JS2YST = Format$(oRecordSet.Fields("U_SH2YAS").Value, String$(Len(Crec.JS2YST), "0"))
-        Crec.JS2SAN = Format$(oRecordSet.Fields("U_JS2SAN").Value, String$(Len(Crec.JS2SAN), "0"))
-        Crec.JS2FRN = Format$(oRecordSet.Fields("U_JS2TAX").Value, String$(Len(Crec.JS2FRN), "0"))  '/2008년추가 세액(외국납부)공제
+        Crec.JS2RET = Format$(oRecordSet.Fields("U_SH2SUR").VALUE, String$(Len(Crec.JS2RET), "0"))
+        Crec.JS2GON = Format$(oRecordSet.Fields("U_SH2GON").VALUE, String$(Len(Crec.JS2GON), "0"))
+        Crec.JS2STD = Format$(oRecordSet.Fields("U_SH2GWA").VALUE, String$(Len(Crec.JS2STD), "0"))
+        Crec.JS2YSD = Format$(oRecordSet.Fields("U_SH2YAG").VALUE, String$(Len(Crec.JS2YSD), "0"))
+        Crec.JS2YST = Format$(oRecordSet.Fields("U_SH2YAS").VALUE, String$(Len(Crec.JS2YST), "0"))
+        Crec.JS2SAN = Format$(oRecordSet.Fields("U_JS2SAN").VALUE, String$(Len(Crec.JS2SAN), "0"))
+        Crec.JS2FRN = Format$(oRecordSet.Fields("U_JS2TAX").VALUE, String$(Len(Crec.JS2FRN), "0"))  '/2008년추가 세액(외국납부)공제
         '/ 계
-        Crec.RETPAY = Format$(oRecordSet.Fields("U_RETPAY").Value, String$(Len(Crec.RETPAY), "0"))
-        Crec.RETGON = Format$(oRecordSet.Fields("U_RETGON").Value, String$(Len(Crec.RETGON), "0"))
-        Crec.TAXSTD = Format$(oRecordSet.Fields("U_TAXSTD").Value, String$(Len(Crec.TAXSTD), "0"))
-        Crec.YTXSTD = Format$(oRecordSet.Fields("U_YTXSTD").Value, String$(Len(Crec.YTXSTD), "0"))
-        Crec.YSANTX = Format$(oRecordSet.Fields("U_YSANTX").Value, String$(Len(Crec.YSANTX), "0"))
-        Crec.SANTAX = Format$(oRecordSet.Fields("U_SANTAX").Value, String$(Len(Crec.SANTAX), "0"))
-        Crec.TAXGON = Format$(oRecordSet.Fields("U_TAXGON").Value, String$(Len(Crec.TAXGON), "0"))  '/2008년추가 세액(외국납부)공제
+        Crec.RETPAY = Format$(oRecordSet.Fields("U_RETPAY").VALUE, String$(Len(Crec.RETPAY), "0"))
+        Crec.RETGON = Format$(oRecordSet.Fields("U_RETGON").VALUE, String$(Len(Crec.RETGON), "0"))
+        Crec.TAXSTD = Format$(oRecordSet.Fields("U_TAXSTD").VALUE, String$(Len(Crec.TAXSTD), "0"))
+        Crec.YTXSTD = Format$(oRecordSet.Fields("U_YTXSTD").VALUE, String$(Len(Crec.YTXSTD), "0"))
+        Crec.YSANTX = Format$(oRecordSet.Fields("U_YSANTX").VALUE, String$(Len(Crec.YSANTX), "0"))
+        Crec.SANTAX = Format$(oRecordSet.Fields("U_SANTAX").VALUE, String$(Len(Crec.SANTAX), "0"))
+        Crec.TAXGON = Format$(oRecordSet.Fields("U_TAXGON").VALUE, String$(Len(Crec.TAXGON), "0"))  '/2008년추가 세액(외국납부)공제
         '/ 결정
-        Crec.GULGAB = Format$(oRecordSet.Fields("U_GULGAB").Value, String$(Len(Crec.GULGAB), "0"))
-        Crec.GULJUM = Format$(oRecordSet.Fields("U_GULJUM").Value, String$(Len(Crec.GULJUM), "0"))
+        Crec.GULGAB = Format$(oRecordSet.Fields("U_GULGAB").VALUE, String$(Len(Crec.GULGAB), "0"))
+        Crec.GULJUM = Format$(oRecordSet.Fields("U_GULJUM").VALUE, String$(Len(Crec.GULJUM), "0"))
         Crec.GULNON = Format$(0, String$(Len(Crec.GULNON), "0"))
-        Crec.GULTOT = Format$(oRecordSet.Fields("U_GULGAB").Value + oRecordSet.Fields("U_GULJUM").Value, String$(Len(Crec.GULTOT), "0"))
+        Crec.GULTOT = Format$(oRecordSet.Fields("U_GULGAB").VALUE + oRecordSet.Fields("U_GULJUM").VALUE, String$(Len(Crec.GULTOT), "0"))
         '/ 종전
-        Crec.JONGAB = Format$(oRecordSet.Fields("U_JONGAB").Value, String$(Len(Crec.JONGAB), "0"))
-        Crec.JONJUM = Format$(oRecordSet.Fields("U_JONJUM").Value, String$(Len(Crec.JONJUM), "0"))
+        Crec.JONGAB = Format$(oRecordSet.Fields("U_JONGAB").VALUE, String$(Len(Crec.JONGAB), "0"))
+        Crec.JONJUM = Format$(oRecordSet.Fields("U_JONJUM").VALUE, String$(Len(Crec.JONJUM), "0"))
         Crec.JONNON = Format$(0, String$(Len(Crec.JONNON), "0"))
-        Crec.JONTOT = Format$(oRecordSet.Fields("U_JONGAB").Value + oRecordSet.Fields("U_JONJUM").Value, String$(Len(Crec.JONTOT), "0"))
+        Crec.JONTOT = Format$(oRecordSet.Fields("U_JONGAB").VALUE + oRecordSet.Fields("U_JONJUM").VALUE, String$(Len(Crec.JONTOT), "0"))
         Crec.FILLER = Space$(Len(Crec.FILLER))
         
         Print #1, MDC_SetMod.sStr(Crec.RECGBN) & MDC_SetMod.sStr(Crec.DTAGBN) & MDC_SetMod.sStr(Crec.TAXCOD) & MDC_SetMod.sStr(Crec.SQNNBR) & MDC_SetMod.sStr(Crec.BUSNBR) & MDC_SetMod.sStr(Crec.BUSNUM) & _
-                MDC_SetMod.sStr(Crec.SANGHO) & MDC_SetMod.sStr(Crec.JONCNT) & MDC_SetMod.sStr(Crec.DWEGBN) & MDC_SetMod.sStr(Crec.RGNCOD) & _
+                MDC_SetMod.sStr(Crec.sangho) & MDC_SetMod.sStr(Crec.JONCNT) & MDC_SetMod.sStr(Crec.DWEGBN) & MDC_SetMod.sStr(Crec.RGNCOD) & _
                 MDC_SetMod.sStr(Crec.STRINT) & MDC_SetMod.sStr(Crec.ENDINT) & MDC_SetMod.sStr(Crec.MSTNAM) & MDC_SetMod.sStr(Crec.INTGBN) & MDC_SetMod.sStr(Crec.PERNBR) & MDC_SetMod.sStr(Crec.RETRES) & _
                 MDC_SetMod.sStr(Crec.TJKPAY) & MDC_SetMod.sStr(Crec.SUDAMT) & MDC_SetMod.sStr(Crec.BHMAMT) & MDC_SetMod.sStr(Crec.BHMAM1) & MDC_SetMod.sStr(Crec.TOTAMT) & MDC_SetMod.sStr(Crec.TOTAM1) & MDC_SetMod.sStr(Crec.BTXPAY) & _
                 MDC_SetMod.sStr(Crec.MYNACC) & MDC_SetMod.sStr(Crec.MYNTOT) & MDC_SetMod.sStr(Crec.MYNWON) & MDC_SetMod.sStr(Crec.MYNBUL) & MDC_SetMod.sStr(Crec.MYNGON) & MDC_SetMod.sStr(Crec.MYNYIL) & _
@@ -1779,15 +1779,15 @@ On Error GoTo Error_Message
             Drec.FILLD1 = Space$(Len(Drec.FILLD1))
             Drec.PERNBR = Crec.PERNBR
             
-            Drec.JONNAM = Trim$(oRecordSet.Fields("U_J01NAM").Value)
-            Drec.JONNBR = Replace(oRecordSet.Fields("U_J01NBR").Value, "-", "")
-            Drec.RETAMT = Format$(oRecordSet.Fields("U_JRET01").Value, String$(Len(Drec.RETAMT), "0"))
-            Drec.SUDAMT = Format$(oRecordSet.Fields("U_JSUD01").Value, String$(Len(Drec.SUDAMT), "0"))
-            Drec.BHMAMT = Format$(oRecordSet.Fields("U_JBHM01").Value, String$(Len(Drec.BHMAMT), "0"))
+            Drec.JONNAM = Trim$(oRecordSet.Fields("U_J01NAM").VALUE)
+            Drec.JONNBR = Replace(oRecordSet.Fields("U_J01NBR").VALUE, "-", "")
+            Drec.RETAMT = Format$(oRecordSet.Fields("U_JRET01").VALUE, String$(Len(Drec.RETAMT), "0"))
+            Drec.SUDAMT = Format$(oRecordSet.Fields("U_JSUD01").VALUE, String$(Len(Drec.SUDAMT), "0"))
+            Drec.BHMAMT = Format$(oRecordSet.Fields("U_JBHM01").VALUE, String$(Len(Drec.BHMAMT), "0"))
             Drec.BHMAM1 = Format$(0, String$(Len(Drec.BHMAM1), "0"))          '/ 컬럼을 안만들어놔서 일단 0으로 처리
-            Drec.TOTAMT = Format$(oRecordSet.Fields("U_JTOT01").Value, String$(Len(Drec.TOTAMT), "0"))
-            Drec.TOTAM1 = Format$(oRecordSet.Fields("U_JADD01").Value, String$(Len(Drec.TOTAM1), "0"))
-            Drec.BTXP01 = Format$(oRecordSet.Fields("U_BTXP01").Value, String$(Len(Drec.BTXP01), "0"))
+            Drec.TOTAMT = Format$(oRecordSet.Fields("U_JTOT01").VALUE, String$(Len(Drec.TOTAMT), "0"))
+            Drec.TOTAM1 = Format$(oRecordSet.Fields("U_JADD01").VALUE, String$(Len(Drec.TOTAM1), "0"))
+            Drec.BTXP01 = Format$(oRecordSet.Fields("U_BTXP01").VALUE, String$(Len(Drec.BTXP01), "0"))
             Drec.JONCNT = Format$(Crec.JONCNT, String$(Len(Drec.JONCNT), "0"))
             Drec.FILLER = Space$(Len(Drec.FILLER))
             
@@ -1836,11 +1836,11 @@ End Function
 
 Private Sub Matrix_AddRow(ByVal MatrixMsg As String, Optional Insert_YN As Boolean, Optional MatrixErr As Boolean)
     If MatrixErr = True Then
-        oForm.DataSources.UserDataSources("Col0").Value = "??"
+        oForm.DataSources.UserDataSources("Col0").VALUE = "??"
     Else
-        oForm.DataSources.UserDataSources("Col0").Value = ""
+        oForm.DataSources.UserDataSources("Col0").VALUE = ""
     End If
-    oForm.DataSources.UserDataSources("Col1").Value = MatrixMsg
+    oForm.DataSources.UserDataSources("Col1").VALUE = MatrixMsg
     If Insert_YN = True Then
         oMat1.AddRow
         MaxRow = MaxRow + 1

@@ -160,7 +160,7 @@ On Error GoTo PS_CO001_Add_MatrixRow_Error
     End If
     
     oMat01.AddRow
-    oDS_PS_CO001L.offset = oRow
+    oDS_PS_CO001L.Offset = oRow
     oDS_PS_CO001L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
@@ -191,8 +191,8 @@ On Error GoTo PS_CO001_MTX01_Error
     Dim BPLID      As String '사업장
     Dim StdYear    As String '기준년도
     
-    BPLID = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", RecordSet01.RecordCount, False)
@@ -230,7 +230,7 @@ On Error GoTo PS_CO001_MTX01_Error
         End If
         
         Call oMat01.AddRow
-        oDS_PS_CO001L.offset = loopCount
+        oDS_PS_CO001L.Offset = loopCount
         
         Call oDS_PS_CO001L.setValue("U_LineNum", loopCount, loopCount + 1)
         Call oDS_PS_CO001L.setValue("U_ColReg01", loopCount, RecordSet01.Fields("StdMonth").VALUE) '기준월
@@ -305,8 +305,8 @@ On Error GoTo PS_CO001_AddData_Error
     
     For loopCount = 0 To oMat01.RowCount - 1
     
-        BPLID = oForm01.Items("BPLID").Specific.VALUE '사업장
-        StdYear = oForm01.Items("StdYear").Specific.VALUE '년도
+        BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+        StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '년도
         
         StdMonth = Trim(oDS_PS_CO001L.GetValue("U_ColReg01", loopCount)) '기준월
         MM005Sts = Trim(oDS_PS_CO001L.GetValue("U_ColReg02", loopCount)) '구매요청

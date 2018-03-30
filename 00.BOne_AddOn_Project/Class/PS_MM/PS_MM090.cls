@@ -1268,10 +1268,10 @@ On Error GoTo PS_MM090_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1355,8 +1355,8 @@ On Error GoTo PS_MM090_DI_API_Error
     oDIObject.HandWritten = TNO
     oDIObject.DocType = dDocument_Service '서비스송장
     oDIObject.BPL_IDAssignedToInvoice = 2 '동래기본박아넣음 'oForm01.Items("BPLId").Specific.Selected.Value
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE                       '공급업체
-    oDIObject.CardName = oForm01.Items("CardName").Specific.VALUE                       '공급처이름
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)                       '공급업체
+    oDIObject.CardName = Trim(oForm01.Items("CardName").Specific.VALUE)                       '공급처이름
     oDIObject.DocDate = Format(oForm01.Items("ApDate").Specific.VALUE, "&&&&-&&-&&")    '전기일
     oDIObject.DocDueDate = Format(oForm01.Items("ApDate").Specific.VALUE, "&&&&-&&-&&") '만기일
     oDIObject.Comments = "기준PSMT내역문서 : " & oForm01.Items("DocEntry").Specific.VALUE
@@ -1569,7 +1569,7 @@ On Error GoTo PS_SMM090_Print_Report01_Error
     
     Call ConnectODBC
     
-    DocNum = oForm01.Items("DocEntry").Specific.VALUE
+    DocNum = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     WinTitle = "[PS_MM090] 기타자재출고증출력"
     ReportName = "PS_MM090_01.rpt"
     sQry = "EXEC PS_MM090_Print '" & DocNum & "'"
@@ -1617,7 +1617,7 @@ On Error GoTo PS_SMM090_Print_Report02_Error
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
     Call ConnectODBC
-    DocNum = oForm01.Items("DocEntry").Specific.VALUE
+    DocNum = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     WinTitle = "[PS_MM090] 거래명세서"
     
     If oForm01.Items("BPLId").Specific.VALUE = "2" Then

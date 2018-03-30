@@ -45,7 +45,7 @@ Private oPQType As String
 '****************************************************************************************************************
 ' .srf 파일로부터 폼을 로드한다.
 '****************************************************************************************************************
-Public Sub LoadForm(Optional sDocNum As String, Optional sBPLId As String)
+Public Sub LoadForm(Optional sDocNum As String, Optional SBPLID As String)
 On Error GoTo LoadForm_Error
     Dim i As Long
     Dim oInnerXml01 As String
@@ -110,7 +110,7 @@ On Error GoTo LoadForm_Error
         Call FormItemEnabled
 
         oForm01.Items("DocNum").Specific.VALUE = sDocNum
-        Call oForm01.Items("BPLId").Specific.Select(sBPLId, psk_ByValue)
+        Call oForm01.Items("BPLId").Specific.Select(SBPLID, psk_ByValue)
         
         Call oForm01.Items("1").Click(ct_Regular)
         
@@ -146,7 +146,7 @@ On Error GoTo Raise_ItemEvent_Error
     Dim ErrNum&
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Dim SumWeight As Currency, SumQty As Long
-    Dim ItemCode$, ItemName$, Size$, Qty&, Weight As Currency, Unit$, RequestDate$, DueDate$, ItemType$, RequestNo$, BPLId$
+    Dim ItemCode$, ItemName$, Size$, Qty&, Weight As Currency, Unit$, RequestDate$, DueDate$, ItemType$, RequestNo$, BPLID$
     Dim RFC_Sender$
     Dim Calculate_Weight As Double
     Dim Seq&
@@ -922,17 +922,17 @@ On Error GoTo NumberSet_Error
     
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim YM As String
     Dim Cnt As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     YM = Left(oForm01.Items("DocDate").Specific.VALUE, 6)
     
     
     sQry = " Select right('0' + Convert(Nvarchar(2), Convert(integer,Right(Max(Isnull(U_Number,'00')),2)) + 1),2) "
     sQry = sQry + " From [@PS_PP015H] "
-    sQry = sQry + " Where U_BPLId = '" & BPLId & "' And Convert(char(6),U_DocDate,112) = '" & YM & "' and Isnull(U_Number,'') <> '' and Canceled = 'N' "
+    sQry = sQry + " Where U_BPLId = '" & BPLID & "' And Convert(char(6),U_DocDate,112) = '" & YM & "' and Isnull(U_Number,'') <> '' and Canceled = 'N' "
     oRecordSet01.DoQuery sQry
     
     Cnt = oRecordSet01.Fields(0).VALUE

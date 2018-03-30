@@ -137,15 +137,15 @@ On Error GoTo PS_GA031_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdYear As String '기준년도
     Dim AcctCode01 As String '계정코드
     Dim AcctCode02 As String '계정과목코드
     Dim AcctCode03 As String '세부계정과목코드
     Dim Check0 As String '0값 제외
     
-    BPLId = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
     AcctCode03 = oForm01.Items("AcctCode03").Specific.VALUE
@@ -157,7 +157,7 @@ On Error GoTo PS_GA031_MTX01_Error
     Call oForm01.Freeze(True)
     
     sQry = "         EXEC [PS_GA031_01] '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & StdYear & "','"
     sQry = sQry & AcctCode01 & "','"
     sQry = sQry & AcctCode02 & "','"
@@ -897,7 +897,7 @@ On Error GoTo Print_Query_Error
             
     Call ConnectODBC
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdYear As String '기준년도
     Dim AcctCode01 As String '계정코드
     Dim AcctName01 As String
@@ -907,8 +907,8 @@ On Error GoTo Print_Query_Error
     Dim AcctName03 As String
     Dim Check0 As String
     
-    BPLId = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctName01 = oForm01.Items("AcctName01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
@@ -924,7 +924,7 @@ On Error GoTo Print_Query_Error
     
     '쿼리
     sQry = "         EXEC [PS_GA031_02] '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & StdYear & "','"
     sQry = sQry & AcctCode01 & "','"
     sQry = sQry & AcctName01 & "','"
@@ -997,7 +997,7 @@ On Error GoTo Print_Query_Error
             
     Call ConnectODBC
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdYear As String '기준년도
     Dim AcctCode01 As String '계정코드
     Dim AcctName01 As String
@@ -1007,8 +1007,8 @@ On Error GoTo Print_Query_Error
     Dim AcctName03 As String
     Dim Check0 As String
     
-    BPLId = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctName01 = oForm01.Items("AcctName01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
@@ -1024,7 +1024,7 @@ On Error GoTo Print_Query_Error
     
     '쿼리
     sQry = "         EXEC [PS_GA031_03] '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & StdYear & "','"
     sQry = sQry & AcctCode01 & "','"
     sQry = sQry & AcctName01 & "','"

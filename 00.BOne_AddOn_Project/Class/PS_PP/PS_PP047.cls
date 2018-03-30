@@ -496,7 +496,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim CarNo As String
     Dim Box As String
     Dim BatchNum As String
@@ -924,20 +924,20 @@ On Error GoTo PS_PP047_MTX01_Error
     Dim i           As Long
     Dim sQry        As String
     Dim sQry1        As String
-    Dim BPLId        As String
+    Dim BPLID        As String
     Dim YM       As String
     Dim DocDate       As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     YM = Mid(oForm01.Items("DocDate").Specific.VALUE, 1, 6)
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     oGrid01.DataTable.Clear
     
     'sQry = "EXEC [PS_PP047_01] '" & BPLID & "', '" & YM & "'"
-    sQry = " EXEC [PS_PP047_01]  '" & BPLId & "', '" & Mid(DocDate, 1, 6) & "'"
+    sQry = " EXEC [PS_PP047_01]  '" & BPLID & "', '" & Mid(DocDate, 1, 6) & "'"
     
 '    Call oForm01.DataSources.DataTables.Item("DataTable").ExecuteQuery(sQry)
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
@@ -1075,7 +1075,7 @@ Private Sub PS_PP047_SAVE()
     Dim Seqncom    As Integer
     Dim sQry       As String
     Dim Seqno     As Integer
-    Dim BPLId$, ItmBsort$, ItmMsort$, ItemCode$, ItemName$, CpCode$, DocDate$, CntcCode$, CntcName$, FailCode$, FailName$, Remark$
+    Dim BPLID$, ItmBsort$, ItmMsort$, ItemCode$, ItemName$, CpCode$, DocDate$, CntcCode$, CntcName$, FailCode$, FailName$, Remark$
     Dim Weight As Double
     Dim TempForm01 As Variant
     Dim oRecordSet As SAPbobsCOM.Recordset
@@ -1083,15 +1083,15 @@ Private Sub PS_PP047_SAVE()
     
     On Error GoTo PS_PP047_SAVE_Error
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    ItmBsort = oForm01.Items("ItmBsort").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
     ItmMsort = oForm01.Items("ItmMsort").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     ItemName = oForm01.Items("ItemName").Specific.VALUE
-    CpCode = oForm01.Items("CpCode").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     Seqno = Val(oForm01.Items("Seqno").Specific.VALUE)
-    CntcCode = oForm01.Items("CntcCode").Specific.VALUE
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
     CntcName = oForm01.Items("CntcName").Specific.VALUE
     FailCode = oForm01.Items("FailCode").Specific.VALUE
     FailName = oForm01.Items("FailName").Specific.VALUE
@@ -1125,12 +1125,12 @@ Private Sub PS_PP047_SAVE()
     End If
     
     
-    sQry = " Select Count(*) From [Z_PS_PP047] Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
+    sQry = " Select Count(*) From [Z_PS_PP047] Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
     oRecordSet.DoQuery sQry
     If oRecordSet.Fields(0).VALUE <= 0 Then
        '//신규등록
 '            '순번 계산
-            sQry = " Select Isnull(Max(Seqno),0) From [Z_PS_PP047] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "'"
+            sQry = " Select Isnull(Max(Seqno),0) From [Z_PS_PP047] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "'"
             oRecordSet.DoQuery sQry
 
             Seqno = oRecordSet.Fields(0).VALUE + 1
@@ -1156,7 +1156,7 @@ Private Sub PS_PP047_SAVE()
             sQry = sQry & " ) "
             sQry = sQry & "VALUES("
     
-            sQry = sQry & "'" & BPLId & "',"
+            sQry = sQry & "'" & BPLID & "',"
             sQry = sQry & "'" & ItmBsort & "',"
             sQry = sQry & "'" & ItmMsort & "',"
             sQry = sQry & "'" & ItemCode & "',"
@@ -1182,7 +1182,7 @@ Private Sub PS_PP047_SAVE()
         sQry = sQry + "FailName = '" & FailName & "',"
         sQry = sQry + "Remark = '" & Remark & "'"
         
-        sQry = sQry + " Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
+        sQry = sQry + " Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
         oRecordSet.DoQuery sQry
         
     End If
@@ -1216,7 +1216,7 @@ End Sub
 
 Private Sub PS_PP047_Delete()
     '//선택된 자료 삭제
-    Dim BPLId$, DocDate$, ItemCode$, CpCode$, OrdNum$
+    Dim BPLID$, DocDate$, ItemCode$, CpCode$, OrdNum$
     Dim Seqno As Integer
     Dim i As Integer
     Dim Cnt As Integer
@@ -1230,20 +1230,20 @@ Private Sub PS_PP047_Delete()
     
     Call oForm01.Freeze(True)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    CpCode = oForm01.Items("CpCode").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     Seqno = oForm01.Items("Seqno").Specific.VALUE
         
-    sQry = " Select Count(*) From [Z_PS_PP047] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
+    sQry = " Select Count(*) From [Z_PS_PP047] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
     oRecordSet.DoQuery sQry
     
     Cnt = oRecordSet.Fields(0).VALUE
     If Cnt > 0 Then
         
         If Sbo_Application.MessageBox(" 선택한라인을 삭제하시겠습니까? ?", "2", "예", "아니오") = "1" Then
-            sQry = "Delete From [Z_PS_PP047] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
+            sQry = "Delete From [Z_PS_PP047] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And CpCode = '" & CpCode & "' And Seqno = " & Seqno & ""
             oRecordSet.DoQuery sQry
         End If
     Else
@@ -1283,7 +1283,7 @@ On Error GoTo PS_PP047_FlushToItemValue_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim TeamCode As String
     Dim RspCode As String
     

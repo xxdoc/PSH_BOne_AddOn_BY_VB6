@@ -95,9 +95,9 @@ On Error GoTo Raise_ItemEvent_Error
                 End If
             Case et_CLICK: '//6
                 If pval.ItemUID = "76" And pval.ColUID = "U_BPLId" Then
-                    If oMat01.VisualRowCount > 1 And oMat01.Columns("U_BPLId").Cells(pval.Row).Specific.Value <> "" Then
+                    If oMat01.VisualRowCount > 1 And oMat01.Columns("U_BPLId").Cells(pval.Row).Specific.VALUE <> "" Then
                         oForm01.Freeze True
-                        oForm01.Items("BPLId02").Specific.Select oMat01.Columns("U_BPLId").Cells(pval.Row).Specific.Value
+                        oForm01.Items("BPLId02").Specific.Select oMat01.Columns("U_BPLId").Cells(pval.Row).Specific.VALUE
                         oForm01.Freeze False
                     End If
                 End If
@@ -213,10 +213,10 @@ On Error GoTo CreateItems_Error
     Dim oCombo02        As SAPbouiCOM.ComboBox
     Dim oStatic         As SAPbouiCOM.StaticText
         
-    Dim oRecordset      As SAPbobsCOM.Recordset
+    Dim oRecordSet      As SAPbobsCOM.Recordset
     Dim sQry            As String
 
-    Set oRecordset = Sbo_Company.GetBusinessObject(BoRecordset)
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
 
     oForm01.Freeze True
     
@@ -315,7 +315,7 @@ On Error GoTo CreateItems_Error
     optBtn.DataBind.SetBound True, , "RadioBtn01"
     optBtn.GroupWith ("RBtn01")
     
-    oForm01.DataSources.UserDataSources("RadioBtn01").Value = "0"
+    oForm01.DataSources.UserDataSources("RadioBtn01").VALUE = "0"
     
     '//»ç¾÷Àå-ComboBox
     Set newItem = oForm01.Items.Add("Static01", it_STATIC)
@@ -338,11 +338,11 @@ On Error GoTo CreateItems_Error
     Set oCombo01 = newItem.Specific
     Call oCombo01.DataBind.SetBound(True, "OBTF", "U_BPLId")
 
-    sQry = "select BPLId, BPLName from [OBPL] order by BPLId"
-    oRecordset.DoQuery sQry
-    Do Until oRecordset.EOF
-        oCombo01.ValidValues.Add Trim(oRecordset.Fields(0).Value), Trim(oRecordset.Fields(1).Value)
-        oRecordset.MoveNext
+    sQry = "SELECT BPLId, BPLName From [OBPL] Order by BPLId"
+    oRecordSet.DoQuery sQry
+    Do Until oRecordSet.EOF
+        oCombo01.ValidValues.Add Trim(oRecordSet.Fields(0).VALUE), Trim(oRecordSet.Fields(1).VALUE)
+        oRecordSet.MoveNext
     Loop
     Call oCombo01.Select(User_BPLId(), psk_ByValue)
 
@@ -371,7 +371,7 @@ On Error GoTo CreateItems_Error
     Set oCombo02 = newItem.Specific
     Call oCombo02.DataBind.SetBound(True, "BTF1", "U_BPLId")
     
-'    sQry = "select BPLId, BPLName from [OBPL] order by BPLId"
+'    sQry = "SELECT BPLId, BPLName From [OBPL] Order by BPLId"
 '    oRecordset.DoQuery sQry
 '    Do Until oRecordset.EOF
 '        oCombo02.ValidValues.Add Trim(oRecordset.Fields(0).Value), Trim(oRecordset.Fields(1).Value)
@@ -382,13 +382,13 @@ On Error GoTo CreateItems_Error
     
     Set oCombo01 = Nothing
     Set oCombo02 = Nothing
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CreateItems_Error:
     Set oCombo01 = Nothing
     Set oCombo02 = Nothing
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     MDC_Com.MDC_GF_Message "CreateItems_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
 
@@ -400,9 +400,9 @@ On Error GoTo FlushToItemValue_Error
     Dim sQry            As String
     Dim oCombo          As SAPbouiCOM.ComboBox
     
-    Dim oRecordset    As SAPbobsCOM.Recordset
+    Dim oRecordSet    As SAPbobsCOM.Recordset
         
-    Set oRecordset = Sbo_Company.GetBusinessObject(BoRecordset)
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     '--------------------------------------------------------------
     'Header--------------------------------------------------------
     Select Case oUID
@@ -410,8 +410,8 @@ On Error GoTo FlushToItemValue_Error
             oForm01.Freeze True
             For i = 1 To oMat01.VisualRowCount
                 If oMat01Row = i Then
-                    If oMat01.Columns("1").Cells(i).Specific.Value <> "" Then
-                        oMat01.Columns("U_BPLId").Cells(i).Specific.Select Trim(oForm01.Items("BPLId02").Specific.Selected.Value)
+                    If oMat01.Columns("1").Cells(i).Specific.VALUE <> "" Then
+                        oMat01.Columns("U_BPLId").Cells(i).Specific.Select Trim(oForm01.Items("BPLId02").Specific.Selected.VALUE)
                     End If
                 End If
             Next i
@@ -425,12 +425,12 @@ On Error GoTo FlushToItemValue_Error
         Select Case oCol
             Case "U_BPLId"
                 oForm01.Freeze True
-                oForm01.Items("BPLId02").Specific.Select oMat01.Columns("U_BPLId").Cells(oRow).Specific.Value
+                oForm01.Items("BPLId02").Specific.Select oMat01.Columns("U_BPLId").Cells(oRow).Specific.VALUE
                 oForm01.Freeze False
         End Select
     End If
      
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 FlushToItemValue_Error:
@@ -440,12 +440,12 @@ End Sub
 Private Sub Form_Resize(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Form_Resize_Error
     
-     oForm01.Items("Static01").Left = oForm01.Items("2006").Left + 93
-     oForm01.Items("BPLId01").Left = oForm01.Items("2007").Left + 93
-     oForm01.Items("Static02").Top = oForm01.Items("2001").Top
-     oForm01.Items("Static02").Left = oForm01.Items("2001").Left + 161
-     oForm01.Items("BPLId02").Top = oForm01.Items("2000").Top
-     oForm01.Items("BPLId02").Left = oForm01.Items("2000").Left + 161
+     oForm01.Items("Static01").Left = Trim(oForm01.Items("2006").Left) + 93
+     oForm01.Items("BPLId01").Left = Trim(oForm01.Items("2007").Left) + 93
+     oForm01.Items("Static02").Top = Trim(oForm01.Items("2001").Top)
+     oForm01.Items("Static02").Left = Trim(oForm01.Items("2001").Left) + 161
+     oForm01.Items("BPLId02").Top = Trim(oForm01.Items("2000").Top)
+     oForm01.Items("BPLId02").Left = Trim(oForm01.Items("2000").Left) + 161
 
 Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -468,7 +468,7 @@ On Error GoTo Print_Report01_Error
     
     Call ConnectODBC
     
-    TransId = Trim(oForm01.Items("5").Specific.Value)
+    TransId = Trim(oForm01.Items("5").Specific.VALUE)
     
     If TransId = "" Then
         ErrNum = 1
@@ -482,7 +482,7 @@ On Error GoTo Print_Report01_Error
     ReDim gRpt_Formula(1)
     ReDim gRpt_Formula_Value(1)
     
-    oText(1) = oForm01.DataSources.UserDataSources("RadioBtn01").Value
+    oText(1) = oForm01.DataSources.UserDataSources("RadioBtn01").VALUE
     
     For i = 1 To 1
         If Len("" & i & "") = 1 Then

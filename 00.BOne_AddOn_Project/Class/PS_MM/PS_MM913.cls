@@ -148,7 +148,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 재고계정
     Set oCombo = oForm01.Items("AcctCode").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("11506100", "원재료")
     Call oCombo.ValidValues.Add("11502100", "제품")
@@ -534,7 +534,7 @@ On Error GoTo Print_Query_Error
     Dim ItmGrp          As String
     Dim ItmBsort        As String
     Dim ItmMsort        As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim StrDate         As String
     Dim EndDate         As String
     Dim SItemCode       As String
@@ -558,7 +558,7 @@ On Error GoTo Print_Query_Error
 '    ItmGrp = Trim(oForm01.Items("ItmGrp").Specific.Selected.VALUE)
     ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
     ItmMsort = Trim(oForm01.Items("ItmMsort").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
     AcctCode = Trim(oForm01.Items("AcctCode").Specific.Selected.VALUE)
@@ -599,7 +599,7 @@ On Error GoTo Print_Query_Error
     gRpt_Formula(1) = "StrDate": gRpt_Formula_Value(1) = IIf(StrDate = "", "All", Format(StrDate, "0000-00-00"))
     gRpt_Formula(2) = "EndDate": gRpt_Formula_Value(2) = IIf(EndDate = "", "All", Format(EndDate, "0000-00-00"))
     gRpt_Formula(3) = "BPLId"
-    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLId & "'"
+    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(3) = oRecordSet.Fields(0).VALUE
     gRpt_Formula(4) = "AcctCode"
@@ -623,7 +623,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_MM913_01] '" & BPLId & "','" & StrDate & "','" & EndDate & "','" & AcctCode & "', '" & WhsCode & "', '" & ChkBox & "', '" & ItmBsort & "', '" & ItmMsort & "'"
+    sQry = "EXEC [PS_MM913_01] '" & BPLID & "','" & StrDate & "','" & EndDate & "','" & AcctCode & "', '" & WhsCode & "', '" & ChkBox & "', '" & ItmBsort & "', '" & ItmMsort & "'"
     
 '    oRecordSet.DoQuery sQry
 '    If oRecordSet.RecordCount = 0 Then

@@ -931,17 +931,17 @@ On Error GoTo PS_PP940_MatrixColumnSetting_Error
         Dim DisableColumnString As String
         
         Dim DayNum As String
-        Dim temp As String
+        Dim Temp As String
         Dim DayName As String
         
         For loopCount = 1 To LastDay
             If loopCount < 10 Then
-                temp = "0"
+                Temp = "0"
             Else
-                temp = ""
+                Temp = ""
             End If
             
-            DayNum = Weekday(Format(Left(pYM, 6) & temp & CStr(loopCount), "&&&&-&&-&&"))
+            DayNum = Weekday(Format(Left(pYM, 6) & Temp & CStr(loopCount), "&&&&-&&-&&"))
             Select Case DayNum
                 Case "1"
                     DayName = "일"
@@ -960,7 +960,7 @@ On Error GoTo PS_PP940_MatrixColumnSetting_Error
             End Select
                 
                 
-            DisableColumnString = "D" & temp & CStr(loopCount)
+            DisableColumnString = "D" & Temp & CStr(loopCount)
             oMat01.Columns.Item(DisableColumnString).TitleObject.Caption = CStr(loopCount) & "일(" & DayName & ")"
 '            If DayName = "토" Or DayName = "일" Then
 '                oMat01.Columns.Item(DisableColumnString).ForeColor = 254 '빨간색
@@ -1017,10 +1017,10 @@ On Error GoTo PS_PP940_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1100,8 +1100,8 @@ On Error GoTo PS_PP940_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -1111,7 +1111,7 @@ On Error GoTo PS_PP940_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

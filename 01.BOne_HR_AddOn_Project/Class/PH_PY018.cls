@@ -715,7 +715,7 @@ Private Sub PH_PY018_DataFind()
     Dim TeamCode As String
     Dim MSTCOD As String
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDateF = oForm.Items("DocDateF").Specific.VALUE
     DocDateT = oForm.Items("DocDateT").Specific.VALUE
     TeamCode = oForm.Items("TeamCode").Specific.VALUE
@@ -754,7 +754,7 @@ Private Function PH_PY018_DataSave() As Boolean
     
     PH_PY018_DataSave = False
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     If oForm.DataSources.DataTables.Item(0).Rows.Count > 0 Then
         For i = 0 To oForm.DataSources.DataTables.Item(0).Rows.Count - 1
 '            oDS_PH_PY018.Columns.Item("Code").Cells(i).Value
@@ -808,7 +808,7 @@ Private Sub PH_PY018_TitleSetting(iRow As Long)
     COLNAM(3) = "요일"
     COLNAM(4) = "휴일근무"
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     For i = 0 To UBound(COLNAM)

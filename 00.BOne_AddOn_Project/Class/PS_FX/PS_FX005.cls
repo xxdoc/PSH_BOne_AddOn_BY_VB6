@@ -117,7 +117,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_FX005L.offset = i
+        oDS_PS_FX005L.Offset = i
         
         oDS_PS_FX005L.setValue "U_LineNum", i, i + 1
         oDS_PS_FX005L.setValue "U_ColReg01", i, Trim(oRecordSet01.Fields(0).VALUE) '//BPLId
@@ -210,7 +210,7 @@ On Error GoTo Add_MatrixRow_Error
     End If
     
     oMat01.AddRow
-    oDS_PS_FX005L.offset = oRow
+    oDS_PS_FX005L.Offset = oRow
     oDS_PS_FX005L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
@@ -1147,7 +1147,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
             If oForm01.Mode = fm_ADD_MODE Then
                 '//신규모드일때
                 If oForm01.Items("SubDiv").Specific.VALUE = "N" Then
-                    BPLID = oForm01.Items("BPLId").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                     ClasCode = oForm01.Items("ClasCode").Specific.VALUE 'Selected.
                     sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_FixCode),3)) + 1)),3) From [@PS_FX005H] Where U_BPLId = '" & BPLID & "' And U_ClasCode = '" & ClasCode & "'"
                     oRecordSet01.DoQuery sQry
@@ -1171,7 +1171,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
                     oForm01.Items("FixCode").Enabled = False
                     oForm01.Items("SubCode").Specific.VALUE = "001"
                     
-                    BPLID = oForm01.Items("BPLId").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                     ClasCode = oForm01.Items("ClasCode").Specific.VALUE 'Selected.
                     
                     sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_FixCode),3)) + 1)),3) From [@PS_FX005H] Where U_BPLId = '" & BPLID & "' And U_ClasCode = '" & ClasCode & "'"

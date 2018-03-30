@@ -161,7 +161,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                     
                     sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                     sQry = sQry & " ORDER BY U_Code"
                     Call SetReDataCombo(oForm, sQry, oCombo)
                     oCombo.ValidValues.Add "%", "전체"
@@ -179,7 +179,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                     
                     sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                     sQry = sQry & " ORDER BY U_Code"
                     Call SetReDataCombo(oForm, sQry, oCombo)
                     oCombo.ValidValues.Add "%", "전체"

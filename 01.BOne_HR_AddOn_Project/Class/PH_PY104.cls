@@ -218,7 +218,7 @@ Private Sub PH_PY104_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY104_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -252,7 +252,7 @@ Sub PH_PY104_FormItemEnabled()
         
         If oForm.DataSources.UserDataSources.Item("CLTCOD").ValueEx <> "" Then
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & " ORDER BY U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
             oCombo.ValidValues.Add "%", "전체"
@@ -273,7 +273,7 @@ Sub PH_PY104_FormItemEnabled()
         
         If oForm.DataSources.UserDataSources.Item("CLTCOD").ValueEx <> "" Then
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & " Order By U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
             oCombo.ValidValues.Add "%", "전체"
@@ -425,7 +425,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -445,7 +445,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " Order By U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -683,9 +683,9 @@ On Error GoTo PH_PY104_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY104'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY104_FormClear_Error:
@@ -721,7 +721,7 @@ On Error GoTo PH_PY104_DataValidCheck_Error
         Exit Function
     End If
     
-    If oForm.Items("CLTCOD").Specific.Value = "" Then
+    If oForm.Items("CLTCOD").Specific.VALUE = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm.Items("CLTCOD").CLICK ct_Regular
         PH_PY104_DataValidCheck = False
@@ -751,7 +751,7 @@ On Error GoTo PH_PY104_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY104A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY104A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY104_Validate = False
         GoTo PH_PY104_Validate_Exit
@@ -819,14 +819,14 @@ Private Sub PH_PY104_DataFind()
         Next i
     End If
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.Value
-    TeamCode = oForm.Items("TeamCode").Specific.Value
-    RspCode = oForm.Items("RspCode").Specific.Value
-    PAYTYP = oForm.Items("PAYTYP").Specific.Value
-    JIGCODF = IIf(oForm.Items("JIGCODF").Specific.Value = "%", "00", oForm.Items("JIGCODF").Specific.Value)
-    JIGCODT = IIf(oForm.Items("JIGCODT").Specific.Value = "%", "ZZ", oForm.Items("JIGCODT").Specific.Value)
-    HOBONGF = IIf(oForm.Items("HOBONGF").Specific.Value = "", "000", oForm.Items("HOBONGF").Specific.Value)
-    HOBONGT = IIf(oForm.Items("HOBONGT").Specific.Value = "", "ZZZ", oForm.Items("HOBONGT").Specific.Value)
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    TeamCode = oForm.Items("TeamCode").Specific.VALUE
+    RspCode = oForm.Items("RspCode").Specific.VALUE
+    PAYTYP = oForm.Items("PAYTYP").Specific.VALUE
+    JIGCODF = IIf(oForm.Items("JIGCODF").Specific.VALUE = "%", "00", oForm.Items("JIGCODF").Specific.VALUE)
+    JIGCODT = IIf(oForm.Items("JIGCODT").Specific.VALUE = "%", "ZZ", oForm.Items("JIGCODT").Specific.VALUE)
+    HOBONGF = IIf(oForm.Items("HOBONGF").Specific.VALUE = "", "000", oForm.Items("HOBONGF").Specific.VALUE)
+    HOBONGT = IIf(oForm.Items("HOBONGT").Specific.VALUE = "", "ZZZ", oForm.Items("HOBONGT").Specific.VALUE)
     
     '/ 검색 조건 - 임시 테이블 저장 PH_PY104_TEMP2
     sQry = "Exec PH_PY104_Grid2 '" & CLTCOD & "','" & TeamCode & "',"
@@ -843,11 +843,11 @@ Private Sub PH_PY104_DataFind()
     If oRecordSet.RecordCount > 0 Then
         sQry = "SELECT '' AS ChkBox , T0.CODE, T0.Name "
             For i = 1 To oRecordSet.RecordCount
-                If Trim(oRecordSet.Fields(0).Value) = "수당" Then
-                    sQry = sQry & ", ISNULL((SELECT U_FILD03 FROM [@PH_PY001B] WHERE U_FILD02 ='" & oRecordSet.Fields(2).Value & "'  AND Code = T0.Code ),0) AS N'" & Trim(oRecordSet.Fields(2).Value) & "'"
+                If Trim(oRecordSet.Fields(0).VALUE) = "수당" Then
+                    sQry = sQry & ", ISNULL((SELECT U_FILD03 FROM [@PH_PY001B] WHERE U_FILD02 ='" & oRecordSet.Fields(2).VALUE & "'  AND Code = T0.Code ),0) AS N'" & Trim(oRecordSet.Fields(2).VALUE) & "'"
                     
-                ElseIf Trim(oRecordSet.Fields(0).Value) = "공제" Then
-                    sQry = sQry & ", ISNULL((SELECT U_FILD03 FROM [@PH_PY001C] WHERE U_FILD02 ='" & oRecordSet.Fields(2).Value & "'  AND Code = T0.Code ),0) AS N'" & Trim(oRecordSet.Fields(2).Value) & "'"
+                ElseIf Trim(oRecordSet.Fields(0).VALUE) = "공제" Then
+                    sQry = sQry & ", ISNULL((SELECT U_FILD03 FROM [@PH_PY001C] WHERE U_FILD02 ='" & oRecordSet.Fields(2).VALUE & "'  AND Code = T0.Code ),0) AS N'" & Trim(oRecordSet.Fields(2).VALUE) & "'"
                 End If
                 oRecordSet.MoveNext
             Next i
@@ -884,12 +884,12 @@ Private Function PH_PY104_DataLoad()
     sQry = "SELECT '수당' AS GBN, T0.U_CSUCOD, T0.U_CSUNAM, '' AS SLT, SPACE(5) AS SEQ"
     sQry = sQry & " FROM [@PH_PY102B] T0 INNER JOIN [@PH_PY102A] T1 ON T0.Code = T1.Code"
     sQry = sQry & " WHERE U_FIXGBN = 'Y' AND T1.U_YM = (select Max(U_YM) AS U_YM from [@PH_PY102A])"
-    sQry = sQry & " AND T1.U_CLTCOD = '" & oForm.Items("CLTCOD").Specific.Value & "'"
+    sQry = sQry & " AND T1.U_CLTCOD = '" & oForm.Items("CLTCOD").Specific.VALUE & "'"
     sQry = sQry & " Union All"
     sQry = sQry & " SELECT '공제' AS GBN, T0.U_CSUCOD, T0.U_CSUNAM, '' AS SLT, SPACE(5) AS SEQ"
     sQry = sQry & " FROM [@PH_PY103B] T0 INNER JOIN [@PH_PY103A] T1 ON T0.Code = T1.Code"
     sQry = sQry & " WHERE U_FIXGBN = 'Y' AND T1.U_YM = (select Max(U_YM) AS U_YM from [@PH_PY103A])"
-    sQry = sQry & " AND T1.U_CLTCOD = '" & oForm.Items("CLTCOD").Specific.Value & "'"
+    sQry = sQry & " AND T1.U_CLTCOD = '" & oForm.Items("CLTCOD").Specific.VALUE & "'"
 
     oDS_PH_PY104_01.ExecuteQuery sQry
     
@@ -941,11 +941,11 @@ Private Function PH_PY104_DataCopy() As Boolean
                 If First = 1 Then
                     ReDim FirstData(oGrid2.Columns.Count)
                     For j = 0 To oGrid2.Columns.Count - 1
-                        FirstData(j) = oDS_PH_PY104_02.Columns.Item(j).Cells(i).Value
+                        FirstData(j) = oDS_PH_PY104_02.Columns.Item(j).Cells(i).VALUE
                     Next j
                 Else
                     For j = 3 To oGrid2.Columns.Count - 1
-                        oDS_PH_PY104_02.Columns.Item(j).Cells(i).Value = FirstData(j)
+                        oDS_PH_PY104_02.Columns.Item(j).Cells(i).VALUE = FirstData(j)
                     Next j
                 End If
             End If
@@ -954,7 +954,7 @@ Private Function PH_PY104_DataCopy() As Boolean
             If (TOTCNT > 50 And tRow = oProValue * V_StatusCnt) Or TOTCNT <= 50 Then
                 oProgBar.Text = tRow & "/ " & TOTCNT & " 건 처리중...!"
                 oProValue = oProValue + 1
-                oProgBar.Value = oProValue
+                oProgBar.VALUE = oProValue
             End If
         Next i
     End If
@@ -1009,13 +1009,13 @@ Private Function PH_PY104_DataSave() As Boolean
                     oRecordSet.DoQuery sQry
                     
                     If oRecordSet.RecordCount > 0 Then
-                        If Trim(oRecordSet.Fields(0).Value) = "수당" Then
-                            sQry = "UPDATE [@PH_PY001B] SET U_FILD03 = '" & oDS_PH_PY104_02.Columns(j).Cells(i).Value & "'"
+                        If Trim(oRecordSet.Fields(0).VALUE) = "수당" Then
+                            sQry = "UPDATE [@PH_PY001B] SET U_FILD03 = '" & oDS_PH_PY104_02.Columns(j).Cells(i).VALUE & "'"
                             sQry = sQry & " WHERE Code = '" & Trim(oDS_PH_PY104_02.GetValue("CODE", i)) & "'"
                             sQry = sQry & " AND U_FILD02 = '" & oDS_PH_PY104_02.Columns(j).Name & "'"
                             oRecordSet.DoQuery sQry
-                        ElseIf Trim(oRecordSet.Fields(0).Value) = "공제" Then
-                            sQry = "UPDATE [@PH_PY001C] SET U_FILD03 = '" & oDS_PH_PY104_02.Columns(j).Cells(i).Value & "'"
+                        ElseIf Trim(oRecordSet.Fields(0).VALUE) = "공제" Then
+                            sQry = "UPDATE [@PH_PY001C] SET U_FILD03 = '" & oDS_PH_PY104_02.Columns(j).Cells(i).VALUE & "'"
                             sQry = sQry & " WHERE Code = '" & Trim(oDS_PH_PY104_02.GetValue("CODE", i)) & "'"
                             sQry = sQry & " AND U_FILD02 = '" & oDS_PH_PY104_02.Columns(j).Name & "'"
                             oRecordSet.DoQuery sQry
@@ -1061,13 +1061,13 @@ Private Function PH_PY104_OHEM_DI_UPDATE() As Boolean
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     Set oOHEM = oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oEmployeesInfo)
     
-    sQry = "SELECT U_Empid FROM [@PH_PY001A] WHERE Code = '" & Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).Value) & "'"
+    sQry = "SELECT U_Empid FROM [@PH_PY001A] WHERE Code = '" & Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).VALUE) & "'"
     
     oRecordSet.DoQuery sQry
     
-    EmpID = oRecordSet.Fields(0).Value
+    EmpID = oRecordSet.Fields(0).VALUE
     
-    Sbo_Application.SetStatusBarMessage Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).Value) & "의 근무조가 갱신중입니다.", bmt_Short, False
+    Sbo_Application.SetStatusBarMessage Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).VALUE) & "의 근무조가 갱신중입니다.", bmt_Short, False
     
     If EmpID = "" Then
         Sbo_Application.SetStatusBarMessage "empID 로드에 실패하였습니다.", bmt_Short, False
@@ -1078,7 +1078,7 @@ Private Function PH_PY104_OHEM_DI_UPDATE() As Boolean
         With oOHEM
             .GetByKey (EmpID)
     
-            .UserFields.Fields.Item("U_GNMUJO").Value = oDS_PH_PY104_01.Columns.Item("GNMUJO").Cells(i).Value      '//근무조
+            .UserFields.Fields.Item("U_GNMUJO").VALUE = oDS_PH_PY104_01.Columns.Item("GNMUJO").Cells(i).VALUE      '//근무조
         
             If 0 <> oOHEM.Update Then
                 oCompany.GetLastError IErrCode, sErrMsg
@@ -1086,7 +1086,7 @@ Private Function PH_PY104_OHEM_DI_UPDATE() As Boolean
                 
             Else
                 PH_PY104_OHEM_DI_UPDATE = True
-                Sbo_Application.SetStatusBarMessage Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).Value) & "근무조가 갱신되었습니다.", bmt_Short, False
+                Sbo_Application.SetStatusBarMessage Trim(oDS_PH_PY104_01.Columns.Item("Code").Cells(i).VALUE) & "근무조가 갱신되었습니다.", bmt_Short, False
                 
             End If
         End With

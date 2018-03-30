@@ -1717,7 +1717,7 @@ On Error GoTo PH_PY508_GetDocNo_Error
     Dim StdYear As String
     Dim CLTCOD As String
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     StdYear = Left(Trim(oForm.Items("RegDt").Specific.VALUE), 4)
     
     sQry = "EXEC PH_PY508_05 '" & CLTCOD & "', '" & StdYear & "'"

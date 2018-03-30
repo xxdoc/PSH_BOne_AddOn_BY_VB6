@@ -705,7 +705,7 @@ Private Sub PH_PY935_Print_Report01()
     
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     JIGTYP = Trim(oForm.Items("JIGTYP").Specific.VALUE)
     YM = Trim(oForm.Items("YM").Specific.VALUE)
     

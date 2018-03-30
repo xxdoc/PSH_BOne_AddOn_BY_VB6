@@ -168,7 +168,7 @@ On Error GoTo PS_SD022_MTX01_Error
     Dim RspCode As String '소속담당
     Dim CntcCode As String '영업담당자사번
     
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     BPLID = IIf(Trim(oForm01.Items("BPLID").Specific.VALUE) = "%", "", Trim(oForm01.Items("BPLID").Specific.VALUE))
     TeamCode = Trim(oForm01.Items("TeamCode").Specific.VALUE)
     RspCode = Trim(oForm01.Items("RspCode").Specific.VALUE)

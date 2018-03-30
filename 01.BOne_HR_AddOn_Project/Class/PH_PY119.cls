@@ -823,7 +823,7 @@ Private Sub PH_PY119_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("YM").Specific.VALUE
     Param03 = oForm.Items("JOBTYP").Specific.VALUE
     Param04 = oForm.Items("JOBGBN").Specific.VALUE

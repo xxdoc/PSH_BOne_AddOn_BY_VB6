@@ -944,7 +944,7 @@ Private Sub PH_PY303_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
     Param03 = oForm.Items("Quarter").Specific.VALUE
     Param04 = oForm.Items("Count").Specific.VALUE
@@ -1037,7 +1037,7 @@ Private Sub PH_PY303_PY109_Update()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
     Param03 = oForm.Items("Quarter").Specific.VALUE
     Param04 = oForm.Items("Count").Specific.VALUE

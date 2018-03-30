@@ -133,8 +133,8 @@ On Error GoTo Raise_ItemEvent_Error
 'et_ITEM_PRESSED ////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
-                    oBPLId = oForm01.Items("BPLId").Specific.VALUE
-                    oOrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
+                    oBPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                    oOrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
                     
                     If oForm01.Mode = fm_ADD_MODE Or oForm01.Mode = fm_UPDATE_MODE Then
                         If HeaderSpaceLineDel = False Then

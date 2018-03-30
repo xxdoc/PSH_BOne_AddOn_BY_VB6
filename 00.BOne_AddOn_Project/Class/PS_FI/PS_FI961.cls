@@ -813,9 +813,9 @@ On Error GoTo PS_FI961_MTX01_Error
     Dim ToDt As String '기간종료
     Dim AcctCode As String '계정과목코드
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     AcctCode = oForm01.Items("AcctCode").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -907,9 +907,9 @@ On Error GoTo PS_FI961_MTX02_Error
     Dim ToDt As String '기간종료
     Dim AcctCode As String '계정과목코드
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     AcctCode = oForm01.Items("AcctCode").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -1007,9 +1007,9 @@ On Error GoTo PS_FI961_GetDetail_Error
 
     Dim oTempClass As Variant
 
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     
     If oForm01.PaneLevel = 1 Then
         AcctCode03 = oMat02.Columns("AcctCode03").Cells.Item(oLastColRow01).Specific.VALUE
@@ -1068,13 +1068,13 @@ On Error GoTo Print_Query_Error
     Dim Chk01 As String '미출고
     Dim Chk02 As String '미납품
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItemClass = IIf(oForm01.Items("ItemClass").Specific.Selected.VALUE = "%", "", oForm01.Items("ItemClass").Specific.Selected.VALUE)
     TradeType = IIf(oForm01.Items("TradeType").Specific.Selected.VALUE = "%", "", oForm01.Items("TradeType").Specific.Selected.VALUE)
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     DocStatus = IIf(oForm01.Items("DocStatus").Specific.Selected.VALUE = "%", "", oForm01.Items("DocStatus").Specific.Selected.VALUE)
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0")
     Chk02 = IIf(oForm01.Items("Chk02").Specific.Checked = True, "1", "0")

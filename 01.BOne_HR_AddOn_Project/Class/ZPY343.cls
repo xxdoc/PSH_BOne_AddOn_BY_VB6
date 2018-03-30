@@ -165,7 +165,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                     
                     sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+                    sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                     sQry = sQry & " ORDER BY U_Code"
                     Call SetReDataCombo(oForm, sQry, oCombo)
                 End If
@@ -617,7 +617,7 @@ Private Sub FormItemEnabled()
         
         If oDS_ZPY343H.GetValue("U_CLTCOD", 0) <> "" Then
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.VALUE & "'"
+            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & " ORDER BY U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If

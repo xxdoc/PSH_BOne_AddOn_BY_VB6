@@ -1310,20 +1310,18 @@ On Error GoTo Error_Message
     JIGBIL = Trim(oDS_PH_PY111A.GetValue("U_JIGBIL", 0))
     MSTCOD = Trim(oDS_PH_PY111A.GetValue("U_MSTCOD", 0))
     
-    sQry = "        Select  Count(*) "
-    sQry = sQry & " From [@PH_PY112A] "
-    sQry = sQry & " Where   U_CLTCOD = '" & CLTCOD & "' "
-    sQry = sQry & "         AND U_YM = '" & YM & "'"
-    sQry = sQry & "         AND U_JOBTYP = '" & JOBTYP & "'"
-    sQry = sQry & "         AND U_JOBGBN = '" & JOBGBN & "'"
-    sQry = sQry & "         AND U_JOBTRG = '" & JOBTRG & "'"
-    sQry = sQry & "         AND U_JIGBIL = '" & JIGBIL & "'"
-    sQry = sQry & "         AND U_MSTCOD LIKE '%" & MSTCOD & "%'"
+    sQry = "Select Count(*) From [@PH_PY112A] "
+    sQry = sQry + " Where U_CLTCOD = '" & CLTCOD & "' AND U_YM = '" & YM & "'"
+    sQry = sQry + " AND U_JOBTYP = '" & JOBTYP & "'"
+    sQry = sQry + " AND U_JOBGBN = '" & JOBGBN & "'"
+    sQry = sQry + " AND U_JOBTRG = '" & JOBTRG & "'"
+    sQry = sQry + " AND U_JIGBIL = '" & JIGBIL & "'"
+    sQry = sQry + " AND U_MSTCOD LIKE '%" & MSTCOD & "%'"
     
     'sQry = "Select U_CLTCOD, U_YM, U_JOBTYP, U_JOBGBN, U_JOBTRG From [@PH_PY112A] Where U_CLTCOD = '" & Trim(oDS_PH_PY111A.GetValue("U_CLTCOD", 0)) & "' AND U_YM = '" & Trim(oDS_PH_PY111A.GetValue("U_YM", 0)) & "' AND U_JOBTYP = '" & Trim(oDS_PH_PY111A.GetValue("U_JOBTYP", 0)) & "' "
     oRecordSet.DoQuery sQry
         
-    If Val(oRecordSet.Fields(0).VALUE) > 0 Then
+    If oRecordSet.Fields(0).VALUE > 0 Then
         If Sbo_Application.MessageBox("기존에 급여계산 결과가 있습니다. 계속 진행하시겠습니까?", 2, "Yes", "No") = 2 Then
             Pay_Calc = False
             Set oRecordSet = Nothing
@@ -1334,7 +1332,6 @@ On Error GoTo Error_Message
         Pay_Calc = True
     End If
     Set oRecordSet = Nothing
-    
 '    Temp1 = Trim(oDS_PH_PY111A.GetValue("U_CLTCOD", 0)) & Trim(oDS_PH_PY111A.GetValue("U_YM", 0)) & Trim(oDS_PH_PY111A.GetValue("U_JOBTYP", 0)) & _
 '            Trim(oDS_PH_PY111A.GetValue("U_JOBGBN", 0)) & Trim(oDS_PH_PY111A.GetValue("U_JOBTRG", 0))
 '

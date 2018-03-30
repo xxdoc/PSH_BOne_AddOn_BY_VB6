@@ -269,7 +269,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                         Exit Sub
                     End If
                     '//해야할일 작업
-                    oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                    oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                     oFormMode01 = oForm01.Mode
                 
                 Else
@@ -760,7 +760,7 @@ On Error GoTo PS_PP560_ComboBox_Setting_Error
     
     '// 사업장
 '    Set oCombo = oForm01.Items("BPLId").Specific
-'    sQry = "SELECT BPLId, BPLName From [OBPL] order by 1"
+'    sQry = "SELECT BPLId, BPLName From [OBPL]"
 '    oRecordSet01.DoQuery sQry
 '    Do Until oRecordSet01.EOF
 '        oCombo.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
@@ -1054,7 +1054,7 @@ On Error GoTo PS_PP560_MTX01_Error
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
     
     Query01 = "         EXEC [PS_PP560_01] '"
     Query01 = Query01 & OrdNum & "'" '작번
@@ -1161,8 +1161,8 @@ End Sub
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
 '    For i = 0 To ItemInformationCount - 1
 '        If ItemInformation(i).Check = True Then
@@ -1172,7 +1172,7 @@ End Sub
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1442,7 +1442,7 @@ On Error GoTo PS_PP560_DuplicateCheck_Error
     
     Dim OrdNum As String
     
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
     
     sQry = "      EXEC [PS_PP560_02] '"
     sQry = sQry & OrdNum & "'" '작번

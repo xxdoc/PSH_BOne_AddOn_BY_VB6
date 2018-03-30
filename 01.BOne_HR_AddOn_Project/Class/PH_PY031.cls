@@ -2021,7 +2021,7 @@ On Error GoTo PH_PY031_GetDestNo_Error
     Dim FrDate As String
     Dim CLTCOD As String
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     FrDate = Left(Trim(oForm.Items("FrDate").Specific.VALUE), 6)
     
     sQry = "EXEC PH_PY031_05 '" & CLTCOD & "', '" & FrDate & "'"

@@ -632,7 +632,7 @@ On Error GoTo PH_PY705_DataFind_Error
     Dim oRecordSet  As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDateFr = oForm.Items("DocDateFr").Specific.VALUE
     DocDateTo = oForm.Items("DocDateTo").Specific.VALUE
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE

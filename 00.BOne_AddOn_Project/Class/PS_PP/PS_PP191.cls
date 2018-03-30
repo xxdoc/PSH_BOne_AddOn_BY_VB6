@@ -845,13 +845,13 @@ On Error GoTo PS_PP191_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim ToolType As String '금형구분
     Dim Gubun As String '구분 1:전체 2:폐기제외
     Dim Item As String '아이템
     Dim CallSize As String '호칭
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ToolType = oForm01.Items("ToolType").Specific.Selected.VALUE
     Gubun = oForm01.Items("Gubun").Specific.Selected.VALUE
     Item = oForm01.Items("Item").Specific.VALUE
@@ -862,7 +862,7 @@ On Error GoTo PS_PP191_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_PP191_01 '" & BPLId & "','" & ToolType & "','" & Gubun & "','" & Item & "','" & CallSize & "'"
+    Query01 = "EXEC PS_PP191_01 '" & BPLID & "','" & ToolType & "','" & Gubun & "','" & Item & "','" & CallSize & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -1032,7 +1032,7 @@ On Error GoTo Print_Query_Error
     Dim ErrNum                      As Integer
     Dim Sub_sQry                    As String
     
-    Dim BPLId                       As String '사업장
+    Dim BPLID                       As String '사업장
     Dim ToolType                    As String '금형구분
     Dim Gubun                       As String '구분 1:전체 2:폐기제외
     Dim Item                        As String '아이템
@@ -1047,7 +1047,7 @@ On Error GoTo Print_Query_Error
     
     '// 조회조건문
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ToolType = oForm01.Items("ToolType").Specific.Selected.VALUE
     Gubun = oForm01.Items("Gubun").Specific.Selected.VALUE
     Item = oForm01.Items("Item").Specific.VALUE
@@ -1085,7 +1085,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_PP191_01 '" & BPLId & "','" & ToolType & "','" & Gubun & "','" & Item & "','" & CallSize & "'"
+    sQry = "EXEC PS_PP191_01 '" & BPLID & "','" & ToolType & "','" & Gubun & "','" & Item & "','" & CallSize & "'"
 
 
     

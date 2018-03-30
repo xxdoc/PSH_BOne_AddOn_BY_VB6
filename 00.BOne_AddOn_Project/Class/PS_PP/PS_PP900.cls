@@ -854,7 +854,7 @@ On Error GoTo PS_PP900_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim ItmBsort As String '품목대분류
     Dim ItemCls As String '품목구분
     Dim RgFrDt As String '작지등록일시작
@@ -863,13 +863,13 @@ On Error GoTo PS_PP900_MTX01_Error
     Dim ItemCode As String '품목코드
     Dim PrdYN As String '생산완료여부
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItmBsort = oForm01.Items("ItmBsort").Specific.Selected.VALUE
     ItemCls = oForm01.Items("ItemCls").Specific.Selected.VALUE
     RgFrDt = oForm01.Items("RgFrDt").Specific.VALUE
     RgToDt = oForm01.Items("RgToDt").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     PrdYN = oForm01.Items("PrdYN").Specific.Selected.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -877,7 +877,7 @@ On Error GoTo PS_PP900_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_PP900_01 '" & BPLId & "','" & ItmBsort & "','" & ItemCls & "','" & RgFrDt & "','" & RgToDt & "','" & CardCode & "','" & ItemCode & "','" & PrdYN & "'"
+    Query01 = "EXEC PS_PP900_01 '" & BPLID & "','" & ItmBsort & "','" & ItemCls & "','" & RgFrDt & "','" & RgToDt & "','" & CardCode & "','" & ItemCode & "','" & PrdYN & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -1061,7 +1061,7 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim ItemClass As String '품목구분
     Dim TradeType As String '거래형태
     Dim FrDt As String '납기일시작
@@ -1072,13 +1072,13 @@ On Error GoTo Print_Query_Error
     Dim Chk01 As String '미출고
     Dim Chk02 As String '미납품
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItemClass = IIf(oForm01.Items("ItemClass").Specific.Selected.VALUE = "%", "", oForm01.Items("ItemClass").Specific.Selected.VALUE)
     TradeType = IIf(oForm01.Items("TradeType").Specific.Selected.VALUE = "%", "", oForm01.Items("TradeType").Specific.Selected.VALUE)
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     DocStatus = IIf(oForm01.Items("DocStatus").Specific.Selected.VALUE = "%", "", oForm01.Items("DocStatus").Specific.Selected.VALUE)
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0")
     Chk02 = IIf(oForm01.Items("Chk02").Specific.Checked = True, "1", "0")
@@ -1103,7 +1103,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_PP900_01 '" & BPLId & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
+    sQry = "EXEC PS_PP900_01 '" & BPLID & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
 
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then

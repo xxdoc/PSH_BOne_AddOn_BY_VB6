@@ -799,7 +799,7 @@ Private Function PH_PY311_Load_MonthData() As Boolean
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDate = oForm.Items("DocDate").Specific.VALUE
     
     
@@ -924,7 +924,7 @@ Private Sub Search_Matrix_Data()
     
      For i = 0 To oGrid01.Rows.Count - 1
         If oGrid01.Rows.IsSelected(i) = True Then
-            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
             DocDate = Format(Trim(oGrid01.DataTable.GetValue(0, i)), "YYYYMMDD")
             
             If Trim(oGrid01.DataTable.GetValue(4, i)) = "ฟ๎วเ" Then

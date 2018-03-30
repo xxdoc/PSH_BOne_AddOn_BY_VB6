@@ -181,7 +181,7 @@ Private Sub PH_PY019_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY019_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -241,14 +241,14 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_ITEM_PRESSED: '//1
             
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "Btn_Serch" Then
+                If pval.ItemUID = "Btn_Serch" Then
                     If PH_PY019_DataValidCheck = True Then
                         Call PH_PY019_DataFind
                     Else
                         BubbleEvent = False
                     End If
                 End If
-                If pval.ItemUid = "Btn_Save" Then
+                If pval.ItemUID = "Btn_Save" Then
                     If PH_PY019_DataSave = False Then
                         BubbleEvent = False
                     End If
@@ -275,15 +275,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Grid01"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -297,7 +297,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    Select Case pval.ItemUid
+                    Select Case pval.ItemUID
                         Case "CLTCOD"
                         
                             '//기본사항 - 부서 (사업장에 따른 부서변경)
@@ -310,7 +310,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             End If
                             
                             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "' And U_UseYN = 'Y'"
+                            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "' And U_UseYN = 'Y'"
                             sQry = sQry & " ORDER BY U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo)
                             
@@ -328,7 +328,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             End If
                             
                             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "' And U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.Value & "' And U_UseYN = 'Y'"
+                            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "' And U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "' And U_UseYN = 'Y'"
                             sQry = sQry & " Order By U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             oForm.Items("RspCode").DisplayDesc = True
@@ -344,7 +344,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             End If
                             
                             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '9' AND U_Char3 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "' And U_Char1 = '" & oForm.Items.Item("RspCode").Specific.Value & "' And U_UseYN = 'Y'"
+                            sQry = sQry & " WHERE Code = '9' AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "' And U_Char1 = '" & oForm.Items.Item("RspCode").Specific.VALUE & "' And U_UseYN = 'Y'"
                             sQry = sQry & " Order By U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             oForm.Items("ClsCode").DisplayDesc = True
@@ -355,7 +355,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_CLICK: '//6
             If pval.BeforeAction = True Then
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Grid01"
                     If pval.Row > 0 Then
 '                        Call oGrid1.SelectRow(pval.Row, True, False)
@@ -363,15 +363,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End Select
                 
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Grid01"
                     If pval.Row > 0 Then
-                        oLastItemUID = pval.ItemUid
+                        oLastItemUID = pval.ItemUID
                         oLastColUID = pval.ColUID
                         oLastColRow = pval.Row
                     End If
                 Case Else
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = ""
                     oLastColRow = 0
                 End Select
@@ -552,15 +552,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Grid01"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -575,9 +575,9 @@ On Error GoTo PH_PY019_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY019'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY019_FormClear_Error:
@@ -593,7 +593,7 @@ On Error GoTo PH_PY019_DataValidCheck_Error
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    If oForm.Items("CLTCOD").Specific.Value = "" Then
+    If oForm.Items("CLTCOD").Specific.VALUE = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm.Items("CLTCOD").CLICK ct_Regular
         PH_PY019_DataValidCheck = False
@@ -623,7 +623,7 @@ On Error GoTo PH_PY019_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY019A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY019A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY019_Validate = False
         GoTo PH_PY019_Validate_Exit
@@ -658,8 +658,8 @@ Private Sub PH_PY019_DataFind()
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    sQry = "Exec PH_PY019 '" & oForm.Items("CLTCOD").Specific.Value & "','" & oForm.Items("TeamCode").Specific.Value & "',"
-    sQry = sQry & "'" & oForm.Items("RspCode").Specific.Value & "', '" & oForm.Items("ClsCode").Specific.Value & "'"
+    sQry = "Exec PH_PY019 '" & oForm.Items("CLTCOD").Specific.VALUE & "','" & oForm.Items("TeamCode").Specific.VALUE & "',"
+    sQry = sQry & "'" & oForm.Items("RspCode").Specific.VALUE & "', '" & oForm.Items("ClsCode").Specific.VALUE & "'"
     Call oDS_PH_PY019.ExecuteQuery(sQry)
     
     iRow = oForm.DataSources.DataTables.Item(0).Rows.Count
@@ -691,8 +691,8 @@ Private Function PH_PY019_DataSave() As Boolean
         For i = 0 To oForm.DataSources.DataTables.Item(0).Rows.Count - 1
 '            oDS_PH_PY019.Columns.Item("Code").Cells(i).Value
             
-            sQry = " UPDATE [@PH_PY001A] SET U_ClsCode = '" & oDS_PH_PY019.Columns.Item("ClsCode").Cells(i).Value & "'"
-            sQry = sQry & " WHERE Code = '" & oDS_PH_PY019.Columns.Item("MSTCOD").Cells(i).Value & "'"
+            sQry = " UPDATE [@PH_PY001A] SET U_ClsCode = '" & oDS_PH_PY019.Columns.Item("ClsCode").Cells(i).VALUE & "'"
+            sQry = sQry & " WHERE Code = '" & oDS_PH_PY019.Columns.Item("MSTCOD").Cells(i).VALUE & "'"
             oRecordSet.DoQuery sQry
             
             
@@ -750,12 +750,12 @@ Private Sub PH_PY019_TitleSetting(iRow As Long)
             Set oComboCol = oGrid1.Columns.Item("ClsCode")
             
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE U_Char1 = '" & oForm.Items("RspCode").Specific.Value & "' And Code = '9' AND U_UseYN= 'Y' Order by U_Seq"
+            sQry = sQry & " WHERE U_Char1 = '" & oForm.Items("RspCode").Specific.VALUE & "' And Code = '9' AND U_UseYN= 'Y' Order by U_Seq"
             oRecordSet.DoQuery sQry
             If oRecordSet.RecordCount > 0 Then
                     oComboCol.ValidValues.Add "", ""
                 For j = 0 To oRecordSet.RecordCount - 1
-                    oComboCol.ValidValues.Add oRecordSet.Fields(0).Value, oRecordSet.Fields(1).Value
+                    oComboCol.ValidValues.Add oRecordSet.Fields(0).VALUE, oRecordSet.Fields(1).VALUE
                     oRecordSet.MoveNext
                 Next j
 '                oComboCol.Select 0, psk_Index

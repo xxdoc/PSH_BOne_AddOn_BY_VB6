@@ -111,7 +111,7 @@ On Error GoTo Raise_ItemEvent_Error
     Dim i&
     Dim ItemCode$, ItemName$, Size$, Qty&, Weight As Currency, Unit$, RequestDate$, DueDate$, ItemType$, RequestNo$
     Dim Calculate_Weight As Double
-    Dim YM$, BPLId$, Code$
+    Dim YM$, BPLID$, Code$
     Dim sQry As String
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
@@ -136,8 +136,8 @@ On Error GoTo Raise_ItemEvent_Error
                         End If
                         
                         YM = Trim(oDS_PS_FX020H.GetValue("U_YM", 0))
-                        BPLId = Trim(oDS_PS_FX020H.GetValue("U_BPLId", 0))
-                        Code = YM & BPLId
+                        BPLID = Trim(oDS_PS_FX020H.GetValue("U_BPLId", 0))
+                        Code = YM & BPLID
                         Call oDS_PS_FX020H.setValue("Code", 0, Code)
                         Call oDS_PS_FX020H.setValue("Name", 0, Code)
                     End If
@@ -181,9 +181,9 @@ On Error GoTo Raise_ItemEvent_Error
                         Exit Sub
                     End If
                     '//분개처리자료가 있는지 확인
-                    BPLId = oForm01.Items("BPLId").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                     YM = oForm01.Items("YM").Specific.VALUE
-                    sQry = "Select Cnt = Count(*) From [@PS_FX025H] Where U_BPLId = '" & BPLId & "' And U_YM = '" & YM & "' And Isnull(U_jdtCC,'N') = 'Y'"
+                    sQry = "Select Cnt = Count(*) From [@PS_FX025H] Where U_BPLId = '" & BPLID & "' And U_YM = '" & YM & "' And Isnull(U_jdtCC,'N') = 'Y'"
                     Call oRecordSet01.DoQuery(sQry)
                     
                     If oRecordSet01.Fields("Cnt").VALUE <= 0 Then
@@ -229,7 +229,7 @@ On Error GoTo Raise_MenuEvent_Error
     Dim i&
     Dim sQry As String
     Dim Code As String
-    Dim BPLId As String
+    Dim BPLID As String
     Dim YM As String
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
@@ -238,9 +238,9 @@ On Error GoTo Raise_MenuEvent_Error
     If (pval.BeforeAction = True) Then '//BeforeAction = True
         Select Case pval.MenuUID
             Case "1283": '삭제
-                BPLId = oForm01.Items("BPLId").Specific.VALUE
+                BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                 YM = oForm01.Items("YM").Specific.VALUE
-                sQry = "Select Cnt = Count(*) From [@PS_FX025H] Where U_BPLId = '" & BPLId & "' And U_YM = '" & YM & "' And Isnull(U_jdtCC,'N') = 'Y'"
+                sQry = "Select Cnt = Count(*) From [@PS_FX025H] Where U_BPLId = '" & BPLID & "' And U_YM = '" & YM & "' And Isnull(U_jdtCC,'N') = 'Y'"
                 Call oRecordSet01.DoQuery(sQry)
                 
                 If oRecordSet01.Fields("Cnt").VALUE <= 0 Then
@@ -635,12 +635,12 @@ On Error GoTo LoadData_Error
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim YM As String
-    Dim BPLId As String
+    Dim BPLID As String
     
     YM = Trim(oForm01.Items("YM").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
-    sQry = "EXEC [PS_FX020_01] '" & BPLId & "','" & YM & "'"
+    sQry = "EXEC [PS_FX020_01] '" & BPLID & "','" & YM & "'"
     Call oRecordSet01.DoQuery(sQry)
     
 '    oRecordSet01.DoQuery sQry

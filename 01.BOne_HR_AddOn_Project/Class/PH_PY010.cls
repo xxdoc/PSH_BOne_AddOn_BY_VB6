@@ -576,7 +576,7 @@ On Error GoTo Err
     
     Call oForm.Freeze(True)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDateFr = oForm.Items("DocDateFr").Specific.VALUE
     DocDateTo = oForm.Items("DocDateTo").Specific.VALUE
     

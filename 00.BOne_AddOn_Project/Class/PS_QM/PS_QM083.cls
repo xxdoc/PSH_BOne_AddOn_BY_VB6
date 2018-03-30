@@ -556,7 +556,7 @@ On Error GoTo Check_Exist_Error
     sQry = sQry + " And Code = '" & Trim(oDS_PS_QM083H.GetValue("U_BaseCode", 0)) & "'"
     oRecordSet.DoQuery sQry
     
-    InWeight = oRecordSet.Fields(0).VALUE
+    InWeight = Trim(oRecordSet.Fields(0).VALUE)
     
     sQry = "select Sum(U_Weight) from [@PS_QM083H] where U_DocDate <= '" & Trim(oDS_PS_QM083H.GetValue("U_DocDate", 0)) & "' and "
     sQry = sQry + " U_LotNo = '" & Trim(oDS_PS_QM083H.GetValue("U_LotNo", 0)) & "'"
@@ -565,7 +565,7 @@ On Error GoTo Check_Exist_Error
     
     OutWeight = oRecordSet.Fields(0).VALUE + oDS_PS_QM083H.GetValue("U_Weight", 0)
     
-    If InWeight < OutWeight Then
+    If Trim(InWeight) < Trim(OutWeight) Then
         Check_Exist = False
     Else
         Check_Exist = True

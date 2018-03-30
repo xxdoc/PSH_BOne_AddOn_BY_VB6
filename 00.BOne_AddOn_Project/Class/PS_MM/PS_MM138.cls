@@ -161,10 +161,10 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE Then
-                        oBPLId = oForm01.Items("BPLId").Specific.VALUE
-                        oDocdate = oForm01.Items("DocDate").Specific.VALUE
-                        oCardCode = oForm01.Items("CardCode").Specific.VALUE
-                        oCardName = oForm01.Items("CardName").Specific.VALUE
+                        oBPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                        oDocdate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+                        oCardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+                        oCardName = Trim(oForm01.Items("CardName").Specific.VALUE)
                     
 '                        If Trim(Sbo_Company.UserName) = "66302" Or Trim(Sbo_Company.UserName) = "67517" Then
 '                        Else
@@ -285,8 +285,8 @@ On Error GoTo Raise_ItemEvent_Error
                     If oForm01.Items("IssueYN").Specific.VALUE = "Y" Then
                         If oMat01.VisualRowCount < 1 Then
                             Add_MatrixRow 0, True
-                            oMat01.Columns("ItemCode").Cells(1).Specific.VALUE = oForm01.Items("ItemCode").Specific.VALUE
-                            oMat01.Columns("ItemName").Cells(1).Specific.VALUE = oForm01.Items("ItemName").Specific.VALUE
+                            oMat01.Columns("ItemCode").Cells(1).Specific.VALUE = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+                            oMat01.Columns("ItemName").Cells(1).Specific.VALUE = Trim(oForm01.Items("ItemName").Specific.VALUE)
                         End If
                         
                     Else
@@ -415,12 +415,12 @@ On Error GoTo Raise_MenuEvent_Error
         Select Case pval.MenuUID
             Case "1284": 'Ãë¼Ò
                 If (oForm01.Mode <> fm_ADD_MODE) Then
-                    OIGNNo = oForm01.Items("OIGNNo").Specific.VALUE
+                    OIGNNo = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
                     
                     If Trim(OIGNNo) <> "" Then
                     
-                        BPLID = oForm01.Items("BPLId").Specific.VALUE
-                        OutDoc = oForm01.Items("DocEntry").Specific.VALUE
+                        BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                        OutDoc = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                         
                         sQry = "Select Count(*) from [@PS_MM095H] a Inner Join [@PS_MM095L] b On a.DocEntry = b.DocEntry and a.Canceled = 'N' "
                         sQry = sQry + " Where a.U_BPLId = '" & BPLID & "'"
@@ -829,7 +829,7 @@ On Error GoTo FormItemEnabled_Error
     ElseIf (oForm01.Mode = fm_OK_MODE) Then
     
         
-        DocEntry = oForm01.Items("DocEntry").Specific.VALUE
+        DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
         sQry = "Select Count(*) From OCRD Where CardCode = '" & Trim(oDS_PS_MM138H.GetValue("U_CardCode", 0)) & "'"
         sQry = "select Count(*) From [@PS_MM095H] a Inner Join [@PS_MM095L] b On a.DocEntry = b.DocEntry"
         sQry = sQry + " Where Isnull(a.U_OIGEDoc,'') <> '' and Isnull(a.U_OIGNDoc,'') = '' "

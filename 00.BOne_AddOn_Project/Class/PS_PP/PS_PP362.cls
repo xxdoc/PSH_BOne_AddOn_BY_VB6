@@ -1264,18 +1264,18 @@ On Error GoTo PS_PP362_MTX01_Error
     Dim ToDt As String '작번등록년월(종료)
     Dim FrgnName As String '품명
     Dim CardType As String '거래처구분
-    Dim Spec As String '규격
+    Dim SPEC As String '규격
     Dim ItemClass As String '품목구분
     Dim WCYN As String '생산완료여부
     Dim CardCode As String '거래처
     Dim ItemCode As String '품목(작번)
     
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     FrgnName = IIf(oForm01.Items("FrgnName").Specific.VALUE = "", "%", oForm01.Items("FrgnName").Specific.VALUE)
-    CardType = oForm01.Items("CardType").Specific.Selected.VALUE
-    Spec = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
-    ItemClass = oForm01.Items("ItemClass").Specific.Selected.VALUE
+    CardType = Trim(oForm01.Items("CardType").Specific.Selected.VALUE)
+    SPEC = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
+    ItemClass = Trim(oForm01.Items("ItemClass").Specific.Selected.VALUE)
     WCYN = IIf(oForm01.Items("WCYN").Specific.Selected.VALUE = "", "%", oForm01.Items("WCYN").Specific.Selected.VALUE)
     CardCode = IIf(oForm01.Items("CardCode").Specific.VALUE = "", "%", oForm01.Items("CardCode").Specific.VALUE)
     ItemCode = IIf(oForm01.Items("ItemCode").Specific.VALUE = "", "%", oForm01.Items("ItemCode").Specific.VALUE)
@@ -1285,7 +1285,7 @@ On Error GoTo PS_PP362_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_PP362_01 '" & FrDt & "','" & ToDt & "','" & FrgnName & "','" & CardType & "','" & Spec & "','" & ItemClass & "','" & WCYN & "','" & CardCode & "','" & ItemCode & "'"
+    Query01 = "EXEC PS_PP362_01 '" & FrDt & "','" & ToDt & "','" & FrgnName & "','" & CardType & "','" & SPEC & "','" & ItemClass & "','" & WCYN & "','" & CardCode & "','" & ItemCode & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -1955,7 +1955,7 @@ On Error GoTo PS_PP362_Print_Report_Error
     Dim ToDt As String '작번등록년월(종료)
     Dim FrgnName As String '품명
     Dim CardType As String '거래처구분
-    Dim Spec As String '규격
+    Dim SPEC As String '규격
     Dim ItemClass As String '품목구분
     Dim WCYN As String '생산완료여부
     Dim CardCode As String '거래처
@@ -1967,19 +1967,19 @@ On Error GoTo PS_PP362_Print_Report_Error
     
     If prmItemUID = "Btn01" Then 'Main작번 출력
     
-        FrDt = oForm01.Items("FrDt").Specific.VALUE
-        ToDt = oForm01.Items("ToDt").Specific.VALUE
+        FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+        ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
         FrgnName = IIf(oForm01.Items("FrgnName").Specific.VALUE = "", "%", oForm01.Items("FrgnName").Specific.VALUE)
-        CardType = oForm01.Items("CardType").Specific.Selected.VALUE
-        Spec = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
-        ItemClass = oForm01.Items("ItemClass").Specific.Selected.VALUE
+        CardType = Trim(oForm01.Items("CardType").Specific.Selected.VALUE)
+        SPEC = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
+        ItemClass = Trim(oForm01.Items("ItemClass").Specific.Selected.VALUE)
         WCYN = IIf(oForm01.Items("WCYN").Specific.Selected.VALUE = "", "%", oForm01.Items("WCYN").Specific.Selected.VALUE)
         CardCode = IIf(oForm01.Items("CardCode").Specific.VALUE = "", "%", oForm01.Items("CardCode").Specific.VALUE)
         ItemCode = IIf(oForm01.Items("ItemCode").Specific.VALUE = "", "%", oForm01.Items("ItemCode").Specific.VALUE)
        
         ReportName = "PS_PP362_01.rpt"
     
-        Query01 = "EXEC PS_PP362_01 '" & FrDt & "','" & ToDt & "','" & FrgnName & "','" & CardType & "','" & Spec & "','" & ItemClass & "','" & WCYN & "','" & CardCode & "','" & ItemCode & "'"
+        Query01 = "EXEC PS_PP362_01 '" & FrDt & "','" & ToDt & "','" & FrgnName & "','" & CardType & "','" & SPEC & "','" & ItemClass & "','" & WCYN & "','" & CardCode & "','" & ItemCode & "'"
        
     ElseIf prmItemUID = "Btn02" Then 'Sub작번 출력
     
@@ -1991,8 +1991,8 @@ On Error GoTo PS_PP362_Print_Report_Error
     
     ElseIf prmItemUID = "Btn03" Then '자재비내역 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP362_03.rpt"
     
@@ -2000,8 +2000,8 @@ On Error GoTo PS_PP362_Print_Report_Error
         
     ElseIf prmItemUID = "Btn04" Then '설계비내역 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP362_04.rpt"
     
@@ -2009,8 +2009,8 @@ On Error GoTo PS_PP362_Print_Report_Error
     
     ElseIf prmItemUID = "Btn05" Then '자체가공비내역(공정별) 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP362_05.rpt"
     
@@ -2018,9 +2018,9 @@ On Error GoTo PS_PP362_Print_Report_Error
     
     ElseIf prmItemUID = "Btn06" Then '자체가공비내역(작업자별) 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
-        CpCode = oForm01.Items("CpCode").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
+        CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
         
         ReportName = "PS_PP362_06.rpt"
     
@@ -2028,8 +2028,8 @@ On Error GoTo PS_PP362_Print_Report_Error
         
     ElseIf prmItemUID = "Btn07" Then '외주가공비내역 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP362_07.rpt"
     
@@ -2037,8 +2037,8 @@ On Error GoTo PS_PP362_Print_Report_Error
     
     ElseIf prmItemUID = "Btn08" Then '외주제작비내역 출력
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP362_08.rpt"
     

@@ -203,7 +203,7 @@ Private Sub PH_PY112_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY112_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -242,7 +242,7 @@ Sub PH_PY112_FormItemEnabled()
         
         If oDS_PH_PY112A.GetValue("U_CLTCOD", 0) <> "" Then
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & " ORDER BY U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If
@@ -259,9 +259,9 @@ Sub PH_PY112_FormItemEnabled()
             oCombo.Select 0, psk_Index
         End If
         
-        If oForm.Items.Item("CLTCOD").Specific.Value <> "" Then
+        If oForm.Items.Item("CLTCOD").Specific.VALUE <> "" Then
             sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+            sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
             sQry = sQry & " Order By U_Code"
             Call SetReDataCombo(oForm, sQry, oCombo)
         End If
@@ -420,7 +420,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         
@@ -439,7 +439,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " Order By U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         
@@ -785,9 +785,9 @@ On Error GoTo PH_PY112_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY112'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY112_FormClear_Error:
@@ -839,7 +839,7 @@ On Error GoTo PH_PY112_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY112A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY112A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY112_Validate = False
         GoTo PH_PY112_Validate_Exit
@@ -891,7 +891,7 @@ Private Sub PH_PY112_Print_Report01()
 
     WinTitle = "[S142] 발주서"
     ReportName = "S142_1.rpt"
-    sQry = "EXEC PH_PY112_1 '" & oForm.Items("8").Specific.Value & "'"
+    sQry = "EXEC PH_PY112_1 '" & oForm.Items("8").Specific.VALUE & "'"
     
     '/ Formula 수식필드
     ReDim gRpt_Formula(1)
@@ -938,7 +938,7 @@ On Error GoTo PH_PY112_ItemNameSetting_Error
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     YM = Trim(oDS_PH_PY112A.GetValue("U_YM", 0))
-    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.Value)
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     oForm.PaneLevel = 1
     
     '//지급 항목
@@ -952,7 +952,7 @@ On Error GoTo PH_PY112_ItemNameSetting_Error
         For i = 1 To 36
             If i <= oRecordSet.RecordCount Then
                 Set oStatic = oForm.Items("sCSUD" & Format(i, "00")).Specific
-                oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).Value
+                oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).VALUE
                 oForm.Items("sCSUD" & Format(i, "00")).Visible = True
                 oForm.Items("CSUD" & Format(i, "00")).Visible = True
                 oRecordSet.MoveNext
@@ -973,7 +973,7 @@ On Error GoTo PH_PY112_ItemNameSetting_Error
     For i = 1 To 36
         If i <= oRecordSet.RecordCount Then
             Set oStatic = oForm.Items("sGONG" & Format(i, "00")).Specific
-            oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).Value
+            oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).VALUE
             oForm.Items("sGONG" & Format(i, "00")).Visible = True
             oForm.Items("GONG" & Format(i, "00")).Visible = True
             oRecordSet.MoveNext
@@ -995,7 +995,7 @@ On Error GoTo PH_PY112_ItemNameSetting_Error
     For i = 1 To 36
         If i <= oRecordSet.RecordCount Then
             Set oStatic = oForm.Items("sBTX" & Format(i, "00")).Specific
-            oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).Value
+            oStatic.Caption = Format(i, "00") & ") " & oRecordSet.Fields(0).VALUE
             oForm.Items("sBTX" & Format(i, "00")).Visible = True
             oForm.Items("BTX" & Format(i, "00")).Visible = True
             oRecordSet.MoveNext

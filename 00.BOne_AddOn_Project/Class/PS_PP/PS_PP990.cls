@@ -601,7 +601,7 @@ On Error GoTo PS_PP990_ComboBox_Setting_Error
 '    Call MDC_PS_Common.Combo_ValidValues_Insert("PS_PS_PP990", "Mat01", "ItemCode", "02", "반제품")
 '    Call MDC_PS_Common.Combo_ValidValues_SetValueColumn(oMat01.Columns("Column"), "PS_PP990", "Mat01", "ItemCode")
 
-'    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName FROM [OBPL]", "", False, False)
+'    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLId").Specific, "SELECT BPLId, BPLName From [OBPL] order by 1", "", False, False)
 '    Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
     '작업구분
@@ -880,7 +880,7 @@ On Error GoTo Print_Query_Error
 
     Call ConnectODBC
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim TeamCode As String '팀
     Dim RspCode As String '담당
     Dim ClsCode As String '반
@@ -894,7 +894,7 @@ On Error GoTo Print_Query_Error
     Dim CpCode As String '공정
     Dim OrdGbn As String '작업구분
     
-    BPLId = gBPLID  '사업장
+    BPLID = gBPLID  '사업장
     TeamCode = gTeamCode '팀
     RspCode = gRspCode '담당
     ClsCode = gClsCode '반
@@ -928,7 +928,7 @@ On Error GoTo Print_Query_Error
     
     '/ Procedure 실행"
     sQry = "         EXEC [PS_PP990_02] '"
-    sQry = sQry & BPLId & "','" '사업장
+    sQry = sQry & BPLID & "','" '사업장
     sQry = sQry & TeamCode & "','" '팀
     sQry = sQry & RspCode & "','" '담당
     sQry = sQry & ClsCode & "','" '반
@@ -1001,8 +1001,8 @@ Private Function PS_PP990_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -1012,7 +1012,7 @@ Private Function PS_PP990_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

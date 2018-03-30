@@ -828,7 +828,7 @@ On Error GoTo PS_GA901_MTX01_Error
     Call oForm01.Freeze(True)
     Dim i           As Long
     Dim sQry        As String
-    Dim BPLId        As String
+    Dim BPLID        As String
     Dim Visitant     As String
     
     Dim BirthDat     As String
@@ -836,11 +836,11 @@ On Error GoTo PS_GA901_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Visitant = oForm01.Items("Visitant").Specific.VALUE
     BirthDat = oForm01.Items("BirthDat").Specific.VALUE
     
-    sQry = " EXEC [PS_GA901_01]  '" & BPLId & "', '" & Visitant & "', '" & BirthDat & "'"
+    sQry = " EXEC [PS_GA901_01]  '" & BPLID & "', '" & Visitant & "', '" & BirthDat & "'"
     
     oGrid01.DataTable.Clear
     
@@ -889,7 +889,7 @@ Private Sub PS_GA901_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
     
     sRow = oRow
     
-    Param01 = oForm01.Items("BPLId").Specific.VALUE
+    Param01 = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Param02 = oGrid01.DataTable.Columns("방문자성명").Cells(oRow).VALUE
     Param03 = oGrid01.DataTable.Columns("생년월일").Cells(oRow).VALUE
     Param04 = oGrid01.DataTable.Columns("순번").Cells(oRow).VALUE
@@ -936,10 +936,10 @@ Private Sub PS_GA901_SAVE()
     '//데이타 저장
     
     Dim i       As Long
-    Dim seqncom As Integer
+    Dim Seqncom As Integer
     Dim sQry    As String
-    Dim ym      As String
-    Dim BPLId$, LineNum$, TelNo$, CustNm$, Visitant$, BirthDat$
+    Dim YM      As String
+    Dim BPLID$, LineNum$, TelNo$, CustNm$, Visitant$, BirthDat$
     Dim Addr$, Remark$
     
     Dim oRecordSet As SAPbobsCOM.Recordset
@@ -948,7 +948,7 @@ Private Sub PS_GA901_SAVE()
     
     On Error GoTo PS_GA901_SAVE_Error
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Visitant = oForm01.Items("Visitant").Specific.VALUE
     BirthDat = oForm01.Items("BirthDat").Specific.VALUE
     LineNum = oForm01.Items("LineNum").Specific.VALUE
@@ -959,7 +959,7 @@ Private Sub PS_GA901_SAVE()
     
     Call oForm01.Freeze(True)
     
-    If Trim(BPLId) = "" Then
+    If Trim(BPLID) = "" Then
         Call MDC_Com.MDC_GF_Message("사업장에러. 확인바랍니다..", "E")
         GoTo PS_GA901_SAVE_Exit
     End If
@@ -978,7 +978,7 @@ Private Sub PS_GA901_SAVE()
     
     
             
-    sQry = " Select Count(*) From [Z_PS_GA901H] Where BPLId = '" & BPLId & "' And Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "' and LineNum = '" & LineNum & "'"
+    sQry = " Select Count(*) From [Z_PS_GA901H] Where BPLId = '" & BPLID & "' And Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "' and LineNum = '" & LineNum & "'"
     oRecordSet.DoQuery sQry
 
     If oRecordSet.Fields(0).VALUE > 0 Then
@@ -989,7 +989,7 @@ Private Sub PS_GA901_SAVE()
         sQry = sQry + "TelNo = '" & TelNo & "',"
         sQry = sQry + "Addr = '" & Addr & "',"
         sQry = sQry + "Remark = '" & Remark & "'"
-        sQry = sQry + " Where BPLId = '" & BPLId & "' And Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "' and LineNum = '" & LineNum & "'"
+        sQry = sQry + " Where BPLId = '" & BPLID & "' And Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "' and LineNum = '" & LineNum & "'"
         oRecordSet.DoQuery sQry
         
     Else
@@ -997,7 +997,7 @@ Private Sub PS_GA901_SAVE()
         '순번 계산
         If Trim(LineNum) <> "" Then
             
-            sQry = " Select Max(LineNum) From [Z_PS_GA901H] Where BPLId = '" & BPLId & "' and Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "'"
+            sQry = " Select Max(LineNum) From [Z_PS_GA901H] Where BPLId = '" & BPLID & "' and Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "'"
             oRecordSet.DoQuery sQry
             
             If Trim(oRecordSet.Fields(0).VALUE) = "" Then
@@ -1007,7 +1007,7 @@ Private Sub PS_GA901_SAVE()
             End If
             
         Else
-            sQry = "Select Max(LineNum) From [Z_PS_GA901H] Where BPLId = '" & BPLId & "' and Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "'"
+            sQry = "Select Max(LineNum) From [Z_PS_GA901H] Where BPLId = '" & BPLID & "' and Visitant = '" & Visitant & "' and BirthDat = '" & BirthDat & "'"
             oRecordSet.DoQuery sQry
             
             LineNum = oRecordSet.Fields(0).VALUE + 1
@@ -1028,7 +1028,7 @@ Private Sub PS_GA901_SAVE()
         sQry = sQry & " ) "
         sQry = sQry & "VALUES("
 
-        sQry = sQry & "'" & BPLId & "',"
+        sQry = sQry & "'" & BPLID & "',"
         sQry = sQry & "'" & Visitant & "',"
         sQry = sQry & "'" & BirthDat & "',"
         sQry = sQry & LineNum & ","
@@ -1068,7 +1068,7 @@ End Sub
 
 Private Sub PS_GA901_Delete()
     '//선택된 자료 삭제
-    Dim BPLId$, Visitant$, BirthDat$, LineNum$
+    Dim BPLID$, Visitant$, BirthDat$, LineNum$
     Dim i As Integer
     Dim Cnt As Integer
     Dim oCombo      As SAPbouiCOM.ComboBox
@@ -1081,19 +1081,19 @@ Private Sub PS_GA901_Delete()
     
     Call oForm01.Freeze(True)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Visitant = oForm01.Items("Visitant").Specific.VALUE
     BirthDat = oForm01.Items("BirthDat").Specific.VALUE
     LineNum = oForm01.Items("LineNum").Specific.VALUE
         
-    sQry = " Select Count(*) From [Z_PS_GA901H] Where BPLId = '" & BPLId & "' And Visitant = '" & Visitant & "' And BirthDat = '" & BirthDat & "' And LineNum = '" & LineNum & "'"
+    sQry = " Select Count(*) From [Z_PS_GA901H] Where BPLId = '" & BPLID & "' And Visitant = '" & Visitant & "' And BirthDat = '" & BirthDat & "' And LineNum = '" & LineNum & "'"
     oRecordSet.DoQuery sQry
     
     Cnt = oRecordSet.Fields(0).VALUE
     If Cnt > 0 Then
         
         If Sbo_Application.MessageBox(" 선택한라인을 삭제하시겠습니까? ?", "2", "예", "아니오") = "1" Then
-            sQry = "Delete From [Z_PS_GA901H] Where BPLId = '" & BPLId & "' And Visitant = '" & Visitant & "' And BirthDat = '" & BirthDat & "' And LineNum = '" & LineNum & "'"
+            sQry = "Delete From [Z_PS_GA901H] Where BPLId = '" & BPLID & "' And Visitant = '" & Visitant & "' And BirthDat = '" & BirthDat & "' And LineNum = '" & LineNum & "'"
             oRecordSet.DoQuery sQry
         End If
     Else
@@ -1133,7 +1133,7 @@ On Error GoTo PS_GA901_FlushToItemValue_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim TeamCode As String
     Dim RspCode As String
     

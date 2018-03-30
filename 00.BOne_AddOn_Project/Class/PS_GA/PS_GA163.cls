@@ -272,7 +272,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -281,7 +281,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_OK_MODE Then
@@ -776,7 +776,7 @@ On Error GoTo PS_GA163_AddMatrixRow_Error
         oDS_PS_GA163L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_GA163L.offset = oRow
+    oDS_PS_GA163L.Offset = oRow
     oDS_PS_GA163L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -956,10 +956,10 @@ On Error GoTo PS_GA163_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -980,7 +980,7 @@ On Error GoTo PS_GA163_MTX01_Error
         If i <> 0 Then
             oDS_PS_GA163L.InsertRecord (i)
         End If
-        oDS_PS_GA163L.offset = i
+        oDS_PS_GA163L.Offset = i
         Call oDS_PS_GA163L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_GA163L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext

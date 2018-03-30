@@ -540,7 +540,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             '제품코드
             If pval.ItemUID = "ItemCode" Then
                ItemCode = oForm01.Items(pval.ItemUID).Specific.VALUE
-               CardCode = oForm01.Items("CardCode").Specific.VALUE
+               CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
                
                oQuery = "Select ItemName From OITM Where ItemCode = '" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"
                oRecordSet.DoQuery oQuery
@@ -565,7 +565,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             If pval.ItemUID = "CardCode" Then
                 
                CardCode = oForm01.Items(pval.ItemUID).Specific.VALUE
-               ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+               ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
                
                oQuery = "Select CardName From OCRD Where CardCode = '" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"
                oRecordSet.DoQuery oQuery
@@ -1050,8 +1050,8 @@ On Error GoTo PS_PACKING_PD_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     oGrid01.DataTable.Clear
     
@@ -1209,23 +1209,23 @@ Private Sub PS_PACKING_PD_SAVE()
     
     On Error GoTo PS_PACKING_PD_SAVE_Error
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
-    CntcCode = oForm01.Items("CntcCode").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
     CntcName = oForm01.Items("CntcName").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     ItemName = oForm01.Items("ItemName").Specific.VALUE
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
     PP030HNo = Val(oForm01.Items("PP030HNo").Specific.VALUE)
     PP030MNo = Val(oForm01.Items("PP030MNo").Specific.VALUE)
-    InspNo = oForm01.Items("InspNo").Specific.VALUE
+    InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
     
     BoxDiv = oForm01.Items("BoxDiv").Specific.VALUE
     Boxkg = oForm01.Items("BoxKg").Specific.VALUE
     Quantity = oForm01.Items("Quantity").Specific.VALUE
     BoxCnt = oForm01.Items("BoxCnt").Specific.VALUE
     BatchNum = oForm01.Items("BatchNum").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     CardName = oForm01.Items("CardName").Specific.VALUE
     bBatchNum = oForm01.Items("bBatchNum").Specific.VALUE
     CardSeq = oForm01.Items("CardSeq").Specific.VALUE
@@ -1414,11 +1414,11 @@ Private Sub PS_PACKING_PD_Delete()
     
     Call oForm01.Freeze(True)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     ItemName = oForm01.Items("ItemName").Specific.VALUE
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
     BatchNum = oForm01.Items("BatchNum").Specific.VALUE
         
     sQry = " Select Count(*) From [Z_PACKING_PD] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And ItemCode = '" & ItemCode & "' And ItemName = '" & ItemName & "' And OrdNum = '" & OrdNum & "' And BatchNum = '" & BatchNum & "'"
@@ -1592,7 +1592,7 @@ On Error GoTo Print_Query_Error
     
     Param01 = oForm01.Items("BPLId").Specific.Selected.VALUE
     Param02 = oForm01.Items("DocDate").Specific.VALUE
-    Param03 = oForm01.Items("ItemCode").Specific.VALUE
+    Param03 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     Param04 = oForm01.Items("ItemName").Specific.VALUE
     Param05 = oForm01.Items("OrdNum").Specific.VALUE
     Param06 = oForm01.Items("BatchNum").Specific.VALUE
@@ -1663,8 +1663,8 @@ On Error GoTo PS_PACKING_PD_InspNo_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     sQry = " Select Isnull(right(Max(InspNo),2),'') From [Z_PACKING_PD] Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "'"
     

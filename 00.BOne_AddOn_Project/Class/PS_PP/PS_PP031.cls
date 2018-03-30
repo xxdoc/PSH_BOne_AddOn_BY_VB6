@@ -863,20 +863,20 @@ On Error GoTo PS_PP031_MTX01_Error
     Dim CardType As String '거래처구분
     Dim ItemName As String '품명
     Dim ItemClass As String '품목구분
-    Dim Spec As String '규격
+    Dim SPEC As String '규격
     
     ItmBsort = oForm01.Items("ItmBsort").Specific.Selected.VALUE
-    CardType = oForm01.Items("CardType").Specific.Selected.VALUE
-    ItemClass = oForm01.Items("ItemClass").Specific.Selected.VALUE
+    CardType = Trim(oForm01.Items("CardType").Specific.Selected.VALUE)
+    ItemClass = Trim(oForm01.Items("ItemClass").Specific.Selected.VALUE)
     ItemName = oForm01.Items("ItemName").Specific.VALUE
-    Spec = oForm01.Items("Spec").Specific.VALUE
+    SPEC = oForm01.Items("Spec").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", RecordSet01.RecordCount, False) '쿼리를 실행할 때 부터 프로그레스 시작
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_PP031_01 '" & ItmBsort & "','" & CardType & "','" & ItemClass & "','" & ItemName & "','" & Spec & "'"
+    Query01 = "EXEC PS_PP031_01 '" & ItmBsort & "','" & CardType & "','" & ItemClass & "','" & ItemName & "','" & SPEC & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -1213,7 +1213,7 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim ItemClass As String '품목구분
     Dim TradeType As String '거래형태
     Dim FrDt As String '납기일시작
@@ -1224,13 +1224,13 @@ On Error GoTo Print_Query_Error
     Dim Chk01 As String '미출고
     Dim Chk02 As String '미납품
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItemClass = IIf(oForm01.Items("ItemClass").Specific.Selected.VALUE = "%", "", oForm01.Items("ItemClass").Specific.Selected.VALUE)
     TradeType = IIf(oForm01.Items("TradeType").Specific.Selected.VALUE = "%", "", oForm01.Items("TradeType").Specific.Selected.VALUE)
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     DocStatus = IIf(oForm01.Items("DocStatus").Specific.Selected.VALUE = "%", "", oForm01.Items("DocStatus").Specific.Selected.VALUE)
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0")
     Chk02 = IIf(oForm01.Items("Chk02").Specific.Checked = True, "1", "0")
@@ -1255,7 +1255,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_PP031_01 '" & BPLId & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
+    sQry = "EXEC PS_PP031_01 '" & BPLID & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
 
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then

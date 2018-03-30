@@ -158,7 +158,7 @@ On Error GoTo Raise_ItemEvent_Error
 '                            Dim OutSize As String
 '
 '                            OutSize = oForm01.Items("OutSize").Specific.VALUE
-'                            ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+'                            ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
 '                            sQry = "Update [OITM] set U_OutSize = '" & OutSize & "' Where ItemCode = '" & ItemCode & "'"
 '                            oRecordSet01.DoQuery sQry
 '                        End If

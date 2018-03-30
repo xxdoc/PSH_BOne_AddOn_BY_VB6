@@ -281,7 +281,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     oMat01.Columns("PackNo").Cells(i + 1).Specific.VALUE = sPackNo
                 Next
                 '//BeforeAction 이 false가될때 OBTN에도 PACKNO정보를 행별품목에 업뎃해주어야함
-                sDocNum = oForm01.Items("DocEntry").Specific.VALUE '//문서번호 전역변수에 담음
+                sDocNum = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//문서번호 전역변수에 담음
     
                 '//추가완료 후 다시 자동으로 CnctCode,CnctName,InDate를 보여주기 위해 미리 저장
                 Last_CntcCode = Trim(oDS_PS_PP090H.GetValue("U_CntcCode", 0))
@@ -981,10 +981,10 @@ On Error GoTo PS_PP090_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1068,7 +1068,7 @@ End Sub
 '    oDIObject.HandWritten = tNO
 '    oDIObject.doctype = dDocument_Service '서비스송장
 '    oDIObject.BPL_IDAssignedToInvoice = 2 '동래기본박아넣음 'oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value                       '공급업체
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)                       '공급업체
 '    oDIObject.CardName = oForm01.Items("CardName").Specific.Value                       '공급처이름
 '    oDIObject.DocDate = Format(oForm01.Items("ApDate").Specific.Value, "&&&&-&&-&&")    '전기일
 '    oDIObject.DocDueDate = Format(oForm01.Items("ApDate").Specific.Value, "&&&&-&&-&&") '만기일
@@ -1090,7 +1090,7 @@ End Sub
 '
 '
 '        'oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        'oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value        '구매서비스송장은 창고필요없음
+'        'oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)        '구매서비스송장은 창고필요없음
 '        'oDIObject.Lines.BaseType = "22"
 '        'oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        'oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

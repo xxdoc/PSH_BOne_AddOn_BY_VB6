@@ -240,8 +240,8 @@ On Error GoTo FlushToItemValue_Error
 ' Matrix 필드에 질의 응답 창 띄워주기
    Select Case oUID
         Case "Gubun"
-           OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
-           Gubun = oForm01.Items("Gubun").Specific.VALUE
+           OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
+           Gubun = Trim(oForm01.Items("Gubun").Specific.VALUE)
                     
            sQry = "SELECT U_CdName From [@PS_SY001L] Where Code = 'P208' And U_RelCd = '" & OrdGbn & "' And U_Minor = '" & Gubun & "'"
            oRecordSet01.DoQuery sQry

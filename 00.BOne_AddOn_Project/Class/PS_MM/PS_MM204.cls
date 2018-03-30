@@ -577,19 +577,19 @@ On Error GoTo Print_Query_Error
     '// 조회조건문
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
-    ItmsGrpCod = oForm01.Items("ItmsGrpCod").Specific.Selected.VALUE
+    ItmsGrpCod = Trim(oForm01.Items("ItmsGrpCod").Specific.Selected.VALUE)
     SItemCode = Trim(oForm01.Items("SItemCode").Specific.VALUE)
     EITemCode = Trim(oForm01.Items("SItemCode").Specific.VALUE)
     'EITemCode = Trim(oForm01.Items("EItemCode").Specific.Value)
     SCardCode = Trim(oForm01.Items("SCardCode").Specific.VALUE)
     ECardCode = Trim(oForm01.Items("SCardCode").Specific.VALUE)
     'ECardCode = Trim(oForm01.Items("ECardCode").Specific.Value)
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItmBsort = Trim(oForm01.Items("U_ItmBsort").Specific.VALUE)
     ItmMsort = Trim(oForm01.Items("ItmMsort").Specific.VALUE)
-    OrdTyp = oForm01.Items("OrdTyp").Specific.Selected.VALUE
-    POType = oForm01.Items("POType").Specific.Selected.VALUE
-    DocType = oForm01.Items("DocType").Specific.Selected.VALUE
+    OrdTyp = Trim(oForm01.Items("OrdTyp").Specific.Selected.VALUE)
+    POType = Trim(oForm01.Items("POType").Specific.Selected.VALUE)
+    DocType = Trim(oForm01.Items("DocType").Specific.Selected.VALUE)
 
     If StrDate = "" Then StrDate = "19000101"
     If EndDate = "" Then EndDate = "21001231"

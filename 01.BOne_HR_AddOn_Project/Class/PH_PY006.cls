@@ -951,7 +951,7 @@ Private Sub PH_PY006_MTX01()
     
     
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("JIGTYP").Specific.VALUE
     Param03 = oForm.Items("Gubun").Specific.VALUE
     Param04 = oForm.Items("UPHOBONG").Specific.VALUE
@@ -1080,7 +1080,7 @@ Private Sub PH_PY006_MTX02()
     Param02 = oForm.Items("appNum").Specific.VALUE
     Param03 = oForm.Items("Canceled").Specific.VALUE
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDate = Trim(oForm.Items("DocDate").Specific.VALUE)
     appNum = oForm.Items("appNum").Specific.VALUE
     JIGTYP = oForm.Items("JIGTYP").Specific.VALUE

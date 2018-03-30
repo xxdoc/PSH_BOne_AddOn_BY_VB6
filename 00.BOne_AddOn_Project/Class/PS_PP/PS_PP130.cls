@@ -377,7 +377,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
                 Next i
                 
                 '//금형코드
-                SBPLID = oForm01.Items("BPLId").Specific.VALUE
+                SBPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                 Set oCombo = oForm01.Items("MoldNo").Specific
                 sQry = "Select Code = '-', Name = '선택' Union All select Code = a.Code, Name = a.U_Item + ' [' +  U_CallSize + ']' from [@PS_PP190H] a Inner Join [@PS_PP190L] b On a.Code = b.Code "
                 sQry = sQry + " Where U_State = 'I' And a.U_ToolType = '3' "
@@ -969,10 +969,10 @@ On Error GoTo PS_PP130_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)

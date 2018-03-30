@@ -959,7 +959,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM010L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM010L.offset = oRow
+    oDS_PS_MM010L.Offset = oRow
     oDS_PS_MM010L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1249,7 +1249,7 @@ On Error GoTo RFC_Sender_Error
 '        oSapConnection01.Connection.ApplicationServer = "192.1.11.7"  '테스트
 '        oSapConnection01.Connection.ApplicationServer = "192.1.11.3"   '운영 '디버깅용
         oSapConnection01.Connection.ApplicationServer = "192.1.1.217"  '운영(실제사용)
-        oSapConnection01.Connection.language = "KO"
+        oSapConnection01.Connection.Language = "KO"
         oSapConnection01.Connection.SystemNumber = "01"
 '    oSapConnection01.Connection.SystemNumber = "00" '192.1.11.3 일때는 "00"
         If Not oSapConnection01.Connection.Logon(0, True) Then
@@ -1268,7 +1268,7 @@ On Error GoTo RFC_Sender_Error
 '            oSapConnection01.Connection.ApplicationServer = "192.1.11.7"    '테스트
 '            oSapConnection01.Connection.ApplicationServer = "192.1.11.3"   '운영 '디버깅용
             oSapConnection01.Connection.ApplicationServer = "192.1.1.217"  '운영(실제사용)
-            oSapConnection01.Connection.language = "KO"
+            oSapConnection01.Connection.Language = "KO"
             oSapConnection01.Connection.SystemNumber = "01"
 '           oSapConnection01.Connection.SystemNumber = "00" '192.1.11.3 일때는 "00"
             If Not oSapConnection01.Connection.Logon(0, True) Then
@@ -1285,7 +1285,7 @@ On Error GoTo RFC_Sender_Error
 '                oSapConnection01.Connection.ApplicationServer = "192.1.11.7"  '테스트
 '               oSapConnection01.Connection.ApplicationServer = "192.1.11.3"   '운영 '디버깅용
                 oSapConnection01.Connection.ApplicationServer = "192.1.1.217"  '운영(실제사용)
-                oSapConnection01.Connection.language = "KO"
+                oSapConnection01.Connection.Language = "KO"
                 oSapConnection01.Connection.SystemNumber = "01"
 '           oSapConnection01.Connection.SystemNumber = "00" '192.1.11.3 일때는 "00"
                 If Not oSapConnection01.Connection.Logon(0, True) Then
@@ -1764,7 +1764,7 @@ On Error GoTo PS_MM010_CheckDate_Error
     BaseEntry = pBaseEntry
     BaseLine = ""
     DocType = "PS_MM010"
-    CurDocDate = oForm01.Items("DocDate").Specific.VALUE
+    CurDocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
 
     Query01 = "         EXEC PS_Z_CHECK_DATE '"
     Query01 = Query01 & BaseEntry & "','"

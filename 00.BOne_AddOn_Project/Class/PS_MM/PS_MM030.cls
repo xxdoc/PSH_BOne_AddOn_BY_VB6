@@ -1148,7 +1148,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM030L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM030L.offset = oRow
+    oDS_PS_MM030L.Offset = oRow
     oDS_PS_MM030L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -2563,7 +2563,7 @@ On Error GoTo PS_MM030_CheckDate_Error
     BaseEntry = pBaseEntry
     BaseLine = ""
     DocType = "PS_MM030"
-    CurDocDate = oForm01.Items("DocDate").Specific.VALUE
+    CurDocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
 
     Query01 = "         EXEC PS_Z_CHECK_DATE '"
     Query01 = Query01 & BaseEntry & "','"
@@ -2685,10 +2685,10 @@ On Error GoTo PS_MM030_TotalAmount_Compare_Error
     Dim MinAmount1 As Currency '비교후 최소값 저장용
     Dim MinAmount2 As Currency '비교후 최소값 저장용
     
-    DocTotal = oForm01.Items("DocTotal").Specific.VALUE
-    EAmount1 = oForm01.Items("EAmount1").Specific.VALUE
-    EAmount2 = oForm01.Items("EAmount2").Specific.VALUE
-    EAmount3 = oForm01.Items("EAmount3").Specific.VALUE
+    DocTotal = Trim(oForm01.Items("DocTotal").Specific.VALUE)
+    EAmount1 = Trim(oForm01.Items("EAmount1").Specific.VALUE)
+    EAmount2 = Trim(oForm01.Items("EAmount2").Specific.VALUE)
+    EAmount3 = Trim(oForm01.Items("EAmount3").Specific.VALUE)
     
     If EAmount1 + EAmount2 + EAmount3 > 0 Then
     

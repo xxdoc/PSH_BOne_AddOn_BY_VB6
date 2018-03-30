@@ -931,9 +931,9 @@ On Error GoTo PS_PP006_MTX01_Error
     Dim Param03 As String
     Dim Param04 As String
   
-    Param01 = oForm01.Items("CardCode").Specific.VALUE
-    Param02 = oForm01.Items("ItemCode").Specific.VALUE
-    Param03 = oForm01.Items("CtrDate").Specific.VALUE
+    Param01 = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("CtrDate").Specific.VALUE)
     
     If oForm01.DataSources.UserDataSources("Rad01").VALUE = "A" Then
         Param04 = "A"

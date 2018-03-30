@@ -206,12 +206,12 @@ On Error GoTo PS_GA150_MTX01_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim sBPLId As String '사업장
+    Dim SBPLID As String '사업장
     Dim SCntcCode As String '사번
     Dim SPrvdDtFr As String '지급일자(시작)
     Dim SPrvdDtTo As String '지급일자(종료)
     
-    sBPLId = IIf(Trim(oForm01.Items("SBPLId").Specific.VALUE) = "%", "", Trim(oForm01.Items("SBPLId").Specific.VALUE))
+    SBPLID = IIf(Trim(oForm01.Items("SBPLId").Specific.VALUE) = "%", "", Trim(oForm01.Items("SBPLId").Specific.VALUE))
     SCntcCode = Trim(oForm01.Items("SCntcCode").Specific.VALUE)
     SPrvdDtFr = Trim(oForm01.Items("SPrvdDtFr").Specific.VALUE)
     SPrvdDtTo = Trim(oForm01.Items("SPrvdDtTo").Specific.VALUE)
@@ -221,7 +221,7 @@ On Error GoTo PS_GA150_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    sQry = "EXEC [PS_GA150_01] '" & sBPLId & "','" & SCntcCode & "','" & SPrvdDtFr & "','" & SPrvdDtTo & "'"
+    sQry = "EXEC [PS_GA150_01] '" & SBPLID & "','" & SCntcCode & "','" & SPrvdDtFr & "','" & SPrvdDtTo & "'"
     Call oRecordSet01.DoQuery(sQry)
     
     oMat01.Clear
@@ -377,7 +377,7 @@ On Error GoTo PS_GA150_UpdateData_Error
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim DocEntry As Integer
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
     Dim TeamCd As String '팀
@@ -395,7 +395,7 @@ On Error GoTo PS_GA150_UpdateData_Error
     Dim Note As String '비고
 
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE) '사번
     CntcName = Trim(oForm01.Items("CntcName").Specific.VALUE) '성명
     TeamCd = Trim(oForm01.Items("TeamCd").Specific.VALUE) '팀
@@ -419,7 +419,7 @@ On Error GoTo PS_GA150_UpdateData_Error
     End If
     
     sQry = "           UPDATE   [@PS_GA150H]"
-    sQry = sQry & " SET         U_BPLId = '" & BPLId & "'," '사업장
+    sQry = sQry & " SET         U_BPLId = '" & BPLID & "'," '사업장
     sQry = sQry & "              U_CntcCode = '" & CntcCode & "'," '사번
     sQry = sQry & "              U_CntcName = '" & CntcName & "',"  '성명
     sQry = sQry & "              U_TeamCd = '" & TeamCd & "',"  '팀
@@ -471,7 +471,7 @@ On Error GoTo PS_GA150_AddData_Error
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim DocEntry As Integer
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
     Dim TeamCd As String '팀
@@ -489,7 +489,7 @@ On Error GoTo PS_GA150_AddData_Error
     Dim Note As String '비고
 
 '    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE) '사번
     CntcName = Trim(oForm01.Items("CntcName").Specific.VALUE) '성명
     TeamCd = Trim(oForm01.Items("TeamCd").Specific.VALUE) '팀
@@ -544,7 +544,7 @@ On Error GoTo PS_GA150_AddData_Error
     sQry = sQry & DocEntry & ","
     sQry = sQry & DocEntry & ","
     
-    sQry = sQry & "'" & BPLId & "'," '사업장"
+    sQry = sQry & "'" & BPLID & "'," '사업장"
     sQry = sQry & "'" & CntcCode & "'," '사번"
     sQry = sQry & "'" & CntcName & "'," '성명"
     sQry = sQry & "'" & TeamCd & "'," '팀"
@@ -1434,17 +1434,17 @@ On Error GoTo PS_GA150_DataCheck_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim CntcCode As String
     Dim PrvdDt As String
     Dim ItemCode As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    CntcCode = oForm01.Items("CntcCode").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
     PrvdDt = oForm01.Items("PrvdDt").Specific.VALUE
     ItemCode = oForm01.Items("PrtrCd").Specific.VALUE
 
-    sQry = "EXEC PS_GA150_02 '" & BPLId & "','" & CntcCode & "','" & PrvdDt & "','" & ItemCode & "'"
+    sQry = "EXEC PS_GA150_02 '" & BPLID & "','" & CntcCode & "','" & PrvdDt & "','" & ItemCode & "'"
     
     Call oRecordSet01.DoQuery(sQry)
     

@@ -839,7 +839,7 @@ On Error GoTo PS_PP036_SetBaseForm_Error
     Dim BPLID As String
     Dim ymd As String
             
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)

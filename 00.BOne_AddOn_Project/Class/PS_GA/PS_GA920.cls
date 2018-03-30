@@ -463,7 +463,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim Visitant As String
     Dim BirthDat As String
     
@@ -477,13 +477,13 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             '사원명
             If pval.ItemUID = "Visitant" Or pval.ItemUID = "BirthDat" Then
                 
-                BPLId = oForm01.Items("BPLId").Specific.VALUE
+                BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                 Visitant = oForm01.Items("Visitant").Specific.VALUE
                 BirthDat = Format(oForm01.Items("BirthDat").Specific.VALUE, "YYYYMMDD")
                 
                 oGrid01.DataTable.Clear
     
-                oQuery = " EXEC [PS_GA920_04]  '" & BPLId & "', '" & Visitant & "', '" & BirthDat & "'"
+                oQuery = " EXEC [PS_GA920_04]  '" & BPLID & "', '" & Visitant & "', '" & BirthDat & "'"
     
                 oGrid01.DataTable.ExecuteQuery (oQuery)
                
@@ -911,21 +911,21 @@ On Error GoTo PS_GA920_MTX01_Error
     Dim i           As Long
     Dim sQry        As String
     Dim sQry1        As String
-    Dim BPLId        As String
+    Dim BPLID        As String
     Dim DocDate       As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     oGrid01.DataTable.Clear
     oGrid02.DataTable.Clear
     oGrid03.DataTable.Clear
     
-    sQry = " EXEC [PS_GA920_01]  '" & BPLId & "', '" & DocDate & "'"
-    sQry1 = " EXEC [PS_GA920_02]  '" & BPLId & "', '" & DocDate & "'"
+    sQry = " EXEC [PS_GA920_01]  '" & BPLID & "', '" & DocDate & "'"
+    sQry1 = " EXEC [PS_GA920_02]  '" & BPLID & "', '" & DocDate & "'"
     
     
 '    Call oForm01.DataSources.DataTables.Item("DataTable").ExecuteQuery(sQry)
@@ -1045,7 +1045,7 @@ Private Sub PS_GA920_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
             Set oCombo = oForm01.Items("CarDiv").Specific
             oCombo.Select oGrid02.DataTable.Columns("차종").Cells(oRow).VALUE, psk_ByValue
             
-            Param01 = oForm01.Items("BPLId").Specific.VALUE
+            Param01 = Trim(oForm01.Items("BPLId").Specific.VALUE)
             Param02 = oGrid02.DataTable.Columns("방문자성명").Cells(oRow).VALUE
             Param03 = Format(oGrid02.DataTable.Columns("생년월일").Cells(oRow).VALUE, "YYYYMMDD")
             
@@ -1167,8 +1167,8 @@ Private Sub PS_GA920_SAVE()
     Dim i       As Long
     Dim Seqncom As Integer
     Dim sQry    As String
-    Dim ym      As String
-    Dim BPLId$, DocDate$, TelNo$, LineNum$, MSTCOD$, FULLNAME$, TeamCode$, RspCode$, CoRegNum$, CustNm$, Location$, Visitant$, BirthDat$
+    Dim YM      As String
+    Dim BPLID$, DocDate$, TelNo$, LineNum$, MSTCOD$, FULLNAME$, TeamCode$, RspCode$, CoRegNum$, CustNm$, Location$, Visitant$, BirthDat$
     Dim Addr$, Indate$, InTime$, WPerson$, IDNum$, Purpose$, Remark$, CarDiv$, CarNo$
     
     Dim TempForm01 As Variant
@@ -1179,8 +1179,8 @@ Private Sub PS_GA920_SAVE()
     
     On Error GoTo PS_GA920_SAVE_Error
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     LineNum = oForm01.Items("LineNum").Specific.VALUE
     Visitant = oForm01.Items("Visitant").Specific.VALUE
     BirthDat = oForm01.Items("BirthDat").Specific.VALUE
@@ -1220,7 +1220,7 @@ Private Sub PS_GA920_SAVE()
         GoTo PS_GA920_SAVE_Exit
     Else
     
-        If Trim(BPLId) = "" Then
+        If Trim(BPLID) = "" Then
             Call MDC_Com.MDC_GF_Message("사업장에러. 확인바랍니다..", "E")
             GoTo PS_GA920_SAVE_Exit
         End If
@@ -1270,7 +1270,7 @@ Private Sub PS_GA920_SAVE()
             sQry = sQry + "Purpose = '" & Purpose & "',"
             sQry = sQry + "Remark = '" & Remark & "'"
             
-            sQry = sQry + " Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
+            sQry = sQry + " Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
             oRecordSet.DoQuery sQry
             
         Else
@@ -1279,7 +1279,7 @@ Private Sub PS_GA920_SAVE()
             If LineNum = 0 Then
                 LineNum = 1
             Else
-                sQry = " Select Max(LineNum) From [Z_PS_GA920H] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "'"
+                sQry = " Select Max(LineNum) From [Z_PS_GA920H] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "'"
                 oRecordSet.DoQuery sQry
                 
                 LineNum = oRecordSet.Fields(0).VALUE + 1
@@ -1310,7 +1310,7 @@ Private Sub PS_GA920_SAVE()
             sQry = sQry & " ) "
             sQry = sQry & "VALUES("
     
-            sQry = sQry & "'" & BPLId & "',"
+            sQry = sQry & "'" & BPLID & "',"
             sQry = sQry & "'" & DocDate & "',"
             sQry = sQry & LineNum & ","
             sQry = sQry & "'" & Visitant & "',"
@@ -1362,7 +1362,7 @@ End Sub
 
 Private Sub PS_GA920_Delete()
     '//선택된 자료 삭제
-    Dim BPLId$, DocDate$, LineNum$
+    Dim BPLID$, DocDate$, LineNum$
     Dim i As Integer
     Dim Cnt As Integer
     Dim oCombo      As SAPbouiCOM.ComboBox
@@ -1375,18 +1375,18 @@ Private Sub PS_GA920_Delete()
     
     Call oForm01.Freeze(True)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     LineNum = oForm01.Items("LineNum").Specific.VALUE
         
-    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
+    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
     oRecordSet.DoQuery sQry
     
     Cnt = oRecordSet.Fields(0).VALUE
     If Cnt > 0 Then
         
         If Sbo_Application.MessageBox(" 선택한라인을 삭제하시겠습니까? ?", "2", "예", "아니오") = "1" Then
-            sQry = "Delete From [Z_PS_GA920H] Where BPLId = '" & BPLId & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
+            sQry = "Delete From [Z_PS_GA920H] Where BPLId = '" & BPLID & "' And DocDate = '" & DocDate & "' And LineNum = '" & LineNum & "'"
             oRecordSet.DoQuery sQry
         End If
     Else
@@ -1426,7 +1426,7 @@ On Error GoTo PS_GA920_FlushToItemValue_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim TeamCode As String
     Dim RspCode As String
     
@@ -1498,7 +1498,7 @@ Private Sub PS_GA920_Form_ini()
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim DocDate     As String
     
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     
     '화면청소 ㅋ
     oForm01.DataSources.UserDataSources.Item("DocDate").VALUE = Format(Now, "YYYYMMDD")

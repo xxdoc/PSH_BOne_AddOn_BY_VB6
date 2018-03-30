@@ -858,7 +858,7 @@ Private Sub PH_PY123_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("SMSTCOD").Specific.VALUE
     
     
@@ -909,7 +909,7 @@ Private Sub PH_PY123_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
     sRow = oRow
     
     
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oDS_PH_PY123.Columns.Item("DocDate").Cells(oRow).VALUE
     Param03 = oDS_PH_PY123.Columns.Item("MSTCOD").Cells(oRow).VALUE
     Param04 = oDS_PH_PY123.Columns.Item("Gubun").Cells(oRow).VALUE
@@ -1074,7 +1074,7 @@ Private Sub PH_PY123_SAVE()
     
     
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDate = oForm.Items("DocDate").Specific.VALUE
     Gubun = oForm.Items("Gubun").Specific.VALUE
     JOBTYP = oForm.Items("JOBTYP").Specific.VALUE
@@ -1193,7 +1193,7 @@ Private Sub PH_PY123_Delete()
     
     Call oForm.Freeze(True)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     Gubun = oForm.Items("Gubun").Specific.VALUE

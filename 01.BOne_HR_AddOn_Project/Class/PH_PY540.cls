@@ -122,7 +122,7 @@ Private Function PH_PY540_CreateItems() As Boolean
 '    '//기준일자
     Call oForm.DataSources.UserDataSources.Add("DocDate", dt_DATE, 10)
     oForm.Items("DocDate").Specific.DataBind.SetBound True, "", "DocDate"
-    oForm.DataSources.UserDataSources.Item("DocDate").Value = Format(Now, "YYYYMMDD")
+    oForm.DataSources.UserDataSources.Item("DocDate").VALUE = Format(Now, "YYYYMMDD")
     
 '    '//종료일자
 '    Call oForm.DataSources.UserDataSources.Add("DocDateTo", dt_DATE, 10)
@@ -213,7 +213,7 @@ Private Sub PH_PY540_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY540_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -610,9 +610,9 @@ On Error GoTo PH_PY540_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY540'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY540_FormClear_Error:
@@ -665,7 +665,7 @@ On Error GoTo PH_PY540_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY540A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY540A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY540_Validate = False
         GoTo PH_PY540_Validate_Exit
@@ -713,8 +713,8 @@ Private Sub PH_PY540_Print_Report01()
     
     
     '//인자 MOVE , Trim 시키기..
-'    CLTCOD = oForm.Items("CLTCOD").Specific.Value
-    DocDate = oForm.Items("DocDate").Specific.Value
+'    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    DocDate = oForm.Items("DocDate").Specific.VALUE
     
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/

@@ -738,17 +738,17 @@ On Error GoTo PS_SM040_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLId As String
+    Dim BPLID As String
     Dim DocDateFr As String
     Dim DocDateTo As String
     Dim ItemCode As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDateFr = oForm01.Items("DocDateFr").Specific.VALUE
-    DocDateTo = oForm01.Items("DocDateTo").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDateFr = Trim(oForm01.Items("DocDatefr").Specific.VALUE)
+    DocDateTo = Trim(oForm01.Items("DocDateto").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     
-    Query01 = "EXEC PS_SM040_01 '" & BPLId & "','" & DocDateFr & "','" & DocDateTo & "','" & ItemCode & "'"
+    Query01 = "EXEC PS_SM040_01 '" & BPLID & "','" & DocDateFr & "','" & DocDateTo & "','" & ItemCode & "'"
 
     Call oGrid01.DataTable.Clear
     Call oForm01.DataSources.DataTables.Item("DataTable").ExecuteQuery(Query01)

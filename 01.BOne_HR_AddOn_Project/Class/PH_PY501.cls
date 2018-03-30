@@ -204,7 +204,7 @@ Private Sub PH_PY501_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY501_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -259,7 +259,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_ITEM_PRESSED: '//1
             
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "Btn01" Then
+                If pval.ItemUID = "Btn01" Then
                     Call PH_PY501_Print_Report01
                 End If
             ElseIf pval.BeforeAction = False Then
@@ -272,15 +272,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat01", "Grid01"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -301,22 +301,22 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_CLICK: '//6
             If pval.BeforeAction = True Then
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01"
 '                    If pval.Row > 0 Then
 '                        Call oMat1.SelectRow(pval.Row, True, False)
 '                    End If
                 End Select
                 
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01", "Grid01"
                     If pval.Row > 0 Then
-                        oLastItemUID = pval.ItemUid
+                        oLastItemUID = pval.ItemUID
                         oLastColUID = pval.ColUID
                         oLastColRow = pval.Row
                     End If
                 Case Else
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = ""
                     oLastColRow = 0
                 End Select
@@ -338,12 +338,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
        
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    Select Case pval.ItemUid
+                    Select Case pval.ItemUID
                         Case "Code"
                             '//사원명 찿아서 화면 표시 하기
-                            sQry = "SELECT U_FullName FROM [@PH_PY001A] WHERE Code =  '" & Trim(oForm.Items("Code").Specific.Value) & "'"
+                            sQry = "SELECT U_FullName FROM [@PH_PY001A] WHERE Code =  '" & Trim(oForm.Items("Code").Specific.VALUE) & "'"
                             oRecordSet.DoQuery sQry
-                            oForm.Items("CodeName").Specific.String = Trim(oRecordSet.Fields("U_FullName").Value)
+                            oForm.Items("CodeName").Specific.String = Trim(oRecordSet.Fields("U_FullName").VALUE)
                     End Select
                 End If
             End If
@@ -532,15 +532,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat01"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -601,9 +601,9 @@ On Error GoTo PH_PY501_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY501'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY501_FormClear_Error:
@@ -656,7 +656,7 @@ On Error GoTo PH_PY501_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY501A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY501A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY501_Validate = False
         GoTo PH_PY501_Validate_Exit
@@ -705,9 +705,9 @@ Private Sub PH_PY501_Print_Report01()
     
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.Value
-    JIGTYP = Trim(oForm.Items("JIGTYP").Specific.Value)
-    Code = Trim(oForm.Items("Code").Specific.Value)
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    JIGTYP = Trim(oForm.Items("JIGTYP").Specific.VALUE)
+    Code = Trim(oForm.Items("Code").Specific.VALUE)
     
     If JIGTYP = "" Then JIGTYP = "%"
     If Code = "" Then Code = "%"
@@ -724,7 +724,7 @@ Private Sub PH_PY501_Print_Report01()
     gRpt_Formula(1) = "CLTCOD"
     sQry = "SELECT U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P144' AND U_UseYN= 'Y' AND U_Code = '" & CLTCOD & "'"
     Call oRecordSet.DoQuery(sQry)
-    gRpt_Formula_Value(1) = oRecordSet.Fields(0).Value
+    gRpt_Formula_Value(1) = oRecordSet.Fields(0).VALUE
     
    '// 함수로 찿을때
    '//    Call MDC_SetMod.Get_ReData("U_CodeNM", "U_Code", "[@PS_HR200L]", "'" & CLTCOD & "'", " AND Code = 'P144' AND U_UseYN= 'Y'")

@@ -280,12 +280,12 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 End If
                 
                 Dim QuotNo As String '견적번호
-                Dim BPLId As String '사업장
+                Dim BPLID As String '사업장
                 Dim QuotDt As String '견적일자
                 
-                BPLId = oForm01.Items("BPLId").Specific.VALUE
-                QuotDt = oForm01.Items("QuotDt").Specific.VALUE
-                QuotNo = PS_SD600_MakeQutationNo(BPLId, QuotDt)
+                BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                QuotDt = Trim(oForm01.Items("QuotDt").Specific.VALUE)
+                QuotNo = PS_SD600_MakeQutationNo(BPLID, QuotDt)
                 
                 '견적번호 자동 생성
                 If QuotNo = "Overflow" Then
@@ -296,7 +296,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Call oDS_PS_SD600H.setValue("U_QuotNo", 0, QuotNo)
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -306,7 +306,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_OK_MODE Then
@@ -1071,10 +1071,10 @@ On Error GoTo PS_SD600_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)

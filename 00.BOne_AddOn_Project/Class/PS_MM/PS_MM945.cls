@@ -718,17 +718,17 @@ On Error GoTo PS_MM945_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CardCode As String '거래처
     Dim DocDate As String '납기일시작
     Dim Gubun As String
     
     
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    CardCode = oForm01.Items("CardCode").Specific.VALUE '거래처
-    DocDate = oForm01.Items("DocDate").Specific.VALUE '기준일
-    Gubun = oForm01.Items("Gubun").Specific.VALUE '기준일
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE) '거래처
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE) '기준일
+    Gubun = Trim(oForm01.Items("Gubun").Specific.VALUE) '기준일
     If Trim(CardCode) = "" Then CardCode = "%"
         
     
@@ -738,7 +738,7 @@ On Error GoTo PS_MM945_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_MM945_01 '" & BPLId & "','" & CardCode & "','" & DocDate & "','" & Gubun & "'"
+    Query01 = "EXEC PS_MM945_01 '" & BPLID & "','" & CardCode & "','" & DocDate & "','" & Gubun & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -873,14 +873,14 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CardCode As String '거래처
     Dim DocDate As String '기준일
     Dim Gubun As String
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    CardCode = oForm01.Items("CardCode").Specific.VALUE '거래처
-    DocDate = oForm01.Items("DocDate").Specific.VALUE '기준일
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE) '거래처
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE) '기준일
     Gubun = oForm01.Items("Gubun").Specific.Selected.VALUE
     
     
@@ -904,7 +904,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_MM945_01 '" & BPLId & "','" & CardCode & "','" & DocDate & "','" & Gubun & "'"
+    sQry = "EXEC PS_MM945_01 '" & BPLID & "','" & CardCode & "','" & DocDate & "','" & Gubun & "'"
 
     Call oRecordSet.DoQuery(sQry)
     If oRecordSet.RecordCount = 0 Then

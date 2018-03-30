@@ -74,15 +74,15 @@ On Error GoTo LoadData_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim sBPLId$, SGCode$
+    Dim SBPLID$, SGCode$
     
-    sBPLId = Trim(oForm01.Items("SBPLId").Specific.VALUE)
+    SBPLID = Trim(oForm01.Items("SBPLId").Specific.VALUE)
     SGCode = Trim(oForm01.Items("SGCode").Specific.VALUE)
     
     If SGCode = "" Then SGCode = "%"
  
         
-    sQry = "EXEC [PS_QM240_01] '" & sBPLId & "','" & SGCode & "'"
+    sQry = "EXEC [PS_QM240_01] '" & SBPLID & "','" & SGCode & "'"
     oRecordSet01.DoQuery sQry
     
     oMat01.Clear
@@ -210,21 +210,21 @@ Add_MatrixRow_Error:
     MDC_Com.MDC_GF_Message "Add_MatrixRow_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
 '// 데이타 insert
-Public Function Updatedata(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
-On Error GoTo Updatedata_Error
+Public Function UpdateData(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
+On Error GoTo UpdateData_Error
     Dim i As Integer
     Dim j As Integer
     Dim sQry As String
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, GCode$, Code$, BPLId$, CdName$, Size$, Maker$
+    Dim DocEntry$, GCode$, Code$, BPLID$, CdName$, Size$, Maker$
     Dim ProCd$, Sect$, Remark$
     Dim DocDate$
     Dim Cycle As Integer
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     GCode = Trim(oForm01.Items("GCode").Specific.VALUE)
     Code = Trim(oForm01.Items("Code").Specific.VALUE)
@@ -239,14 +239,14 @@ On Error GoTo Updatedata_Error
     
     If Trim(DocEntry) = "" Then
         MDC_Com.MDC_GF_Message "수정할 항목이 없습니다. 수정하실려면 항목을 선택을 하세요!", "E"
-        Updatedata = False
+        UpdateData = False
         Exit Function
     End If
         
     
     sQry = "Update [@PS_QM240H]"
     sQry = sQry & " set "
-    sQry = sQry & " U_BPLId = '" & BPLId & "',"
+    sQry = sQry & " U_BPLId = '" & BPLID & "',"
     sQry = sQry & " U_GCode = '" & GCode & "',"
     sQry = sQry & " U_Code = '" & Code & "',"
     sQry = sQry & " U_CdName = '" & CdName & "',"
@@ -264,10 +264,10 @@ On Error GoTo Updatedata_Error
     MDC_Com.MDC_GF_Message "수정 완료!", "S"
     
     Set RecordSet01 = Nothing
-    Updatedata = True
+    UpdateData = True
     Exit Function
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Updatedata_Error:
+UpdateData_Error:
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "Updatedata_Error:" & Err.Number & " - " & Err.Description, "E"
 End Function
@@ -282,13 +282,13 @@ On Error GoTo Add_PurchaseDemand_Error
     Dim RecordSet02 As SAPbobsCOM.Recordset
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, BPLId$, GCode$, Code$, CdName$, Size$, Maker$
+    Dim DocEntry$, BPLID$, GCode$, Code$, CdName$, Size$, Maker$
     Dim ProCd$, Sect$, Remark$
     Dim DocDate$
     Dim Cycle As Integer
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     GCode = Trim(oForm01.Items("GCode").Specific.VALUE)
     Code = Trim(oForm01.Items("Code").Specific.VALUE)
@@ -309,12 +309,12 @@ On Error GoTo Add_PurchaseDemand_Error
         DocEntry = Trim(RecordSet01.Fields(0).VALUE) + 1
     End If
         
-    sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_Code),3)) + 1)),3) From [@PS_QM240H] Where U_BPLId = '" & BPLId & "' And U_GCode = '" & GCode & "'"
+    sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_Code),3)) + 1)),3) From [@PS_QM240H] Where U_BPLId = '" & BPLID & "' And U_GCode = '" & GCode & "'"
     RecordSet01.DoQuery sQry
     If Trim(RecordSet01.Fields(0).VALUE) = "" Then
-        Code = BPLId + GCode + "001"
+        Code = BPLID + GCode + "001"
     Else
-        Code = BPLId + GCode + Trim(RecordSet01.Fields(0).VALUE)
+        Code = BPLID + GCode + Trim(RecordSet01.Fields(0).VALUE)
     End If
     
     
@@ -337,7 +337,7 @@ On Error GoTo Add_PurchaseDemand_Error
     sQry = sQry & "VALUES("
     sQry = sQry & DocEntry & ","
     sQry = sQry & DocEntry & ","
-    sQry = sQry & "'" & BPLId & "',"
+    sQry = sQry & "'" & BPLID & "',"
     sQry = sQry & "'" & DocDate & "',"
     sQry = sQry & "'" & GCode & "',"
     sQry = sQry & "'" & Code & "',"
@@ -769,7 +769,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
-                If Updatedata(pval) = False Then
+                If UpdateData(pval) = False Then
                     BubbleEvent = False
                     Exit Sub
                 End If
@@ -864,7 +864,7 @@ Dim sQry            As String
 
 Dim sCount&, sSeq&
 Dim GCode As String
-Dim BPLId As String
+Dim BPLID As String
 
 Dim oRecordSet01      As SAPbobsCOM.Recordset
 
@@ -875,16 +875,16 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     ElseIf pval.BeforeAction = False Then
         If pval.ItemUID = "GCode" Or pval.ItemUID = "BPLId" Then
-            BPLId = oForm01.Items("BPLId").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             GCode = oForm01.Items("GCode").Specific.VALUE 'Selected.
-            sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_Code),3)) + 1)),3) From [@PS_QM240H] Where U_BPLId = '" & BPLId & "' And U_GCode = '" & GCode & "'"
+            sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_Code),3)) + 1)),3) From [@PS_QM240H] Where U_BPLId = '" & BPLID & "' And U_GCode = '" & GCode & "'"
             oRecordSet01.DoQuery sQry
             
-            If Trim(BPLId) <> "" And Trim(GCode) <> "%" Then
+            If Trim(BPLID) <> "" And Trim(GCode) <> "%" Then
                 If Trim(oRecordSet01.Fields(0).VALUE) = "" Then
-                    oForm01.Items("Code").Specific.String = BPLId + GCode + "001"
+                    oForm01.Items("Code").Specific.String = BPLID + GCode + "001"
                 Else
-                    oForm01.Items("Code").Specific.String = BPLId + GCode + Trim(oRecordSet01.Fields(0).VALUE)
+                    oForm01.Items("Code").Specific.String = BPLID + GCode + Trim(oRecordSet01.Fields(0).VALUE)
                 End If
             End If
         End If

@@ -258,7 +258,7 @@ Private Sub PH_PY117_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY117_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -315,7 +315,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             If pval.BeforeAction = True Then
                 
             ElseIf pval.BeforeAction = False Then
-                If pval.ItemUid = "Btn1" Then
+                If pval.ItemUID = "Btn1" Then
                     If Sbo_Application.MessageBox("마감처리를 진행 하시겠습니까?", 2, "Yes", "No") = 2 Then
                         BubbleEvent = False
                         Exit Sub
@@ -323,17 +323,17 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Call PH_PY117_DataChange
                     Call PH_PY117_DataSearch
                 End If
-                If pval.ItemUid = "Btn_Search" Then
+                If pval.ItemUID = "Btn_Search" Then
                     Call PH_PY117_DataSearch
                 End If
-                If pval.ItemUid = "Btn_All" Then
+                If pval.ItemUID = "Btn_All" Then
                     oForm.Freeze True
                     For i = 0 To oGrid1.Rows.Count - 1
                         oDS_PH_PY117.setValue "MAGAM", i, "Y"
                     Next
                     oForm.Freeze False
                 End If
-                If pval.ItemUid = "Btn_Rev" Then
+                If pval.ItemUID = "Btn_Rev" Then
                     oForm.Freeze True
                     For i = 0 To oGrid1.Rows.Count - 1
                         oDS_PH_PY117.setValue "MAGAM", i, "N"
@@ -347,15 +347,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat1", "Grid1"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -369,7 +369,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    If pval.ItemUid = "CLTCOD" Then
+                    If pval.ItemUID = "CLTCOD" Then
                         
                         '//기본사항 - 부서 (사업장에 따른 부서변경)
                         Set oCombo = oForm.Items("TeamCode").Specific
@@ -383,7 +383,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -403,7 +403,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         End If
                         
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '2' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " Order By U_Code"
                         Call SetReDataCombo(oForm, sQry, oCombo)
                         oCombo.ValidValues.Add "%", "전체"
@@ -431,11 +431,11 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    If pval.ItemUid = "MSTCOD" Then
-                        If oForm.Items("MSTCOD").Specific.Value = "" Then
-                            oForm.Items("MSTNAM").Specific.Value = ""
+                    If pval.ItemUID = "MSTCOD" Then
+                        If oForm.Items("MSTCOD").Specific.VALUE = "" Then
+                            oForm.Items("MSTNAM").Specific.VALUE = ""
                         Else
-                            oForm.Items("MSTNAM").Specific.Value = MDC_SetMod.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & oForm.Items("MSTCOD").Specific.Value & "'")
+                            oForm.Items("MSTNAM").Specific.VALUE = MDC_SetMod.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & oForm.Items("MSTCOD").Specific.VALUE & "'")
                         End If
                     End If
                 End If
@@ -626,15 +626,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat1"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -695,9 +695,9 @@ On Error GoTo PH_PY117_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY117'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY117_FormClear_Error:
@@ -749,7 +749,7 @@ On Error GoTo PH_PY117_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY117A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY117A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY117_Validate = False
         GoTo PH_PY117_Validate_Exit
@@ -801,7 +801,7 @@ Private Sub PH_PY117_Print_Report01()
 
     WinTitle = "[S142] 발주서"
     ReportName = "S142_1.rpt"
-    sQry = "EXEC PH_PY117_1 '" & oForm.Items("8").Specific.Value & "'"
+    sQry = "EXEC PH_PY117_1 '" & oForm.Items("8").Specific.VALUE & "'"
     
     '/ Formula 수식필드
     ReDim gRpt_Formula(1)
@@ -846,15 +846,15 @@ Private Sub PH_PY117_DataSearch()
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     oForm.Freeze (True)
     
-    sCLTCOD = Trim(oForm.Items("CLTCOD").Specific.Value)
-    sYM = Trim(oForm.Items("YM").Specific.Value)
-    sJOBTYP = Trim(oForm.Items("JOBTYP").Specific.Value)
-    sJOBGBN = Trim(oForm.Items("JOBGBN").Specific.Value)
-    sPAYSEL = Trim(oForm.Items("PAYSEL").Specific.Value)
-    sMSTCOD = Trim(oForm.Items("MSTCOD").Specific.Value)
+    sCLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    sYM = Trim(oForm.Items("YM").Specific.VALUE)
+    sJOBTYP = Trim(oForm.Items("JOBTYP").Specific.VALUE)
+    sJOBGBN = Trim(oForm.Items("JOBGBN").Specific.VALUE)
+    sPAYSEL = Trim(oForm.Items("PAYSEL").Specific.VALUE)
+    sMSTCOD = Trim(oForm.Items("MSTCOD").Specific.VALUE)
     If sMSTCOD = "" Then sMSTCOD = "%"
-    sTeamCode = Trim(oForm.Items("TeamCode").Specific.Value)
-    sRspCode = Trim(oForm.Items("RspCode").Specific.Value)
+    sTeamCode = Trim(oForm.Items("TeamCode").Specific.VALUE)
+    sRspCode = Trim(oForm.Items("RspCode").Specific.VALUE)
     sClose = Trim(oForm.DataSources.UserDataSources.Item("Close").ValueEx)
     If sClose = "" Then sClose = "N"
     

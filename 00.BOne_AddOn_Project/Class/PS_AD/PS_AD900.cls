@@ -884,7 +884,7 @@ On Error GoTo PS_AD900_MTX01_Error
     Dim FinToDt As String '완료일종료
     Dim AcStatus As String '접수상태
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ReqEmpCd = oForm01.Items("ReqEmpCd").Specific.VALUE
     ReqFrDt = oForm01.Items("ReqFrDt").Specific.VALUE
     ReqToDt = oForm01.Items("ReqToDt").Specific.VALUE
@@ -996,7 +996,7 @@ On Error GoTo PS_AD900_MTX02_Error
     Dim FinToDt As String '완료일종료
     Dim AcStatus As String '접수상태
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ReqEmpCd = oForm01.Items("ReqEmpCd").Specific.VALUE
     ReqFrDt = oForm01.Items("ReqFrDt").Specific.VALUE
     ReqToDt = oForm01.Items("ReqToDt").Specific.VALUE
@@ -1129,7 +1129,7 @@ On Error GoTo Print_Query_Error
     Dim FinToDt As String '완료일종료
     Dim AcStatus As String '접수상태
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ReqEmpCd = oForm01.Items("ReqEmpCd").Specific.VALUE
     ReqFrDt = oForm01.Items("ReqFrDt").Specific.VALUE
     ReqToDt = oForm01.Items("ReqToDt").Specific.VALUE

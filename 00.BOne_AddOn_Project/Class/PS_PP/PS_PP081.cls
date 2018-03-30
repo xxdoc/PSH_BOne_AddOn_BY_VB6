@@ -167,7 +167,7 @@ On Error GoTo Raise_MenuEvent_Error
 '                        BubbleEvent = False
 '                        Exit Sub
 '                    End If
-'                    oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+'                    oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                Else
 '                    MDC_Com.MDC_GF_Message "현재 모드에서는 취소할수 없습니다.", "W"
 '                    BubbleEvent = False
@@ -292,7 +292,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
 
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 'Addon만등록 시 주석_E
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_PP081_DataValidCheck = False Then
@@ -1162,8 +1162,8 @@ On Error GoTo PS_PP081_DataValidCheck_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
     
     If (oForm01.Mode = fm_ADD_MODE) Then
         Call PS_PP081_FormClear
@@ -1277,10 +1277,10 @@ On Error GoTo PS_PP081_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1450,7 +1450,7 @@ On Error GoTo PS_PP081_DI_API02_Error
         oDIObject.Lines.WarehouseCode = RecordSet01.Fields("WhsCode").VALUE
         oDIObject.Lines.Quantity = RecordSet01.Fields("Quantity").VALUE
         
-        oDIObject.UserFields("U_CancDoc").VALUE = oForm01.Items("OIGNNo").Specific.VALUE '//입고취소 문서번호
+        oDIObject.UserFields("U_CancDoc").VALUE = Trim(oForm01.Items("OIGNNo").Specific.VALUE) '//입고취소 문서번호
         
         If (oForm01.Items("OrdGbn").Specific.Selected.VALUE = "102" Or oForm01.Items("OrdGbn").Specific.Selected.VALUE = "104") Then '//부품,멀티인경우 배치를 선택
             If MDC_PS_Common.GetItem_ManBtchNum(RecordSet01.Fields("ItemCode").VALUE) = "Y" Then '//배치관리품목이면
@@ -1609,8 +1609,8 @@ On Error GoTo PS_PP081_Validate_Error
         '//재고가 모두 존재하는가..
         Dim OIGNNo As String
         Dim OrdGbn As String
-        OIGNNo = oForm01.Items("OIGNNo").Specific.VALUE
-        OrdGbn = oForm01.Items("OrdGbn").Specific.Selected.VALUE
+        OIGNNo = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
+        OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE)
         Query01 = "EXEC PS_PP080_04 '" & OrdGbn & "','" & OIGNNo & "'"
         RecordSet01.DoQuery Query01
         For i = 0 To RecordSet01.RecordCount - 1

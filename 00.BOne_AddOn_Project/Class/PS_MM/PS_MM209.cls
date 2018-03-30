@@ -157,7 +157,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 재고계정
     Set oCombo = oForm01.Items("AcctCode").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("11506100", "원재료")
     Call oCombo.ValidValues.Add("11502100", "제품")
@@ -182,7 +182,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Dim i As Integer
     Do Until oRecordSet01.EOF

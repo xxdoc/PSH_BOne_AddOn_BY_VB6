@@ -168,7 +168,7 @@ On Error GoTo Raise_MenuEvent_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
             Case "1286": '닫기
             Case "1293": '행삭제
                 Call Raise_EVENT_ROW_DELETE(FormUID, pval, BubbleEvent)
@@ -275,14 +275,14 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 '//해야할일 작업
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_CO160_DataValidCheck = False Then
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
             ElseIf oForm01.Mode = fm_OK_MODE Then
             End If
         End If
@@ -911,7 +911,7 @@ On Error GoTo PS_CO160_FindValidateDocument_Error
     
     Dim i As Long
     Dim DocEntry As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
     
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)

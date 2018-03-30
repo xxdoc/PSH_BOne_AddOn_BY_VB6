@@ -136,7 +136,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("0", "전체 사업장")
     Do Until oRecordSet01.EOF
@@ -169,7 +169,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 재고계정-판매구분
     Set oCombo = oForm01.Items("ItmGrp").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("11506100", "원재료")
     Call oCombo.ValidValues.Add("11502100", "제품")
@@ -384,9 +384,9 @@ On Error GoTo FlushToItemValue_Error
     Dim i&, DocNum$, LineId$
     Dim ErrNum          As Integer
     Dim sQry            As String
-    Dim oRecordset    As SAPbobsCOM.Recordset
+    Dim oRecordSet    As SAPbobsCOM.Recordset
         
-    Set oRecordset = Sbo_Company.GetBusinessObject(BoRecordset)
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     '--------------------------------------------------------------
     'Header--------------------------------------------------------
     Select Case oUID
@@ -401,7 +401,7 @@ On Error GoTo FlushToItemValue_Error
         End Select
     End If
      
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 FlushToItemValue_Error:
@@ -448,23 +448,23 @@ On Error GoTo Print_Query_Error
     Dim Sub_sQry        As String
     
     Dim ItmGrp          As String
-    Dim ItmBSort        As String
-    Dim BPLId           As String
+    Dim ItmBsort        As String
+    Dim BPLID           As String
     Dim StrDate         As String
     Dim EndDate         As String
     Dim SItemCode       As String
     Dim EITemCode       As String
    
-    Dim oRecordset      As SAPbobsCOM.Recordset
+    Dim oRecordSet      As SAPbobsCOM.Recordset
     
-    Set oRecordset = Sbo_Company.GetBusinessObject(BoRecordset)
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
             
     Call ConnectODBC
     
     '// 조회조건문
     ItmGrp = Trim(oForm01.Items("ItmGrp").Specific.Selected.VALUE)
-    ItmBSort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
     SItemCode = Trim(oForm01.Items("SItemCode").Specific.VALUE)
@@ -472,7 +472,7 @@ On Error GoTo Print_Query_Error
     
     If StrDate = "" Then StrDate = "19000101"
     If EndDate = "" Then EndDate = "21001231"
-    If ItmBSort = "001" Then ItmBSort = "%"
+    If ItmBsort = "001" Then ItmBsort = "%"
     If SItemCode = "" Then SItemCode = "%"
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -501,9 +501,9 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_FI918_01] '" & ItmGrp & "','" & ItmBSort & "','" & BPLId & "','" & SItemCode & "', '" & StrDate & "', '" & EndDate & "'"
-    oRecordset.DoQuery sQry
-    If oRecordset.RecordCount = 0 Then
+    sQry = "EXEC [PS_FI918_01] '" & ItmGrp & "','" & ItmBsort & "','" & BPLID & "','" & SItemCode & "', '" & StrDate & "', '" & EndDate & "'"
+    oRecordSet.DoQuery sQry
+    If oRecordSet.RecordCount = 0 Then
         ErrNum = 1
         GoTo Print_Query_Error
     End If
@@ -512,11 +512,11 @@ On Error GoTo Print_Query_Error
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "", "N", "V") = False Then
     End If
     
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Print_Query_Error:
-    Set oRecordset = Nothing
+    Set oRecordSet = Nothing
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
     Else

@@ -922,7 +922,7 @@ Private Sub PH_PY315_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     RpmtDate = oForm.Items("RpmtDate").Specific.VALUE
     CntcCode = oForm.Items("CntcCode").Specific.VALUE
     
@@ -1048,7 +1048,7 @@ Private Sub PH_PY315_Print_Report01()
     
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     RpmtDate = oForm.Items("RpmtDate").Specific.VALUE
     CntcCode = oForm.Items("CntcCode").Specific.VALUE
 

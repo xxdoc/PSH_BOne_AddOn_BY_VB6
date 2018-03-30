@@ -133,7 +133,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// »ç¾÷Àå
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Dim i As Integer
     Do Until oRecordSet01.EOF

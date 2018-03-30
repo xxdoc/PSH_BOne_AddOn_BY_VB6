@@ -569,7 +569,7 @@ On Error GoTo PS_PP111_AddData_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
     StdYM = oForm01.Items("DocYM").Specific.VALUE '기준년월
     UserSign = Sbo_Company.UserSignature '등록자(수정자)
     

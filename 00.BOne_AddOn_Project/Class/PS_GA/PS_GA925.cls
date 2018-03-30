@@ -829,22 +829,22 @@ On Error GoTo PS_GA925_MTX01_Error
     Dim i           As Long
     Dim sQry        As String
     Dim sQry1       As String
-    Dim BPLId       As String
+    Dim BPLID       As String
     Dim StDate      As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     StDate = oForm01.Items("StDate").Specific.VALUE
     
     oGrid01.DataTable.Clear
     oGrid02.DataTable.Clear
     
     
-    sQry = " EXEC [PS_GA925_01]  '" & BPLId & "'"         '입문자 조회
+    sQry = " EXEC [PS_GA925_01]  '" & BPLID & "'"         '입문자 조회
     
-    sQry1 = " EXEC [PS_GA925_02]  '" & BPLId & "', '" & StDate & "'"     '출문자 조회
+    sQry1 = " EXEC [PS_GA925_02]  '" & BPLID & "', '" & StDate & "'"     '출문자 조회
     
   
     oGrid01.DataTable.ExecuteQuery (sQry)
@@ -966,8 +966,8 @@ Private Sub PS_GA925_SAVE()
     Dim i       As Long
     Dim Seqncom As Integer
     Dim sQry    As String
-    Dim ym      As String
-    Dim BPLId$, DocDate$, LineNum$, OutDate$
+    Dim YM      As String
+    Dim BPLID$, DocDate$, LineNum$, OutDate$
     Dim OutTime As Integer
     
     Dim oRecordSet As SAPbobsCOM.Recordset
@@ -976,15 +976,15 @@ Private Sub PS_GA925_SAVE()
     
     On Error GoTo PS_GA925_SAVE_Error
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     LineNum = oForm01.Items("LineNum").Specific.VALUE
     OutDate = oForm01.Items("OutDate").Specific.VALUE
     OutTime = oForm01.Items("OutTime").Specific.VALUE
     
     Call oForm01.Freeze(True)
     
-    If Trim(BPLId) = "" Then
+    If Trim(BPLID) = "" Then
         Call MDC_Com.MDC_GF_Message("사업장에러. 확인바랍니다..", "E")
         GoTo PS_GA925_SAVE_Exit
     End If
@@ -1006,7 +1006,7 @@ Private Sub PS_GA925_SAVE()
     End If
     
             
-    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
+    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
     oRecordSet.DoQuery sQry
 
     If oRecordSet.Fields(0).VALUE > 0 Then
@@ -1016,7 +1016,7 @@ Private Sub PS_GA925_SAVE()
         sQry = sQry + "OutDate = '" & OutDate & "',"
         sQry = sQry + "OutTime = '" & OutTime & "'"
         
-        sQry = sQry + " Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
+        sQry = sQry + " Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
         oRecordSet.DoQuery sQry
         
     Else
@@ -1058,7 +1058,7 @@ Private Sub PS_GA925_Delete()
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim sQry    As String
     Dim oRecordSet As SAPbobsCOM.Recordset
-    Dim BPLId$, DocDate$, LineNum$, OutDate$
+    Dim BPLID$, DocDate$, LineNum$, OutDate$
     Dim OutTime As Integer
     
     On Error GoTo PS_GA925_Delete_Error
@@ -1067,11 +1067,11 @@ Private Sub PS_GA925_Delete()
     
     Call oForm01.Freeze(True)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     LineNum = oForm01.Items("LineNum").Specific.VALUE
         
-    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
+    sQry = " Select Count(*) From [Z_PS_GA920H] Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
     oRecordSet.DoQuery sQry
 
     If oRecordSet.Fields(0).VALUE > 0 Then
@@ -1081,7 +1081,7 @@ Private Sub PS_GA925_Delete()
         sQry = sQry + "OutDate = '',"
         sQry = sQry + "OutTime = 0 "
         
-        sQry = sQry + " Where BPLId = '" & BPLId & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
+        sQry = sQry + " Where BPLId = '" & BPLID & "' and DocDate = '" & DocDate & "' and LineNum = '" & LineNum & "'"
         oRecordSet.DoQuery sQry
         
     Else
@@ -1122,7 +1122,7 @@ On Error GoTo PS_GA925_FlushToItemValue_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim TeamCode As String
     Dim RspCode As String
     

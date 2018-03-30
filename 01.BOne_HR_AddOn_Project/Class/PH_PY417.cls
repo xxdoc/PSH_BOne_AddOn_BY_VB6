@@ -505,7 +505,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     
                     Select Case pval.ItemUID
                         Case "StdYear"
-                            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                             StdYear = oForm.Items("StdYear").Specific.VALUE
                             
                             '//해당년도의 마지막 급여년월과 지급일자
@@ -910,7 +910,7 @@ Private Sub PH_PY417_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
     Param03 = oForm.Items("YYYYMM").Specific.VALUE
     Param04 = oForm.Items("DocDate").Specific.VALUE
@@ -1014,7 +1014,7 @@ Private Sub PH_PY417_PY109_Update()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
     Param03 = oForm.Items("YM").Specific.VALUE
     

@@ -748,7 +748,7 @@ Private Sub PH_PY125_Excel_Upload()
     Set oForm = Sbo_Application.Forms.ActiveForm
     
     
-'    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+'    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     sFile = FileListBoxForm.OpenDialog(FileListBoxForm, "*.xls", "파일선택", "C:\")

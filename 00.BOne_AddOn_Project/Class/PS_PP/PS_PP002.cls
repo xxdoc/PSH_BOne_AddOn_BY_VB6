@@ -298,7 +298,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
         If pval.ItemChanged = True Then
             Call oForm01.Freeze(True)
             If (pval.ItemUID = "BigCode") Then
-                Call oDS_PS_PP002H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                Call oDS_PS_PP002H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
             End If
             oMat01.LoadFromDataSource
             oMat01.AutoResizeColumns
@@ -357,18 +357,18 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             If (pval.ItemUID = "Mat01") Then
                 If (pval.ColUID = "MidCode") Then
                     '//기타작업
-                    Call oDS_PS_PP002L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_PP002L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                     If oMat01.RowCount = pval.Row And Trim(oDS_PS_PP002L.GetValue("U_" & pval.ColUID, pval.Row - 1)) <> "" Then
                         PS_PP002_AddMatrixRow (pval.Row)
                     End If
                 Else
-                    Call oDS_PS_PP002L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_PP002L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                 End If
             Else
                 If (pval.ItemUID = "DocEntry") Then
-                    Call oDS_PS_PP002H.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_PP002H.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 Else
-                    Call oDS_PS_PP002H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_PP002H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 End If
             End If
             oMat01.LoadFromDataSource
@@ -470,7 +470,7 @@ On Error GoTo Raise_EVENT_ROW_DELETE_Error
             '//행삭제전 행삭제가능여부검사
         ElseIf pval.BeforeAction = False Then
             For i = 1 To oMat01.VisualRowCount
-                oMat01.Columns("LineNum").Cells(i).Specific.Value = i
+                oMat01.Columns("LineNum").Cells(i).Specific.VALUE = i
             Next i
             oMat01.FlushToDataSource
             Call oDS_PS_PP002L.RemoveRecord(oDS_PS_PP002L.Size - 1)
@@ -643,9 +643,9 @@ On Error GoTo PS_PP002_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_PP002'", "")
     If DocEntry = 0 Then
-        oForm01.Items("DocEntry").Specific.Value = 1
+        oForm01.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm01.Items("DocEntry").Specific.Value = DocEntry
+        oForm01.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PS_PP002_FormClear_Error:
@@ -694,7 +694,7 @@ On Error GoTo PS_PP002_DataValidCheck_Error
         Exit Function
     End If
     If oForm01.Mode = fm_ADD_MODE Then
-        If MDC_PS_Common.GetValue("SELECT COUNT(*) FROM [@PS_PP002H] WHERE U_BigCode = '" & oForm01.Items("BigCode").Specific.Selected.Value & "'", 0, 1) > 0 Then
+        If MDC_PS_Common.GetValue("SELECT COUNT(*) FROM [@PS_PP002H] WHERE U_BigCode = '" & oForm01.Items("BigCode").Specific.Selected.VALUE & "'", 0, 1) > 0 Then
             Sbo_Application.SetStatusBarMessage "중복된 기준분류입니다.", bmt_Short, True
             oForm01.Items("BigCode").Click ct_Regular
             PS_PP002_DataValidCheck = False
@@ -713,20 +713,20 @@ On Error GoTo PS_PP002_DataValidCheck_Error
         Exit Function
     End If
     For i = 1 To oMat01.VisualRowCount - 1
-        If (oMat01.Columns("MidCode").Cells(i).Specific.Value = "") Then
+        If (oMat01.Columns("MidCode").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "중분류코드는 필수입니다.", bmt_Short, True
             oMat01.Columns("MidCode").Cells(i).Click ct_Regular
             PS_PP002_DataValidCheck = False
             Exit Function
         End If
-        If (oMat01.Columns("MidName").Cells(i).Specific.Value = "") Then
+        If (oMat01.Columns("MidName").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "중분류이름은 필수입니다.", bmt_Short, True
             oMat01.Columns("MidName").Cells(i).Click ct_Regular
             PS_PP002_DataValidCheck = False
             Exit Function
         End If
         For j = i + 1 To oMat01.VisualRowCount - 1
-            If (oMat01.Columns("MidCode").Cells(i).Specific.Value = oMat01.Columns("MidCode").Cells(j).Specific.Value) Then
+            If (oMat01.Columns("MidCode").Cells(i).Specific.VALUE = oMat01.Columns("MidCode").Cells(j).Specific.VALUE) Then
                 Sbo_Application.SetStatusBarMessage "중분류코드가 중복 되었습니다.", bmt_Short, True
                 oMat01.Columns("MidCode").Cells(j).Click ct_Regular
                 PS_PP002_DataValidCheck = False
@@ -759,10 +759,10 @@ On Error GoTo PS_PP002_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.Value
-    Param02 = oForm01.Items("Param01").Specific.Value
-    Param03 = oForm01.Items("Param01").Specific.Value
-    Param04 = oForm01.Items("Param01").Specific.Value
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -783,11 +783,11 @@ On Error GoTo PS_PP002_MTX01_Error
             oDS_PS_PP002L.InsertRecord (i)
         End If
         oDS_PS_PP002L.Offset = i
-        Call oDS_PS_PP002L.setValue("U_COL01", i, RecordSet01.Fields(0).Value)
-        Call oDS_PS_PP002L.setValue("U_COL02", i, RecordSet01.Fields(1).Value)
+        Call oDS_PS_PP002L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
+        Call oDS_PS_PP002L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & RecordSet01.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & RecordSet01.RecordCount & "건 조회중...!"
     Next
     oMat01.LoadFromDataSource
     oMat01.AutoResizeColumns
@@ -827,20 +827,20 @@ On Error GoTo PS_PP002_DI_API_Error
     ItemInformationCount = 0
     For i = 1 To oMat01.VisualRowCount
         ReDim Preserve ItemInformation(ItemInformationCount)
-        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).LotNo = oMat01.Columns("LotNo").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.Value
+        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).LotNo = oMat01.Columns("LotNo").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.VALUE
         ItemInformation(ItemInformationCount).Check = False
         ItemInformationCount = ItemInformationCount + 1
     Next
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
-    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
             GoTo Continue_First
@@ -849,7 +849,7 @@ On Error GoTo PS_PP002_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

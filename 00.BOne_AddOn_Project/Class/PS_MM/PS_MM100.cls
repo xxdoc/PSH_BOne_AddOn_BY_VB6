@@ -172,7 +172,7 @@ On Error GoTo Raise_MenuEvent_Error
 '                        BubbleEvent = False
 '                        Exit Sub
 '                    End If
-                    oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                    oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                Else
 '                    MDC_Com.MDC_GF_Message "현재 모드에서는 취소할수 없습니다.", "W"
 '                    BubbleEvent = False
@@ -312,7 +312,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 Else
                     
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_MM100_DataValidCheck = False Then
                     BubbleEvent = False
@@ -859,7 +859,7 @@ On Error GoTo PS_MM100_AddMatrixRow_Error
         oDS_PS_MM100L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM100L.offset = oRow
+    oDS_PS_MM100L.Offset = oRow
     oDS_PS_MM100L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)

@@ -272,12 +272,12 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             End If
         ElseIf (pval.ItemUID = "Btn1") Then '전기버튼클릭시
         
-            If oForm01.Items("ApDate").Specific.Value = "" Then
+            If oForm01.Items("ApDate").Specific.VALUE = "" Then
                 Sbo_Application.SetStatusBarMessage "전기일자는 필수입니다.", bmt_Short, True
                 oForm01.Items("ApDate").Click ct_Regular
                 BubbleEvent = False
                 Exit Sub
-            ElseIf oForm01.Items("Acct").Specific.Value = "" Then
+            ElseIf oForm01.Items("Acct").Specific.VALUE = "" Then
                 Sbo_Application.SetStatusBarMessage "전기계정은 필수입니다.", bmt_Short, True
                 oForm01.Items("Acct").Click ct_Regular
                 BubbleEvent = False
@@ -338,7 +338,7 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
 
         If pval.ItemUID = "Mat01" Then
             If pval.ColUID = "ReHour" Then
-                If oMat01.Columns("CpCode").Cells(pval.Row).Specific.Value = "" Then
+                If oMat01.Columns("CpCode").Cells(pval.Row).Specific.VALUE = "" Then
                     Sbo_Application.SetStatusBarMessage "공정코드를 먼저 선택하세요", bmt_Short, True
                     BubbleEvent = False
                     Exit Sub
@@ -460,7 +460,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             If (pval.ItemUID = "Mat01") Then
                 If (pval.ColUID = "PorNum") Then
                     '//기타작업
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                     If oMat01.RowCount = pval.Row And Trim(oDS_PS_PP120L.GetValue("U_" & pval.ColUID, pval.Row - 1)) <> "" Then
                         PS_PP120_AddMatrixRow (pval.Row)
                     End If
@@ -471,40 +471,40 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
 '                    sNum = InStr(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, "-")
 '                    sOrdNum = Left(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, sNum - 1)
 
-                    Call oDS_PS_PP120L.setValue("U_ItemCode", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_ItemCode,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, "-", "") & "'"))
-                    Call oDS_PS_PP120L.setValue("U_ItemName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_ItemName,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, "-", "") & "'"))
-                    Call oDS_PS_PP120L.setValue("U_SjNo", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_SjNum,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, "-", "") & "'"))
-                    Call oDS_PS_PP120L.setValue("U_SjTotal", pval.Row - 1, Val(MDC_PS_Common.GetValue("SELECT U_SjPrice,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value, "-", "") & "'")))
+                    Call oDS_PS_PP120L.setValue("U_ItemCode", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_ItemCode,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE, "-", "") & "'"))
+                    Call oDS_PS_PP120L.setValue("U_ItemName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_ItemName,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE, "-", "") & "'"))
+                    Call oDS_PS_PP120L.setValue("U_SjNo", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_SjNum,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE, "-", "") & "'"))
+                    Call oDS_PS_PP120L.setValue("U_SjTotal", pval.Row - 1, Val(MDC_PS_Common.GetValue("SELECT U_SjPrice,U_OrdNum  FROM [@PS_PP030H] WHERE Convert(VarChar(20),U_OrdNum) + Convert(varchar(10),U_OrdSub1) + Convert(varchar(10),U_OrdSub2)='" & Replace(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE, "-", "") & "'")))
 
                 ElseIf (pval.ColUID = "CpCode") Then '공정코드의 변화가 있을때
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
-                    Call oDS_PS_PP120L.setValue("U_CpName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_CpName From [@PS_PP001L] WHERE U_CpCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value & "'"))
-                    Call oDS_PS_PP120L.setValue("U_CpPrice", pval.Row - 1, Val(MDC_PS_Common.GetValue("SELECT U_Price From [@PS_PP001L] WHERE U_CpCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value & "'")))
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
+                    Call oDS_PS_PP120L.setValue("U_CpName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_CpName From [@PS_PP001L] WHERE U_CpCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE & "'"))
+                    Call oDS_PS_PP120L.setValue("U_CpPrice", pval.Row - 1, Val(MDC_PS_Common.GetValue("SELECT U_Price From [@PS_PP001L] WHERE U_CpCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE & "'")))
                     '작업시간을 변경할때와 같이 갱신이 이루어져야한다.
-                    sReHour = oMat01.Columns("ReHour").Cells(pval.Row).Specific.Value
+                    sReHour = oMat01.Columns("ReHour").Cells(pval.Row).Specific.VALUE
                     Call oDS_PS_PP120L.setValue("U_Total", pval.Row - 1, Val(sReHour * Trim(oDS_PS_PP120L.GetValue("U_CpPrice", pval.Row - 1))))
                 ElseIf (pval.ColUID = "CpPrice") Then
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
-                    sReHour = oMat01.Columns("ReHour").Cells(pval.Row).Specific.Value
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
+                    sReHour = oMat01.Columns("ReHour").Cells(pval.Row).Specific.VALUE
                     Call oDS_PS_PP120L.setValue("U_Total", pval.Row - 1, Val(sReHour * Trim(oDS_PS_PP120L.GetValue("U_CpPrice", pval.Row - 1))))
-                ElseIf (pval.ColUID = "ItemCode" And oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value <> "") Then
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
-                    Call oDS_PS_PP120L.setValue("U_ItemName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT FrgnName FROM [OITM] WHERE ItemCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value & "'"))
+                ElseIf (pval.ColUID = "ItemCode" And oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE <> "") Then
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
+                    Call oDS_PS_PP120L.setValue("U_ItemName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT FrgnName FROM [OITM] WHERE ItemCode='" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE & "'"))
                 
                 ElseIf (pval.ColUID = "ReHour") Then
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
-                    Call oDS_PS_PP120L.setValue("U_Total", pval.Row - 1, Val(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value * oMat01.Columns("CpPrice").Cells(pval.Row).Specific.Value))
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
+                    Call oDS_PS_PP120L.setValue("U_Total", pval.Row - 1, Val(oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE * oMat01.Columns("CpPrice").Cells(pval.Row).Specific.VALUE))
                 Else
-                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_PP120L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                 End If
             Else
                 If (pval.ItemUID = "DocEntry") Then
-                    Call oDS_PS_PP120H.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_PP120H.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 ElseIf (pval.ItemUID = "CardCode") Then
                    ' Call oDS_PS_PP120H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
-                    Call oDS_PS_PP120H.setValue("U_CardName", 0, MDC_GetData.Get_ReData("CardName", "CardCode", "[OCRD]", "'" & oForm01.Items(pval.ItemUID).Specific.Value & "'"))
+                    Call oDS_PS_PP120H.setValue("U_CardName", 0, MDC_GetData.Get_ReData("CardName", "CardCode", "[OCRD]", "'" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"))
                 Else
-                    Call oDS_PS_PP120H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_PP120H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 End If
             End If
             oMat01.LoadFromDataSource
@@ -612,7 +612,7 @@ On Error GoTo Raise_EVENT_ROW_DELETE_Error
             
         ElseIf pval.BeforeAction = False Then '//Matrix 행삭제후 다시 행번채번등처리
             For i = 1 To oMat01.VisualRowCount
-                oMat01.Columns("LineNum").Cells(i).Specific.Value = i '//행을 다시 순서대로정렬해서 행번에넣고(VisualCount값은 줄어든상태)
+                oMat01.Columns("LineNum").Cells(i).Specific.VALUE = i '//행을 다시 순서대로정렬해서 행번에넣고(VisualCount값은 줄어든상태)
             Next i
             
             '//Matrix의 RowCount값 갯수도 줄어든 수만큼 갱신처리 해주며
@@ -665,8 +665,8 @@ On Error GoTo PS_PP120_CreateItems_Error
 
     oForm01.DataSources.UserDataSources.Item("FrDate").ValueEx = Format(Now, "yyyymm") & "01"
     oForm01.DataSources.UserDataSources.Item("ToDate").ValueEx = Format(Now, "yyyymmdd")
-    oForm01.Items("InDate").Specific.Value = Format(Now, "yyyymmdd")
-    oForm01.Items("Acct").Specific.Value = "83102010"
+    oForm01.Items("InDate").Specific.VALUE = Format(Now, "yyyymmdd")
+    oForm01.Items("Acct").Specific.VALUE = "83102010"
     Set oRecordSet01 = Nothing
     Call oForm01.Freeze(False)
     Exit Function
@@ -847,9 +847,9 @@ On Error GoTo PS_PP120_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_PP120'", "")
     If DocEntry = 0 Then
-        oForm01.Items("DocEntry").Specific.Value = 1
+        oForm01.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm01.Items("DocEntry").Specific.Value = DocEntry
+        oForm01.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PS_PP120_FormClear_Error:
@@ -893,17 +893,17 @@ On Error GoTo PS_PP120_DataValidCheck_Error
     Dim i As Long
 
      
-    If oForm01.Items("CardCode").Specific.Value = "" Then
+    If oForm01.Items("CardCode").Specific.VALUE = "" Then
         Sbo_Application.SetStatusBarMessage "거래처코드는 필수입니다.", bmt_Short, True
         oForm01.Items("CardCode").Click ct_Regular
         PS_PP120_DataValidCheck = False
         Exit Function
-    ElseIf oForm01.Items("ApDate").Specific.Value = "" Then
+    ElseIf oForm01.Items("ApDate").Specific.VALUE = "" Then
 '        Sbo_Application.SetStatusBarMessage "전기일자는 필수입니다.", bmt_Short, True
 '        oForm01.Items("ApDate").Click ct_Regular
 '        PS_PP120_DataValidCheck = False
 '        Exit Function
-    ElseIf oForm01.Items("DocTotal").Specific.Value = 0 Then
+    ElseIf oForm01.Items("DocTotal").Specific.VALUE = 0 Then
         Sbo_Application.SetStatusBarMessage "총계가 0 입니다.", bmt_Short, True
         'oForm01.Items("CardCode").Click ct_Regular
         PS_PP120_DataValidCheck = False
@@ -916,7 +916,7 @@ On Error GoTo PS_PP120_DataValidCheck_Error
         Exit Function
     Else
         '값이 한줄들어있을때 한줄삭제후 갱신한다거나한다면
-        If oMat01.Columns("PorNum").Cells(1).Specific.Value = "" Then
+        If oMat01.Columns("PorNum").Cells(1).Specific.VALUE = "" Then
             Sbo_Application.SetStatusBarMessage "Matrix값이 한줄이상은 있어야합니다.", bmt_Short, True
             PS_PP120_DataValidCheck = False
             Exit Function
@@ -924,17 +924,17 @@ On Error GoTo PS_PP120_DataValidCheck_Error
         
     End If
     For i = 1 To (oMat01.VisualRowCount - 1)
-        If (oMat01.Columns("PorNum").Cells(i).Specific.Value = "") Then
+        If (oMat01.Columns("PorNum").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "작지번호는 필수입니다.", bmt_Short, True
             oMat01.Columns("ItemName").Cells(i).Click ct_Regular
             PS_PP120_DataValidCheck = False
             Exit Function
-        ElseIf (oMat01.Columns("CpCode").Cells(i).Specific.Value = "") Then
+        ElseIf (oMat01.Columns("CpCode").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "공정코드는 필수입니다.", bmt_Short, True
             oMat01.Columns("CpCode").Cells(i).Click ct_Regular
             PS_PP120_DataValidCheck = False
             Exit Function
-        ElseIf (oMat01.Columns("AskDate").Cells(i).Specific.Value = "") Then
+        ElseIf (oMat01.Columns("AskDate").Cells(i).Specific.VALUE = "") Then
             Sbo_Application.SetStatusBarMessage "지원일자는 필수입니다.", bmt_Short, True
             oMat01.Columns("AskDate").Cells(i).Click ct_Regular
             PS_PP120_DataValidCheck = False
@@ -963,10 +963,10 @@ On Error GoTo PS_PP120_DocTotalSum_Error
     
     sDocTotal = 0
     For i = 1 To oMat01.VisualRowCount
-        sDocTotal = sDocTotal + oMat01.Columns("Total").Cells(i).Specific.Value
+        sDocTotal = sDocTotal + oMat01.Columns("Total").Cells(i).Specific.VALUE
     Next
     
-    oForm01.Items("DocTotal").Specific.Value = sDocTotal
+    oForm01.Items("DocTotal").Specific.VALUE = sDocTotal
 
     Exit Function
 PS_PP120_DocTotalSum_Error:
@@ -988,10 +988,10 @@ On Error GoTo PS_PP120_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.Value
-    Param02 = oForm01.Items("Param01").Specific.Value
-    Param03 = oForm01.Items("Param01").Specific.Value
-    Param04 = oForm01.Items("Param01").Specific.Value
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1013,11 +1013,11 @@ On Error GoTo PS_PP120_MTX01_Error
             oDS_PS_PP120L.InsertRecord (i)
         End If
         oDS_PS_PP120L.Offset = i
-        Call oDS_PS_PP120L.setValue("U_COL01", i, RecordSet01.Fields(0).Value)
-        Call oDS_PS_PP120L.setValue("U_COL02", i, RecordSet01.Fields(1).Value)
+        Call oDS_PS_PP120L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
+        Call oDS_PS_PP120L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & RecordSet01.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & RecordSet01.RecordCount & "건 조회중...!"
     Next
     oMat01.LoadFromDataSource
     oMat01.AutoResizeColumns
@@ -1061,10 +1061,10 @@ On Error GoTo PS_PP120_DI_API_Error
     For i = 1 To oMat01.VisualRowCount
         ReDim Preserve ItemInformation(ItemInformationCount)
         '작지번호를 묶어서 내역에 넣기위함
-        ItemInformation(ItemInformationCount).Dscription = oMat01.Columns("PorNum").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).LineTotal = Val(oMat01.Columns("Total").Cells(i).Specific.Value)
-        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.Value '지원받은품목
-        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("ReQty").Cells(i).Specific.Value    '지원받은수량
+        ItemInformation(ItemInformationCount).Dscription = oMat01.Columns("PorNum").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).LineTotal = Val(oMat01.Columns("Total").Cells(i).Specific.VALUE)
+        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.VALUE '지원받은품목
+        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("ReQty").Cells(i).Specific.VALUE    '지원받은수량
         'ItemInformation(ItemInformationCount).Check = False
         ItemInformationCount = ItemInformationCount + 1
     Next
@@ -1072,14 +1072,14 @@ On Error GoTo PS_PP120_DI_API_Error
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseInvoices)
     '문서헤더상태정의
-    oDIObject.HandWritten = tNO
+    oDIObject.HandWritten = TNO
     oDIObject.DocType = dDocument_Service '서비스송장
     oDIObject.BPL_IDAssignedToInvoice = 2 '동래기본박아넣음 'oForm01.Items("BPLId").Specific.Selected.Value
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value                       '공급업체
-    oDIObject.CardName = oForm01.Items("CardName").Specific.Value                       '공급처이름
-    oDIObject.DocDate = Format(oForm01.Items("ApDate").Specific.Value, "&&&&-&&-&&")    '전기일
-    oDIObject.DocDueDate = Format(oForm01.Items("ApDate").Specific.Value, "&&&&-&&-&&") '만기일
-    oDIObject.Comments = "기준PSMT내역문서 : " & oForm01.Items("DocEntry").Specific.Value
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)                       '공급업체
+    oDIObject.CardName = Trim(oForm01.Items("CardName").Specific.VALUE)                       '공급처이름
+    oDIObject.DocDate = Format(oForm01.Items("ApDate").Specific.VALUE, "&&&&-&&-&&")    '전기일
+    oDIObject.DocDueDate = Format(oForm01.Items("ApDate").Specific.VALUE, "&&&&-&&-&&") '만기일
+    oDIObject.Comments = "기준PSMT내역문서 : " & oForm01.Items("DocEntry").Specific.VALUE
     
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -1092,12 +1092,12 @@ On Error GoTo PS_PP120_DI_API_Error
         oDIObject.Lines.AccountCode = "83102010"                                        'G/L 계정 값 (외주임가공비) 83102010-외주가공비(제)
         oDIObject.Lines.TaxCode = "V2"                                                  'VAT그룹코드
         oDIObject.Lines.LineTotal = ItemInformation(i).LineTotal                        '공정단가로계산된총금액
-        oDIObject.Lines.UserFields("U_sItemCode").Value = ItemInformation(i).ItemCode   '지원받은품목
-        oDIObject.Lines.UserFields("U_sQty").Value = ItemInformation(i).Quantity        '지원받은수량
+        oDIObject.Lines.UserFields("U_sItemCode").VALUE = ItemInformation(i).ItemCode   '지원받은품목
+        oDIObject.Lines.UserFields("U_sQty").VALUE = ItemInformation(i).Quantity        '지원받은수량
         
             
         'oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        'oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value        '구매서비스송장은 창고필요없음
+        'oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)        '구매서비스송장은 창고필요없음
         'oDIObject.Lines.BaseType = "22"
         'oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         'oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1127,7 +1127,7 @@ Continue_First:
     If RetVal = 0 Then
         ResultDocNum = Sbo_Company.GetNewObjectKey
         
-        oForm01.Items("ApDocNum").Specific.Value = ResultDocNum '생성된송장문서를 현재문서에 담는다.
+        oForm01.Items("ApDocNum").Specific.VALUE = ResultDocNum '생성된송장문서를 현재문서에 담는다.
         'Call oDS_PS_PP120L.setValue("U_ApDocNum", 1, ResultDocNum)
 '        For i = 0 To UBound(ItemInformation)
 '            Call oDS_PS_PP120L.setValue("U_OPDNNo", i, ResultDocNum)
@@ -1202,13 +1202,13 @@ On Error GoTo PS_PP120_Validate_Error
     ElseIf ValidateType = "행삭제" Then
         '//행삭제전 행삭제가능여부검사
         If oForm01.Mode = fm_OK_MODE Or oForm01.Mode = fm_UPDATE_MODE Then '//추가,수정모드일때행삭제가능검사
-            If (oMat01.Columns("LineNum").Cells(oLastColRow01).Specific.Value = "") Then '//새로추가된 행인경우, 삭제하여도 무방하다
+            If (oMat01.Columns("LineNum").Cells(oLastColRow01).Specific.VALUE = "") Then '//새로추가된 행인경우, 삭제하여도 무방하다
             Else
-                If oForm01.Items("ApDocNum").Specific.Value <> "" Then
+                If oForm01.Items("ApDocNum").Specific.VALUE <> "" Then
                     MDC_Com.MDC_GF_Message "AP전기된문서입니다. 행삭제를 할수 없습니다.", "W"
                     PS_PP120_Validate = False
                     GoTo PS_PP120_Validate_Exit
-                ElseIf oForm01.Items("Canceled").Specific.Value = "Y" Then
+                ElseIf oForm01.Items("Canceled").Specific.VALUE = "Y" Then
                     MDC_Com.MDC_GF_Message "취소된문서는 수정할수 없습니다.", "W"
                     PS_PP120_Validate = False
                     GoTo PS_PP120_Validate_Exit
@@ -1221,11 +1221,11 @@ On Error GoTo PS_PP120_Validate_Error
             End If
         End If
     ElseIf ValidateType = "취소" Then
-        If oForm01.Items("ApDocNum").Specific.Value <> "" Then
+        If oForm01.Items("ApDocNum").Specific.VALUE <> "" Then
             MDC_Com.MDC_GF_Message "AP전기된문서입니다. 취소할수 없습니다.", "W"
             PS_PP120_Validate = False
             GoTo PS_PP120_Validate_Exit
-        ElseIf oForm01.Items("Canceled").Specific.Value = "Y" Then
+        ElseIf oForm01.Items("Canceled").Specific.VALUE = "Y" Then
                     MDC_Com.MDC_GF_Message "이미취소된문서입니다.", "W"
                     PS_PP120_Validate = False
                     GoTo PS_PP120_Validate_Exit

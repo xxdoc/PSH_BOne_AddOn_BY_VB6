@@ -1639,7 +1639,7 @@ On Error GoTo PH_PY034_Create_oJournalEntries
                 .Lines.UserFields("U_BillCode").VALUE = "P90010" '법정지출증빙코드
                 .Lines.UserFields("U_BillName").VALUE = "규정" '법정지출증빙명
                 
-                .UserFields("U_BPLId").VALUE = oForm.Items("CLTCOD").Specific.VALUE '사업장
+                .UserFields("U_BPLId").VALUE = Trim(oForm.Items("CLTCOD").Specific.VALUE) '사업장
 
             End If
             

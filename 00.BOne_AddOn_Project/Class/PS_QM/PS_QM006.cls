@@ -209,7 +209,7 @@ On Error GoTo Raise_ItemEvent_Error
                                 BubbleEvent = False
                                 Exit Sub
                             End If
-                            InspNo = oForm01.Items("InspNo").Specific.VALUE
+                            InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
                             '검사입력되면 검사완료 Sign Update
                             sQry = "Update [Z_PACKING_PD] Set QM006YN = 'Y' Where InspNo = '" & InspNo & "'"
                             oRecordSet.DoQuery sQry
@@ -330,7 +330,7 @@ On Error GoTo Raise_MenuEvent_Error
         Select Case pval.MenuUID
             Case "1283": '삭제
                 If oForm01.Mode = fm_OK_MODE Then
-                    InspNo = oForm01.Items("InspNo").Specific.VALUE
+                    InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
                     '검사입력되면 검사완료 Sign Update
                     sQry = "Update [Z_PACKING_PD] Set QM006YN = 'N' Where InspNo = '" & InspNo & "'"
                     oRecordSet.DoQuery sQry
@@ -1098,7 +1098,7 @@ On Error GoTo Print_Query_Error
     Dim oRecordSet      As SAPbobsCOM.Recordset
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim PackingNo       As String
     Dim ItemCode        As String
     Dim CardCode        As String
@@ -1111,17 +1111,17 @@ On Error GoTo Print_Query_Error
             
     Call ConnectODBC
     
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     
     '// 임시테이블에 check된항목저장
-    sQry = "Delete [Z_PS_QM040] WHERE BPLId = '" & BPLId & "'"
+    sQry = "Delete [Z_PS_QM040] WHERE BPLId = '" & BPLID & "'"
     oRecordSet01.DoQuery sQry
     
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
         If Trim(oDS_PS_QM006L.GetValue("U_ColReg01", i)) = "Y" Then
-            sQry = "Insert [Z_PS_QM040] values ('" & BPLId & "', '" & Trim(oDS_PS_QM006L.GetValue("U_ColReg02", i)) & "')"
+            sQry = "Insert [Z_PS_QM040] values ('" & BPLID & "', '" & Trim(oDS_PS_QM006L.GetValue("U_ColReg02", i)) & "')"
             oRecordSet01.DoQuery sQry
             
             CardCode = Trim(oDS_PS_QM006L.GetValue("U_ColReg05", i)) '// (주)TSD '12440' 찿기위해 MOVE
@@ -1131,7 +1131,7 @@ On Error GoTo Print_Query_Error
     Next
     
     '// B/G타입  체크
-    If MDC_PS_Common.GetValue("SELECT count(*) FROM [@PS_PP090H] a inner join [@PS_PP090L] b on a.DocEntry = b.DocEntry INNER JOIN [Z_PS_QM040] z on a.U_BPLId = z.BPLId and a.U_PackNo = z.PackNo left  join [OITM] c on b.U_ItemCode = c.ItemCode WHERE z.BPLId = '" & BPLId & "' and c.U_ItemType in ('16','17')") > 0 Then
+    If MDC_PS_Common.GetValue("SELECT count(*) FROM [@PS_PP090H] a inner join [@PS_PP090L] b on a.DocEntry = b.DocEntry INNER JOIN [Z_PS_QM040] z on a.U_BPLId = z.BPLId and a.U_PackNo = z.PackNo left  join [OITM] c on b.U_ItemCode = c.ItemCode WHERE z.BPLId = '" & BPLID & "' and c.U_ItemType in ('16','17')") > 0 Then
        Chk = "Y"
     Else
        Chk = "N"
@@ -1195,29 +1195,29 @@ On Error GoTo Print_Query_Error
        'gRpt_SRptSqry(1) = Sub_sQry
        'gRpt_SRptName(1) = "PS_QM041_SUB_01"
        
-       Sub_sQry = "EXEC [PS_QM041_04] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_04] '" & BPLID & "'"
        gRpt_SRptSqry(1) = Sub_sQry
        gRpt_SRptName(1) = "PS_QM040_SUB_01"
        
-       Sub_sQry = "EXEC [PS_QM041_05] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_05] '" & BPLID & "'"
        gRpt_SRptSqry(2) = Sub_sQry
        gRpt_SRptName(2) = "PS_QM040_SUB_02"
        
-       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLID & "'"
        gRpt_SRptSqry(3) = Sub_sQry
        gRpt_SRptName(3) = "PS_QM040_SUB_03"
        
     Else
     
-       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLID & "'"
        gRpt_SRptSqry(1) = Sub_sQry
        gRpt_SRptName(1) = "PS_QM040_SUB_01"
        
-       Sub_sQry = "EXEC [PS_QM041_05] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_05] '" & BPLID & "'"
        gRpt_SRptSqry(2) = Sub_sQry
        gRpt_SRptName(2) = "PS_QM040_SUB_02"
        
-       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLId & "'"
+       Sub_sQry = "EXEC [PS_QM041_03] '" & BPLID & "'"
        gRpt_SRptSqry(3) = Sub_sQry
        gRpt_SRptName(3) = "PS_QM040_SUB_03"
        
@@ -1227,7 +1227,7 @@ On Error GoTo Print_Query_Error
     '/ Procedure 실행
     'sQry = "EXEC [PS_QM041_02] '" & PackingNo & "', '" & ItemCode & "','" & CardCode & "'"
     
-    sQry = "EXEC [PS_QM041_02] '" & BPLId & "'"
+    sQry = "EXEC [PS_QM041_02] '" & BPLID & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1

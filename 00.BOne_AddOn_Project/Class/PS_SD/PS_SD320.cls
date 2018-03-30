@@ -136,7 +136,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("0", "전체 사업장")
     Do Until oRecordSet01.EOF
@@ -416,7 +416,7 @@ On Error GoTo Print_Query_Error
     Dim sQry            As String
     Dim Sub_sQry        As String
     
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim StrDate         As String
     Dim EndDate         As String
     Dim ItemGB          As String
@@ -433,14 +433,14 @@ On Error GoTo Print_Query_Error
     Call ConnectODBC
     
     '// 조회조건문
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
     ItemGB = Trim(oForm01.Items("ItemGB").Specific.Selected.VALUE)
     SItemCode = Trim(oForm01.Items("SItemCode").Specific.VALUE)
     CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     
-    If BPLId = "0" Then BPLId = "%"
+    If BPLID = "0" Then BPLID = "%"
     If StrDate = "" Then StrDate = "19000101"
     If EndDate = "" Then EndDate = "21001231"
     If SItemCode = "" Then SItemCode = "%"
@@ -468,7 +468,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_SD320_01] '" & BPLId & "','" & StrDate & "','" & EndDate & "','" & ItemGB & "','" & SItemCode & "','" & CardCode & "'"
+    sQry = "EXEC [PS_SD320_01] '" & BPLID & "','" & StrDate & "','" & EndDate & "','" & ItemGB & "','" & SItemCode & "','" & CardCode & "'"
 '    oRecordSet.DoQuery sQry
 '    If oRecordSet.RecordCount = 0 Then
 '        ErrNum = 1

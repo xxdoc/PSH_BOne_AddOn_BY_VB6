@@ -147,7 +147,7 @@ On Error GoTo PS_PP991_Add_MatrixRow01_Error
     End If
 
     oMat01.AddRow
-    oDS_PS_PP991O.offset = oRow
+    oDS_PS_PP991O.Offset = oRow
     oDS_PS_PP991O.setValue "U_LineNum", oRow, oRow + 1
 
     oMat01.LoadFromDataSource
@@ -180,8 +180,8 @@ On Error GoTo PS_PP991_SelectGrid01_Error
     Dim BPLID    As String
     Dim StdDt     As String
     
-    BPLID = oForm01.Items("BPLID01").Specific.VALUE
-    StdDt = oForm01.Items("StdDt01").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLID01").Specific.VALUE)
+    StdDt = Trim(oForm01.Items("StdDt01").Specific.VALUE)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -275,8 +275,8 @@ On Error GoTo PS_PP991_SelectGrid02_Error
     Dim BPLID    As String
     Dim StdDt    As String
     
-    BPLID = oForm01.Items("BPLID02").Specific.VALUE
-    StdDt = oForm01.Items("StdDt02").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLID02").Specific.VALUE)
+    StdDt = Trim(oForm01.Items("StdDt02").Specific.VALUE)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -412,7 +412,7 @@ On Error GoTo PS_PP991_SelectMatrix01_Error
         End If
     
         oMat01.AddRow
-        oDS_PS_PP991O.offset = i
+        oDS_PS_PP991O.Offset = i
     
         Call oDS_PS_PP991O.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP991O.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("Select").VALUE)) '선택
@@ -819,7 +819,7 @@ On Error GoTo PS_PP991_FlushToItemValue_Error
 
 '    If oUID = "OrdNum01" Or oUID = "OrdSub101" Or oUID = "OrdSub201" Then
 '
-'        OrdNum = oForm01.Items("OrdNum01").Specific.VALUE
+'        OrdNum = Trim(oForm01.Items("OrdNum01").Specific.VALUE)
 '        SubNo1 = oForm01.Items("OrdSub101").Specific.VALUE
 '        SubNo2 = oForm01.Items("OrdSub201").Specific.VALUE
 '
@@ -1564,7 +1564,7 @@ On Error GoTo PS_PP991_CheckAll_Error
     Next
     
     For loopCount = 0 To oMat01.VisualRowCount - 2
-        oDS_PS_PP991O.offset = loopCount
+        oDS_PS_PP991O.Offset = loopCount
         If CheckType = "N" Then
             Call oDS_PS_PP991O.setValue("U_ColReg01", loopCount, "Y")
         Else

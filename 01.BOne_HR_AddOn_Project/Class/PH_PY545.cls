@@ -691,7 +691,7 @@ Private Sub PH_PY545_Print_Report01()
     End If
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDate = oForm.Items("DocDate").Specific.VALUE
     OptBtnValue = oForm.DataSources.UserDataSources("OptionDS").VALUE
     

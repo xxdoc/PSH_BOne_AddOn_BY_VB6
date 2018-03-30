@@ -628,16 +628,16 @@ On Error GoTo PS_FX030_MTX01_Error
     Dim StdYM As String '기준년월
     Dim FixType As String '자산분류
     Dim ChkDisu As String '폐기대상 조회
-    Dim TeamCD As String '팀코드
-    Dim RspCD As String '담당코드
+    Dim TeamCd As String '팀코드
+    Dim RspCd As String '담당코드
     
     
     BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '기준년도
     StdYM = Trim(oForm01.Items("StdYM").Specific.VALUE) '기준년월
     FixType = Trim(oForm01.Items("FixType").Specific.VALUE) '자산분류
-    TeamCD = Trim(oForm01.Items("TeamCD").Specific.VALUE) '기준년월
-    RspCD = Trim(oForm01.Items("RspCD").Specific.VALUE) '자산분류
+    TeamCd = Trim(oForm01.Items("TeamCD").Specific.VALUE) '기준년월
+    RspCd = Trim(oForm01.Items("RspCD").Specific.VALUE) '자산분류
     ChkDisu = IIf(oForm01.Items("ChkDisu").Specific.Checked = True, "Y", "N") '폐기대상 조회
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -652,8 +652,8 @@ On Error GoTo PS_FX030_MTX01_Error
         sQry = sQry & StdYear & "','"
         sQry = sQry & StdYM & "','"
         sQry = sQry & FixType & "','"
-        sQry = sQry & TeamCD & "','"
-        sQry = sQry & RspCD & "'"
+        sQry = sQry & TeamCd & "','"
+        sQry = sQry & RspCd & "'"
     
     Else '폐기대상 조회 체크
     
@@ -662,8 +662,8 @@ On Error GoTo PS_FX030_MTX01_Error
         sQry = sQry & StdYear & "','"
         sQry = sQry & StdYM & "','"
         sQry = sQry & FixType & "','"
-        sQry = sQry & TeamCD & "','"
-        sQry = sQry & RspCD & "'"
+        sQry = sQry & TeamCd & "','"
+        sQry = sQry & RspCd & "'"
     
     End If
     
@@ -774,8 +774,8 @@ On Error GoTo PS_FX030_AddData_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
     
-    BPLID = oForm01.Items("BPLID").Specific.VALUE '사업장
-    StdYear = oForm01.Items("StdYear").Specific.VALUE '기준년월
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '기준년월
     UserSign = Sbo_Company.UserSignature '등록자(수정자)
     
     Call oMat01.FlushToDataSource

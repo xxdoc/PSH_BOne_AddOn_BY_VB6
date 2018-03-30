@@ -962,8 +962,8 @@ Private Function PS_MM965_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -973,7 +973,7 @@ Private Function PS_MM965_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1071,13 +1071,13 @@ On Error GoTo Print_Query_Error
     Dim InputYN As String
     Dim Class As String
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    Purchase = oForm01.Items("Purchase").Specific.VALUE
-    OrderYN = oForm01.Items("OrderYN").Specific.VALUE
-    InputYN = oForm01.Items("InputYN").Specific.VALUE
-    Class = oForm01.Items("Class").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    Purchase = Trim(oForm01.Items("Purchase").Specific.VALUE)
+    OrderYN = Trim(oForm01.Items("OrderYN").Specific.VALUE)
+    InputYN = Trim(oForm01.Items("InputYN").Specific.VALUE)
+    Class = Trim(oForm01.Items("Class").Specific.VALUE)
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_MM965] ·¹Æ÷Æ®"

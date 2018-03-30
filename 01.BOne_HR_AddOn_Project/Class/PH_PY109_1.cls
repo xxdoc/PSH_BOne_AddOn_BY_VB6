@@ -726,7 +726,7 @@ Private Function PH_PY109_1_LoadData()
     
     oForm.Freeze (True)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YM = oForm.Items("YM").Specific.VALUE
     JOBTYP = oForm.Items("JOBTYP").Specific.VALUE
     JOBGBN = oForm.Items("JOBGBN").Specific.VALUE

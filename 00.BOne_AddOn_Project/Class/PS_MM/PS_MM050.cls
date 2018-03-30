@@ -916,7 +916,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_TEMPTABLE.InsertRecord (oRow)
         End If
         oMat01.AddRow
-        oDS_PS_TEMPTABLE.offset = oRow
+        oDS_PS_TEMPTABLE.Offset = oRow
         oDS_PS_TEMPTABLE.setValue "U_LineNum", oRow, oRow + 1
         oMat01.LoadFromDataSource
     ElseIf ItemUID = "Mat02" Then
@@ -924,7 +924,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_MM050L.InsertRecord (oRow)
         End If
         oMat02.AddRow
-        oDS_PS_MM050L.offset = oRow
+        oDS_PS_MM050L.Offset = oRow
         oDS_PS_MM050L.setValue "U_LineNum", oRow, oRow + 1
         oMat02.LoadFromDataSource
     End If
@@ -1339,7 +1339,7 @@ On Error GoTo Display_MatrixData_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.offset = sCnt
+            oDS_PS_TEMPTABLE.Offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_iField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)
@@ -1453,7 +1453,7 @@ On Error GoTo Update_PO_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.offset = sCnt
+            oDS_PS_TEMPTABLE.Offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_sField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)
@@ -1709,7 +1709,7 @@ On Error GoTo PS_MM050_CheckDate_Error
     BaseEntry = pBaseEntry
     BaseLine = ""
     DocType = "PS_MM050"
-    CurDocDate = oForm01.Items("DocDate").Specific.VALUE
+    CurDocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
 
     Query01 = "         EXEC PS_Z_CHECK_DATE '"
     Query01 = Query01 & BaseEntry & "','"

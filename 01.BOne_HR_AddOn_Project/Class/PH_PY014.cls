@@ -683,7 +683,7 @@ Private Function PH_PY014_DataSave() As Boolean
     
     PH_PY014_DataSave = False
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     If oForm.DataSources.DataTables.Item(0).Rows.Count > 0 Then
         For i = 0 To oForm.DataSources.DataTables.Item(0).Rows.Count - 1
 '            oDS_PH_PY014.Columns.Item("Code").Cells(i).Value
@@ -742,7 +742,7 @@ Private Sub PH_PY014_TitleSetting(iRow As Long)
     COLNAM(7) = "위해일수"
     COLNAM(8) = "위해코드"
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     For i = 0 To UBound(COLNAM)

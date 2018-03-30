@@ -631,7 +631,7 @@ On Error GoTo PS_MM217_Print_Report01_Error
     Dim ReportName                  As String
     Dim sQry                        As String
     Dim oQry                        As String
-    Dim BPLId                       As String
+    Dim BPLID                       As String
     Dim Purchase        As String
     Dim oRecordSet      As SAPbobsCOM.Recordset
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
@@ -642,7 +642,7 @@ On Error GoTo PS_MM217_Print_Report01_Error
 
     Call ConnectODBC
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     WinTitle = "[PS_MM217] 자재미검수현황"
     ReportName = "PS_MM217.rpt"
@@ -662,7 +662,7 @@ On Error GoTo PS_MM217_Print_Report01_Error
     gRpt_Formula(2) = "DocDateTo"
     gRpt_Formula_Value(2) = Format(oForm01.Items("DocDateTo").Specific.VALUE, "####-##-##")
     gRpt_Formula(3) = "BPLId"
-    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLId & "'"
+    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(3) = oRecordSet.Fields(0).VALUE
 

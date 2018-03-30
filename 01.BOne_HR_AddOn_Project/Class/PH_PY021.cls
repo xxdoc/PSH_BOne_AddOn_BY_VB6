@@ -328,7 +328,7 @@ On Error GoTo PH_PY021_UpdateData_Error
     For i = 0 To oMat01.VisualRowCount - 1
         If Trim(oDS_PH_PY021B.GetValue("U_ColReg01", i)) = "Y" Then
             
-            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE '사업장
+            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE) '사업장
             MSTCOD = Trim(oDS_PH_PY021B.GetValue("U_ColReg05", i)) '사번
             P_EmRel = Trim(oDS_PH_PY021B.GetValue("U_ColReg07", i)) '비상연락 대상관계
             P_EmTel = Trim(oDS_PH_PY021B.GetValue("U_ColReg08", i)) '비상연락 전화번호
@@ -535,7 +535,7 @@ On Error GoTo PH_PY021_FlushToItemValue_Error
 '                        End If
 '
 '                        ymd = Trim(oDS_PH_PY021B.GetValue("U_ColDt05", oRow - 1))
-'                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+'                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
 '                        MSTCOD = Trim(oDS_PH_PY021B.GetValue("U_ColReg05", oRow - 1))
 '
 '                        Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", oRecordSet01.RecordCount, False)
@@ -576,7 +576,7 @@ On Error GoTo PH_PY021_FlushToItemValue_Error
 '
 '                        '근속보전휴가 잔량 확인
 '                        ymd = Trim(oDS_PH_PY021B.GetValue("U_ColDt05", oRow - 1))
-'                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+'                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
 '                        MSTCOD = Trim(oDS_PH_PY021B.GetValue("U_ColReg05", oRow - 1))
 '
 '                        If Trim(oDS_PH_PY021B.GetValue("U_ColDt05", oRow - 1)) >= Left(ymd, 4) + "0701" Then

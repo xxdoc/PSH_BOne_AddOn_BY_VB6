@@ -1051,10 +1051,10 @@ On Error GoTo PS_MM092_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1180,7 +1180,7 @@ On Error GoTo PS_SMM092_Print_Report01_Error
     
     Call ConnectODBC
     
-    DocNum = oForm01.Items("DocEntry").Specific.VALUE
+    DocNum = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     WinTitle = "[PS_MM092] 기타자재출고증출력"
     ReportName = "PS_MM092_01.rpt"
     sQry = "EXEC PS_MM092_01 '" & DocNum & "'"

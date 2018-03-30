@@ -1062,10 +1062,10 @@ On Error GoTo PS_SM021_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("ItemCode").Specific.VALUE
-    Param02 = oForm01.Items("ItemGpCd").Specific.Selected.VALUE
-    Param03 = oForm01.Items("ItmBsort").Specific.Selected.VALUE
-    Param04 = oForm01.Items("ItmMsort").Specific.Selected.VALUE
+    Param01 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("ItemGpCd").Specific.Selected.VALUE)
+    Param03 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE)
+    Param04 = Trim(oForm01.Items("ItmMsort").Specific.Selected.VALUE)
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", RecordSet01.RecordCount, False)
@@ -1149,8 +1149,8 @@ On Error GoTo PS_SM021_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -1160,7 +1160,7 @@ On Error GoTo PS_SM021_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

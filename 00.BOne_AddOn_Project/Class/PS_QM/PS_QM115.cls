@@ -269,7 +269,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -278,7 +278,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_OK_MODE Then

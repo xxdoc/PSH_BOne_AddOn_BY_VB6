@@ -724,7 +724,7 @@ Private Sub TitleSetting(iRow As Long)
 '    COLNAM(8) = "납기일자"
 '    COLNAM(9) = "청구자명"
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     
     

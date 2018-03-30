@@ -879,7 +879,7 @@ On Error GoTo PS_QM215_MTX01_Error
     Dim DeptCode As String '부서
     Dim chkDelYN As String '폐기문서제외
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE '사업부
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업부
     DeptCode = oForm01.Items("DeptCode").Specific.VALUE '부서
     chkDelYN = IIf(oForm01.Items("chkDelYN").Specific.Checked = True, "1", "0") '폐기문서제외
     
@@ -960,7 +960,7 @@ On Error GoTo PS_QM215_MTX02_Error
     Dim DeptCode As String '부서
     Dim chkDelYN As String '폐기문서제외
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE '사업부
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업부
     DeptCode = oForm01.Items("DeptCode").Specific.VALUE '부서
     chkDelYN = IIf(oForm01.Items("chkDelYN").Specific.Checked = True, "1", "0") '폐기문서제외
     
@@ -1055,7 +1055,7 @@ On Error GoTo Print_Query_Error
     Dim DeptCode As String '부서
     Dim chkDelYN As String '폐기문서제외
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE '사업부
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업부
     DeptCode = oForm01.Items("DeptCode").Specific.VALUE '부서
     chkDelYN = IIf(oForm01.Items("chkDelYN").Specific.Checked = True, "1", "0") '폐기문서제외
 
@@ -1132,7 +1132,7 @@ On Error GoTo Print_Query_Error
     Dim DeptCode As String '부서
     Dim chkDelYN As String '폐기문서제외
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE '사업부
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업부
     DeptCode = oForm01.Items("DeptCode").Specific.VALUE '부서
     chkDelYN = IIf(oForm01.Items("chkDelYN").Specific.Checked = True, "1", "0") '폐기문서제외
     

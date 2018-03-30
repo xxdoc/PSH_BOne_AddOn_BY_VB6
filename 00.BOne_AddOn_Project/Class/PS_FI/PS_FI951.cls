@@ -636,12 +636,12 @@ On Error GoTo PS_FI951_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdDt As String '기준일
     
     Dim AccountName As String '과목
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     StdDt = oForm01.Items("StdDt").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -649,7 +649,7 @@ On Error GoTo PS_FI951_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_FI951_01 '" & BPLId & "','" & StdDt & "'"
+    Query01 = "EXEC PS_FI951_01 '" & BPLID & "','" & StdDt & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -737,13 +737,13 @@ On Error GoTo Print_Query_Error
             
     Call ConnectODBC
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim GrpCode As String '조치구분
     Dim VioCode As String '위반자사번
     Dim FrGrpDt As String '조치일시작
     Dim ToGrpDt As String '조치일종료
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     GrpCode = oForm01.Items("GrpCode").Specific.Selected.VALUE
     VioCode = oForm01.Items("VioCode").Specific.VALUE
     FrGrpDt = oForm01.Items("FrGrpDt").Specific.VALUE
@@ -768,7 +768,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_FI951_01 '" & BPLId & "','" & GrpCode & "','" & VioCode & "','" & FrGrpDt & "','" & ToGrpDt & "'"
+    sQry = "EXEC PS_FI951_01 '" & BPLID & "','" & GrpCode & "','" & VioCode & "','" & FrGrpDt & "','" & ToGrpDt & "'"
 
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then

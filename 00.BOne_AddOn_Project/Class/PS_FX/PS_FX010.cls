@@ -182,7 +182,7 @@ On Error GoTo PS_FX010_Add_MatrixRow_Error
     End If
     
     oMat01.AddRow
-    oDS_PS_FX010L.offset = oRow
+    oDS_PS_FX010L.Offset = oRow
     oDS_PS_FX010L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
@@ -253,7 +253,7 @@ On Error GoTo PS_FX010_MTX01_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_FX010L.offset = i
+        oDS_PS_FX010L.Offset = i
         
         Call oDS_PS_FX010L.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_FX010L.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("DocEntry").VALUE))
@@ -1013,7 +1013,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
     
     ElseIf pval.BeforeAction = False Then
         If pval.ItemUID = "BPLId" Then
-            oBPLId = oForm01.Items("BPLId").Specific.VALUE
+            oBPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
         End If
         
         If pval.ItemUID = "ClasCode" Then
@@ -1080,11 +1080,11 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                 Call PS_FX010_FlushToItemValue(pval.ItemUID)
                 
                 If pval.ItemUID = "BPLId" Then
-                    oBPLId = oForm01.Items("BPLId").Specific.VALUE
+                    oBPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
                 End If
                 
                 If pval.ItemUID = "DocDate" Then
-                    oDocdate = oForm01.Items("DocDate").Specific.VALUE
+                    oDocdate = Trim(oForm01.Items("DocDate").Specific.VALUE)
                 End If
                 
                 If pval.ItemUID = "HisType" Then

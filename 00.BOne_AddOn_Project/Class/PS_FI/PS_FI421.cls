@@ -216,7 +216,7 @@ On Error GoTo PS_FI421_MTX01_Error
     
     Dim sDocEntry As String '관리번호
     Dim SSerialNo As String '일련번호
-    Dim sBPLId As String '사업장
+    Dim SBPLID As String '사업장
     Dim SRspCode As String '담당
     Dim SCntcCode As String '사번
     Dim SCardCode As String '거래처
@@ -228,7 +228,7 @@ On Error GoTo PS_FI421_MTX01_Error
     
     sDocEntry = Trim(oForm01.Items("SDocEntry").Specific.VALUE) '관리번호
     SSerialNo = Trim(oForm01.Items("SSerialNo").Specific.VALUE) '일련번호
-    sBPLId = Trim(oForm01.Items("SBPLId").Specific.VALUE) '사업장
+    SBPLID = Trim(oForm01.Items("SBPLId").Specific.VALUE) '사업장
     SRspCode = Trim(oForm01.Items("SRspCode").Specific.VALUE) '담당
     SCntcCode = Trim(oForm01.Items("SCntcCode").Specific.VALUE) '사번
     SCardCode = Trim(oForm01.Items("SCardCode").Specific.VALUE) '거래처
@@ -246,7 +246,7 @@ On Error GoTo PS_FI421_MTX01_Error
     sQry = "                EXEC [PS_FI421_01]"
     sQry = sQry & "'" & sDocEntry & "',"
     sQry = sQry & "'" & SSerialNo & "',"
-    sQry = sQry & "'" & sBPLId & "',"
+    sQry = sQry & "'" & SBPLID & "',"
     sQry = sQry & "'" & SRspCode & "',"
     sQry = sQry & "'" & SCntcCode & "',"
     sQry = sQry & "'" & SCardCode & "',"
@@ -406,7 +406,7 @@ On Error GoTo PS_FI421_UpdateData_Error
     
     Dim DocEntry As Integer
     Dim SerialNo As String '일련번호
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim RspCode As String '담당
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
@@ -420,7 +420,7 @@ On Error GoTo PS_FI421_UpdateData_Error
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '관리번호
     SerialNo = Trim(oForm01.Items("SerialNo").Specific.VALUE)  '일련번호
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)  '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)  '사업장
     RspCode = Trim(oForm01.Items("RspCode").Specific.VALUE)  '담당
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)  '사번
     CntcName = Trim(oForm01.Items("CntcName").Specific.VALUE)  '성명
@@ -441,7 +441,7 @@ On Error GoTo PS_FI421_UpdateData_Error
     sQry = "                EXEC [PS_FI421_03]"
     sQry = sQry & "'" & DocEntry & "',"
     sQry = sQry & "'" & SerialNo & "',"
-    sQry = sQry & "'" & BPLId & "',"
+    sQry = sQry & "'" & BPLID & "',"
     sQry = sQry & "'" & RspCode & "',"
     sQry = sQry & "'" & CntcCode & "',"
     sQry = sQry & "'" & CntcName & "',"
@@ -487,7 +487,7 @@ On Error GoTo PS_FI421_AddData_Error
     
     Dim DocEntry As Integer
     Dim SerialNo As String '일련번호
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim RspCode As String '담당
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
@@ -500,7 +500,7 @@ On Error GoTo PS_FI421_AddData_Error
     Dim UserSign As String 'UserSign
     
     SerialNo = Trim(oForm01.Items("SerialNo").Specific.VALUE)  '일련번호
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)  '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)  '사업장
     RspCode = Trim(oForm01.Items("RspCode").Specific.VALUE)  '담당
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)  '사번
     CntcName = Trim(oForm01.Items("CntcName").Specific.VALUE)  '성명
@@ -525,7 +525,7 @@ On Error GoTo PS_FI421_AddData_Error
     sQry = "                EXEC [PS_FI421_02]"
     sQry = sQry & "'" & DocEntry & "',"
     sQry = sQry & "'" & SerialNo & "',"
-    sQry = sQry & "'" & BPLId & "',"
+    sQry = sQry & "'" & BPLID & "',"
     sQry = sQry & "'" & RspCode & "',"
     sQry = sQry & "'" & CntcCode & "',"
     sQry = sQry & "'" & CntcName & "',"
@@ -1506,12 +1506,12 @@ On Error GoTo PS_FI421_GetSerialNo_Error
     Dim ErrNum As Integer
     
     Dim DocDate As String
-    Dim BPLId As String
+    Dim BPLID As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DocDate = Left(Trim(oForm01.Items("DocDate").Specific.VALUE), 6)
     
-    sQry = "EXEC PS_FI421_05 '" & BPLId & "', '" & DocDate & "'"
+    sQry = "EXEC PS_FI421_05 '" & BPLID & "', '" & DocDate & "'"
     Call oRecordSet01.DoQuery(sQry)
 
     oForm01.Items("SerialNo").Specific.VALUE = oRecordSet01.Fields("SerialNo").VALUE
@@ -1542,7 +1542,7 @@ Private Sub PS_FI421_Print_Report01()
     On Error GoTo PS_FI421_Print_Report01_Error
     
     Dim DocEntry As String
-    Dim BPLId As String
+    Dim BPLID As String
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
@@ -1551,17 +1551,17 @@ Private Sub PS_FI421_Print_Report01()
     
     '//인자 MOVE , Trim 시키기..
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
     WinTitle = "[PS_FI421] 입금표"
     
-    If BPLId = "1" Then '창원
+    If BPLID = "1" Then '창원
         ReportName = "PS_FI421_01.rpt"
-    ElseIf BPLId = "2" Then '동래
+    ElseIf BPLID = "2" Then '동래
         ReportName = "PS_FI421_02.rpt"
-    ElseIf BPLId = "3" Then '사상
+    ElseIf BPLID = "3" Then '사상
         ReportName = "PS_FI421_03.rpt"
     End If
     
@@ -1580,7 +1580,7 @@ Private Sub PS_FI421_Print_Report01()
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_FI421_90] '" & BPLId & "','" & DocEntry & "'"
+    sQry = "EXEC [PS_FI421_90] '" & BPLID & "','" & DocEntry & "'"
     
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then

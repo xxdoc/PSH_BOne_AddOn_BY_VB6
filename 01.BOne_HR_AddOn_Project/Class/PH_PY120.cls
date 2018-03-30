@@ -676,7 +676,7 @@ Private Sub PH_PY120_DataChange()
     
     On Error GoTo PH_PY120_DataChange_Error
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YM = oForm.Items("YM").Specific.VALUE
     JIGBIL = oForm.Items("JIGBIL").Specific.VALUE
     YMFrom = oForm.Items("YMFrom").Specific.VALUE

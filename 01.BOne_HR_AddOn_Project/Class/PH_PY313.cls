@@ -194,7 +194,7 @@ Private Sub PH_PY313_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY313_FormItemEnabled
-        oForm.Items("DocEntry").Specific.Value = oFromDocEntry01
+        oForm.Items("DocEntry").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -218,7 +218,7 @@ Sub PH_PY313_FormItemEnabled()
         '// 접속자에 따른 권한별 사업장 콤보박스세팅
         Call CLTCOD_Select(oForm, "CLTCOD")
         
-        oForm.Items("RpmtDate").Specific.Value = Format(Date, "YYYYMMDD")
+        oForm.Items("RpmtDate").Specific.VALUE = Format(Date, "YYYYMMDD")
         
         Call oForm.EnableMenu("1281", True)     '//문서찾기
         Call oForm.EnableMenu("1282", False)    '//문서추가
@@ -353,7 +353,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         
                     If pval.ColUID = "Name" And pval.CharPressed = "9" Then
                     
-                        If oMat1.Columns.Item("Name").Cells(pval.Row).Specific.Value = "" Then
+                        If oMat1.Columns.Item("Name").Cells(pval.Row).Specific.VALUE = "" Then
                             Call Sbo_Application.ActivateMenuItem("7425")
                             BubbleEvent = False
                         End If
@@ -362,7 +362,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 
                 ElseIf pval.ItemUID = "CntcCode" And pval.CharPressed = "9" Then
                 
-                    If oForm.Items("CntcCode").Specific.Value = "" Then
+                    If oForm.Items("CntcCode").Specific.VALUE = "" Then
                         Call Sbo_Application.ActivateMenuItem("7425")
                         BubbleEvent = False
                     End If
@@ -452,7 +452,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         Case "CntcCode"
                         
 '                            oDS_PH_PY309A.setValue("U_CntcName", 0, MDC_GetData.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & oForm.Items(pval.ItemUid).Specific.Value & "'"))
-                            oForm.Items("CntcName").Specific.Value = MDC_GetData.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & oForm.Items(pval.ItemUID).Specific.Value & "'")
+                            oForm.Items("CntcName").Specific.VALUE = MDC_GetData.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & oForm.Items(pval.ItemUID).Specific.VALUE & "'")
                         
                         Case "Mat01"
                         
@@ -770,9 +770,9 @@ On Error GoTo PH_PY313_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY313'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY313_FormClear_Error:
@@ -789,7 +789,7 @@ On Error GoTo PH_PY313_DataValidCheck_Error
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     '사업장
-    If Trim(oForm.Items("CLTCOD").Specific.Value) = "" Then
+    If Trim(oForm.Items("CLTCOD").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm.Items("CLTCOD").CLICK ct_Regular
         PH_PY313_DataValidCheck = False
@@ -797,7 +797,7 @@ On Error GoTo PH_PY313_DataValidCheck_Error
     End If
     
     '상환일자
-    If Trim(oForm.Items("RpmtDate").Specific.Value) = "" Then
+    If Trim(oForm.Items("RpmtDate").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "상환일자는 필수입니다.", bmt_Short, True
         oForm.Items("RpmtDate").CLICK ct_Regular
         PH_PY313_DataValidCheck = False
@@ -886,10 +886,10 @@ On Error GoTo PH_PY313_MTX01_Error
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.Value
-    Param02 = oForm.Items("RpmtDate").Specific.Value
-    Param03 = oForm.Items("CntcCode").Specific.Value
-    Param04 = oForm.Items("RegYN").Specific.Value
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    Param02 = oForm.Items("RpmtDate").Specific.VALUE
+    Param03 = oForm.Items("CntcCode").Specific.VALUE
+    Param04 = oForm.Items("RegYN").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet.RecordCount, False)
@@ -912,24 +912,24 @@ On Error GoTo PH_PY313_MTX01_Error
         End If
         oDS_PH_PY313B.Offset = i
         Call oDS_PH_PY313B.setValue("U_LineNum", i, i + 1)
-        Call oDS_PH_PY313B.setValue("U_ColReg01", i, oRecordSet.Fields("LoanDoc").Value) '대부금문서번호
-        Call oDS_PH_PY313B.setValue("U_ColReg02", i, oRecordSet.Fields("CntcCode").Value) '사번
-        Call oDS_PH_PY313B.setValue("U_ColReg03", i, oRecordSet.Fields("CntcName").Value) '성명
-        Call oDS_PH_PY313B.setValue("U_ColReg04", i, oRecordSet.Fields("LoanDate").Value) '대출일자
-        Call oDS_PH_PY313B.setValue("U_ColSum01", i, oRecordSet.Fields("LoanAmt").Value) '대출금액
-        Call oDS_PH_PY313B.setValue("U_ColReg05", i, oRecordSet.Fields("PrRpmtDt").Value) '이전상환일자
-        Call oDS_PH_PY313B.setValue("U_ColSum02", i, oRecordSet.Fields("PrRmainAmt").Value) '이전상환잔액
-        Call oDS_PH_PY313B.setValue("U_ColReg06", i, oRecordSet.Fields("UseDt").Value) '사용일수
-        Call oDS_PH_PY313B.setValue("U_ColSum03", i, oRecordSet.Fields("RpmtAmt").Value) '상환금액
-        Call oDS_PH_PY313B.setValue("U_ColSum04", i, oRecordSet.Fields("RpmtInt").Value) '상환이자
-        Call oDS_PH_PY313B.setValue("U_ColSum05", i, oRecordSet.Fields("RmainAmt").Value) '상환잔액
-        Call oDS_PH_PY313B.setValue("U_ColReg07", i, oRecordSet.Fields("RegYN").Value) '등록여부
-        Call oDS_PH_PY313B.setValue("U_ColReg08", i, oRecordSet.Fields("LineId").Value) '라인ID
-        Call oDS_PH_PY313B.setValue("U_ColReg09", i, oRecordSet.Fields("Cnt").Value) '회차
+        Call oDS_PH_PY313B.setValue("U_ColReg01", i, oRecordSet.Fields("LoanDoc").VALUE) '대부금문서번호
+        Call oDS_PH_PY313B.setValue("U_ColReg02", i, oRecordSet.Fields("CntcCode").VALUE) '사번
+        Call oDS_PH_PY313B.setValue("U_ColReg03", i, oRecordSet.Fields("CntcName").VALUE) '성명
+        Call oDS_PH_PY313B.setValue("U_ColReg04", i, oRecordSet.Fields("LoanDate").VALUE) '대출일자
+        Call oDS_PH_PY313B.setValue("U_ColSum01", i, oRecordSet.Fields("LoanAmt").VALUE) '대출금액
+        Call oDS_PH_PY313B.setValue("U_ColReg05", i, oRecordSet.Fields("PrRpmtDt").VALUE) '이전상환일자
+        Call oDS_PH_PY313B.setValue("U_ColSum02", i, oRecordSet.Fields("PrRmainAmt").VALUE) '이전상환잔액
+        Call oDS_PH_PY313B.setValue("U_ColReg06", i, oRecordSet.Fields("UseDt").VALUE) '사용일수
+        Call oDS_PH_PY313B.setValue("U_ColSum03", i, oRecordSet.Fields("RpmtAmt").VALUE) '상환금액
+        Call oDS_PH_PY313B.setValue("U_ColSum04", i, oRecordSet.Fields("RpmtInt").VALUE) '상환이자
+        Call oDS_PH_PY313B.setValue("U_ColSum05", i, oRecordSet.Fields("RmainAmt").VALUE) '상환잔액
+        Call oDS_PH_PY313B.setValue("U_ColReg07", i, oRecordSet.Fields("RegYN").VALUE) '등록여부
+        Call oDS_PH_PY313B.setValue("U_ColReg08", i, oRecordSet.Fields("LineId").VALUE) '라인ID
+        Call oDS_PH_PY313B.setValue("U_ColReg09", i, oRecordSet.Fields("Cnt").VALUE) '회차
         
         oRecordSet.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & oRecordSet.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & oRecordSet.RecordCount & "건 조회중...!"
         
     Next
     
@@ -966,7 +966,7 @@ On Error GoTo PH_PY313_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY313A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY313A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY313_Validate = False
         GoTo PH_PY313_Validate_Exit
@@ -1017,24 +1017,24 @@ On Error GoTo PH_PY313_AddData_Error
     Dim LineId As Integer '대부금라인번호
     Dim RegYN As String '등록여부
     Dim UseDt As Integer '사용일 수
-    Dim Cnt As Integer '회차
+    Dim cnt As Integer '회차
     
     oMat1.FlushToDataSource
     For loopCount = 0 To oMat1.VisualRowCount - 1
         
-        CLTCOD = oForm.Items("CLTCOD").Specific.Value '사업장
+        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE) '사업장
         CntcCode = oDS_PH_PY313B.GetValue("U_ColReg02", loopCount) '사번
         LoanDoc = oDS_PH_PY313B.GetValue("U_ColReg01", loopCount) '대부금문서번호
-        RpmtDate = oForm.Items("RpmtDate").Specific.Value '상환일자
+        RpmtDate = oForm.Items("RpmtDate").Specific.VALUE '상환일자
         RpmtAmt = oDS_PH_PY313B.GetValue("U_ColSum03", loopCount) '상환금액
         RpmtInt = oDS_PH_PY313B.GetValue("U_ColSum04", loopCount) '상환이자
         RmainAmt = oDS_PH_PY313B.GetValue("U_ColSum05", loopCount) '상환잔액
         LineId = oDS_PH_PY313B.GetValue("U_ColReg08", loopCount) '대부금라인번호
         RegYN = oDS_PH_PY313B.GetValue("U_ColReg07", loopCount) '등록여부
         UseDt = oDS_PH_PY313B.GetValue("U_ColReg06", loopCount) '사용일 수
-        Cnt = oDS_PH_PY313B.GetValue("U_ColReg09", loopCount) '회차
+        cnt = oDS_PH_PY313B.GetValue("U_ColReg09", loopCount) '회차
         
-        sQry = "EXEC PH_PY313_02 '" & CLTCOD & "','" & CntcCode & "','" & LoanDoc & "','" & RpmtDate & "','" & RpmtAmt & "','" & RpmtInt & "','" & RmainAmt & "','" & LineId & "','" & RegYN & "','" & UseDt & "','" & Cnt & "'"
+        sQry = "EXEC PH_PY313_02 '" & CLTCOD & "','" & CntcCode & "','" & LoanDoc & "','" & RpmtDate & "','" & RpmtAmt & "','" & RpmtInt & "','" & RmainAmt & "','" & LineId & "','" & RegYN & "','" & UseDt & "','" & cnt & "'"
     
         Call oRecordSet.DoQuery(sQry)
         

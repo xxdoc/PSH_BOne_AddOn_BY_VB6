@@ -166,7 +166,7 @@ On Error GoTo ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("0", "전체 사업장")
     Do Until oRecordSet01.EOF
@@ -461,7 +461,7 @@ On Error GoTo Print_Query_Error
     Dim Sub_sQry        As String
     
     Dim ItmGrp          As String
-    Dim ItmBSort        As String
+    Dim ItmBsort        As String
     Dim ItmMsort        As String
     Dim BPLID           As String
     Dim StrDate         As String
@@ -477,7 +477,7 @@ On Error GoTo Print_Query_Error
     
     '// 조회조건문
     ItmGrp = Trim(oForm01.Items("ItmGrp").Specific.Selected.VALUE)
-    ItmBSort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+    ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
     ItmMsort = Trim(oForm01.Items("ItmMsort").Specific.VALUE)
     BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     StrDate = Trim(oForm01.Items("StrDate").Specific.VALUE)
@@ -487,7 +487,7 @@ On Error GoTo Print_Query_Error
     
     If SCardCode = "" Then SCardCode = "%"
     If ItmGrp = "001" Then ItmGrp = "%"
-    If ItmBSort = "" Then ItmBSort = "%"
+    If ItmBsort = "" Then ItmBsort = "%"
     If ItmMsort = "" Then ItmMsort = "%"
     If BPLID = "" Or BPLID = "0" Then BPLID = "%"
 
@@ -516,10 +516,10 @@ On Error GoTo Print_Query_Error
     
     '대분류
     gRpt_Formula(6) = "ItmBsortName"
-    If ItmBSort = "%" Then
+    If ItmBsort = "%" Then
         gRpt_Formula_Value(6) = "전체"
     Else
-        sQry = "select Name FROM [@PSH_ITMBSORT]  where Code= '" & ItmBSort & "'"
+        sQry = "select Name FROM [@PSH_ITMBSORT]  where Code= '" & ItmBsort & "'"
         oRecordSet.DoQuery sQry
         gRpt_Formula_Value(6) = Trim(oRecordSet.Fields(0).VALUE)
     End If
@@ -562,7 +562,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_SD912_01] '" & ItmGrp & "','" & ItmBSort & "','" & ItmMsort & "','" & SCardCode & "','" & BPLID & "','" & StrDate & "','" & EndDate & "','" & Gubun & "'"
+    sQry = "EXEC [PS_SD912_01] '" & ItmGrp & "','" & ItmBsort & "','" & ItmMsort & "','" & SCardCode & "','" & BPLID & "','" & StrDate & "','" & EndDate & "','" & Gubun & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1

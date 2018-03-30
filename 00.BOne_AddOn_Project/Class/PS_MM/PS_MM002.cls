@@ -162,14 +162,14 @@ On Error GoTo Raise_ItemEvent_Error
 '                            Dim OutSize As String
 '
 '                            OutSize = oForm01.Items("OutSize").Specific.VALUE
-'                            ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+'                            ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
 '                            sQry = "Update [OITM] set U_OutSize = '" & OutSize & "' Where ItemCode = '" & ItemCode & "'"
 '                            oRecordSet01.DoQuery sQry
 '                        End If
                  
                     End If
                 ElseIf pval.ItemUID = "bt_sync" Then
-                    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+                    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
                     If Trim(ItemCode) <> "" And (oForm01.Mode = fm_OK_MODE Or oForm01.Mode = fm_UPDATE_MODE) Then
                         sQry = "Select ItemName, U_OutSize From [OITM] Where ItemCode = '" & ItemCode & "'"
                         oRecordSet01.DoQuery sQry

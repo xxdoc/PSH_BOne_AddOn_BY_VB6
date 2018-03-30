@@ -781,7 +781,7 @@ Private Sub PH_PY127_Excel_Upload()
     Set oForm = Sbo_Application.Forms.ActiveForm
     
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     
     
     sFile = FileListBoxForm.OpenDialog(FileListBoxForm, "*.xls", "파일선택", "C:\")
@@ -885,7 +885,7 @@ Private Sub PH_PY127_PY001A_UPDATE()
     
     If oForm.Mode = fm_OK_MODE Then
         
-        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
         YM = oForm.Items("YM").Specific.VALUE
         Code = oForm.Items("Code").Specific.VALUE
         SIType = oForm.Items("SIType").Specific.VALUE
@@ -953,7 +953,7 @@ Private Sub PH_PY127_PY001A_CANCEL()
         
         
         
-        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
         Code = oForm.Items("Code").Specific.VALUE
         
         sQry = "Exec PH_PY127_02 '" & CLTCOD & "', '" & Code & "'"

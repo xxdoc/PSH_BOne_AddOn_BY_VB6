@@ -328,10 +328,10 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oOrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE) '//작업구분
                 oSequence = Trim(oMat01.Columns("Sequence").Cells(1).Specific.VALUE)
-                oDocdate = oForm01.Items("DocDate").Specific.VALUE
+                oDocdate = Trim(oForm01.Items("DocDate").Specific.VALUE)
                 oGubun = Trim(oForm01.Items("Gubun").Specific.Selected.VALUE)  '//선택한 반을 다시 선택하도록
                 oFormMode01 = oForm01.Mode
                 '//해야할일 작업
@@ -340,7 +340,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 '//해야할일 작업
             ElseIf oForm01.Mode = fm_OK_MODE Then
@@ -773,7 +773,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
 '                    oMat05.FlushToDataSource
 '                    oMat05.LoadFromDataSource
                     
-                    OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
+                    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
                     
                     oForm01.Items("OrdMgNum").Specific.VALUE = ""
                     oForm01.Items("OrdNum").Specific.VALUE = ""
@@ -1685,8 +1685,8 @@ On Error GoTo Raise_EVENT_RECORD_MOVE_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Dim DocEntry As String
     Dim DocEntryNext As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
-    DocEntryNext = oForm01.Items("DocEntry").Specific.VALUE '//다음문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
+    DocEntryNext = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//다음문서
     
     If pval.MenuUID = "1288" Then '//다음
         If pval.BeforeAction = True Then
@@ -2448,10 +2448,10 @@ On Error GoTo PS_PP044_MTX01_Error
     '//메트릭스에 데이터 로드
     Call oForm01.Freeze(True)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
-    OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
-    Gubun = oForm01.Items("Gubun").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
+    Gubun = Trim(oForm01.Items("Gubun").Specific.VALUE)
     
     sQry = "EXEC PS_PP044_01 '" & BPLID & "','" & DocDate & "', '" & OrdGbn & "', '" & Gubun & "'"
     Call oRecordSet01.DoQuery(sQry)
@@ -2522,10 +2522,10 @@ On Error GoTo PS_PP044_MTX02_Error
     '//메트릭스에 데이터 로드
     Call oForm01.Freeze(True)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    DocDate = oForm01.Items("DocDate").Specific.VALUE
-    OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE
-    Gubun = oForm01.Items("Gubun").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
+    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE)
+    Gubun = Trim(oForm01.Items("Gubun").Specific.VALUE)
     
     sQry = "EXEC PS_PP044_02 '" & BPLID & "','" & DocDate & "', '" & OrdGbn & "', '" & Gubun & "'"
     Call oRecordSet01.DoQuery(sQry)
@@ -2632,8 +2632,8 @@ On Error GoTo PS_PP044_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -2643,7 +2643,7 @@ On Error GoTo PS_PP044_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -3306,7 +3306,7 @@ On Error GoTo PS_PP044_FindValidateDocument_Error
     
     Dim i As Long
     Dim DocEntry As String
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE '//원본문서
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '//원본문서
     
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)

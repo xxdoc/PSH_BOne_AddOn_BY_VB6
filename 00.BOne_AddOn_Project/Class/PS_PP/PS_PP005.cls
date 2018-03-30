@@ -125,7 +125,7 @@ On Error GoTo Add_PurchaseDemand_Error
     ItemNam1 = Trim(oForm01.Items("ItemNam1").Specific.VALUE)
     ItemCod2 = Trim(oForm01.Items("ItemCod2").Specific.VALUE)
     ItemNam2 = Trim(oForm01.Items("ItemNam2").Specific.VALUE)
-    UnWeight = oForm01.Items("UnWeight").Specific.VALUE
+    UnWeight = Trim(oForm01.Items("UnWeight").Specific.VALUE)
     Indate = Format(Date, "yymmdd")                                                              '오늘날짜를 넣어주기 위한 선언부분
       
     sQry1 = "Select U_ItemCod1, U_ItemCod2 From [@PS_PP005H] Where U_ItemCod1 ='" & ItemCod1 & "' AND U_ItemCod2 = '" & ItemCod2 & "'"
@@ -195,8 +195,8 @@ Add_PurchaseDemand_Error:
 End Function
 
 '// 데이타 Update
-Public Function Updatedata() As Boolean
-On Error GoTo Updatedata_Error
+Public Function UpdateData() As Boolean
+On Error GoTo UpdateData_Error
     Dim i As Integer
     Dim sQry As String
     Dim RecordSet01 As SAPbobsCOM.Recordset
@@ -248,11 +248,11 @@ On Error GoTo Updatedata_Error
     MDC_Com.MDC_GF_Message "원자재코드 수정완료!", "S"
 
     Set RecordSet01 = Nothing
-    Updatedata = True
+    UpdateData = True
     Exit Function
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Updatedata_Error:
-    Updatedata = False
+UpdateData_Error:
+    UpdateData = False
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "UpdateData_Error:" & Err.Number & " - " & Err.Description, "E"
 End Function
@@ -436,7 +436,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
                     Call DeleteData
                 ElseIf pval.ItemUID = "Btn04" Then
                     oForm01.Mode = fm_UPDATE_MODE
-                    Call Updatedata
+                    Call UpdateData
                 End If
           Exit Sub
 'et_KEY_DOWN ////////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -499,7 +499,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
                 If pval.ItemUID = "ItmBSort" Then
                     Dim sCount&, sSeq&
-                    sCount = oForm01.Items("ItmMSort").Specific.ValidValues.Count
+                    sCount = Trim(oForm01.Items("ItmMSort").Specific.ValidValues.Count)
                     sSeq = sCount
                     For i = 1 To sCount
                         oForm01.Items("ItmMSort").Specific.ValidValues.Remove sSeq - 1, psk_Index

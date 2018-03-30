@@ -276,7 +276,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
     
     '//사업장이 바뀌면 부서와 담당 재설정
                            Case "BPLId"
-                                BPLID = oForm01.Items("BPLId").Specific.VALUE
+                                BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                                 
                                 Set oCombo = oForm01.Items("TeamCode").Specific
                                 If oCombo.ValidValues.Count > 0 Then              '//삭제
@@ -568,7 +568,7 @@ On Error GoTo PS_FX260_Initial_Setting_Error
 '  사업장
     Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
     
-'    BPLId = oForm01.Items("BPLId").Specific.VALUE
+'    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
 '
 '    '//부서
 '    Call oForm01.Items("TeamCode").Specific.ValidValues.Add("%", "전체")

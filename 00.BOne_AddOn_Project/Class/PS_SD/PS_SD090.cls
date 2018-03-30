@@ -1276,7 +1276,7 @@ On Error GoTo PS_SD090_Print_Report01_Error
     Dim sQry01                      As String
     
     Call ConnectODBC
-    DocNum = oForm01.Items("DocNum").Specific.VALUE
+    DocNum = Trim(oForm01.Items("DocNum").Specific.VALUE)
     WinTitle = "[PS_SD090] 출고원부/반출증"
     ReportName = "PS_SD090_10.rpt"
     sQry01 = "EXEC PS_SD090_10 '" & DocNum & "'"

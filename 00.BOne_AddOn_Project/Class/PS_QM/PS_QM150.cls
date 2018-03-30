@@ -795,7 +795,7 @@ On Error GoTo PS_QM150_MTX01_Error
     
     Dim BPLID As String
     
-    BPLID = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     
     sQry = " EXEC [PS_QM150_01] "
     sQry = sQry & "'" & BPLID & "'"
@@ -930,7 +930,7 @@ Private Sub PS_QM150_SAVE()
     DivNm = oForm01.Items("DivNm").Specific.VALUE
     Grade = oForm01.Items("Grade").Specific.VALUE
     num = oForm01.Items("Num").Specific.VALUE
-    BPLID = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
         
     MarkMin = oForm01.Items("MarkMin").Specific.VALUE
     MarkMax = oForm01.Items("MarkMax").Specific.VALUE

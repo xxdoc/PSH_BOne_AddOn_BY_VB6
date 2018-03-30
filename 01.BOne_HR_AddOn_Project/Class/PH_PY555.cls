@@ -734,7 +734,7 @@ Private Sub PH_PY555_Print_Report01()
     
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDate = oForm.Items("DocDate").Specific.VALUE
     ShiftDat = oForm.Items("ShiftDat").Specific.VALUE
     GNMUJO = oForm.Items("GNMUJO").Specific.VALUE

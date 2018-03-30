@@ -712,7 +712,7 @@ On Error GoTo PH_PY570_Print_Report01_Error
     End If
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     DocDateFr = oForm.Items("DocDateFr").Specific.VALUE
     DocDateTo = oForm.Items("DocDateTo").Specific.VALUE
     

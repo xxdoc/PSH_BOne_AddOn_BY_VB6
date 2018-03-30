@@ -181,7 +181,7 @@ On Error GoTo Raise_MenuEvent_Error
 '                        BubbleEvent = False
 '                        Exit Sub
 '                    End If
-                    oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                    oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                Else
 '                    MDC_Com.MDC_GF_Message "현재 모드에서는 취소할수 없습니다.", "W"
 '                    BubbleEvent = False
@@ -342,7 +342,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 Else
 
                 End If
-                oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                 If PS_PP084_DataValidCheck = False Then
                     BubbleEvent = False
@@ -1493,10 +1493,10 @@ On Error GoTo PS_PP084_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1675,7 +1675,7 @@ On Error GoTo PS_PP084_DI_API03_Error
     
     Set oDIObject = Sbo_Company.GetBusinessObject(oInventoryGenExit)
     oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
-    oDIObject.UserFields("U_CancDoc").VALUE = oForm01.Items("OIGNNo").Specific.VALUE
+    oDIObject.UserFields("U_CancDoc").VALUE = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
     For i = 0 To ItemInformationCount - 1
         If i <> 0 Then
             oDIObject.Lines.Add
@@ -1826,8 +1826,8 @@ On Error GoTo PS_PP084_Validate_Error
         '//재고가 모두 존재하는가..
 '        Dim OIGNNo As String
 '        Dim OrdGbn As String
-'        OIGNNo = oForm01.Items("OIGNNo").Specific.VALUE
-'        OrdGbn = oForm01.Items("OrdGbn").Specific.Selected.VALUE
+'        OIGNNo = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
+'        OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE)
 '        Query01 = "EXEC PS_PP084_04 '" & OrdGbn & "','" & OIGNNo & "'"
 '        RecordSet01.DoQuery Query01
 '        For i = 0 To RecordSet01.RecordCount - 1

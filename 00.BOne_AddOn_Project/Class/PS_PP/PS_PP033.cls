@@ -998,7 +998,7 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim ItemClass As String '품목구분
     Dim TradeType As String '거래형태
     Dim FrDt As String '납기일시작
@@ -1009,13 +1009,13 @@ On Error GoTo Print_Query_Error
     Dim Chk01 As String '미출고
     Dim Chk02 As String '미납품
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     ItemClass = IIf(oForm01.Items("ItemClass").Specific.Selected.VALUE = "%", "", oForm01.Items("ItemClass").Specific.Selected.VALUE)
     TradeType = IIf(oForm01.Items("TradeType").Specific.Selected.VALUE = "%", "", oForm01.Items("TradeType").Specific.Selected.VALUE)
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     DocStatus = IIf(oForm01.Items("DocStatus").Specific.Selected.VALUE = "%", "", oForm01.Items("DocStatus").Specific.Selected.VALUE)
     Chk01 = IIf(oForm01.Items("Chk01").Specific.Checked = True, "1", "0")
     Chk02 = IIf(oForm01.Items("Chk02").Specific.Checked = True, "1", "0")
@@ -1040,7 +1040,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_PP033_01 '" & BPLId & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
+    sQry = "EXEC PS_PP033_01 '" & BPLID & "','" & ItemClass & "','" & TradeType & "','" & FrDt & "','" & ToDt & "','" & CardCode & "','" & ItemCode & "','" & DocStatus & "','" & Chk01 & "','" & Chk02 & "'"
 
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then

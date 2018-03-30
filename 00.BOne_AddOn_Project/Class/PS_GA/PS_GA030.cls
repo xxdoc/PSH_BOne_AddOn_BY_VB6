@@ -205,8 +205,8 @@ On Error GoTo PS_GA030_MTX01_Error
     Dim AcctCode02 As String '계정과목코드
     Dim AcctCode03 As String '세부계정과목코드
     
-    BPLID = oForm01.Items("BPLID").Specific.Selected.VALUE
-    StdYear = oForm01.Items("StdYear").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
     AcctCode03 = oForm01.Items("AcctCode03").Specific.VALUE

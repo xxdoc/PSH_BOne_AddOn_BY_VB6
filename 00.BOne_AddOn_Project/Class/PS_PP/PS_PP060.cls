@@ -72,10 +72,10 @@ On Error GoTo LoadData_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim OrdType$, BPLId$, CpGbn$, CpCode$, CntcCode$, WorkGbn$, DocDateFr$, DocDateTo$
+    Dim OrdType$, BPLID$, CpGbn$, CpCode$, CntcCode$, WorkGbn$, DocDateFr$, DocDateTo$
     
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CpGbn = Trim(oForm01.Items("CpGbn").Specific.VALUE)
     CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
@@ -83,7 +83,7 @@ On Error GoTo LoadData_Error
     DocDateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
     DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
     
-    If BPLId = "" Then BPLId = "%"
+    If BPLID = "" Then BPLID = "%"
     If CpGbn = "" Then CpGbn = "%"
     If CpCode = "" Then CpCode = "%"
     If CntcCode = "" Then CntcCode = "%"
@@ -94,7 +94,7 @@ On Error GoTo LoadData_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
     
-    sQry = "EXEC [PS_PP060_01] '" & OrdType & "', '" & BPLId & "','" & CpGbn & "','" & CpCode & "','" & CntcCode & "','" & WorkGbn & "','" & DocDateFr & "','" & DocDateTo & "'"
+    sQry = "EXEC [PS_PP060_01] '" & OrdType & "', '" & BPLID & "','" & CpGbn & "','" & CpCode & "','" & CntcCode & "','" & WorkGbn & "','" & DocDateFr & "','" & DocDateTo & "'"
     oRecordSet01.DoQuery sQry
     
     oMat01.Clear
@@ -175,7 +175,7 @@ On Error GoTo DeleteData_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, DocNum$, BPLId$, CpGbn$, CpCode$, CntcCode$, WorkGbn$, DocDateFr$, DocDateTo$, OrdType$
+    Dim DocEntry$, DocNum$, BPLID$, CpGbn$, CpCode$, CntcCode$, WorkGbn$, DocDateFr$, DocDateTo$, OrdType$
     Dim Check As String
     
     oMat01.FlushToDataSource
@@ -205,7 +205,7 @@ On Error GoTo DeleteData_Error
     Exit Sub
 
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CpGbn = Trim(oForm01.Items("CpGbn").Specific.VALUE)
     CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
@@ -214,7 +214,7 @@ On Error GoTo DeleteData_Error
     DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
     
     
-    If BPLId = "" Then BPLId = "%"
+    If BPLID = "" Then BPLID = "%"
     If CpGbn = "" Then CpGbn = "%"
     If CpCode = "" Then CpCode = "%"
     If CntcCode = "" Then CntcCode = "%"
@@ -225,7 +225,7 @@ On Error GoTo DeleteData_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
     
-    sQry = "EXEC [PS_PP060_01] '" & OrdType & "','" & BPLId & "','" & CpGbn & "','" & CpCode & "','" & CntcCode & "','" & WorkGbn & "','" & DocDateFr & "','" & DocDateTo & "'"
+    sQry = "EXEC [PS_PP060_01] '" & OrdType & "','" & BPLID & "','" & CpGbn & "','" & CpCode & "','" & CntcCode & "','" & WorkGbn & "','" & DocDateFr & "','" & DocDateTo & "'"
     oRecordSet01.DoQuery sQry
     
     oMat01.Clear
@@ -334,7 +334,7 @@ On Error GoTo UpdateData_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, DocNum$, BPLId$, LineNum$, WorkTime As Currency
+    Dim DocEntry$, DocNum$, BPLID$, LineNum$, WorkTime As Currency
     Dim CpGbn$, CpCode$, CpName$, CntcCode$, CntcName$, ItmBsort$, DocDate$, WorkGbn$, WorkNote$, OrdType$, NCode$
     Dim Check$
     Dim FixCode As String
@@ -344,7 +344,7 @@ On Error GoTo UpdateData_Error
     oMat01.FlushToDataSource
     
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CpGbn = Trim(oForm01.Items("CpGbn").Specific.VALUE)
     CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     CpName = Trim(oForm01.Items("CpName").Specific.VALUE)
@@ -426,7 +426,7 @@ On Error GoTo Add_PurchaseDemand_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, DocNum$, OrdType$, BPLId$, LineNum$, WorkTime As Currency
+    Dim DocEntry$, DocNum$, OrdType$, BPLID$, LineNum$, WorkTime As Currency
     Dim CpGbn$, CpCode$, CpName$, CntcCode$, CntcName$, ItmBsort$, DocDate$, WorkGbn$, WorkNote$, NCode$
     Dim FixCode As String
     Dim FixName As String
@@ -435,7 +435,7 @@ On Error GoTo Add_PurchaseDemand_Error
     oMat01.FlushToDataSource
     
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CpGbn = Trim(oForm01.Items("CpGbn").Specific.VALUE)
     CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     CpName = Trim(oForm01.Items("CpName").Specific.VALUE)
@@ -498,7 +498,7 @@ On Error GoTo Add_PurchaseDemand_Error
         sQry = sQry & "VALUES("
         sQry = sQry & DocEntry & ","
         sQry = sQry & DocNum & ","
-        sQry = sQry & "'" & BPLId & "',"
+        sQry = sQry & "'" & BPLID & "',"
         sQry = sQry & "'" & LineNum & "',"
         sQry = sQry & "'" & CpGbn & "',"
         sQry = sQry & "'" & CpCode & "',"
@@ -589,10 +589,10 @@ On Error GoTo MatrixSpaceLineDel_Error
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     '/ 헤드사항을 입력
-    Dim OrdType$, BPLId$, CpGbn$, CpCode$, CpName$, WorkGbn$
+    Dim OrdType$, BPLID$, CpGbn$, CpCode$, CpName$, WorkGbn$
     
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     CpGbn = Trim(oForm01.Items("CpGbn").Specific.VALUE)
     CpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
     CpName = Trim(oForm01.Items("CpName").Specific.VALUE)
@@ -1279,7 +1279,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
                             Case Else
                                '// 콤보박스에 첫데이타를 SD380로
                                oForm01.Items("CpCode").Specific.Select 1, psk_Index
-                               SCpCode = oForm01.Items("CpCode").Specific.VALUE
+                               SCpCode = Trim(oForm01.Items("CpCode").Specific.VALUE)
         
                                sQry = "SELECT U_CpName From [@PS_PP001L] Where U_CpCode = '" & SCpCode & "' Order by Code"
                                 oRecordSet01.DoQuery sQry
@@ -1705,7 +1705,7 @@ On Error GoTo PS_PP060_OpenItemRegist_Error
     Dim oTempClass As Variant
     
     Dim StdNo As String '기준문서번호
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim CpCode As String '공정코드
     Dim CpName As String '공정명
     Dim WkCode As String '작업자사번
@@ -1717,7 +1717,7 @@ On Error GoTo PS_PP060_OpenItemRegist_Error
     Dim WorkNote As String '작업내용
     
     StdNo = Trim(oMat01.Columns("DocEntry").Cells(pRow).Specific.VALUE)
-    BPLId = Trim(oMat01.Columns("BPLId").Cells(pRow).Specific.VALUE)
+    BPLID = Trim(oMat01.Columns("BPLId").Cells(pRow).Specific.VALUE)
     CpCode = Trim(oMat01.Columns("CpCode").Cells(pRow).Specific.VALUE)
     CpName = Trim(oMat01.Columns("CpName").Cells(pRow).Specific.VALUE)
     WkCode = Trim(oMat01.Columns("CntcCode").Cells(pRow).Specific.VALUE)
@@ -1729,7 +1729,7 @@ On Error GoTo PS_PP060_OpenItemRegist_Error
     WorkNote = Trim(oMat01.Columns("WorkNote").Cells(pRow).Specific.VALUE)
 
     Set oTempClass = New PS_PP061
-    Call oTempClass.LoadForm(StdNo, BPLId, CpCode, CpName, WkCode, WkName, FixCode, FixName, DocDate, WorkTime, WorkNote)
+    Call oTempClass.LoadForm(StdNo, BPLID, CpCode, CpName, WkCode, WkName, FixCode, FixName, DocDate, WorkTime, WorkNote)
 
 '    Call Sbo_Application.MessageBox(DocEntry)
     

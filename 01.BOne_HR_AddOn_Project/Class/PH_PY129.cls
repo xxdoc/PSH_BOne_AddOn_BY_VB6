@@ -263,7 +263,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             BubbleEvent = False
                         End If
                         
-                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                         YM = oForm.Items("YM").Specific.VALUE
                         Code = oForm.Items("Code").Specific.VALUE
                         MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
@@ -749,7 +749,7 @@ Private Sub PH_PY129_LoadData()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YM = oForm.Items("YM").Specific.VALUE
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     

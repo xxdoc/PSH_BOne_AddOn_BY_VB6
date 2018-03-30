@@ -847,7 +847,7 @@ On Error GoTo Create_oJournalEntries
          .Lines.ShortName = "43125020"
          .Lines.Credit = sSum                '대변
          .Lines.LineMemo = "지체상금"
-         .UserFields("U_BPLId").VALUE = oForm01.Items("BPLId").Specific.VALUE '사업장
+         .UserFields("U_BPLId").VALUE = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
          
     End With
     '// 완료

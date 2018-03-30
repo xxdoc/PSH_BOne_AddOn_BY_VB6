@@ -382,7 +382,7 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
             If pval.ItemUID = "Mat01" Then
                 If pval.ColUID = "ItemCode" Then
                     If oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE = "" Then
-                        ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+                        ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
                         
                         If oForm01.Items("BOM_CHECK").Specific.Checked = True Then
                             If Trim(oForm01.Items("Qty").Specific.VALUE) <> "" And Trim(oForm01.Items("ItemCode").Specific.VALUE) <> "" Then
@@ -454,7 +454,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
             Call oForm01.Freeze(True)
             If (pval.ItemUID = "InWhCd") Then
                 For i = 1 To oMat01.VisualRowCount - 1
-                    oMat01.Columns("InWhCd").Cells(i).Specific.VALUE = oForm01.Items("InWhCd").Specific.VALUE
+                    oMat01.Columns("InWhCd").Cells(i).Specific.VALUE = Trim(oForm01.Items("InWhCd").Specific.VALUE)
                 Next
             End If
             Call oForm01.Freeze(False)
@@ -579,7 +579,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
         If pval.ItemChanged = True Then
             If (pval.ItemUID = "Mat01") Then
                 If (pval.ColUID = "ItemCode") Then
-                    Qty = oForm01.Items("Qty").Specific.VALUE
+                    Qty = Trim(oForm01.Items("Qty").Specific.VALUE)
                     '//기타작업
                     Call oDS_PS_MM135L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                     If oMat01.RowCount = pval.Row And Trim(oDS_PS_MM135L.GetValue("U_" & pval.ColUID, pval.Row - 1)) <> "" Then
@@ -627,7 +627,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                     oMat01.Columns("InWhCd").Cells(pval.Row).Specific.VALUE = oDS_PS_MM135H.GetValue("U_InWhCd", 0)
                     
                     If oMat01.Columns("ItemCode").Cells(pval.Row).Specific.VALUE = "" Then
-                        oMat01.Columns("ItemCode").Cells(pval.Row).Specific.VALUE = oForm01.Items("ItemCode").Specific.VALUE
+                        oMat01.Columns("ItemCode").Cells(pval.Row).Specific.VALUE = Trim(oForm01.Items("ItemCode").Specific.VALUE)
                     End If
 '                    Call oDS_PS_MM135L.setValue("U_OutWhCd", pval.Row - 1, "10" + oDS_PS_MM135H.GetValue("U_BPLId", 0))
 '                    Call oDS_PS_MM135L.setValue("U_InWhCd", pval.Row - 1, "80" + oDS_PS_MM135H.GetValue("U_BPLId", 0))
@@ -1339,7 +1339,7 @@ On Error GoTo PS_MM135_DataInsertCheck_Error
 
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    oDate = oForm01.Items("DocDate").Specific.VALUE
+    oDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     sQry = "SELECT ISNULL(MAX(U_OutDoc), 0) FROM [@PS_MM135H] WHERE SubString(U_OutDoc,1,8) = '" & oDate & "'"
 
     oRecordSet01.DoQuery sQry

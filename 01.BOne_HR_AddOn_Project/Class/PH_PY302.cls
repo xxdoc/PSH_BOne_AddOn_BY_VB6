@@ -206,7 +206,7 @@ Private Sub PH_PY302_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY302_FormItemEnabled
-        oForm.Items("DocEntry").Specific.Value = oFromDocEntry01
+        oForm.Items("DocEntry").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -232,7 +232,7 @@ Sub PH_PY302_FormItemEnabled()
         
         '년도 세팅
 '        Call oDS_PH_PY302A.setValue("U_StdYear", 0, Format(Date, "YYYY"))
-        oForm.Items("StdYear").Specific.Value = Format(Date, "YYYY")
+        oForm.Items("StdYear").Specific.VALUE = Format(Date, "YYYY")
 
         Call oForm.EnableMenu("1281", True)     '//문서찾기
         Call oForm.EnableMenu("1282", False)    '//문서추가
@@ -300,7 +300,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '                    ElseIf oForm.Mode = fm_OK_MODE Then
 '                    End If
 '                End If
-                If pval.ItemUid = "BtnSearch" Then
+                If pval.ItemUID = "BtnSearch" Then
                 
                     If oForm.Mode = fm_ADD_MODE Then
                         If PH_PY302_DataValidCheck = False Then
@@ -313,7 +313,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         
                     End If
                     
-                ElseIf pval.ItemUid = "BtnModify" Then
+                ElseIf pval.ItemUID = "BtnModify" Then
                 
                     If PH_PY302_UpdatePayYN = True Then
                         Call MDC_Com.MDC_GF_Message("지급완료여부가 수정되었습니다.", "S")
@@ -349,20 +349,20 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
             If pval.BeforeAction = True Then
             
-                If pval.ItemUid = "Mat01" Then
+                If pval.ItemUID = "Mat01" Then
         
                     If pval.ColUID = "Name" And pval.CharPressed = "9" Then
                     
-                        If oMat1.Columns.Item("Name").Cells(pval.Row).Specific.Value = "" Then
+                        If oMat1.Columns.Item("Name").Cells(pval.Row).Specific.VALUE = "" Then
                             Call Sbo_Application.ActivateMenuItem("7425")
                             BubbleEvent = False
                         End If
                     
                     End If
                 
-                ElseIf pval.ItemUid = "CntcCode" And pval.CharPressed = "9" Then
+                ElseIf pval.ItemUID = "CntcCode" And pval.CharPressed = "9" Then
                 
-                    If oForm.Items("CntcCode").Specific.Value = "" Then
+                    If oForm.Items("CntcCode").Specific.VALUE = "" Then
                         Call Sbo_Application.ActivateMenuItem("7425")
                         BubbleEvent = False
                     End If
@@ -374,15 +374,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             End If
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat01"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -404,22 +404,22 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_CLICK: '//6
             If pval.BeforeAction = True Then
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01"
                     If pval.Row > 0 Then
                         Call oMat1.SelectRow(pval.Row, True, False)
                     End If
                 End Select
                 
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01"
                     If pval.Row > 0 Then
-                        oLastItemUID = pval.ItemUid
+                        oLastItemUID = pval.ItemUID
                         oLastColUID = pval.ColUID
                         oLastColRow = pval.Row
                     End If
                 Case Else
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = ""
                     oLastColRow = 0
                 End Select
@@ -447,7 +447,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             
                 If pval.ItemChanged = True Then
                     
-                    Select Case pval.ItemUid
+                    Select Case pval.ItemUID
                         
                     End Select
 
@@ -651,15 +651,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat01"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -726,9 +726,9 @@ On Error GoTo PH_PY302_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY302'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY302_FormClear_Error:
@@ -745,7 +745,7 @@ On Error GoTo PH_PY302_DataValidCheck_Error
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     '사업장
-    If Trim(oForm.Items("CLTCOD").Specific.Value) = "" Then
+    If Trim(oForm.Items("CLTCOD").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "사업장은 필수입니다.", bmt_Short, True
         oForm.Items("CLTCOD").CLICK ct_Regular
         PH_PY302_DataValidCheck = False
@@ -753,7 +753,7 @@ On Error GoTo PH_PY302_DataValidCheck_Error
     End If
     
     '년도
-    If Trim(oForm.Items("StdYear").Specific.Value) = "" Then
+    If Trim(oForm.Items("StdYear").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "년도는 필수입니다.", bmt_Short, True
         oForm.Items("StdYear").CLICK ct_Regular
         PH_PY302_DataValidCheck = False
@@ -761,7 +761,7 @@ On Error GoTo PH_PY302_DataValidCheck_Error
     End If
     
     '분기
-    If Trim(oForm.Items("Quarter").Specific.Value) = "" Then
+    If Trim(oForm.Items("Quarter").Specific.VALUE) = "" Then
         Sbo_Application.SetStatusBarMessage "분기는 필수입니다.", bmt_Short, True
         oForm.Items("Quarter").CLICK ct_Regular
         PH_PY302_DataValidCheck = False
@@ -854,9 +854,9 @@ Private Sub PH_PY302_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.Value
-    Param02 = oForm.Items("StdYear").Specific.Value
-    Param03 = oForm.Items("Quarter").Specific.Value
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    Param02 = oForm.Items("StdYear").Specific.VALUE
+    Param03 = oForm.Items("Quarter").Specific.VALUE
 '    Param04 = oForm.Items("Param01").Specific.Value
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -880,26 +880,26 @@ Private Sub PH_PY302_MTX01()
         End If
         oDS_PH_PY302B.Offset = i
         Call oDS_PH_PY302B.setValue("U_LineNum", i, i + 1)
-        Call oDS_PH_PY302B.setValue("U_ColReg01", i, oRecordSet.Fields("Count").Value)
-        Call oDS_PH_PY302B.setValue("U_ColSum01", i, oRecordSet.Fields("EntFee").Value)
-        Call oDS_PH_PY302B.setValue("U_ColSum02", i, oRecordSet.Fields("Tuition").Value)
-        Call oDS_PH_PY302B.setValue("U_ColSum03", i, oRecordSet.Fields("Total").Value)
-        Call oDS_PH_PY302B.setValue("U_ColReg02", i, oRecordSet.Fields("PayYN").Value)
+        Call oDS_PH_PY302B.setValue("U_ColReg01", i, oRecordSet.Fields("Count").VALUE)
+        Call oDS_PH_PY302B.setValue("U_ColSum01", i, oRecordSet.Fields("EntFee").VALUE)
+        Call oDS_PH_PY302B.setValue("U_ColSum02", i, oRecordSet.Fields("Tuition").VALUE)
+        Call oDS_PH_PY302B.setValue("U_ColSum03", i, oRecordSet.Fields("Total").VALUE)
+        Call oDS_PH_PY302B.setValue("U_ColReg02", i, oRecordSet.Fields("PayYN").VALUE)
         
-        FeeTot = FeeTot + oRecordSet.Fields("EntFee").Value
-        TuiTot = TuiTot + oRecordSet.Fields("Tuition").Value
+        FeeTot = FeeTot + oRecordSet.Fields("EntFee").VALUE
+        TuiTot = TuiTot + oRecordSet.Fields("Tuition").VALUE
         
         oRecordSet.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & oRecordSet.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & oRecordSet.RecordCount & "건 조회중...!"
         
     Next
     
     Total = FeeTot + TuiTot
     
-    oForm.Items("FeeTot").Specific.Value = FeeTot
-    oForm.Items("TuiTot").Specific.Value = TuiTot
-    oForm.Items("Total").Specific.Value = Total
+    oForm.Items("FeeTot").Specific.VALUE = FeeTot
+    oForm.Items("TuiTot").Specific.VALUE = TuiTot
+    oForm.Items("Total").Specific.VALUE = Total
     
     oMat1.LoadFromDataSource
     oMat1.AutoResizeColumns
@@ -934,7 +934,7 @@ On Error GoTo PH_PY302_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY302A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY302A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY302_Validate = False
         GoTo PH_PY302_Validate_Exit
@@ -972,9 +972,9 @@ On Error GoTo PH_PY302_UpdatePayYN_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.Value
-    StdYear = oForm.Items("StdYear").Specific.Value
-    Quarter = oForm.Items("Quarter").Specific.Value
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+    StdYear = oForm.Items("StdYear").Specific.VALUE
+    Quarter = oForm.Items("Quarter").Specific.VALUE
 '    Count = oForm.Items("Count").Specific.Value
         
     oMat1.FlushToDataSource

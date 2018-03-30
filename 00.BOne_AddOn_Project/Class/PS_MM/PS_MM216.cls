@@ -23,43 +23,29 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public oFormUniqueID01 As String
-Public oForm01 As SAPbouiCOM.Form
-Public oMat01 As SAPbouiCOM.Matrix
-Private oDS_PS_MM216H As SAPbouiCOM.DBDataSource '등록헤더
-Private oDS_PS_MM216L As SAPbouiCOM.DBDataSource '등록라인
+Public oForm01         As SAPbouiCOM.Form
+Public oMat01          As SAPbouiCOM.Matrix
+Private oDS_PS_MM216H  As SAPbouiCOM.DBDataSource '등록헤더
+Private oDS_PS_MM216L  As SAPbouiCOM.DBDataSource '등록라인
 
 Private oLastItemUID01 As String '클래스에서 선택한 마지막 아이템 Uid값
-Private oLastColUID01 As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLastColRow01 As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oLastColUID01  As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLastColRow01  As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
 
-'//사용자구조체
-Private Type ItemInformations
-    ItemCode As String
-    BatchNum As String
-    Quantity As Long
-    OPORNo As Long
-    POR1No As Long
-    Check As Boolean
-    OPDNNo As Long
-    PDN1No As Long
-End Type
-Private ItemInformation() As ItemInformations
-Private ItemInformationCount As Long
 '*******************************************************************
 ' .srf 파일로부터 폼을 로드한다.
 '*******************************************************************
 Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
 On Error GoTo LoadForm_Error
-    Dim i As Long
+
+    Dim i           As Long
     Dim oInnerXml01 As String
-    Dim oXmlDoc01             As New MSXML2.DOMDocument
+    Dim oXmlDoc01   As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_MM216.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -85,7 +71,6 @@ On Error GoTo LoadForm_Error
     Call PS_MM216_SetDocument(oFromDocEntry01)
     Call PS_MM216_FormResize
     Call Initialization
-    
     
     oForm01.Update
     oForm01.Freeze False
@@ -162,7 +147,6 @@ Initialization_Error:
     Set oCombo = Nothing
     MDC_Com.MDC_GF_Message "Initialization_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
-
 
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
@@ -412,7 +396,6 @@ Raise_EVENT_CHOOSE_FROM_LIST_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_CHOOSE_FROM_LIST_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub Raise_EVENT_GOT_FOCUS(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_EVENT_GOT_FOCUS_Error
     If pval.ItemUID = "Mat01" Then
@@ -451,11 +434,12 @@ Raise_EVENT_ROW_DELETE_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_ROW_DELETE_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Function PS_MM216_CreateItems() As Boolean
 On Error GoTo PS_MM216_CreateItems_Error
+
     Call oForm01.Freeze(True)
-    Dim oQuery01 As String
+    
+    Dim oQuery01     As String
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
@@ -473,6 +457,9 @@ On Error GoTo PS_MM216_CreateItems_Error
     
     Call oForm01.DataSources.UserDataSources.Add("RotateYN", dt_SHORT_TEXT, 5)
     Call oForm01.Items("RotateYN").Specific.DataBind.SetBound(True, "", "RotateYN")
+    
+    Call oForm01.DataSources.UserDataSources.Add("ItemType", dt_SHORT_TEXT, 5)
+    Call oForm01.Items("ItemType").Specific.DataBind.SetBound(True, "", "ItemType")
     
     '라디오 버튼 처리'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Dim optBtn As SAPbouiCOM.OptionBtn
@@ -515,10 +502,10 @@ End Function
 Sub PS_MM216_ComboBox_Setting()
 On Error GoTo PS_MM216_ComboBox_Setting_Error
     
-    Dim oCombo          As SAPbouiCOM.ComboBox
-    Dim sQry            As String
-    Dim oRecordSet01      As SAPbobsCOM.Recordset
-        
+    Dim oCombo  As SAPbouiCOM.ComboBox
+    Dim sQry    As String
+    
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     '// 사업장
@@ -544,6 +531,8 @@ On Error GoTo PS_MM216_ComboBox_Setting_Error
         oRecordSet01.MoveNext
     Loop
     
+    Call oForm01.Items("OrdType").Specific.Select(0, psk_Index)
+    
     '순환품여부(2015.02.03 송명규 추가)
     Set oCombo = oForm01.Items("RotateYN").Specific
     Call oCombo.ValidValues.Add("%", "전체")
@@ -551,11 +540,19 @@ On Error GoTo PS_MM216_ComboBox_Setting_Error
     Call oCombo.ValidValues.Add("Y", "[Y]순환품")
     Call oCombo.Select("%", psk_ByValue)
     
-    Call oForm01.Items("OrdType").Specific.Select(0, psk_Index)
+    '장비/공구
+    Set oCombo = oForm01.Items("ItemType").Specific
+    Call oCombo.ValidValues.Add("%", "전체")
+    Call oCombo.ValidValues.Add("M", "장비")
+    Call oCombo.ValidValues.Add("T", "공구")
+    Call oCombo.Select("%", psk_ByValue)
+    
+    Set oCombo = Nothing
     
     Exit Sub
 PS_MM216_ComboBox_Setting_Error:
-    Call oForm01.Freeze(False)
+
+    Set oCombo = Nothing
     Sbo_Application.SetStatusBarMessage "PS_MM216_ComboBox_Setting_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
@@ -627,7 +624,6 @@ PS_MM216_SetDocument_Error:
     Sbo_Application.SetStatusBarMessage "PS_MM216_SetDocument_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Function PS_MM216_DataValidCheck() As Boolean
 On Error GoTo PS_MM216_DataValidCheck_Error
     PS_MM216_DataValidCheck = False
@@ -666,10 +662,10 @@ On Error GoTo PS_MM216_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -690,7 +686,7 @@ On Error GoTo PS_MM216_MTX01_Error
         If i <> 0 Then
             oDS_PS_MM216L.InsertRecord (i)
         End If
-        oDS_PS_MM216L.Offset = i
+        oDS_PS_MM216L.offset = i
         Call oDS_PS_MM216L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_MM216L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
@@ -721,7 +717,6 @@ PS_MM216_MTX01_Error:
     Sbo_Application.SetStatusBarMessage "PS_MM216_MTX01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub PS_MM216_FormResize()
 On Error GoTo PS_MM216_FormResize_Error
     
@@ -730,25 +725,25 @@ PS_MM216_FormResize_Error:
     Sbo_Application.SetStatusBarMessage "PS_MM216_FormResize_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub PS_MM216_Print_Report01()
 On Error GoTo PS_MM216_Print_Report01_Error
-    Dim DocNum As String
-    Dim WinTitle As String
+
+    Dim DocNum     As String
+    Dim WinTitle   As String
     Dim ReportName As String
-    Dim sQry As String
+    Dim sQry       As String
     
-    Dim BPLID As String
-    Dim DueDateFr As String
-    Dim DueDateTo As String
-    Dim CardCode As String
-    Dim OrdType As String
-    Dim ItemCode As String
+    Dim BPLID       As String
+    Dim DueDateFr   As String
+    Dim DueDateTo   As String
+    Dim CardCode    As String
+    Dim OrdType     As String
+    Dim ItemCode    As String
     Dim OptBtnValue As String
-    Dim RotateYN As String
+    Dim RotateYN    As String
+    Dim ItemType    As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
 
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -763,6 +758,7 @@ On Error GoTo PS_MM216_Print_Report01_Error
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     RotateYN = Trim(oForm01.Items("RotateYN").Specific.VALUE)
+    ItemType = Trim(oForm01.Items("ItemType").Specific.VALUE)
        
     If CardCode = "" Then CardCode = "%"
     If ItemCode = "" Then ItemCode = "%"
@@ -807,11 +803,27 @@ On Error GoTo PS_MM216_Print_Report01_Error
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(3) = oRecordSet.Fields(0).VALUE
     
-    
-    If OptBtnValue = "C" Then
-        sQry = "EXEC [PS_MM216_02] '" & BPLID & "', '" & DueDateFr & "', '" & DueDateTo & "', '" & CardCode & "', '" & OrdType & "','" & ItemCode & "','" & RotateYN & "'"
-    Else
-        sQry = "EXEC [PS_MM216_01] '" & BPLID & "', '" & DueDateFr & "', '" & DueDateTo & "', '" & CardCode & "', '" & OrdType & "','" & ItemCode & "','" & RotateYN & "'"
+    If OptBtnValue = "C" Then '거래처리스트 라디오버튼 선택
+        sQry = "      EXEC [PS_MM216_02] '"
+        sQry = sQry & BPLID & "','"
+        sQry = sQry & DueDateFr & "','"
+        sQry = sQry & DueDateTo & "','"
+        sQry = sQry & CardCode & "','"
+        sQry = sQry & OrdType & "','"
+        sQry = sQry & ItemCode & "','"
+        sQry = sQry & RotateYN & "'"
+        '전체/장비/공구 조회 조건 추가
+    Else '거래처리스트 이외
+        sQry = "      EXEC [PS_MM216_01] '"
+        sQry = sQry & BPLID & "','"
+        sQry = sQry & DueDateFr & "','"
+        sQry = sQry & DueDateTo & "','"
+        sQry = sQry & CardCode & "','"
+        sQry = sQry & OrdType & "','"
+        sQry = sQry & ItemCode & "','"
+        sQry = sQry & RotateYN & "','"
+        sQry = sQry & ItemType & "'"
+        '전체/장비/공구 조회 조건 추가
     End If
     
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "Y", sQry, "1", "Y", "V") = False Then

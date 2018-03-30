@@ -929,7 +929,7 @@ On Error GoTo PS_PP250_AddMatrixRow_Error
         prmDataSource.InsertRecord (oRow)
     End If
     prmMat.AddRow
-    prmDataSource.offset = oRow
+    prmDataSource.Offset = oRow
 '    oDS_PS_PP250L.setValue "U_LineNum", oRow, oRow + 1
     prmMat.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -1058,7 +1058,7 @@ On Error GoTo PS_PP250_MTX01_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP250L.InsertRecord(loopCount)
         End If
-        oDS_PS_PP250L.offset = loopCount
+        oDS_PS_PP250L.Offset = loopCount
         
         Call oDS_PS_PP250L.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP250L.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -1180,7 +1180,7 @@ On Error GoTo PS_PP250_MTX02_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP250M.InsertRecord(loopCount)
         End If
-        oDS_PS_PP250M.offset = loopCount
+        oDS_PS_PP250M.Offset = loopCount
         
         Call oDS_PS_PP250M.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP250M.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -1295,7 +1295,7 @@ On Error GoTo PS_PP250_MTX03_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP250N.InsertRecord(loopCount)
         End If
-        oDS_PS_PP250N.offset = loopCount
+        oDS_PS_PP250N.Offset = loopCount
         
         Call oDS_PS_PP250N.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP250N.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -1659,12 +1659,12 @@ On Error GoTo PS_PP250_Print_Report_Error
     
     If prmItemUID = "Btn01" Then '작업일보
     
-        FrDt = oForm01.Items("FrDt").Specific.VALUE
-        ToDt = oForm01.Items("ToDt").Specific.VALUE
+        FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+        ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
         FrgnName = IIf(oForm01.Items("FrgnName").Specific.VALUE = "", "%", oForm01.Items("FrgnName").Specific.VALUE)
-        CardType = oForm01.Items("CardType").Specific.Selected.VALUE
+        CardType = Trim(oForm01.Items("CardType").Specific.Selected.VALUE)
         SPEC = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
-        ItemClass = oForm01.Items("ItemClass").Specific.Selected.VALUE
+        ItemClass = Trim(oForm01.Items("ItemClass").Specific.Selected.VALUE)
         WCYN = IIf(oForm01.Items("WCYN").Specific.Selected.VALUE = "", "%", oForm01.Items("WCYN").Specific.Selected.VALUE)
         CardCode = IIf(oForm01.Items("CardCode").Specific.VALUE = "", "%", oForm01.Items("CardCode").Specific.VALUE)
         ItemCode = IIf(oForm01.Items("ItemCode").Specific.VALUE = "", "%", oForm01.Items("ItemCode").Specific.VALUE)
@@ -1683,8 +1683,8 @@ On Error GoTo PS_PP250_Print_Report_Error
     
     ElseIf prmItemUID = "Btn03" Then '구매요청
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP250_03.rpt"
     

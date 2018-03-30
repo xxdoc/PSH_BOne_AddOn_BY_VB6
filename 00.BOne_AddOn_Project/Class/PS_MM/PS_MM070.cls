@@ -152,8 +152,8 @@ On Error GoTo Raise_ItemEvent_Error
                                 End If
                                 '검수입고 문서만 등록 시 주석처리_E
                                 
-                                oQEYesNo = oForm01.Items("QEYesNo").Specific.VALUE
-                                oPurchase = oForm01.Items("Purchase").Specific.VALUE
+                                oQEYesNo = Trim(oForm01.Items("QEYesNo").Specific.VALUE)
+                                oPurchase = Trim(oForm01.Items("Purchase").Specific.VALUE)
                             Else
                                 BubbleEvent = False
                                 Exit Sub
@@ -775,7 +775,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM070L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM070L.offset = oRow
+    oDS_PS_MM070L.Offset = oRow
     oDS_PS_MM070L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1817,7 +1817,7 @@ On Error GoTo PS_MM070_CheckDate_Error
     BaseEntry = pBaseEntry
     BaseLine = ""
     DocType = "PS_MM070"
-    CurDocDate = oForm01.Items("DocDate").Specific.VALUE
+    CurDocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
 
     Query01 = "         EXEC PS_Z_CHECK_DATE '"
     Query01 = Query01 & BaseEntry & "','"

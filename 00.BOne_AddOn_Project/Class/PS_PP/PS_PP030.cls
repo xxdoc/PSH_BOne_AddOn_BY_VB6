@@ -385,8 +385,8 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
-                oSCardCod01 = oForm01.Items("SCardCod").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
+                oSCardCod01 = Trim(oForm01.Items("SCardCod").Specific.VALUE)
                 
                 oFormMode01 = oForm01.Mode
                 '//멀티게이지 일괄생성기능구현 , 엔드베이링 추가 - 류영조
@@ -410,7 +410,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 If oMat02.VisualRowCount = 0 Then
@@ -596,8 +596,8 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
                     
                     Dim OrdGbn As String
                     Dim InputGbn As String
-                    OrdGbn = oForm01.Items("OrdGbn").Specific.Selected.VALUE
-                    InputGbn = oMat02.Columns("InputGbn").Cells(pval.Row).Specific.Selected.VALUE
+                    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE)
+                    InputGbn = Trim(oMat02.Columns("InputGbn").Cells(pval.Row).Specific.Selected.VALUE)
                     Dim ChildForm01 As Variant
                     Set ChildForm01 = New PS_SM021
                     Call ChildForm01.LoadForm(oForm01, pval.ItemUID, pval.ColUID, pval.Row, OrdGbn, InputGbn, Trim(oDS_PS_PP030H.GetValue("U_BPLId", 0)))
@@ -1593,7 +1593,7 @@ On Error GoTo PS_PP030_CreateItems_Error
     Set oDS_PS_PP030L = oForm01.DataSources.DBDataSources("@PS_PP030L")
     Set oDS_PS_PP030M = oForm01.DataSources.DBDataSources("@PS_PP030M")
     
-     Set oMat01 = oForm01.Items("Mat01").Specific
+    Set oMat01 = oForm01.Items("Mat01").Specific
     Set oMat02 = oForm01.Items("Mat02").Specific
     Set oMat03 = oForm01.Items("Mat03").Specific
     oMat01.SelectionMode = ms_NotSupported
@@ -2017,7 +2017,7 @@ On Error GoTo PS_PP030_AddMatrixRow01_Error
         oDS_PS_PP030L.InsertRecord (oRow)
     End If
     oMat02.AddRow
-    oDS_PS_PP030L.offset = oRow
+    oDS_PS_PP030L.Offset = oRow
     oDS_PS_PP030L.setValue "U_LineNum", oRow, oRow + 1
     If oForm01.Items("OrdGbn").Specific.Selected.VALUE = "107" Then '//엔드베어링은 투입구분,원재료,스크랩
         oDS_PS_PP030L.setValue "U_InputGbn", oRow, "20"
@@ -2040,7 +2040,7 @@ On Error GoTo PS_PP030_AddMatrixRow02_Error
         oDS_PS_PP030M.InsertRecord (oRow)
     End If
     oMat03.AddRow
-    oDS_PS_PP030M.offset = oRow
+    oDS_PS_PP030M.Offset = oRow
     oDS_PS_PP030M.setValue "U_LineNum", oRow, oRow + 1
     oDS_PS_PP030M.setValue "U_Sequence", oRow, oRow + 1
     oDS_PS_PP030M.setValue "U_WorkGbn", oRow, "10"
@@ -2353,13 +2353,13 @@ On Error GoTo PS_PP030_MTX01_Error
     Dim Param06 As String
     Dim Param07 As String
     
-    Param01 = oForm01.Items("SBPLId").Specific.Selected.VALUE
-    Param02 = oForm01.Items("ItmBsort").Specific.Selected.VALUE
-    Param03 = oForm01.Items("ItmMsort").Specific.Selected.VALUE
-    Param04 = oForm01.Items("ReqType").Specific.Selected.VALUE
-    Param05 = oForm01.Items("SItemCod").Specific.VALUE
-    Param06 = oForm01.Items("SCardCod").Specific.VALUE
-    Param07 = oForm01.Items("Mark").Specific.VALUE
+    Param01 = Trim(oForm01.Items("SBPLId").Specific.Selected.VALUE)
+    Param02 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE)
+    Param03 = Trim(oForm01.Items("ItmMsort").Specific.Selected.VALUE)
+    Param04 = Trim(oForm01.Items("ReqType").Specific.Selected.VALUE)
+    Param05 = Trim(oForm01.Items("SItemCod").Specific.VALUE)
+    Param06 = Trim(oForm01.Items("SCardCod").Specific.VALUE)
+    Param07 = Trim(oForm01.Items("Mark").Specific.VALUE)
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", RecordSet01.RecordCount, False)
@@ -2380,7 +2380,7 @@ On Error GoTo PS_PP030_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS01.InsertRecord (i)
         End If
-        oDS_PS_USERDS01.offset = i
+        oDS_PS_USERDS01.Offset = i
         Call oDS_PS_USERDS01.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS01.setValue("U_ColReg01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_USERDS01.setValue("U_ColReg02", i, RecordSet01.Fields(1).VALUE)
@@ -2443,10 +2443,10 @@ On Error GoTo PS_PP030_MTX02_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("ItemCode").Specific.VALUE
-'    Param02 = oForm01.Items("Param01").Specific.Value
-'    Param03 = oForm01.Items("Param01").Specific.Value
-'    Param04 = oForm01.Items("Param01").Specific.Value
+    Param01 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+'    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+'    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+'    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
 '    If oForm01.Items("OrdGbn").Specific.Selected.Value = "104" Then '//멀티인경우
 '        Query01 = "SELECT PS_PP001H.U_CpBCode, PS_PP001H.U_CpBName, PS_PP001L.U_CpCode, PS_PP001L.U_CpName FROM [@PS_PP001H] PS_PP001H LEFT JOIN [@PS_PP001L] PS_PP001L ON PS_PP001H.Code  =PS_PP001L.Code WHERE PS_PP001H.Code = 'CP501'"
 '    ElseIf oForm01.Items("OrdGbn").Specific.Selected.Value = "107" Then '//엔드베어링인경우
@@ -2469,7 +2469,7 @@ On Error GoTo PS_PP030_MTX02_Error
         If i <> 0 Then
             oDS_PS_PP030L.InsertRecord (i)
         End If
-        oDS_PS_PP030L.offset = i
+        oDS_PS_PP030L.Offset = i
         Call oDS_PS_PP030L.setValue("U_LineNum", i, i + 1)
         
         Call oDS_PS_PP030L.setValue("U_InputGbn", i, "10") '//투입구분 '//휘팅,부품의경우만 실행되므로 항상 10이다
@@ -2523,9 +2523,9 @@ On Error GoTo PS_PP030_MTX03_Error
     Dim ItemCode As String
     Dim BasicGub As String
     
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     
-    BasicGub = oForm01.Items("BasicGub").Specific.VALUE
+    BasicGub = Trim(oForm01.Items("BasicGub").Specific.VALUE)
 
     Query01 = "         EXEC [PS_PP030_07] '"
     Query01 = Query01 & ItemCode & "','"
@@ -2558,7 +2558,7 @@ On Error GoTo PS_PP030_MTX03_Error
             If i <> 0 Then
                 oDS_PS_PP030M.InsertRecord (i)
             End If
-            oDS_PS_PP030M.offset = i
+            oDS_PS_PP030M.Offset = i
             Call oDS_PS_PP030M.setValue("U_LineNum", i, i + 1)
             Call oDS_PS_PP030M.setValue("U_Sequence", i, i + 1)
             Call oDS_PS_PP030M.setValue("U_CpBCode", i, RecordSet01.Fields(0).VALUE)
@@ -2577,7 +2577,7 @@ On Error GoTo PS_PP030_MTX03_Error
         Next
     Else
         '//기계공구류는 검사공정을 기본적으로 입력
-        oDS_PS_PP030M.offset = 0
+        oDS_PS_PP030M.Offset = 0
         Call oDS_PS_PP030M.setValue("U_LineNum", 0, 1)
         Call oDS_PS_PP030M.setValue("U_Sequence", 0, 1)
         Call oDS_PS_PP030M.setValue("U_CpBCode", 0, "CP204")
@@ -2636,8 +2636,8 @@ On Error GoTo PS_PP030_DI_API_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
@@ -2647,7 +2647,7 @@ On Error GoTo PS_PP030_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.VALUE
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -3913,10 +3913,10 @@ On Error GoTo PS_PP030_CheckDate_Error
     Dim DocType      As String
     Dim CurDocDate   As String
     
-    BaseEntry = oForm01.Items("BaseNum").Specific.VALUE
+    BaseEntry = Trim(oForm01.Items("BaseNum").Specific.VALUE)
     BaseLine = ""
     DocType = "PS_PP030"
-    CurDocDate = oForm01.Items("DocDate").Specific.VALUE
+    CurDocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
 
     Query01 = "         EXEC PS_Z_CHECK_DATE '"
     Query01 = Query01 & BaseEntry & "','"

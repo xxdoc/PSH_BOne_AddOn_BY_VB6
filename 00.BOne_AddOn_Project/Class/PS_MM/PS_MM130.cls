@@ -1291,7 +1291,7 @@ On Error GoTo PS_MM130_DataInsertCheck_Error
 
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    oDate = oForm01.Items("DocDate").Specific.VALUE
+    oDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
     sQry = "SELECT ISNULL(MAX(U_OutDoc), 0) FROM [@PS_MM130H] WHERE SubString(U_OutDoc,1,8) = '" & oDate & "'"
 
     oRecordSet01.DoQuery sQry

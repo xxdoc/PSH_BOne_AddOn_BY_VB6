@@ -565,7 +565,7 @@ On Error GoTo PS_CO540_ComboBox_Setting_Error
     
     '// 사업장
     Set oCombo = oForm01.Items("BPLId").Specific
-    sQry = "SELECT BPLId, BPLName From OBPL"
+    sQry = "SELECT BPLId, BPLName From OBPL Order by BPLId"
     oRecordSet01.DoQuery sQry
     Call oCombo.ValidValues.Add("0", "전체 사업장")
     Do Until oRecordSet01.EOF
@@ -732,12 +732,12 @@ On Error GoTo PS_CO540_MTX01_Error
     Dim ItmBsort As String
     Dim Gubun As String
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
-    YmFrom = oForm01.Items("YmFrom").Specific.VALUE
-    YmTo = oForm01.Items("YmTo").Specific.VALUE
-    ItmSort = oForm01.Items("ItmSort").Specific.VALUE       '대분류
-    ItmBsort = oForm01.Items("ItmBsort").Specific.VALUE     '중분류
-    Gubun = oForm01.Items("Gubun").Specific.VALUE            '출력구분
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    YmFrom = Trim(oForm01.Items("YmFrom").Specific.VALUE)
+    YmTo = Trim(oForm01.Items("YmTo").Specific.VALUE)
+    ItmSort = Trim(oForm01.Items("ItmSort").Specific.VALUE)       '대분류
+    ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)     '중분류
+    Gubun = Trim(oForm01.Items("Gubun").Specific.VALUE)            '출력구분
     
     
     Query01 = "EXEC PS_CO540_01 '" & BPLID & "','" & YmFrom & "','" & YmTo & "','" & ItmSort & "','" & ItmBsort & "','" & Gubun & "'"

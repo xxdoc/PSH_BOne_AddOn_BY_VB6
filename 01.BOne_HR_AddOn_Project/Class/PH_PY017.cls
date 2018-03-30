@@ -751,7 +751,7 @@ On Error GoTo PH_PY017_DataValidCheck_Error
     oMat1.LoadFromDataSource
     
     '//HEAD TABLE¿¡ Å° SET
-    tCode = Trim(oForm.Items("CLTCOD").Specific.VALUE) + Trim(oForm.Items("YM").Specific.VALUE)
+    tCode = Trim(oForm.Items("CLTCOD").Specific.VALUE) + oForm.Items("YM").Specific.VALUE
     oDS_PH_PY017A.setValue "Code", 0, tCode
     oDS_PH_PY017A.setValue "Name", 0, tCode
     
@@ -861,7 +861,7 @@ Private Sub PH_PY017_ITEM_CREATE()
     Set oForm = Sbo_Application.Forms.ActiveForm
     
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YM = oForm.Items("YM").Specific.VALUE
     
     

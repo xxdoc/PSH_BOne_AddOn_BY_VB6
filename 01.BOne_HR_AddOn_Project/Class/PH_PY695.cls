@@ -284,7 +284,7 @@ On Error GoTo Raise_FormItemEvent_Error
 '                                   Next i
 '                                End If
 '                                '//현재 사업장으로 다시 Qry
-'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '                                Call SetReDataCombo(oForm, sQry, oCombo, "Y")
 '
 '                                '//담당
@@ -295,7 +295,7 @@ On Error GoTo Raise_FormItemEvent_Error
 '                                   Next i
 '                                End If
 '                                '//현재 사업장으로 다시 Qry
-'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '                                Call SetReDataCombo(oForm, sQry, oCombo, "Y")
 '
 '                           '//부서가 바뀌면 담당 재설정
@@ -308,7 +308,7 @@ On Error GoTo Raise_FormItemEvent_Error
 '                                   Next i
 '                                End If
 '                                '//현재 사업장으로 다시 Qry
-'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.Value & "' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+'                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.Value & "' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
 '                                Call SetReDataCombo(oForm, sQry, oCombo, "Y")
 '                           '//근무형태가 바뀌면 근무조 재설정
 '                           Case "ShiftDat"

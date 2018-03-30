@@ -817,7 +817,7 @@ On Error GoTo PS_CO922_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLId As String
+    Dim BPLID As String
     Dim FrMt As String
     Dim ToMt As String
     Dim ItemCode As String
@@ -825,11 +825,11 @@ On Error GoTo PS_CO922_MTX01_Error
     Dim CardType As String
     Dim SalesYN As String
     
-    BPLId = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     SalesYN = oForm01.Items("SalesYN").Specific.VALUE
     
@@ -837,7 +837,7 @@ On Error GoTo PS_CO922_MTX01_Error
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß...", 100, False)
     
     Query01 = "              EXEC PS_CO922_01 '"
-    Query01 = Query01 & BPLId & "','"
+    Query01 = Query01 & BPLID & "','"
     Query01 = Query01 & FrMt & "','"
     Query01 = Query01 & ToMt & "','"
     Query01 = Query01 & ItemCode & "','"
@@ -920,7 +920,7 @@ On Error GoTo PS_CO922_MTX02_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLId As String
+    Dim BPLID As String
     Dim FrMt As String
     Dim ToMt As String
     Dim ItemCode As String
@@ -928,11 +928,11 @@ On Error GoTo PS_CO922_MTX02_Error
     Dim CardType As String
     Dim SalesYN As String
     
-    BPLId = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     SalesYN = oForm01.Items("SalesYN").Specific.VALUE
     
@@ -940,7 +940,7 @@ On Error GoTo PS_CO922_MTX02_Error
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß...", 100, False)
     
     Query01 = "              EXEC PS_CO922_02 '"
-    Query01 = Query01 & BPLId & "','"
+    Query01 = Query01 & BPLID & "','"
     Query01 = Query01 & FrMt & "','"
     Query01 = Query01 & ToMt & "','"
     Query01 = Query01 & ItemCode & "','"
@@ -1042,8 +1042,8 @@ Private Function PS_CO922_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -1053,7 +1053,7 @@ Private Function PS_CO922_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1164,7 +1164,7 @@ On Error GoTo Print_Query_Error
 
     Call ConnectODBC
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim FrMt As String
     Dim ToMt As String
     Dim ItemCode As String
@@ -1172,11 +1172,11 @@ On Error GoTo Print_Query_Error
     Dim CardType As String
     Dim SalesYN As String
     
-    BPLId = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     SalesYN = oForm01.Items("SalesYN").Specific.VALUE
     
@@ -1187,7 +1187,7 @@ On Error GoTo Print_Query_Error
     
     'Äõ¸®
     sQry = "         EXEC PS_CO922_51 '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & FrMt & "','"
     sQry = sQry & ToMt & "','"
     sQry = sQry & ItemCode & "','"
@@ -1262,7 +1262,7 @@ On Error GoTo Print_Query_Error
 
     Call ConnectODBC
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim FrMt As String
     Dim ToMt As String
     Dim ItemCode As String
@@ -1270,11 +1270,11 @@ On Error GoTo Print_Query_Error
     Dim CardType As String
     Dim SalesYN As String
     
-    BPLId = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     SalesYN = oForm01.Items("SalesYN").Specific.VALUE
     
@@ -1285,7 +1285,7 @@ On Error GoTo Print_Query_Error
     
     'Äõ¸®
     sQry = "         EXEC PS_CO922_52 '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & FrMt & "','"
     sQry = sQry & ToMt & "','"
     sQry = sQry & ItemCode & "','"

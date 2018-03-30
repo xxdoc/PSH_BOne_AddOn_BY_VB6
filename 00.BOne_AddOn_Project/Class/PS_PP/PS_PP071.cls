@@ -368,7 +368,7 @@ Public Sub Search_Grid_Data()
     
     oForm01.Freeze True
     
-    Param01 = oForm01.Items("ItemCode").Specific.VALUE
+    Param01 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     Param02 = oForm01.Items("ItemName").Specific.VALUE
     Param03 = oForm01.Items("Size").Specific.VALUE
     Param04 = oForm01.Items("ItemType").Specific.Selected.VALUE

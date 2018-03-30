@@ -165,7 +165,7 @@ On Error GoTo Raise_MenuEvent_Error
         Select Case pval.MenuUID
             Case "1283": '삭제
                 If oForm01.Mode = fm_OK_MODE Then
-                    InspNo = oForm01.Items("InspNo").Specific.VALUE
+                    InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
                     '검사삭제시 검사완료 Update
                     sQry = "Update [Z_PACKING_PD] Set QM006YN = 'N' Where InspNo = '" & InspNo & "'"
                     oRecordSet.DoQuery sQry
@@ -173,7 +173,7 @@ On Error GoTo Raise_MenuEvent_Error
                 
             Case "1284": '취소
                 If oForm01.Mode = fm_OK_MODE Then
-                    InspNo = oForm01.Items("InspNo").Specific.VALUE
+                    InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
                     '검사삭제시 검사완료 Update
                     sQry = "Update [Z_PACKING_PD] Set QM006YN = 'N' Where InspNo = '" & InspNo & "'"
                     oRecordSet.DoQuery sQry
@@ -295,13 +295,13 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                InspNo = oForm01.Items("InspNo").Specific.VALUE
+                InspNo = Trim(oForm01.Items("InspNo").Specific.VALUE)
                 '//검사입력되면 검사완료 Sign Update
                 
                 sQry = "Update [Z_PACKING_PD] Set QM006YN = 'Y' Where InspNo = '" & InspNo & "'"
                 oRecordSet.DoQuery sQry
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -310,7 +310,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     Exit Sub
                 End If
                 
-                oDocEntry01 = oForm01.Items("DocEntry").Specific.VALUE
+                oDocEntry01 = Trim(oForm01.Items("DocEntry").Specific.VALUE)
                 oFormMode01 = oForm01.Mode
                 
             ElseIf oForm01.Mode = fm_OK_MODE Then
@@ -1265,9 +1265,9 @@ On Error GoTo PS_QM008_Print_Report01_Error
 
     Call ConnectODBC
     
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE
-    VIEWYN = oForm01.Items("VIEWYN").Specific.VALUE
-    SoviewYN = oForm01.Items("SOVIEWYN").Specific.VALUE
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
+    VIEWYN = Trim(oForm01.Items("VIEWYN").Specific.VALUE)
+    SoviewYN = Trim(oForm01.Items("SOVIEWYN").Specific.VALUE)
     
     WinTitle = "[PS_QM008_02] 검사성적서 출력(한문)"
     
@@ -1339,9 +1339,9 @@ On Error GoTo PS_QM008_Print_Report03_Error
 
     Call ConnectODBC
     
-    DocEntry = oForm01.Items("DocEntry").Specific.VALUE
-    VIEWYN = oForm01.Items("VIEWYN").Specific.VALUE
-    SoviewYN = oForm01.Items("SOVIEWYN").Specific.VALUE
+    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
+    VIEWYN = Trim(oForm01.Items("VIEWYN").Specific.VALUE)
+    SoviewYN = Trim(oForm01.Items("SOVIEWYN").Specific.VALUE)
     
     WinTitle = "[PS_QM008_03] 검사성적서 출력(영문)"
     

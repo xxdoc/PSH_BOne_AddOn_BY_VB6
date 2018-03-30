@@ -692,7 +692,7 @@ On Error GoTo PH_PYA70_Print_Report01_Error
     End If
     
     '//인자 MOVE , Trim 시키기..
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Code = Trim(oForm.Items("Code").Specific.VALUE)
     
     If Code = "" Then Code = "%"

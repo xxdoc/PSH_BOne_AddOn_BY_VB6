@@ -622,17 +622,17 @@ On Error GoTo PS_SD280_Print_Report01_Error
     WinTitle = "제품출고조회 [PS_SD280]"
     ReportName = "PS_SD280.rpt"
     
-    Dim BPLId$, DateFr$, DateTo$, CardCode$, ItmBsort$, ItemCode$, ItemCate$
+    Dim BPLID$, DateFr$, DateTo$, CardCode$, ItmBsort$, ItemCode$, ItemCate$
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     DateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
     DateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
-    CardCode = oForm01.Items("CardCode").Specific.VALUE
-    ItmBsort = oForm01.Items("ItmBsort").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     ItemCate = oForm01.Items("ItemCate").Specific.VALUE
     
-    sQry = "EXEC PS_SD280_01 '" & BPLId & "', '" & DateFr & "', "
+    sQry = "EXEC PS_SD280_01 '" & BPLID & "', '" & DateFr & "', "
     sQry = sQry & "'" & DateTo & "', '" & CardCode & "', '" & ItmBsort & "', "
     sQry = sQry & "'" & ItemCode & "', '" & ItemCate & "'"
 

@@ -728,8 +728,8 @@ On Error GoTo PS_MM946_MTX01_Error
     Param01 = oForm01.Items("BPLId").Specific.Selected.VALUE
     Param02 = oForm01.Items("DocDatefr").Specific.VALUE
     Param03 = oForm01.Items("DocDateto").Specific.VALUE
-    'Param04 = oForm01.Items("ItmBsort").Specific.Selected.VALUE
-    'Param05 = oForm01.Items("ItmMsort").Specific.Selected.VALUE
+    'Param04 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE)
+    'Param05 = Trim(oForm01.Items("ItmMsort").Specific.Selected.VALUE)
     'Param06 = oForm01.Items("ItemCode").Specific.VALUE
     'Param07 = oForm01.Items("ItemName").Specific.VALUE
     'Param08 = oForm01.Items("Size").Specific.VALUE
@@ -790,8 +790,8 @@ Private Function PS_MM946_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -801,7 +801,7 @@ Private Function PS_MM946_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

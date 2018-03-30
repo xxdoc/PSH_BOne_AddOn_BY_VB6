@@ -755,11 +755,11 @@ On Error GoTo PS_PP988_Accumulate_Error
     
     CntcCode = MDC_PS_Common.User_MSTCOD
     
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     ItemType = oForm01.Items("ItemType").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     TeamCode = oForm01.Items("TeamCode").Specific.VALUE
     RspCode = oForm01.Items("RspCode").Specific.VALUE
     ClsCode = oForm01.Items("ClsCode").Specific.VALUE
@@ -963,11 +963,11 @@ On Error GoTo PS_PP988_MTX01_Error
     
     CntcCode = MDC_PS_Common.User_MSTCOD
     
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     ItemType = oForm01.Items("ItemType").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     TeamCode = oForm01.Items("TeamCode").Specific.VALUE
     RspCode = oForm01.Items("RspCode").Specific.VALUE
     ClsCode = oForm01.Items("ClsCode").Specific.VALUE
@@ -1095,8 +1095,8 @@ Private Function PS_PP988_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -1106,7 +1106,7 @@ Private Function PS_PP988_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1206,11 +1206,11 @@ On Error GoTo Print_Query_Error
     
     CntcCode = MDC_PS_Common.User_MSTCOD
     
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
     ItemType = oForm01.Items("ItemType").Specific.VALUE
-    ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     TeamCode = oForm01.Items("TeamCode").Specific.VALUE
     RspCode = oForm01.Items("RspCode").Specific.VALUE
     ClsCode = oForm01.Items("ClsCode").Specific.VALUE

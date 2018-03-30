@@ -460,7 +460,7 @@ On Error GoTo PH_PY677_UpdateData_Error
     For i = 0 To oMat01.VisualRowCount - 1
         If Trim(oDS_PH_PY677B.GetValue("U_ColReg20", i)) = "Y" Then
             
-            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE '사업장
+            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE) '사업장
             PosDate = Trim(oDS_PH_PY677B.GetValue("U_ColDt05", i)) '일자
             MSTCOD = Trim(oDS_PH_PY677B.GetValue("U_ColReg05", i)) '사번
             ShiftDat = Trim(oDS_PH_PY677B.GetValue("U_ColReg07", i)) '근무형태
@@ -864,7 +864,7 @@ On Error GoTo PH_PY677_FlushToItemValue_Error
                         End If
 
                         ymd = Trim(oDS_PH_PY677B.GetValue("U_ColDt05", oRow - 1))
-                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                         MSTCOD = Trim(oDS_PH_PY677B.GetValue("U_ColReg05", oRow - 1))
                         
                         Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", oRecordSet01.RecordCount, False)
@@ -905,7 +905,7 @@ On Error GoTo PH_PY677_FlushToItemValue_Error
                     
                         '근속보전휴가 잔량 확인
                         ymd = Trim(oDS_PH_PY677B.GetValue("U_ColDt05", oRow - 1))
-                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                         MSTCOD = Trim(oDS_PH_PY677B.GetValue("U_ColReg05", oRow - 1))
 
                         If Trim(oDS_PH_PY677B.GetValue("U_ColDt05", oRow - 1)) >= Left(ymd, 4) + "0701" Then
@@ -2024,7 +2024,7 @@ On Error GoTo PH_PY677_Time_Calc_Main_Error
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     ShiftDat = Trim(oDS_PH_PY677B.GetValue("U_ColReg07", pRow - 1)) '근무형태
     GNMUJO = Trim(oDS_PH_PY677B.GetValue("U_ColReg08", pRow - 1)) '근무조
     

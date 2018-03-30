@@ -387,7 +387,7 @@ On Error GoTo PS_QM170_UpdateData_Error
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
     Dim DocEntry As Integer '관리번호(PK)
-    Dim BPLId As String '사업장코드(PK)
+    Dim BPLID As String '사업장코드(PK)
     Dim RegNo As String '등록번호(PK)
     Dim RegDate As String '등록일자
     Dim CntcCode As String '개선자사번
@@ -401,7 +401,7 @@ On Error GoTo PS_QM170_UpdateData_Error
     Dim Comment As String '비고
 
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE) '관리번호
-    BPLId = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     RegNo = Trim(oForm01.Items("RegNo").Specific.VALUE) '등록번호
     RegDate = Trim(oForm01.Items("RegDate").Specific.VALUE) '등록일자
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE) '개선자사번
@@ -416,7 +416,7 @@ On Error GoTo PS_QM170_UpdateData_Error
 
     sQry = "         EXEC [PS_QM170_03] '"
     sQry = sQry & DocEntry & "','" '관리번호
-    sQry = sQry & BPLId & "','"  '사업장
+    sQry = sQry & BPLID & "','"  '사업장
     sQry = sQry & RegNo & "','"  '등록번호
     sQry = sQry & RegDate & "','"  '등록일자
     sQry = sQry & CntcCode & "','"  '사원번호
@@ -463,7 +463,7 @@ On Error GoTo PS_QM170_AddData_Error
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)
 
     Dim DocEntry As Integer '관리번호(PK)
-    Dim BPLId As String '사업장코드(PK)
+    Dim BPLID As String '사업장코드(PK)
     Dim RegNo As String '등록번호(PK)
     Dim RegDate As String '등록일자
     Dim CntcCode As String '개선자사번
@@ -479,7 +479,7 @@ On Error GoTo PS_QM170_AddData_Error
     Dim Title As String '제목
     Dim Comment As String '비고
 
-    BPLId = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     RegNo = Trim(oForm01.Items("RegNo").Specific.VALUE) '등록번호
     RegDate = Trim(oForm01.Items("RegDate").Specific.VALUE) '등록일자
     CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE) '개선자사번
@@ -507,7 +507,7 @@ On Error GoTo PS_QM170_AddData_Error
 
     sQry = "         EXEC [PS_QM170_02] '"
     sQry = sQry & DocEntry & "','" '관리번호
-    sQry = sQry & BPLId & "','"  '사업장
+    sQry = sQry & BPLID & "','"  '사업장
     sQry = sQry & RegNo & "','"  '등록번호
     sQry = sQry & RegDate & "','"  '등록일자
     sQry = sQry & CntcCode & "','"  '사원번호
@@ -1461,14 +1461,14 @@ On Error GoTo PS_QM170_ComboBox_Setting_Error
         
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String
-    BPLId = MDC_PS_Common.User_BPLId
+    Dim BPLID As String
+    BPLID = MDC_PS_Common.User_BPLId
     
     Call oForm01.Freeze(True)
 
     '//////////기본정보//////////
     '사업장
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID").Specific, "SELECT BPLId, BPLName FROM OBPL order by BPLId", BPLId, False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID").Specific, "SELECT BPLId, BPLName FROM OBPL order by BPLId", BPLID, False, False)
     
     '분야
     Call oForm01.Items("Fields").Specific.ValidValues.Add("%", "선택")
@@ -1530,7 +1530,7 @@ On Error GoTo PS_QM170_ComboBox_Setting_Error
     
     '//////////조회정보//////////
     '사업장
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("SBPLID").Specific, "SELECT BPLId, BPLName FROM OBPL order by BPLId", BPLId, False, False)
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("SBPLID").Specific, "SELECT BPLId, BPLName FROM OBPL order by BPLId", BPLID, False, False)
     
     '분야
     Call oForm01.Items("SFields").Specific.ValidValues.Add("%", "전체")
@@ -1750,12 +1750,12 @@ On Error GoTo PS_QM170_GetRegNo_Error
     Dim ErrNum As Integer
     
     Dim RegDate As String
-    Dim BPLId As String
+    Dim BPLID As String
     
-    BPLId = oForm01.Items("BPLID").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     RegDate = Left(Trim(oForm01.Items("RegDate").Specific.VALUE), 6)
     
-    sQry = "EXEC PS_QM170_05 '" & BPLId & "', '" & RegDate & "'"
+    sQry = "EXEC PS_QM170_05 '" & BPLID & "', '" & RegDate & "'"
     Call oRecordSet01.DoQuery(sQry)
 
     oForm01.DataSources.UserDataSources("RegNo").VALUE = Trim(oRecordSet01.Fields("RegNo").VALUE) ' BPLID & "-" & RegDate

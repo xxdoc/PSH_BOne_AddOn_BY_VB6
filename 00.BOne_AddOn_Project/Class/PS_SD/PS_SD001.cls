@@ -765,23 +765,23 @@ On Error GoTo Create_Itemcode_Error
     End If
     
     Sbo_Company.StartTransaction
-    ItemName = oForm01.Items("ItemName").Specific.VALUE & " " & oForm01.Items("Spec1").Specific.VALUE  '아이템코드
-    oItem01.ItemCode = oForm01.Items("ItemCode").Specific.VALUE
+    ItemName = Trim(oForm01.Items("ItemName").Specific.VALUE) & " " & Trim(oForm01.Items("Spec1").Specific.VALUE)  '아이템코드
+    oItem01.ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     oItem01.ItemName = ItemName                                                           '아이템이름
-    oItem01.ForeignName = oForm01.Items("ItemName").Specific.VALUE
-    oItem01.DefaultWarehouse = oForm01.Items("WhsCode").Specific.VALUE                    '기본창고
+    oItem01.ForeignName = Trim(oForm01.Items("ItemName").Specific.VALUE)
+    oItem01.DefaultWarehouse = Trim(oForm01.Items("WhsCode").Specific.VALUE)                    '기본창고
     oItem01.ItemsGroupCode = "102"                                                        '품목그룹
-    oItem01.UserFields("U_ItmBsort").VALUE = oForm01.Items("ItmBsort").Specific.VALUE     '품목대분류
-    oItem01.UserFields("U_ItmMsort").VALUE = oForm01.Items("ItmMsort").Specific.VALUE     '품목중분류
-    oItem01.UserFields("U_Spec1").VALUE = oForm01.Items("Spec1").Specific.VALUE           '규격
-    oItem01.UserFields("U_Size").VALUE = oForm01.Items("Spec1").Specific.VALUE            '사이즈
-    oItem01.PurchaseUnit = oForm01.Items("Unit1").Specific.VALUE                          '구매처표현단위
-    oItem01.SalesUnit = oForm01.Items("Unit1").Specific.VALUE                             '판매처표현단위
+    oItem01.UserFields("U_ItmBsort").VALUE = Trim(oForm01.Items("ItmBsort").Specific.VALUE)     '품목대분류
+    oItem01.UserFields("U_ItmMsort").VALUE = Trim(oForm01.Items("ItmMsort").Specific.VALUE)     '품목중분류
+    oItem01.UserFields("U_Spec1").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE)           '규격
+    oItem01.UserFields("U_Size").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE)            '사이즈
+    oItem01.PurchaseUnit = Trim(oForm01.Items("Unit1").Specific.VALUE)                          '구매처표현단위
+    oItem01.SalesUnit = Trim(oForm01.Items("Unit1").Specific.VALUE)                             '판매처표현단위
     oItem01.UserFields("U_ObasUnit").VALUE = "101"                                        '매입기준단위
     oItem01.UserFields("U_SbasUnit").VALUE = "101"                                        '판매기준단위
     
-    oItem01.UserFields("U_TeamCode").VALUE = oForm01.Items("TeamCode").Specific.VALUE '고객소속
-    oItem01.UserFields("U_YearPdYN").VALUE = oForm01.Items("YearPdYN").Specific.VALUE '연간품여부
+    oItem01.UserFields("U_TeamCode").VALUE = Trim(oForm01.Items("TeamCode").Specific.VALUE) '고객소속
+    oItem01.UserFields("U_YearPdYN").VALUE = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '연간품여부
     
     RetVal = oItem01.Add
     
@@ -795,11 +795,11 @@ On Error GoTo Create_Itemcode_Error
     End If
 '
 '        oRadioBtn = oForm01.Items("RadioBtn").Specific.Value
-        oCardCode = oForm01.Items("CardCode").Specific.VALUE
-        oCpNaming = oForm01.Items("CpNaming").Specific.VALUE
-        oWhsCode = oForm01.Items("WhsCode").Specific.VALUE
-        oItmBsort = oForm01.Items("ItmBsort").Specific.VALUE
-        oItmMsort = oForm01.Items("ItmMsort").Specific.VALUE
+        oCardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+        oCpNaming = Trim(oForm01.Items("CpNaming").Specific.VALUE)
+        oWhsCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
+        oItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+        oItmMsort = Trim(oForm01.Items("ItmMsort").Specific.VALUE)
     
     Set oItem01 = Nothing
     Create_Itemcode = True
@@ -854,9 +854,9 @@ On Error GoTo Create_Form_Code_Error
         
     End If
     
-    sDate = oForm01.Items("MatDate").Specific.VALUE
+    sDate = Trim(oForm01.Items("MatDate").Specific.VALUE)
     sDate = Mid(sDate, 1, 6)
-    sCho = sTxt & oForm01.Items("CpNaming").Specific.VALUE
+    sCho = sTxt & Trim(oForm01.Items("CpNaming").Specific.VALUE)
     
     sQry = "SELECT MAX(SubString(ItemCode,3,9)) FROM OITM WHERE SubString(ItemCode,1,2) = '" & sCho & "' AND "
     sQry = sQry & "SubString(ItemCode,3,6) = '" & sDate & "'"

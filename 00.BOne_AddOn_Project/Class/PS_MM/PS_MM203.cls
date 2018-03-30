@@ -397,7 +397,7 @@ On Error GoTo FlushToItemValue_Error
     Dim ErrNum          As Integer
     Dim sQry            As String
     Dim oRecordSet    As SAPbobsCOM.Recordset
-    Dim ItmBSort$, ItmMsort$, MsortName$
+    Dim ItmBsort$, ItmMsort$, MsortName$
         
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     '--------------------------------------------------------------
@@ -474,9 +474,9 @@ On Error GoTo Print_Query_Error
     Dim EITemCode       As String
     Dim SCardCode       As String
     Dim ECardCode       As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim Purchase        As String
-    Dim ItmBSort      As String
+    Dim ItmBsort      As String
     Dim ItmMsort        As String
     
     
@@ -495,9 +495,9 @@ On Error GoTo Print_Query_Error
     SCardCode = Trim(oForm01.Items("SCardCode").Specific.VALUE)
     ECardCode = Trim(oForm01.Items("SCardCode").Specific.VALUE)
     'ECardCode = Trim(oForm01.Items("ECardCode").Specific.Value)
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE
-    Purchase = oForm01.Items("Purchase").Specific.Selected.VALUE
-    ItmBSort = Trim(oForm01.Items("U_ItmBsort").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    Purchase = Trim(oForm01.Items("Purchase").Specific.Selected.VALUE)
+    ItmBsort = Trim(oForm01.Items("U_ItmBsort").Specific.VALUE)
     ItmMsort = Trim(oForm01.Items("ItmMsort").Specific.VALUE)
     
     If StrDate = "" Then StrDate = "19000101"
@@ -509,7 +509,7 @@ On Error GoTo Print_Query_Error
 '    If BPLId = "0" Then BPLId = "%"
     If Purchase = "0" Then Purchase = "%"
     '대분류와 중분류를 입력하지 않았는데 왜 품목구분을 전체로 세팅하나?각 변수(대분류,중분류)를 전체로 세팅(2011.09.26 송명규)
-    If ItmBSort = "" Then ItmBSort = "%"
+    If ItmBsort = "" Then ItmBsort = "%"
     If ItmMsort = "" Then ItmMsort = "%"
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_MM203] 입고현황"
@@ -525,7 +525,7 @@ On Error GoTo Print_Query_Error
     gRpt_Formula_Value(2) = IIf(EndDate = "21001231", "All", Format(EndDate, "0000-00-00"))
     
     gRpt_Formula(3) = "BPLId"
-    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLId & "'"
+    sQry = "SELECT U_CdName FROM [@PS_SY001L] WHERE Code = 'C105' AND U_Minor = '" & BPLID & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(3) = oRecordSet.Fields(0).VALUE
     
@@ -540,7 +540,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC [PS_MM203_01] '" & StrDate & "', '" & EndDate & "', '" & SItemCode & "','" & EITemCode & "', '" & SCardCode & "','" & ECardCode & "', '" & BPLId & "', '" & Purchase & "', '" & ItmBSort & "','" & ItmMsort & "'"
+    sQry = "EXEC [PS_MM203_01] '" & StrDate & "', '" & EndDate & "', '" & SItemCode & "','" & EITemCode & "', '" & SCardCode & "','" & ECardCode & "', '" & BPLID & "', '" & Purchase & "', '" & ItmBsort & "','" & ItmMsort & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1

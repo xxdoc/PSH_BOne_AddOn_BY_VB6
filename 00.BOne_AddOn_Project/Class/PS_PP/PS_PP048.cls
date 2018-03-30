@@ -180,7 +180,7 @@ On Error GoTo Raise_MenuEvent_Error
 '                        BubbleEvent = False
 '                        Exit Sub
 '                    End If
-                    oDocEntry = oForm01.Items("DocEntry").Specific.VALUE
+                    oDocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
 '                Else
 '                    MDC_Com.MDC_GF_Message "현재 모드에서는 취소할수 없습니다.", "W"
 '                    BubbleEvent = False
@@ -1162,10 +1162,10 @@ On Error GoTo PS_PP048_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1332,7 +1332,7 @@ On Error GoTo PS_PP048_DI_API03_Error
     
     
     oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
-    oDIObject.UserFields("U_CancDoc").VALUE = oForm01.Items("OIGNNo").Specific.VALUE
+    oDIObject.UserFields("U_CancDoc").VALUE = Trim(oForm01.Items("OIGNNo").Specific.VALUE)
     For i = 0 To ItemInformationCount - 1
         If i <> 0 Then
             oDIObject.Lines.Add

@@ -408,7 +408,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim Div         As String
     Dim target      As String
     Dim relate      As String
-    Dim YYYY        As String
+    Dim yyyy        As String
     Dim Result      As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
@@ -435,9 +435,9 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 End If
                     If pval.ItemUID = "Btn01" Then
                 
-                        CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
-                        YYYY = oForm.Items("Year").Specific.VALUE
-                        sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & YYYY & CLTCOD & "'"
+                        CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+                        yyyy = oForm.Items("Year").Specific.VALUE
+                        sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & yyyy & CLTCOD & "'"
                         oRecordSet.DoQuery sQry
                            
                         Result = oRecordSet.Fields(0).VALUE
@@ -602,7 +602,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '                                oForm.Items("bbcard_t").Enabled = True '2016년 기준 2014년 총신용카드 사용금액
 '                                oForm.Items("bbcard44").Enabled = True '2016년 기준 2014년 신용카드사용분 제외 금액
 '
-'                                CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+'                                CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
 '
 '                                sQry = " Select bcard_t = Isnull(Sum(Case When yyyy = '2015' Then Case When target in ('520','540','550','572','574') Then Isnull(amt,0) + Isnull(ntsamt,0) + isnull(mart24,0) + Isnull(trans24,0) + Isnull(mart44,0) + isnull(trans44,0) Else 0 End End), 0),"
 '                                sQry = sQry + " bcard44 = Isnull(Sum(Case When yyyy = '2015' Then Case When target in ('520') Then Isnull(mart24,0) + Isnull(trans24,0) + Isnull(mart44,0) + Isnull(trans44,0) Else 0 End End),0) + "
@@ -722,7 +722,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Select Case pval.ItemUID
 
                         Case "MSTCOD"
-                            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                             MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
                             
                             sQry = "Select Code,"
@@ -754,7 +754,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             oForm.Items("ClsName").Specific.VALUE = oRecordSet.Fields("ClsName").VALUE
 
                         Case "FullName"
-                            CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+                            CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
                             FullName = oForm.Items("FullName").Specific.VALUE
                             
                             sQry = "Select Code,"
@@ -1183,7 +1183,7 @@ Private Sub PH_PY402_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("Year").Specific.VALUE
     Param03 = oForm.Items("MSTCOD").Specific.VALUE
         
@@ -1256,7 +1256,7 @@ Private Sub PH_PY402_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
     sRow = oRow
     
     
-    Param01 = oForm.Items("CLTCOD").Specific.VALUE
+    Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oDS_PH_PY402A.Columns.Item("Year").Cells(oRow).VALUE
     Param03 = oDS_PH_PY402A.Columns.Item("MSTCOD").Cells(oRow).VALUE
     Param04 = oDS_PH_PY402A.Columns.Item("div").Cells(oRow).VALUE
@@ -1506,7 +1506,7 @@ Private Sub PH_PY402_SAVE()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     FullName = oForm.Items("FullName").Specific.VALUE
 
@@ -1728,7 +1728,7 @@ Private Sub PH_PY402_Delete()
     
     
     Call oForm.Freeze(True)
-    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     YEAR = oForm.Items("Year").Specific.VALUE
     MSTCOD = oForm.Items("MSTCOD").Specific.VALUE
     FullName = oForm.Items("kname").Specific.VALUE

@@ -1027,9 +1027,9 @@ On Error GoTo PS_PP039_FlushToItemValue_Error
     
     ElseIf oUID = "OrdNum" Or oUID = "OrdSub1" Or oUID = "OrdSub2" Then
         
-        OrdNum = oForm01.Items("OrdNum").Specific.VALUE
-        OrdSub1 = oForm01.Items("OrdSub1").Specific.VALUE
-        OrdSub2 = oForm01.Items("OrdSub2").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE)
+        OrdSub1 = Trim(oForm01.Items("OrdSub1").Specific.VALUE)
+        OrdSub2 = Trim(oForm01.Items("OrdSub2").Specific.VALUE)
 
         sQry = "           SELECT   CASE"
         sQry = sQry & "                 WHEN T0.U_JakMyung = '' THEN (SELECT FrgnName FROM OITM WHERE ItemCode = T0.U_ItemCode)"
@@ -1255,14 +1255,14 @@ On Error GoTo PS_PP039_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-    BPLID = oForm01.Items("BPLID").Specific.VALUE '사업장
-    OrdGbn = oForm01.Items("OrdGbn").Specific.VALUE '작업구분
-    FrDt = oForm01.Items("FrDt").Specific.VALUE '지시일자(Fr)
-    ToDt = oForm01.Items("ToDt").Specific.VALUE '지시일자(To)
-    CntcCode = oForm01.Items("CntcCode").Specific.VALUE '담당자
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE '작번
-    OrdSub1 = oForm01.Items("OrdSub1").Specific.VALUE '서브작번1
-    OrdSub2 = oForm01.Items("OrdSub2").Specific.VALUE '서브작번2
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE) '작업구분
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '지시일자(Fr)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '지시일자(To)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE) '담당자
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE) '작번
+    OrdSub1 = Trim(oForm01.Items("OrdSub1").Specific.VALUE) '서브작번1
+    OrdSub2 = Trim(oForm01.Items("OrdSub2").Specific.VALUE) '서브작번2
     
     Query01 = "              EXEC PS_PP039_01 '"
     Query01 = Query01 & BPLID & "','" '사업장
@@ -1506,9 +1506,9 @@ On Error GoTo PS_PP039_AddData_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
     
-    MainEntry = oForm01.Items("MainEntry").Specific.VALUE
-    BPLID = oForm01.Items("BPLID").Specific.VALUE
-    FullOrdNum = oForm01.Items("FullOrdNum").Specific.VALUE
+    MainEntry = Trim(oForm01.Items("MainEntry").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    FullOrdNum = Trim(oForm01.Items("FullOrdNum").Specific.VALUE)
     
     Call oMat01.FlushToDataSource
     For loopCount = 0 To oMat01.VisualRowCount - 1
@@ -1726,8 +1726,8 @@ Private Function PS_PP039_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -1737,7 +1737,7 @@ Private Function PS_PP039_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -1941,13 +1941,13 @@ On Error GoTo Print_Query_Error
     Dim InputYN As String
     Dim Class As String
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    FrDt = oForm01.Items("FrDt").Specific.VALUE
-    ToDt = oForm01.Items("ToDt").Specific.VALUE
-    Purchase = oForm01.Items("Purchase").Specific.VALUE
-    OrderYN = oForm01.Items("OrderYN").Specific.VALUE
-    InputYN = oForm01.Items("InputYN").Specific.VALUE
-    Class = oForm01.Items("Class").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    Purchase = Trim(oForm01.Items("Purchase").Specific.VALUE)
+    OrderYN = Trim(oForm01.Items("OrderYN").Specific.VALUE)
+    InputYN = Trim(oForm01.Items("InputYN").Specific.VALUE)
+    Class = Trim(oForm01.Items("Class").Specific.VALUE)
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_PP039] 레포트"

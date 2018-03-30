@@ -236,9 +236,9 @@ Private Function PH_PY118_CreateItems() As Boolean
     sQry = " SELECT U_FrSMTP, U_FrEMAIL, U_FrPWD FROM [@PH_PY118A] WHERE Code= '1'"
     oRecordSet.DoQuery sQry
     Do Until oRecordSet.EOF
-        oForm.DataSources.UserDataSources("FrSMTP").Value = oRecordSet.Fields(0).Value
-        oForm.DataSources.UserDataSources("FrEMAIL").Value = oRecordSet.Fields(1).Value
-        oForm.DataSources.UserDataSources("FrPWD").Value = oRecordSet.Fields(2).Value
+        oForm.DataSources.UserDataSources("FrSMTP").VALUE = oRecordSet.Fields(0).VALUE
+        oForm.DataSources.UserDataSources("FrEMAIL").VALUE = oRecordSet.Fields(1).VALUE
+        oForm.DataSources.UserDataSources("FrPWD").VALUE = oRecordSet.Fields(2).VALUE
         oRecordSet.MoveNext
     Loop
     
@@ -309,7 +309,7 @@ Private Sub PH_PY118_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY118_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -366,7 +366,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_ITEM_PRESSED: '//1
             
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "1" Then
+                If pval.ItemUID = "1" Then
                     'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                     '//추가및 업데이트시에
                     'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -383,7 +383,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             Exit Sub
                         End If
                     End If
-                ElseIf pval.ItemUid = "CBtn1" Then
+                ElseIf pval.ItemUID = "CBtn1" Then
                     If oForm.Items("MSTCOD").Enabled = True Then
                         oForm.Items("MSTCOD").CLICK ct_Regular
                         Sbo_Application.ActivateMenuItem ("7425")
@@ -391,11 +391,11 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End If
             ElseIf pval.BeforeAction = False Then
-                If pval.ItemUid = "Btn1" Then
+                If pval.ItemUID = "Btn1" Then
                     Call eMail_Process
-                ElseIf pval.ItemUid = "Btn2" Or pval.ItemUid = "Btn3" Then
+                ElseIf pval.ItemUID = "Btn2" Or pval.ItemUID = "Btn3" Then
                     Call PH_PY118_FormItemEnabled
-                    If pval.ItemUid = "Btn3" Then  '/ 임시테이블에 저장하기
+                    If pval.ItemUID = "Btn3" Then  '/ 임시테이블에 저장하기
                         Call SetSendMail
                     End If
                 End If
@@ -441,12 +441,12 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
-                    If pval.ItemUid = "CLTCOD" Then
+                    If pval.ItemUID = "CLTCOD" Then
                         '//기본사항 - 부서 (사업장에 따른 부서변경)
                         Set oCombo = oForm.Items("MSTDPT").Specific
 
                         sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("CLTCOD").Specific.Value & "'"
+                        sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                         sQry = sQry & " ORDER BY U_Code"
                         
                         Call SetReDataCombo(oForm, sQry, oCombo)
@@ -463,7 +463,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             Call oForm.Freeze(False)
 '----------------------------------------------------------
         Case et_CLICK: '//6
-            If pval.FormUID = oForm.uniqueID And pval.BeforeAction = False And pval.ItemUid = "Mat1" _
+            If pval.FormUID = oForm.uniqueID And pval.BeforeAction = False And pval.ItemUID = "Mat1" _
                 And pval.ColUID = "Col11" Then
                 If pval.Row = 0 Then
                     Call PrintChk
@@ -471,7 +471,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             End If
 '----------------------------------------------------------
         Case et_DOUBLE_CLICK: '//7
-             If pval.FormUID = oForm.uniqueID And pval.BeforeAction = False And pval.ItemUid = "Mat1" _
+             If pval.FormUID = oForm.uniqueID And pval.BeforeAction = False And pval.ItemUID = "Mat1" _
                 And pval.ColUID = "Col11" Then
                 If pval.Row = 0 Then
                     Call PrintChk
@@ -485,26 +485,26 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_VALIDATE: '//10
              If pval.BeforeAction = False And pval.ItemChanged = True Then
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "MSTCOD"
                     If oForm.Items("MSTCOD").Specific.String = "" Then
-                        oForm.Items("MSTNAM").Specific.Value = ""
+                        oForm.Items("MSTNAM").Specific.VALUE = ""
                     Else
-                        oForm.Items("MSTNAM").Specific.Value = MDC_SetMod.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & Trim$(oForm.Items("MSTCOD").Specific.String) & "'", "")
+                        oForm.Items("MSTNAM").Specific.VALUE = MDC_SetMod.Get_ReData("U_FullName", "Code", "[@PH_PY001A]", "'" & Trim$(oForm.Items("MSTCOD").Specific.String) & "'", "")
                     End If
                     oForm.Items("MSTNAM").Update
                 
                 Case "STRDAT"
                     If oForm.Items("STRDAT").Specific.String = "" Then
                         If oForm.Items("STRDAT").Specific.String = "" Then
-                            oForm.Items("STRDAT").Specific.Value = Format$(Now, "YYYYMMDD")
+                            oForm.Items("STRDAT").Specific.VALUE = Format$(Now, "YYYYMMDD")
                         End If
                     End If
                 
                 Case "ENDDAT"
                     If oForm.Items("ENDDAT").Specific.String = "" Then
                         If oForm.Items("ENDDAT").Specific.String = "" Then
-                            oForm.Items("ENDDAT").Specific.Value = Format$(Now, "YYYYMMDD")
+                            oForm.Items("ENDDAT").Specific.VALUE = Format$(Now, "YYYYMMDD")
                         End If
                     End If
                 End Select
@@ -693,15 +693,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat1"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -762,9 +762,9 @@ On Error GoTo PH_PY118_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY118'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY118_FormClear_Error:
@@ -816,7 +816,7 @@ On Error GoTo PH_PY118_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY118A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY118A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY118_Validate = False
         GoTo PH_PY118_Validate_Exit
@@ -868,7 +868,7 @@ Private Sub PH_PY118_Print_Report01()
 
     WinTitle = "[S142] 발주서"
     ReportName = "S142_1.rpt"
-    sQry = "EXEC PH_PY118_1 '" & oForm.Items("8").Specific.Value & "'"
+    sQry = "EXEC PH_PY118_1 '" & oForm.Items("8").Specific.VALUE & "'"
     
     '/ Formula 수식필드
     ReDim gRpt_Formula(1)
@@ -1046,7 +1046,7 @@ On Error GoTo Error_Message
     Else
         For i = 1 To 36
             If i <= oRecordSet.RecordCount Then
-                ArrPayHead(i) = oRecordSet.Fields(0).Value
+                ArrPayHead(i) = oRecordSet.Fields(0).VALUE
                 oRecordSet.MoveNext
             End If
         Next i
@@ -1064,7 +1064,7 @@ On Error GoTo Error_Message
     Else
         For i = 1 To 36
             If i <= oRecordSet.RecordCount Then
-                ArrSubHead(i) = oRecordSet.Fields(0).Value
+                ArrSubHead(i) = oRecordSet.Fields(0).VALUE
                 oRecordSet.MoveNext
             End If
         Next i
@@ -1173,23 +1173,23 @@ On Error GoTo Error_Message
                 oRecordSet.DoQuery sQry
                 If oRecordSet.RecordCount > 0 Then
                     For i = 1 To 36
-                        If oRecordSet.Fields("U_CSUD" & Format(i, "00")).Value = Null Then oRecordSet.Fields("U_CSUD" & Format(i, "00")).Value = 0
-                        ArrPayAmt(i) = oRecordSet.Fields("U_CSUD" & Format(i, "00")).Value
+                        If oRecordSet.Fields("U_CSUD" & Format(i, "00")).VALUE = Null Then oRecordSet.Fields("U_CSUD" & Format(i, "00")).VALUE = 0
+                        ArrPayAmt(i) = oRecordSet.Fields("U_CSUD" & Format(i, "00")).VALUE
                     Next i
                     For i = 1 To 36
-                        If oRecordSet.Fields("U_GONG" & Format(i, "00")).Value = Null Then oRecordSet.Fields("U_GONG" & Format(i, "00")).Value = 0
-                        ArrSubAmt(i) = oRecordSet.Fields("U_GONG" & Format(i, "00")).Value
+                        If oRecordSet.Fields("U_GONG" & Format(i, "00")).VALUE = Null Then oRecordSet.Fields("U_GONG" & Format(i, "00")).VALUE = 0
+                        ArrSubAmt(i) = oRecordSet.Fields("U_GONG" & Format(i, "00")).VALUE
                     Next i
                     For i = 1 To 14
-                        If oRecordSet.Fields(i + 76).Value = Null Then oRecordSet.Fields(i + 76).Value = 0
-                        ArrGntAmt(i) = oRecordSet.Fields(i + 76).Value
+                        If oRecordSet.Fields(i + 76).VALUE = Null Then oRecordSet.Fields(i + 76).VALUE = 0
+                        ArrGntAmt(i) = oRecordSet.Fields(i + 76).VALUE
                     Next i
                     
-                    sTOTPAY = oRecordSet.Fields("U_TOTPAY").Value
-                    sTOTGON = oRecordSet.Fields("U_TOTGON").Value
-                    sSILJIG = oRecordSet.Fields("U_SILJIG").Value
-                    If oRecordSet.Fields("U_CLTNAM").Value <> "" Then
-                        oCLTNAM = oRecordSet.Fields("U_CLTNAM").Value
+                    sTOTPAY = oRecordSet.Fields("U_TOTPAY").VALUE
+                    sTOTGON = oRecordSet.Fields("U_TOTGON").VALUE
+                    sSILJIG = oRecordSet.Fields("U_SILJIG").VALUE
+                    If oRecordSet.Fields("U_CLTNAM").VALUE <> "" Then
+                        oCLTNAM = oRecordSet.Fields("U_CLTNAM").VALUE
                     End If
                 
             
@@ -1537,12 +1537,12 @@ On Error GoTo Error_Message
     
     ErrNum = 0
     '/ Check
-    oJOBYMM = oForm.Items("JOBYMM").Specific.Value
-    oJOBTYP = oForm.Items("JOBTYP").Specific.Selected.Value
-    oJOBGBN = oForm.Items("JOBGBN").Specific.Selected.Value
-    oPAYSEL = oForm.Items("PAYSEL").Specific.Selected.Value
-    oCLTCOD = oForm.Items("CLTCOD").Specific.Selected.Value
-    oMSTDPT = oForm.Items("MSTDPT").Specific.Selected.Value
+    oJOBYMM = oForm.Items("JOBYMM").Specific.VALUE
+    oJOBTYP = oForm.Items("JOBTYP").Specific.Selected.VALUE
+    oJOBGBN = oForm.Items("JOBGBN").Specific.Selected.VALUE
+    oPAYSEL = oForm.Items("PAYSEL").Specific.Selected.VALUE
+    oCLTCOD = oForm.Items("CLTCOD").Specific.Selected.VALUE
+    oMSTDPT = oForm.Items("MSTDPT").Specific.Selected.VALUE
     oMSTCOD = oForm.Items("MSTCOD").Specific.String
 
     If Trim$(oMSTCOD) = "" Then oMSTCOD = "%"
@@ -1600,16 +1600,16 @@ On Error GoTo Error_Message
         oDS_PH_PY118B.InsertRecord (i)
         oDS_PH_PY118B.Offset = i
         oDS_PH_PY118B.setValue "U_LineNum", i, i + 1
-        oDS_PH_PY118B.setValue "U_MSTCOD", i, oRecordSet.Fields(0).Value
-        oDS_PH_PY118B.setValue "U_MSTNAM", i, oRecordSet.Fields(1).Value
-        oDS_PH_PY118B.setValue "U_EMPID", i, oRecordSet.Fields(2).Value
-        oDS_PH_PY118B.setValue "U_Col01", i, oRecordSet.Fields(3).Value
-        oDS_PH_PY118B.setValue "U_Col02", i, oRecordSet.Fields(4).Value
-        oDS_PH_PY118B.setValue "U_Col03", i, oRecordSet.Fields(5).Value
-        oDS_PH_PY118B.setValue "U_Col04", i, oRecordSet.Fields(6).Value
-        oDS_PH_PY118B.setValue "U_Col05", i, Format$(oRecordSet.Fields(7).Value, "#,###,###,##0")
-        oDS_PH_PY118B.setValue "U_Col06", i, oRecordSet.Fields(8).Value
-        If Trim$(oRecordSet.Fields(8).Value) <> "" Then
+        oDS_PH_PY118B.setValue "U_MSTCOD", i, oRecordSet.Fields(0).VALUE
+        oDS_PH_PY118B.setValue "U_MSTNAM", i, oRecordSet.Fields(1).VALUE
+        oDS_PH_PY118B.setValue "U_EMPID", i, oRecordSet.Fields(2).VALUE
+        oDS_PH_PY118B.setValue "U_Col01", i, oRecordSet.Fields(3).VALUE
+        oDS_PH_PY118B.setValue "U_Col02", i, oRecordSet.Fields(4).VALUE
+        oDS_PH_PY118B.setValue "U_Col03", i, oRecordSet.Fields(5).VALUE
+        oDS_PH_PY118B.setValue "U_Col04", i, oRecordSet.Fields(6).VALUE
+        oDS_PH_PY118B.setValue "U_Col05", i, Format$(oRecordSet.Fields(7).VALUE, "#,###,###,##0")
+        oDS_PH_PY118B.setValue "U_Col06", i, oRecordSet.Fields(8).VALUE
+        If Trim$(oRecordSet.Fields(8).VALUE) <> "" Then
             oDS_PH_PY118B.setValue "U_Col08", i, "Y"
         Else
             oDS_PH_PY118B.setValue "U_Col08", i, "N"
@@ -1620,7 +1620,7 @@ On Error GoTo Error_Message
         If (TOTCNT > 50 And tRow = oProValue * V_StatusCnt) Or TOTCNT <= 50 Then
             oProgBar.Text = tRow & "/ " & TOTCNT & " 건 처리중...!"
             oProValue = oProValue + 1
-            oProgBar.Value = oProValue
+            oProgBar.VALUE = oProValue
         End If
         tRow = tRow + 1
     Loop

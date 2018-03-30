@@ -6,7 +6,6 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-
 Attribute VB_Name = "PS_SD040"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
@@ -1790,10 +1789,10 @@ On Error GoTo PS_SD040_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.VALUE
-    Param02 = oForm01.Items("Param01").Specific.VALUE
-    Param03 = oForm01.Items("Param01").Specific.VALUE
-    Param04 = oForm01.Items("Param01").Specific.VALUE
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -1884,11 +1883,11 @@ On Error GoTo PS_SD040_DI_API_01_Error
 
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
-    oDIObject.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-    oDIObject.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-    oDIObject.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.UserFields("U_DCardCod").VALUE = Trim(oForm01.Items("DCardCod").Specific.VALUE)
+    oDIObject.UserFields("U_DCardNam").VALUE = Trim(oForm01.Items("DCardNam").Specific.VALUE)
+    oDIObject.UserFields("U_TradeType").VALUE = Trim(oForm01.Items("TrType").Specific.Selected.VALUE)
     If oForm01.Items("DocDate").Specific.VALUE <> "" Then
         oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     End If
@@ -2084,11 +2083,11 @@ On Error GoTo PS_SD040_DI_API_02_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
-    oDIObject.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-    oDIObject.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-    oDIObject.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.UserFields("U_DCardCod").VALUE = Trim(oForm01.Items("DCardCod").Specific.VALUE)
+    oDIObject.UserFields("U_DCardNam").VALUE = Trim(oForm01.Items("DCardNam").Specific.VALUE)
+    oDIObject.UserFields("U_TradeType").VALUE = Trim(oForm01.Items("TrType").Specific.Selected.VALUE)
     If oForm01.Items("DocDate").Specific.VALUE <> "" Then
         oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     End If
@@ -2209,11 +2208,11 @@ On Error GoTo PS_SD040_DI_API_03_Error
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oReturns) '//반품DI '//납품의 취소시 반품, AR송장시, AR대변메모, AR송장이 지급시
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.VALUE
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.VALUE
-    oDIObject.UserFields("U_DCardCod").VALUE = oForm01.Items("DCardCod").Specific.VALUE
-    oDIObject.UserFields("U_DCardNam").VALUE = oForm01.Items("DCardNam").Specific.VALUE
-    oDIObject.UserFields("U_TradeType").VALUE = oForm01.Items("TrType").Specific.Selected.VALUE
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.UserFields("U_DCardCod").VALUE = Trim(oForm01.Items("DCardCod").Specific.VALUE)
+    oDIObject.UserFields("U_DCardNam").VALUE = Trim(oForm01.Items("DCardNam").Specific.VALUE)
+    oDIObject.UserFields("U_TradeType").VALUE = Trim(oForm01.Items("TrType").Specific.Selected.VALUE)
     If oForm01.Items("DocDate").Specific.VALUE <> "" Then
         oDIObject.DocDate = Format(oForm01.Items("DocDate").Specific.VALUE, "&&&&-&&-&&")
     End If
@@ -2528,8 +2527,8 @@ On Error GoTo PS_SD040_Print_Report02_Error
 '        Rpt_Formula(5) = "DocDate"
         
         gRpt_Formula_Value(1) = Trim(oRecordSet01.Fields(0).VALUE)
-        gRpt_Formula_Value(2) = oForm01.Items("CardName").Specific.VALUE
-        gRpt_Formula_Value(3) = oForm01.Items("DCardNam").Specific.VALUE
+        gRpt_Formula_Value(2) = Trim(oForm01.Items("CardName").Specific.VALUE)
+        gRpt_Formula_Value(3) = Trim(oForm01.Items("DCardNam").Specific.VALUE)
         gRpt_Formula_Value(4) = Format(oForm01.Items("DocDate").Specific.VALUE, "####-##-##")
     Else
         WinTitle = "[PS_SD220_10] 레포트"
@@ -2701,8 +2700,8 @@ On Error GoTo PS_SD040_ValidateCreditLine_Error
         'If MDC_PS_Common.GetValue("SELECT Isnull(U_PrtYn,'N')  FROM [@PS_SD030H] WHERE DocEntry = '" & oMat01.Columns("SD030H").Cells(1).Specific.VALUE & "'", 0, 1) = "N" Then
         Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
         
-        CardCode = oForm01.Items("CardCode").Specific.VALUE
-        DocDate = oForm01.Items("DocDate").Specific.VALUE
+        CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+        DocDate = Trim(oForm01.Items("DocDate").Specific.VALUE)
         
         Query01 = "EXEC [S139_hando] '" & CardCode & "', '" & DocDate & "'"
         Call RecordSet01.DoQuery(Query01)

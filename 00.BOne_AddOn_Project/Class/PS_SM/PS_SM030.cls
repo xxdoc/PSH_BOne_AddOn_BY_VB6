@@ -937,16 +937,16 @@ On Error GoTo PS_SM030_MTX01_Error
     Dim Param08 As String
     Dim Param09 As String
     Dim Param10 As String
-    Param01 = oForm01.Items("ItemCode").Specific.VALUE
-    Param02 = oForm01.Items("StockType").Specific.Selected.VALUE
-    Param03 = oForm01.Items("TradeType").Specific.Selected.VALUE
-    Param04 = oForm01.Items("ItmBsort").Specific.Selected.VALUE
-    Param05 = oForm01.Items("ItmMsort").Specific.Selected.VALUE
-    Param06 = oForm01.Items("Size").Specific.VALUE
-    Param07 = oForm01.Items("ItemType").Specific.Selected.VALUE
-    Param08 = oForm01.Items("Mark").Specific.Selected.VALUE
-    Param09 = oForm01.Items("ItemName").Specific.VALUE
-    Param10 = oForm01.Items("ItemGpCd").Specific.Selected.VALUE
+    Param01 = Trim(oForm01.Items("ItemCode").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("StockType").Specific.Selected.VALUE)
+    Param03 = Trim(oForm01.Items("TradeType").Specific.Selected.VALUE)
+    Param04 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE)
+    Param05 = Trim(oForm01.Items("ItmMsort").Specific.Selected.VALUE)
+    Param06 = Trim(oForm01.Items("Size").Specific.VALUE)
+    Param07 = Trim(oForm01.Items("ItemType").Specific.Selected.VALUE)
+    Param08 = Trim(oForm01.Items("Mark").Specific.Selected.VALUE)
+    Param09 = Trim(oForm01.Items("ItemName").Specific.VALUE)
+    Param10 = Trim(oForm01.Items("ItemGpCd").Specific.Selected.VALUE)
     
     If oBaseForm01 Is Nothing Then
         Query01 = "EXEC PS_SM030_01 '" & Param01 & "','','','" & Param02 & "','','" & Param04 & "','" & Param05 & "','" & Param06 & "','" & Param07 & "','" & Param08 & "','" & Param09 & "','" & Param10 & "'"
@@ -1042,8 +1042,8 @@ On Error GoTo PS_SM030_MTX02_Error
     StdQty = oMat01.Columns("SelQty").Cells(oMat01Row01).Specific.VALUE
     
 '    Param02 = oMat01.Columns("WhsCode").Cells(oMat01Row01).Specific.Value
-'    Param03 = oForm01.Items("Param01").Specific.Value
-'    Param04 = oForm01.Items("Param01").Specific.Value
+'    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+'    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "EXEC PS_SM030_02 '" & Param01 & "'"
     Call RecordSet01.DoQuery(Query01)

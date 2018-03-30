@@ -736,13 +736,13 @@ On Error GoTo PS_SY003_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLId As String
+    Dim BPLID As String
 '    Dim FrYM As String
 '    Dim ToYM As String
     Dim StdYM As String
     Dim CntcCode As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
 '    FrYM = oForm01.Items("FrYM").Specific.VALUE
 '    ToYM = oForm01.Items("ToYM").Specific.VALUE
 '    StdYM = oForm01.Items("StdYM").Specific.VALUE
@@ -846,8 +846,8 @@ Private Function PS_SY003_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-'    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
 '        If ItemInformation(i).Check = True Then
@@ -857,7 +857,7 @@ Private Function PS_SY003_DI_API() As Boolean
 '            oDIObject.Lines.Add
 '        End If
 '        oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-'        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+'        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
 '        oDIObject.Lines.BaseType = "22"
 '        oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
 '        oDIObject.Lines.BaseLine = ItemInformation(i).POR1No
@@ -947,11 +947,11 @@ On Error GoTo Print_Query_Error
 
     Call ConnectODBC
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim StdYM As String
     Dim CntcCode As String
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
 '    StdYM = oForm01.Items("StdYM").Specific.VALUE
     CntcCode = MDC_PS_Common.User_MSTCOD
     
@@ -962,7 +962,7 @@ On Error GoTo Print_Query_Error
     
     'Äõ¸®
     sQry = "         EXEC PS_SY003_02 '"
-    sQry = sQry & BPLId & "','"
+    sQry = sQry & BPLID & "','"
     sQry = sQry & StdYM & "','"
     sQry = sQry & CntcCode & "'"
  

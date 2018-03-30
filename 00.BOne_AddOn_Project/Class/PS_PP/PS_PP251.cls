@@ -819,7 +819,7 @@ On Error GoTo PS_PP251_AddMatrixRow_Error
         prmDataSource.InsertRecord (oRow)
     End If
     prmMat.AddRow
-    prmDataSource.offset = oRow
+    prmDataSource.Offset = oRow
 '    oDS_PS_PP251L.setValue "U_LineNum", oRow, oRow + 1
     prmMat.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -936,7 +936,7 @@ On Error GoTo PS_PP251_MTX01_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP251L.InsertRecord(loopCount)
         End If
-        oDS_PS_PP251L.offset = loopCount
+        oDS_PS_PP251L.Offset = loopCount
         
         Call oDS_PS_PP251L.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP251L.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -968,7 +968,7 @@ On Error GoTo PS_PP251_MTX01_Error
         Call oDS_PS_PP251L.setValue("U_ColQty15", loopCount, RecordSet01.Fields("PlanNMth").VALUE) '차월계획
         Call oDS_PS_PP251L.setValue("U_ColQty16", loopCount, RecordSet01.Fields("PlanNNMth").VALUE) '차차월계획
         Call oDS_PS_PP251L.setValue("U_ColQty17", loopCount, RecordSet01.Fields("PlanLMth").VALUE) '이후계획
-        Call oDS_PS_PP251L.SetValue("U_ColDt01", loopCount, Format(RecordSet01.Fields("RegDate").VALUE, "YYYYMMDD")) '최종등록일
+        Call oDS_PS_PP251L.setValue("U_ColDt01", loopCount, Format(RecordSet01.Fields("RegDate").VALUE, "YYYYMMDD")) '최종등록일
         
         RecordSet01.MoveNext
         ProgressBar01.VALUE = ProgressBar01.VALUE + 1
@@ -1065,7 +1065,7 @@ On Error GoTo PS_PP251_MTX02_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP251M.InsertRecord(loopCount)
         End If
-        oDS_PS_PP251M.offset = loopCount
+        oDS_PS_PP251M.Offset = loopCount
         
         Call oDS_PS_PP251M.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP251M.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -1180,7 +1180,7 @@ On Error GoTo PS_PP251_MTX03_Error
         If loopCount <> 0 Then
            Call oDS_PS_PP251N.InsertRecord(loopCount)
         End If
-        oDS_PS_PP251N.offset = loopCount
+        oDS_PS_PP251N.Offset = loopCount
         
         Call oDS_PS_PP251N.setValue("U_LineNum", loopCount, loopCount + 1) '라인번호
         Call oDS_PS_PP251N.setValue("U_ColReg01", loopCount, RecordSet01.Fields("Select").VALUE) '선택
@@ -1263,18 +1263,18 @@ On Error GoTo PS_PP251_SaveData01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim StdYM		As String '기준년월
-	Dim OrdNum	    As String '품목코드
-	Dim AddTime	    As Double '추가예상공수
-	Dim Plan1st	    As Double '1주차계획
-	Dim Plan2nd 	As Double '2주차계획
-	Dim Plan3rd	    As Double '3주차계획
-	Dim Plan4th 	As Double '4주차계획
-	Dim Plan5th	    As Double '5주차계획
-	Dim PlanNMth	As Double '차월계획
-	Dim PlanNNMth	As Double '차차월계획
-	Dim PlanLMth	As Double '이후계획
-	Dim RegDate	    As String '최종등록일
+    Dim StdYM           As String '기준년월
+        Dim OrdNum          As String '품목코드
+        Dim AddTime         As Double '추가예상공수
+        Dim Plan1st         As Double '1주차계획
+        Dim Plan2nd     As Double '2주차계획
+        Dim Plan3rd         As Double '3주차계획
+        Dim Plan4th     As Double '4주차계획
+        Dim Plan5th         As Double '5주차계획
+        Dim PlanNMth    As Double '차월계획
+        Dim PlanNNMth   As Double '차차월계획
+        Dim PlanLMth    As Double '이후계획
+        Dim RegDate         As String '최종등록일
 
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", oMat01.VisualRowCount - 1, False)
@@ -1293,9 +1293,9 @@ On Error GoTo PS_PP251_SaveData01_Error
             Plan4th = Trim(oDS_PS_PP251L.GetValue("U_ColQty11", loopCount)) '4주차계획
             Plan5th = Trim(oDS_PS_PP251L.GetValue("U_ColQty13", loopCount)) '5주차계획
             PlanNMth = Trim(oDS_PS_PP251L.GetValue("U_ColQty15", loopCount)) '차월계획
-            PlanNNMth = Trim(oDS_PS_PP251L.GetValue("U_ColQty16", loopCount))'차차월계획
-            PlanLMth = Trim(oDS_PS_PP251L.GetValue("U_ColQty17", loopCount))'이후계획
-            RegDate = Trim(oDS_PS_PP251L.GetValue("U_ColDt01", loopCount))'최종등록일
+            PlanNNMth = Trim(oDS_PS_PP251L.GetValue("U_ColQty16", loopCount)) '차차월계획
+            PlanLMth = Trim(oDS_PS_PP251L.GetValue("U_ColQty17", loopCount)) '이후계획
+            RegDate = Trim(oDS_PS_PP251L.GetValue("U_ColDt01", loopCount)) '최종등록일
 
             sQry = "      EXEC [PS_PP251_02] '"
             sQry = sQry & StdYM & "','" '기준년월
@@ -1565,7 +1565,7 @@ On Error GoTo PS_PP251_CheckAll01_Error
     Next
     
     For loopCount = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP251L.offset = loopCount
+        oDS_PS_PP251L.Offset = loopCount
         If CheckType = "N" Then
             Call oDS_PS_PP251L.setValue("U_ColReg01", loopCount, "Y")
         Else
@@ -1616,12 +1616,12 @@ On Error GoTo PS_PP251_Print_Report_Error
     
     If prmItemUID = "Btn01" Then '작업일보
     
-        FrDt = oForm01.Items("FrDt").Specific.VALUE
-        ToDt = oForm01.Items("ToDt").Specific.VALUE
+        FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+        ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
         FrgnName = IIf(oForm01.Items("FrgnName").Specific.VALUE = "", "%", oForm01.Items("FrgnName").Specific.VALUE)
-        CardType = oForm01.Items("CardType").Specific.Selected.VALUE
+        CardType = Trim(oForm01.Items("CardType").Specific.Selected.VALUE)
         SPEC = IIf(oForm01.Items("Spec").Specific.VALUE = "", "%", oForm01.Items("Spec").Specific.VALUE)
-        ItemClass = oForm01.Items("ItemClass").Specific.Selected.VALUE
+        ItemClass = Trim(oForm01.Items("ItemClass").Specific.Selected.VALUE)
         WCYN = IIf(oForm01.Items("WCYN").Specific.Selected.VALUE = "", "%", oForm01.Items("WCYN").Specific.Selected.VALUE)
         CardCode = IIf(oForm01.Items("CardCode").Specific.VALUE = "", "%", oForm01.Items("CardCode").Specific.VALUE)
         ItemCode = IIf(oForm01.Items("ItemCode").Specific.VALUE = "", "%", oForm01.Items("ItemCode").Specific.VALUE)
@@ -1640,8 +1640,8 @@ On Error GoTo PS_PP251_Print_Report_Error
     
     ElseIf prmItemUID = "Btn03" Then '구매요청
     
-        OrdNum = oForm01.Items("MainJak").Specific.VALUE
-        OrdSub = oForm01.Items("SubJak").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("MainJak").Specific.VALUE)
+        OrdSub = Trim(oForm01.Items("SubJak").Specific.VALUE)
         
         ReportName = "PS_PP251_03.rpt"
     

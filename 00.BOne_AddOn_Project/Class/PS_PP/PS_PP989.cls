@@ -140,7 +140,7 @@ On Error GoTo PS_PP989_Add_MatrixRow01_Error
     End If
     
     oMat02.AddRow
-    oDS_PS_PP989O.offset = oRow
+    oDS_PS_PP989O.Offset = oRow
     oDS_PS_PP989O.setValue "U_LineNum", oRow, oRow + 1
     
     oMat02.LoadFromDataSource
@@ -172,13 +172,13 @@ On Error GoTo PS_PP989_MTX01_Error
     Dim CntcCode As String '담당
     Dim CardCode As String '거래처
     
-    BPLID = oForm01.Items("BPLID01").Specific.VALUE
-    FrDt = oForm01.Items("FrDt01").Specific.VALUE
-    ToDt = oForm01.Items("ToDt01").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLID01").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt01").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt01").Specific.VALUE)
     OrdGbn = oForm01.Items("OrdGbn01").Specific.VALUE
-    OrdNum = oForm01.Items("OrdNum01").Specific.VALUE
-    OrdSub1 = oForm01.Items("OrdSub101").Specific.VALUE
-    OrdSub2 = oForm01.Items("OrdSub201").Specific.VALUE
+    OrdNum = Trim(oForm01.Items("OrdNum01").Specific.VALUE)
+    OrdSub1 = Trim(oForm01.Items("OrdSub101").Specific.VALUE)
+    OrdSub2 = Trim(oForm01.Items("OrdSub201").Specific.VALUE)
     CntcCode = oForm01.Items("CntcCode01").Specific.VALUE
     CardCode = oForm01.Items("CardCode01").Specific.VALUE
     
@@ -450,7 +450,7 @@ On Error GoTo PS_PP989_MTX02_Error
         End If
     
         oMat02.AddRow
-        oDS_PS_PP989O.offset = i
+        oDS_PS_PP989O.Offset = i
     
         Call oDS_PS_PP989O.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP989O.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("CpCode").VALUE)) '공정코드
@@ -704,7 +704,7 @@ On Error GoTo PS_PP989_FlushToItemValue_Error
 
     If oUID = "OrdNum01" Or oUID = "OrdSub101" Or oUID = "OrdSub201" Then
     
-        OrdNum = oForm01.Items("OrdNum01").Specific.VALUE
+        OrdNum = Trim(oForm01.Items("OrdNum01").Specific.VALUE)
         SubNo1 = oForm01.Items("OrdSub101").Specific.VALUE
         SubNo2 = oForm01.Items("OrdSub201").Specific.VALUE
 

@@ -1125,7 +1125,7 @@ On Error GoTo PS_QM302_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim OCpCode As String '발생공정
     Dim OUseMCd As String '발생공정설비
     Dim OWkCd1 As String '작업자(주간)
@@ -1144,7 +1144,7 @@ On Error GoTo PS_QM302_MTX01_Error
     Dim OrdNum As String '작지Main
     Dim CclSts As String '해제상태(2차)
     
-    BPLId = oForm01.Items("BPLId").Specific.VALUE '사업장
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
     OCpCode = oForm01.Items("OCpCode").Specific.VALUE '발생공정
     OUseMCd = oForm01.Items("OUseMCd").Specific.VALUE '발생공정설비
     OWkCd1 = oForm01.Items("OWkCd1").Specific.VALUE '작업자(주간)
@@ -1156,11 +1156,11 @@ On Error GoTo PS_QM302_MTX01_Error
     BadCode1 = oForm01.Items("BadCode1").Specific.VALUE '불량분류
     BadCode2 = oForm01.Items("BadCode2").Specific.VALUE '불량상세
     FromDt = oForm01.Items("FromDt").Specific.VALUE '등록일자(From)
-    ToDt = oForm01.Items("ToDt").Specific.VALUE '등록일자(To)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '등록일자(To)
     ItemName = oForm01.Items("ItemName").Specific.VALUE '제품명
     OrdMgNum = oForm01.Items("OrdMgNum").Specific.VALUE '작지문서번호
     BatchNum = oForm01.Items("BatchNum").Specific.VALUE '온산LotNo
-    OrdNum = oForm01.Items("OrdNum").Specific.VALUE '작지Main
+    OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE) '작지Main
     CclSts = oForm01.Items("CclSts").Specific.VALUE '해제상태(2차)
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -1168,7 +1168,7 @@ On Error GoTo PS_QM302_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_QM302_01 '" & BPLId & "','" & OCpCode & "','" & OUseMCd & "','" & OWkCd1 & "','" & OWkCd2 & "','" & RCpCode & "','" & RUseMCd & "','" & RWkCd1 & "','" & RWkCd2 & "','" & BadCode1 & "','" & BadCode2 & "','" & FromDt & "','" & ToDt & "','" & ItemName & "','" & OrdMgNum & "','" & BatchNum & "','" & OrdNum & "','" & CclSts & "'"
+    Query01 = "EXEC PS_QM302_01 '" & BPLID & "','" & OCpCode & "','" & OUseMCd & "','" & OWkCd1 & "','" & OWkCd2 & "','" & RCpCode & "','" & RUseMCd & "','" & RWkCd1 & "','" & RWkCd2 & "','" & BadCode1 & "','" & BadCode2 & "','" & FromDt & "','" & ToDt & "','" & ItemName & "','" & OrdMgNum & "','" & BatchNum & "','" & OrdNum & "','" & CclSts & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
