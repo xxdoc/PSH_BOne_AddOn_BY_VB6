@@ -500,7 +500,12 @@ On Error GoTo Raise_MenuEvent_Error
                 '//아이디별 사업장 세팅
                 oForm01.Items("BPLId").Specific.Select MDC_PS_Common.User_BPLId, psk_ByValue
                 '//아이디별 사번 세팅
-                oForm01.Items("CntcCode").Specific.VALUE = MDC_PS_Common.User_MSTCOD
+                If MDC_PS_Common.User_SuperUserYN = "Y" Then '슈퍼유저인경우는 사번 추가 하지 않음(2018.04.02 송명규)
+                    oForm01.Items("CntcCode").Specific.VALUE = ""
+                Else
+                    oForm01.Items("CntcCode").Specific.VALUE = MDC_PS_Common.User_MSTCOD
+                End If
+                
                 oForm01.Freeze False
 '[1282:추가] ////////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Case "1282": '추가
@@ -758,7 +763,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM007L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM007L.Offset = oRow
+    oDS_PS_MM007L.offset = oRow
     oDS_PS_MM007L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1134,7 +1139,7 @@ On Error GoTo RFC_Sender_Error
 
     If Not (oSapConnection01.Connection Is Nothing) Then
         If i = LastRow Then
-            oSapConnection01.Connection.logoff
+            oSapConnection01.Connection.Logoff
             Set oSapConnection01 = Nothing
         End If
     End If
@@ -1145,7 +1150,7 @@ On Error GoTo RFC_Sender_Error
 RFC_Sender_Exit:
     If Not (oSapConnection01.Connection Is Nothing) Then
         If i = LastRow Then
-            oSapConnection01.Connection.logoff
+            oSapConnection01.Connection.Logoff
             Set oSapConnection01 = Nothing
         End If
     End If
@@ -1156,7 +1161,7 @@ RFC_Sender_Exit:
 RFC_Sender_Error:
     If Not (oSapConnection01.Connection Is Nothing) Then
         If i = LastRow Then
-            oSapConnection01.Connection.logoff
+            oSapConnection01.Connection.Logoff
             Set oSapConnection01 = Nothing
         End If
     End If

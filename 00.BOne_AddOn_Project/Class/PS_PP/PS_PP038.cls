@@ -1026,7 +1026,7 @@ On Error GoTo PS_PP038_AddMatrixRow_Error
     End If
     
     Call oMat01.AddRow
-    oDS_PS_PP038L.Offset = oRow
+    oDS_PS_PP038L.offset = oRow
     Call oDS_PS_PP038L.setValue("U_LineNum", oRow, oRow + 1)
     Call oDS_PS_PP038L.setValue("U_ColReg02", oRow, "10") '투입구분
     Call oMat01.LoadFromDataSource
@@ -1118,7 +1118,7 @@ On Error GoTo PS_PP038_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.VALUE) '작업구분
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '지시일자(Fr)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '지시일자(To)
@@ -1127,7 +1127,7 @@ On Error GoTo PS_PP038_MTX01_Error
     OrdSub1 = Trim(oForm01.Items("OrdSub1").Specific.VALUE) '서브작번1
     OrdSub2 = Trim(oForm01.Items("OrdSub2").Specific.VALUE) '서브작번2
     
-    Query01 = "              EXEC PS_PP038_01 '"
+    Query01 = "         EXEC PS_PP038_01 '"
     Query01 = Query01 & BPLID & "','" '사업장
     Query01 = Query01 & OrdGbn & "','" '작업구분
     Query01 = Query01 & FrDt & "','" '지시일자(Fr)
@@ -1254,7 +1254,7 @@ On Error GoTo PS_PP038_MTX02_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_PP038L.Offset = i
+        oDS_PS_PP038L.offset = i
         
         Call oDS_PS_PP038L.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP038L.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("Check").VALUE)) '선택
@@ -1353,7 +1353,7 @@ On Error GoTo PS_PP038_AddData_Error
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
     
     MainEntry = Trim(oForm01.Items("MainEntry").Specific.VALUE)
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FullOrdNum = Trim(oForm01.Items("FullOrdNum").Specific.VALUE)
     
     Call oMat01.FlushToDataSource
@@ -1549,7 +1549,7 @@ Private Function PS_PP038_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
 '    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
@@ -1754,7 +1754,7 @@ On Error GoTo Print_Query_Error
     Dim InputYN As String
     Dim Class As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     Purchase = Trim(oForm01.Items("Purchase").Specific.VALUE)
@@ -1770,7 +1770,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP038_10.rpt"
         
         '쿼리
-        sQry = "         EXEC PS_PP038_10 '"
+        sQry = "      EXEC PS_PP038_10 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & FrDt & "','"
         sQry = sQry & ToDt & "','"
@@ -1785,7 +1785,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP038_20.rpt"
     
         '쿼리
-        sQry = "         EXEC PS_PP038_20 '"
+        sQry = "      EXEC PS_PP038_20 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & FrDt & "','"
         sQry = sQry & ToDt & "','"
@@ -1800,7 +1800,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP038_30.rpt"
         
         '쿼리
-        sQry = "         EXEC PS_PP038_30 '"
+        sQry = "      EXEC PS_PP038_30 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & FrDt & "','"
         sQry = sQry & ToDt & "','"
@@ -1813,7 +1813,7 @@ On Error GoTo Print_Query_Error
         ReportName = "PS_PP038_40.rpt"
         
         '쿼리
-        sQry = "         EXEC PS_PP038_40 '"
+        sQry = "      EXEC PS_PP038_40 '"
         sQry = sQry & BPLID & "','"
         sQry = sQry & FrDt & "','"
         sQry = sQry & ToDt & "','"

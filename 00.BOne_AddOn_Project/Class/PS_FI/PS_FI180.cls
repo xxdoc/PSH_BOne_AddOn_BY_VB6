@@ -446,17 +446,41 @@ On Error GoTo FlushToItemValue_Error
     Select Case oUID
         Case "Rpt"
             If Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "1" Then
-                sQry = "Select TOP 1 U_Rpttxt01 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1 "
+                sQry = sQry & "         U_Rpttxt01 "
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt01 IS NOT NULL"
             ElseIf Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "2" Then
-                sQry = "Select TOP 1 U_Rpttxt02 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1"
+                sQry = sQry & "         U_Rpttxt02"
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt02 IS NOT NULL"
             ElseIf Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "3" Then
-                sQry = "Select TOP 1 U_Rpttxt03 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1 "
+                sQry = sQry & "         U_Rpttxt03 "
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt03 IS NOT NULL"
             ElseIf Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "4" Then
-                sQry = "Select TOP 1 U_Rpttxt04 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1 "
+                sQry = sQry & "         U_Rpttxt04 "
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt04 IS NOT NULL"
             ElseIf Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "5" Then
-                sQry = "Select TOP 1 U_Rpttxt05 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1 "
+                sQry = sQry & "         U_Rpttxt05 "
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt05 IS NOT NULL"
             ElseIf Trim(oForm01.Items("Rpt").Specific.Selected.VALUE) = "6" Then
-                sQry = "Select TOP 1 U_Rpttxt06 from [ZMDC_JDT1] where AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = "        Select  TOP 1 "
+                sQry = sQry & "         U_Rpttxt06 "
+                sQry = sQry & " from    [ZMDC_JDT1]"
+                sQry = sQry & " where   AcctCode = '" & Trim(oForm01.Items("SAcctCode").Specific.VALUE) & "'"
+                sQry = sQry & "         AND U_Rpttxt06 IS NOT NULL"
             End If
             oRecordSet.DoQuery sQry
             oForm01.Items("Rpttxt").Specific.VALUE = Trim(oRecordSet.Fields(0).VALUE)
@@ -520,7 +544,7 @@ On Error GoTo Print_Query_Error
     Dim EndDate         As String
     Dim SAcctCode       As String
     Dim EAcctCode       As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim Rpt             As String
     Dim Rpttxt          As String
     Dim StrRpt          As String
@@ -540,7 +564,7 @@ On Error GoTo Print_Query_Error
     EndDate = Trim(oForm01.Items("EndDate").Specific.VALUE)
     SAcctCode = Trim(oForm01.Items("SAcctCode").Specific.VALUE)
     EAcctCode = Trim(oForm01.Items("EAcctCode").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     Rpt = Trim(oForm01.Items("Rpt").Specific.Selected.VALUE)
     Rpttxt = Trim(oForm01.Items("Rpttxt").Specific.VALUE)
     StrRpt = Trim(oForm01.Items("StrRpt").Specific.VALUE)
@@ -587,7 +611,7 @@ On Error GoTo Print_Query_Error
     gRpt_Formula(2) = "EndDate"
     gRpt_Formula_Value(2) = IIf(EndDate = "21001231", "All", Format(EndDate, "0000-00-00"))
     gRpt_Formula(3) = "BPLId"
-    gRpt_Formula_Value(3) = BPLId
+    gRpt_Formula_Value(3) = BPLID
     gRpt_Formula(4) = "Rpt"
     gRpt_Formula_Value(4) = Rpt
     
@@ -602,7 +626,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure ½ÇÇà"
-    sQry = "EXEC [PS_FI180_01] '" & BPLId & "','" & StrDate & "','" & EndDate & "','" & SAcctCode & "','" & EAcctCode & "','" & Rpt & "','" & Rpttxt & "','" & StrRpt & "','" & EndRpt & "', '" & Summary & "', '" & Level5 & "','" & DateCls & "'"
+    sQry = "EXEC [PS_FI180_01] '" & BPLID & "','" & StrDate & "','" & EndDate & "','" & SAcctCode & "','" & EAcctCode & "','" & Rpt & "','" & Rpttxt & "','" & StrRpt & "','" & EndRpt & "', '" & Summary & "', '" & Level5 & "','" & DateCls & "'"
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount = 0 Then
         ErrNum = 1

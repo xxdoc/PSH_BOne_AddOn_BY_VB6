@@ -946,8 +946,8 @@ Private Sub PH_PY303_MTX01()
 
     Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
-    Param03 = oForm.Items("Quarter").Specific.VALUE
-    Param04 = oForm.Items("Count").Specific.VALUE
+    Param03 = Trim(oForm.Items("Quarter").Specific.VALUE)
+    Param04 = Trim(oForm.Items("Count").Specific.VALUE)
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet.RecordCount, False)
@@ -1039,12 +1039,12 @@ Private Sub PH_PY303_PY109_Update()
 
     Param01 = Trim(oForm.Items("CLTCOD").Specific.VALUE)
     Param02 = oForm.Items("StdYear").Specific.VALUE
-    Param03 = oForm.Items("Quarter").Specific.VALUE
-    Param04 = oForm.Items("Count").Specific.VALUE
+    Param03 = Trim(oForm.Items("Quarter").Specific.VALUE)
+    Param04 = Trim(oForm.Items("Count").Specific.VALUE)
     
     Param05 = oForm.Items("YM").Specific.VALUE
-    Param06 = oForm.Items("JOBTYP").Specific.VALUE
-    Param07 = oForm.Items("JOBGBN").Specific.VALUE
+    Param06 = Trim(oForm.Items("JOBTYP").Specific.VALUE)
+    Param07 = Trim(oForm.Items("JOBGBN").Specific.VALUE)
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet.RecordCount, False)

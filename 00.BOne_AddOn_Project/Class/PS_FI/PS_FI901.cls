@@ -75,7 +75,7 @@ On Error GoTo LoadForm_Error
     oForm01.Visible = True
     Set oXmlDoc01 = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 LoadForm_Error:
     Set oXmlDoc01 = Nothing
     Sbo_Application.SetStatusBarMessage "Form_Load Error:" & Err.Description, bmt_Short, True

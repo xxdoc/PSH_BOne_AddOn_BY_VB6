@@ -1093,7 +1093,7 @@ On Error GoTo PS_PP004_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS01.InsertRecord (i)
         End If
-        oDS_PS_USERDS01.Offset = i
+        oDS_PS_USERDS01.offset = i
         Call oDS_PS_USERDS01.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS01.setValue("U_ColReg01", i, RecordSet01.Fields("ItemCode").VALUE)
         Call oDS_PS_USERDS01.setValue("U_ColReg02", i, RecordSet01.Fields("ItemName").VALUE)
@@ -1130,7 +1130,7 @@ On Error GoTo PS_PP004_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS02.InsertRecord (i)
         End If
-        oDS_PS_USERDS02.Offset = i
+        oDS_PS_USERDS02.offset = i
         Call oDS_PS_USERDS02.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS02.setValue("U_ColReg01", i, RecordSet01.Fields("CpBCode").VALUE)
         Call oDS_PS_USERDS02.setValue("U_ColReg02", i, RecordSet01.Fields("CpBName").VALUE)
@@ -1201,7 +1201,7 @@ On Error GoTo PS_PP004_MTX02_Error
         If i <> 0 Then
             oDS_PS_USERDS03.InsertRecord (i)
         End If
-        oDS_PS_USERDS03.Offset = i
+        oDS_PS_USERDS03.offset = i
         Call oDS_PS_USERDS03.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS03.setValue("U_ColNum01", i, RecordSet01.Fields("Sequence").VALUE)
         Call oDS_PS_USERDS03.setValue("U_ColReg01", i, RecordSet01.Fields("ItemCode").VALUE)

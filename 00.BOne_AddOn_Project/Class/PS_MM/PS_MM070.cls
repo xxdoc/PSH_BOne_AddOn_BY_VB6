@@ -33,8 +33,8 @@ Private oLast_Item_UID As String                     '클래스에서 선택한 마지막 �
 Private oLast_Col_UID  As String                     '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
 Private oLast_Col_Row  As Long                       '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
 
-Private oLast_Mode&
-Private oErrNum&
+Private oLast_Mode     As Long
+Private oErrNum        As Long
 Private oQEYesNo       As String
 Private oPurchase      As String
 
@@ -775,7 +775,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM070L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM070L.Offset = oRow
+    oDS_PS_MM070L.offset = oRow
     oDS_PS_MM070L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1632,7 +1632,7 @@ On Error GoTo Add_oPurchaseReturns_Error
                 .Lines.ItemCode = Trim(oRecordSet01.Fields("ItemCode").VALUE)
                 .Lines.Quantity = Trim(oRecordSet01.Fields("Quantity").VALUE)
                 .Lines.Price = Trim(oRecordSet01.Fields("Price").VALUE)
-                .Lines.DiscountPercent = Trim(oRecordSet01.Fields("DiscPrcnt").VALUE)
+                .Lines.DiscountPercent = Trim(oRecordSet01.Fields("DiscPrcnt").VALUE) '무슨 라이선스?
                 .Lines.LineTotal = Trim(oRecordSet01.Fields("LineTotal").VALUE)
                 .Lines.WarehouseCode = Trim(oRecordSet01.Fields("WhsCode").VALUE)
                 .Lines.UserFields("U_Qty").VALUE = Trim(oDS_PS_MM070L.GetValue("U_Qty", i))

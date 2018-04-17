@@ -22,31 +22,16 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public oFormUniqueID01 As String
-Public oForm01 As SAPbouiCOM.Form
-Public oMat01 As SAPbouiCOM.Matrix
-Private oDS_PS_FX005H As SAPbouiCOM.DBDataSource '등록헤더
-Private oDS_PS_FX005L As SAPbouiCOM.DBDataSource '등록라인
+Public oForm01         As SAPbouiCOM.Form
+Public oMat01          As SAPbouiCOM.Matrix
+Private oDS_PS_FX005H  As SAPbouiCOM.DBDataSource '등록헤더
+Private oDS_PS_FX005L  As SAPbouiCOM.DBDataSource '등록라인
 
 Private oLastItemUID01 As String '클래스에서 선택한 마지막 아이템 Uid값
-Private oLastColUID01 As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLastColRow01 As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oLastColUID01  As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLastColRow01  As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oLast_Mode     As String
 
-'//사용자구조체
-Private Type ItemInformations
-    ItemCode As String
-    LotNo As String
-    Quantity As Long
-    OPORNo As Long
-    POR1No As Long
-    Check As Boolean
-    OPDNNo As Long
-    PDN1No As Long
-End Type
-
-Private oLast_Mode&
-
-Private ItemInformation() As ItemInformations
-Private ItemInformationCount As Long
 '/ 추가 확인 갱신 버튼 이름 변경
 Private Sub LoadCaption()
 On Error GoTo LoadCaption_Error
@@ -69,12 +54,18 @@ End Sub
 '//조회데이타 가져오기
 Public Sub LoadData()
 On Error GoTo LoadData_Error
-    Dim i As Integer
+
+    Dim i    As Integer
     Dim sQry As String
+    
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim SBPLID$, SClasCod$, SFixCode$, SFixName$, STempChr1$
+    Dim SBPLID    As String
+    Dim SClasCod  As String
+    Dim SFixCode  As String
+    Dim SFixName  As String
+    Dim STempChr1 As String
     
     SBPLID = Trim(oForm01.Items("SBPLId").Specific.VALUE)
     SClasCod = Trim(oForm01.Items("SClasCod").Specific.VALUE)
@@ -87,8 +78,13 @@ On Error GoTo LoadData_Error
     If SFixName = "" Then SFixName = "%"
     If STempChr1 = "" Then STempChr1 = "%"
  
-        
-    sQry = "EXEC [PS_FX005_01] '" & SBPLID & "','" & SClasCod & "', '" & SFixCode & "', '" & SFixName & "', '" & STempChr1 & "'"
+    sQry = "      EXEC [PS_FX005_01] '"
+    sQry = sQry & SBPLID & "','"
+    sQry = sQry & SClasCod & "', '"
+    sQry = sQry & SFixCode & "', '"
+    sQry = sQry & SFixName & "', '"
+    sQry = sQry & STempChr1 & "'"
+    
     oRecordSet01.DoQuery sQry
     
     oMat01.Clear
@@ -106,7 +102,6 @@ On Error GoTo LoadData_Error
         Exit Sub
     End If
     
-    
     oForm01.Freeze True
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
@@ -117,7 +112,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_FX005L.Offset = i
+        oDS_PS_FX005L.offset = i
         
         oDS_PS_FX005L.setValue "U_LineNum", i, i + 1
         oDS_PS_FX005L.setValue "U_ColReg01", i, Trim(oRecordSet01.Fields(0).VALUE) '//BPLId
@@ -136,12 +131,10 @@ On Error GoTo LoadData_Error
 '        oDS_PS_FX005L.setValue "U_ColReg09", i, Trim(oRecordSet01.Fields(10).VALUE)
 '        oDS_PS_FX005L.setValue "U_ColDt01", i, Format(Trim(oRecordSet01.Fields(11).VALUE), "YYYYMMDD")
         
-        
         oRecordSet01.MoveNext
         ProgBar01.VALUE = ProgBar01.VALUE + 1
         ProgBar01.Text = ProgBar01.VALUE & "/" & oRecordSet01.RecordCount & "건 조회중...!"
     Next
-    
     
     oMat01.LoadFromDataSource
     oMat01.AutoResizeColumns
@@ -151,28 +144,36 @@ On Error GoTo LoadData_Error
     Set ProgBar01 = Nothing
     Set oRecordSet01 = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 LoadData_Error:
-    
     Set oRecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "LoadData_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
+
 Public Sub DeleteData()
 On Error GoTo DeleteData_Error
-    Dim i As Integer
+
+    Dim i    As Integer
     Dim sQry As String
+    
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, FixCode$
-    Dim Check As String
+    Dim DocEntry As String
+    Dim FixCode  As String
+    Dim Check    As String
     
     If oForm01.Mode = fm_UPDATE_MODE Then
+    
         DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
         FixCode = Trim(oForm01.Items("FixCode").Specific.VALUE)
         
-        sQry = "Select Count(*) From [@PS_FX005H] where DocEntry = '" & DocEntry & "' And U_FixCode = '" & FixCode & "'"
-        oRecordSet01.DoQuery sQry
+        sQry = "        Select      Count(*) "
+        sQry = sQry & " From        [@PS_FX005H] "
+        sQry = sQry & " where       DocEntry = '" & DocEntry & "' "
+        sQry = sQry & "             And U_FixCode = '" & FixCode & "'"
+        
+        Call oRecordSet01.DoQuery(sQry)
         
         If (oRecordSet01.RecordCount = 0) Then
             MDC_Com.MDC_GF_Message "삭제대상이 없습니다. 확인하세요.:" & Err.Number & " - " & Err.Description, "W"
@@ -182,6 +183,7 @@ On Error GoTo DeleteData_Error
             sQry = "Delete From [@PS_FX005H] where DocEntry = '" & DocEntry & "' And U_FixCode = '" & FixCode & "'"
             oRecordSet01.DoQuery sQry
         End If
+        
     End If
     
     Call FormReset
@@ -190,48 +192,73 @@ On Error GoTo DeleteData_Error
     
     oForm01.Items("Btn_ret").Click ct_Regular
     
-
 '    oMat01.Clear
 '    oMat01.FlushToDataSource
 '    oMat01.LoadFromDataSource
 '    Call Add_MatrixRow(0, True)
     
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 DeleteData_Error:
     Set oRecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "DeleteData_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
-'/메트릭스 Row추가
+
 Sub Add_MatrixRow(ByVal oRow As Long, Optional RowIserted As Boolean)
 On Error GoTo Add_MatrixRow_Error
+
     If RowIserted = False Then '//행추가여부
         oDS_PS_FX005L.InsertRecord (oRow)
     End If
     
     oMat01.AddRow
-    oDS_PS_FX005L.Offset = oRow
+    oDS_PS_FX005L.offset = oRow
     oDS_PS_FX005L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Add_MatrixRow_Error:
     MDC_Com.MDC_GF_Message "Add_MatrixRow_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
-'// 데이타 Update
+
 Public Function UpdateData(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
 On Error GoTo UpdateData_Error
-    Dim i As Integer
-    Dim j As Integer
+
+    Dim i    As Integer
+    Dim j    As Integer
     Dim sQry As String
+    
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, BPLID$, ClasCode$, FixCode$, FixName$, PostDate$, PostAmt$, PostQty$, LongYear$, DepCode$
-    Dim DepRate$, CardCode$, CardName$, Kw$, Volt$, TeamCode$, TeamNm$, RspCode$, RspNm$, PrcCode$, PrcName$, Comments$
-    Dim Place$, TempChr1$, StopYN$
-    Dim SubDiv, SubCode
+    Dim DocEntry As String
+    Dim BPLID    As String
+    Dim ClasCode As String
+    Dim FixCode  As String
+    Dim FixName  As String
+    Dim PostDate As String
+    Dim PostAmt  As String
+    Dim PostQty  As String
+    Dim LongYear As String
+    Dim DepCode  As String
+    Dim DepRate  As String
+    Dim CardCode As String
+    Dim CardName As String
+    Dim Kw       As String
+    Dim Volt     As String
+    Dim TeamCode As String
+    Dim TeamNm   As String
+    Dim RspCode  As String
+    Dim RspNm    As String
+    Dim PrcCode  As String
+    Dim PrcName  As String
+    Dim Comments As String
+    Dim Place    As String
+    Dim TempChr1 As String
+    Dim StopYN   As String
+    Dim SubDiv   As String
+    Dim SubCode  As String
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
@@ -271,9 +298,8 @@ On Error GoTo UpdateData_Error
         UpdateData = False
         Exit Function
     End If
-        
-    
-    sQry = "Update [@PS_FX005H]"
+
+    sQry = "        Update [@PS_FX005H]"
     sQry = sQry & " set "
     sQry = sQry & " U_BPLId = '" & BPLID & "',"
     sQry = sQry & " U_ClasCode = '" & ClasCode & "',"
@@ -305,19 +331,19 @@ On Error GoTo UpdateData_Error
     sQry = sQry & " Where DocEntry = '" & DocEntry & "'"
     RecordSet01.DoQuery sQry
     
-    
     MDC_Com.MDC_GF_Message "수정 완료!", "S"
     
     Set RecordSet01 = Nothing
     UpdateData = True
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 UpdateData_Error:
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "Updatedata_Error:" & Err.Number & " - " & Err.Description, "E"
 End Function
 '// 데이타 insert
 Public Function Add_PurchaseDemand(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
+
 On Error GoTo Add_PurchaseDemand_Error
     Dim i As Integer
     Dim sQry As String
@@ -364,15 +390,10 @@ On Error GoTo Add_PurchaseDemand_Error
     Place = Trim(oForm01.Items("Place").Specific.VALUE)
     TempChr1 = Trim(oForm01.Items("TempChr1").Specific.VALUE)
     
-    
     sQry = "Select right('00' + Convert(Nvarchar(3),Convert(Numeric(3,0), Isnull(Max(U_SubCode),'000')) + 1),3) From [@PS_FX005H] Where U_FixCode = '" & FixCode & "'"
     RecordSet01.DoQuery sQry
     
     SubCode = Trim(RecordSet01.Fields(0).VALUE)
-    
-    
-    
-    
     
     sQry = "Select IsNull(Max(DocEntry), 0) From [@PS_FX005H]"
     RecordSet01.DoQuery sQry
@@ -389,7 +410,6 @@ On Error GoTo Add_PurchaseDemand_Error
 '    Else
 '        Code = BPLId + GCode + Trim(RecordSet01.Fields(0).VALUE)
 '    End If
-    
     
     sQry = "INSERT INTO [@PS_FX005H]"
     sQry = sQry & " ("
@@ -454,7 +474,6 @@ On Error GoTo Add_PurchaseDemand_Error
     sQry = sQry & ")"
     RecordSet02.DoQuery sQry
     
-    
     MDC_Com.MDC_GF_Message "등록 완료!", "S"
     
     Set RecordSet01 = Nothing
@@ -462,13 +481,13 @@ On Error GoTo Add_PurchaseDemand_Error
     Add_PurchaseDemand = True
     
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Add_PurchaseDemand_Error:
     Add_PurchaseDemand = False
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "Add_PurchaseDemand_Error:" & Err.Number & " - " & Err.Description, "E"
 End Function
-'/ 입력필수 사항 Check
+
 Private Function HeaderSpaceLineDel() As Boolean
 On Error GoTo HeaderSpaceLineDel_Error
     Dim ErrNum          As Integer
@@ -495,8 +514,8 @@ On Error GoTo HeaderSpaceLineDel_Error
     End Select
 
     HeaderSpaceLineDel = True
-Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 HeaderSpaceLineDel_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "자산분류는 필수사항입니다. 확인하세요.", "E"
@@ -511,7 +530,7 @@ HeaderSpaceLineDel_Error:
     End If
     HeaderSpaceLineDel = False
 End Function
-'/ 메트릭스 필수 사항 check
+
 Private Function MatrixSpaceLineDel() As Boolean
 On Error GoTo MatrixSpaceLineDel_Error
     Dim i               As Long
@@ -544,10 +563,12 @@ End Function
 '/코드의 코드명 보여주기
 Private Sub FlushToItemValue(ByVal oUID As String, Optional oRow As Long, Optional oCol As String)
 On Error GoTo FlushToItemValue_Error
-    Dim i&
+
+    Dim i               As String
     Dim ErrNum          As Integer
     Dim sQry            As String
-    Dim ItemCode$, Qty&
+    Dim ItemCode        As String
+    Dim Qty             As Long
     Dim Calculate_Weight As Double
     Dim oRecordSet01    As SAPbobsCOM.Recordset
         
@@ -555,6 +576,7 @@ On Error GoTo FlushToItemValue_Error
     
     Select Case oUID
         Case "CardCode" '/거래처
+        
             sQry = "Select CardName From OCRD Where CardCode = '" & Trim(oForm01.Items("CardCode").Specific.VALUE) & "'"
             oRecordSet01.DoQuery sQry
             oForm01.Items("CardName").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
@@ -566,15 +588,17 @@ On Error GoTo FlushToItemValue_Error
                 
             oForm01.Items("SubCode").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
             
-            
         Case "TeamCode" '//팀
+        
             sQry = "SELECT  T1.U_CodeNm FROM [@PS_HR200H] AS T0 Inner Join [@PS_HR200L] AS T1 ON T0.Code = T1.Code "
             sQry = sQry & " WHERE   T0.Name = '부서' AND T1.U_UseYN = 'Y' AND T1.U_Char2 = '" & oForm01.Items("BPLId").Specific.VALUE & "' "
             sQry = sQry & " And T1.U_Code = '" & oForm01.Items("TeamCode").Specific.VALUE & "'"
             
             oRecordSet01.DoQuery sQry
             oForm01.Items("TeamNm").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+            
         Case "RspCode" '//담당
+        
             sQry = "SELECT  T1.U_CodeNm FROM [@PS_HR200H] AS T0 Inner Join [@PS_HR200L] AS T1 ON T0.Code = T1.Code "
             sQry = sQry & " WHERE   T0.Name = '담당' AND T1.U_UseYN = 'Y' AND T1.U_Char2 = '" & oForm01.Items("BPLId").Specific.VALUE & "' "
             sQry = sQry & " And T1.U_Char1 = '" & oForm01.Items("TeamCode").Specific.VALUE & "'"
@@ -582,7 +606,9 @@ On Error GoTo FlushToItemValue_Error
             
             oRecordSet01.DoQuery sQry
             oForm01.Items("RspNm").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+            
         Case "PrcCode" '//
+        
             sQry = "SELECT OCRNAME FROM OOCR WHERE DIMCODE = '1' And OCRCODE = '" & Trim(oForm01.Items("PrcCode").Specific.VALUE) & "'"
             
             oRecordSet01.DoQuery sQry
@@ -624,10 +650,8 @@ On Error GoTo LoadForm_Error
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_FX005.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -654,11 +678,9 @@ On Error GoTo LoadForm_Error
     Call PS_FX005_SetDocument(oFromDocEntry01)
     Call PS_FX005_FormResize
     
-    
     Call Add_MatrixRow(0, True)
     Call LoadCaption
     Call FormItemEnabled
-    
     
     oForm01.EnableMenu ("1283"), False        '// 삭제
     oForm01.EnableMenu ("1286"), False        '// 닫기
@@ -1062,12 +1084,12 @@ On Error GoTo PS_FX005_DisplayFixData_Error
         Call oDS_PS_FX005H.setValue("U_Pic05", 0, "")
         Call oDS_PS_FX005H.setValue("U_Pic06", 0, "")
 
-        Call oDS_PS_FX005H.setValue("U_Pic01", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_01.BMP")
-        Call oDS_PS_FX005H.setValue("U_Pic02", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_02.BMP")
-        Call oDS_PS_FX005H.setValue("U_Pic03", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_03.BMP")
-        Call oDS_PS_FX005H.setValue("U_Pic04", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_04.BMP")
-        Call oDS_PS_FX005H.setValue("U_Pic05", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_05.BMP")
-        Call oDS_PS_FX005H.setValue("U_Pic06", 0, "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_06.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic01", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_01.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic02", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_02.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic03", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_03.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic04", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_04.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic05", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_05.BMP")
+        Call oDS_PS_FX005H.setValue("U_Pic06", 0, "\\191.1.1.220\Asset_Pic\" & Trim(oRecordSet01.Fields("FixCode").VALUE) & "_" & Trim(oRecordSet01.Fields("SubCode").VALUE) & "_06.BMP")
         
         Call oDS_PS_FX005H.setValue("DocEntry", 0, Trim(oRecordSet01.Fields("DocEntry").VALUE))
         Call oDS_PS_FX005H.setValue("U_BPLId", 0, Trim(oRecordSet01.Fields("BPLId").VALUE))
@@ -1146,9 +1168,9 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
         If pval.ItemUID = "ClasCode" Or pval.ItemUID = "BPLId" Then
             If oForm01.Mode = fm_ADD_MODE Then
                 '//신규모드일때
-                If oForm01.Items("SubDiv").Specific.VALUE = "N" Then
+                If Trim(oForm01.Items("SubDiv").Specific.VALUE) = "N" Then
                     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-                    ClasCode = oForm01.Items("ClasCode").Specific.VALUE 'Selected.
+                    ClasCode = Trim(oForm01.Items("ClasCode").Specific.VALUE) 'Selected.
                     sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_FixCode),3)) + 1)),3) From [@PS_FX005H] Where U_BPLId = '" & BPLID & "' And U_ClasCode = '" & ClasCode & "'"
                     oRecordSet01.DoQuery sQry
                     
@@ -1164,7 +1186,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
             End If
         ElseIf pval.ItemUID = "SubDiv" Then
             If oForm01.Mode = fm_ADD_MODE Then
-                If oForm01.Items("SubDiv").Specific.VALUE = "Y" Then
+                If Trim(oForm01.Items("SubDiv").Specific.VALUE) = "Y" Then
                     oForm01.Items("FixCode").Enabled = True
                     oForm01.Items("FixCode").Specific.VALUE = ""
                 Else
@@ -1172,7 +1194,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
                     oForm01.Items("SubCode").Specific.VALUE = "001"
                     
                     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-                    ClasCode = oForm01.Items("ClasCode").Specific.VALUE 'Selected.
+                    ClasCode = Trim(oForm01.Items("ClasCode").Specific.VALUE) 'Selected.
                     
                     sQry = "Select right('00' + rtrim(Convert(Char(3),Convert(Integer,right(Max(U_FixCode),3)) + 1)),3) From [@PS_FX005H] Where U_BPLId = '" & BPLID & "' And U_ClasCode = '" & ClasCode & "'"
                     oRecordSet01.DoQuery sQry
@@ -1667,18 +1689,18 @@ End Sub
 
 
 Public Sub PS_FX005_LoadPic(ByVal pPictureControlName As String) ' 고정자산 이미지 등록
-    Dim i               As Integer
-    Dim sFilePath       As String
-    Dim sFileName       As String
-    Dim sQry As String
+On Error GoTo PS_FX005_LoadPic_Error
+
+    Dim i           As Integer
+    Dim sFilePath   As String
+    Dim sFileName   As String
+    Dim sQry        As String
+    Dim SaveFolders As String
+    Dim objFile     As Object
+    Dim FSO         As FileSystemObject
+
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
-
-    Dim SaveFolders     As String
-    Dim objFile         As Object
-    Dim FSO             As FileSystemObject
-
-    On Error GoTo PS_FX005_LoadPic_Error
     
     Set FSO = New FileSystemObject
     
@@ -1686,9 +1708,9 @@ Public Sub PS_FX005_LoadPic(ByVal pPictureControlName As String) ' 고정자산 이미
     If Trim(oDS_PS_FX005H.GetValue("U_FixCode", 0)) = "" Then Exit Sub
     
     '//
-    SaveFolders = "\\191.1.1.220\ERP_Project\9999. Add_On\AddonSource\Asset_Pic"
+    SaveFolders = "\\191.1.1.220\Asset_Pic"
     
-    If Dir(SaveFolders, vbDirectory) = "" Then MkDir SaveFolders
+    'If Dir(SaveFolders, vbDirectory) = "" Then MkDir SaveFolders
     
     '//사진 불러오기
     sFilePath = FileListBoxForm.OpenDialog(FileListBoxForm, "*.BMP|*.BMP", "파일선택", "C:\")
@@ -1699,18 +1721,6 @@ Public Sub PS_FX005_LoadPic(ByVal pPictureControlName As String) ' 고정자산 이미
         Sbo_Application.SetStatusBarMessage "BMP 확장자만 가능합니다.", bmt_Short, True
         Exit Sub
     End If
-    
-    '//서버에 기존 파일 체크
-    For Each objFile In FSO.GetFolder(SaveFolders).Files
-        If InStr(Trim$(UCase(objFile.Name)), UCase$(Trim(oDS_PS_FX005H.GetValue("U_FixCode", 0))) & ".BMP") > 0 Then
-            If Sbo_Application.MessageBox("현재 자산의 사진 파일이 있습니다, 교체하시겠습니까?", 2, "Yes", "No") = 1 Then
-                '//기존 파일 삭제
-                Kill SaveFolders & "\" & objFile.Name
-            Else
-                Exit Sub
-            End If
-        End If
-    Next objFile
     
     Dim imageFileName As String
     
@@ -1728,6 +1738,18 @@ Public Sub PS_FX005_LoadPic(ByVal pPictureControlName As String) ' 고정자산 이미
         imageFileName = "_06.BMP"
     End If
     
+    '//서버에 기존 파일 체크
+    For Each objFile In FSO.GetFolder(SaveFolders).Files
+        If InStr(Trim$(UCase(objFile.Name)), UCase$(Trim(oDS_PS_FX005H.GetValue("U_FixCode", 0)) & "_" & Trim(oDS_PS_FX005H.GetValue("U_SubCode", 0)) & imageFileName)) > 0 Then
+            If Sbo_Application.MessageBox("현재 자산의 사진 파일이 있습니다. 교체하시겠습니까?", 2, "Yes", "No") = 1 Then
+                '//기존 파일 삭제
+                Kill SaveFolders & "\" & objFile.Name
+            Else
+                Exit Sub
+            End If
+        End If
+    Next objFile
+    
     Call FileCopy(sFilePath, SaveFolders & "\" & Trim(oDS_PS_FX005H.GetValue("U_FixCode", 0)) & "_" & Trim(oDS_PS_FX005H.GetValue("U_SubCode", 0)) & imageFileName)
     
     sQry = "      EXEC [PS_FX005_03] '"
@@ -1740,7 +1762,6 @@ Public Sub PS_FX005_LoadPic(ByVal pPictureControlName As String) ' 고정자산 이미
     If oForm01.Mode = fm_OK_MODE Then
         oForm01.Mode = fm_UPDATE_MODE
     End If
-    
     
     Set FSO = Nothing
     

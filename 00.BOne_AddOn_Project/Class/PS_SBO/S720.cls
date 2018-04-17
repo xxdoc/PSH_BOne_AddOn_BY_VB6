@@ -26,14 +26,14 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private oFormUniqueID01 As String
-Private oForm01              As SAPbouiCOM.Form
-Private oMat01              As SAPbouiCOM.Matrix
+Private oForm01         As SAPbouiCOM.Form
+Private oMat01          As SAPbouiCOM.Matrix
 'Private oDS_OINV As SAPbouiCOM.DBDataSource    '등록헤더
 'Private oDS_RDR1 As SAPbouiCOM.DBDataSource    '등록라인
 
-Private oLastItemUID01          As String                     '클래스에서 선택한 마지막 아이템 Uid값
-Private oLastColUID01      As String                     '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLastColRow01       As Long                       '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oLastItemUID01  As String '클래스에서 선택한 마지막 아이템 Uid값
+Private oLastColUID01   As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLastColRow01   As Long   '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
 
 Public Sub LoadForm(ByVal oFormUniqueID As String)
     oFormUniqueID01 = oFormUniqueID
@@ -86,7 +86,6 @@ On Error GoTo Raise_ItemEvent_Error
 Raise_ItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
@@ -437,7 +436,6 @@ Raise_EVENT_CHOOSE_FROM_LIST_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_CHOOSE_FROM_LIST_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub Raise_EVENT_GOT_FOCUS(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_EVENT_GOT_FOCUS_Error
 '    If pval.ItemUID = "Mat01" Then
@@ -588,7 +586,6 @@ On Error GoTo PS_S720_Print_Report01_Error
 PS_S720_Print_Report01_Error:
     Sbo_Application.SetStatusBarMessage "PS_S720_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Function PS_S720_DataValidCheck() As Boolean
 On Error GoTo PS_S720_DataValidCheck_Error

@@ -2538,7 +2538,7 @@ On Error GoTo PS_PP030_MTX03_Error
     oMat03.LoadFromDataSource
     
     If (RecordSet01.RecordCount = 0) Then
-        If oForm01.Items("OrdGbn").Specific.VALUE = "105" Or oForm01.Items("OrdGbn").Specific.VALUE = "106" Then
+        If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "105" Or Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "106" Then
             oForm01.Items("Mat03").Enabled = True
         Else
             oForm01.Items("Mat03").Enabled = False
@@ -2553,7 +2553,7 @@ On Error GoTo PS_PP030_MTX03_Error
 '        End If
     End If
     
-    If oForm01.Items("OrdGbn").Specific.VALUE <> "105" Then
+    If Trim(oForm01.Items("OrdGbn").Specific.VALUE) <> "105" Then
         For i = 0 To RecordSet01.RecordCount - 1
             If i <> 0 Then
                 oDS_PS_PP030M.InsertRecord (i)

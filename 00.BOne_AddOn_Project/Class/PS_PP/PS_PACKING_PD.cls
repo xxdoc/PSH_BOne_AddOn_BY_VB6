@@ -588,9 +588,9 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                         oForm01.Items("BoxCnt").Specific.VALUE = 1
                     Else
                         If CDbl(oForm01.Items(pval.ItemUID).Specific.VALUE) Mod CDbl(oForm01.Items("BoxKg").Specific.VALUE) = 0 Then
-                            oForm01.Items("BoxCnt").Specific.VALUE = oForm01.Items(pval.ItemUID).Specific.VALUE / oForm01.Items("BoxKg").Specific.VALUE
+                            oForm01.Items("BoxCnt").Specific.VALUE = oForm01.Items(pval.ItemUID).Specific.VALUE / Trim(oForm01.Items("BoxKg").Specific.VALUE)
                         Else
-                            oForm01.Items("BoxCnt").Specific.VALUE = CInt(oForm01.Items(pval.ItemUID).Specific.VALUE / oForm01.Items("BoxKg").Specific.VALUE) + 1
+                            oForm01.Items("BoxCnt").Specific.VALUE = Int(Trim(Trim(oForm01.Items(pval.ItemUID).Specific.VALUE) / Trim(oForm01.Items("BoxKg").Specific.VALUE))) + 1
                         End If
                     End If
                     

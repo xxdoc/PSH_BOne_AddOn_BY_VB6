@@ -609,9 +609,9 @@ On Error GoTo FlushToItemValue_Error
     'Header--------------------------------------------------------
     Select Case oUID
         Case "MSTCOD"
-            BPLID = oForm01.Items("BPLId").Specific.VALUE
-            Year = oForm01.Items("Year").Specific.VALUE
-            Number = oForm01.Items("Number").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+            Year = Trim(oForm01.Items("Year").Specific.VALUE)
+            Number = Trim(oForm01.Items("Number").Specific.VALUE)
             MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
             
             sQry = "Select U_FULLNAME From OHEM Where U_MSTCOD = '" & Trim(oForm01.Items("MSTCOD").Specific.String) & "'"
@@ -815,10 +815,10 @@ Public Sub Search_Grid_Data()
     oForm01.Items("RspCode").Specific.VALUE = ""
     oForm01.Items("RspName").Specific.VALUE = ""
             
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
-    Group = oForm01.Items("Group").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
+    Group = Trim(oForm01.Items("Group").Specific.VALUE)
     
      
      
@@ -927,10 +927,10 @@ Private Sub Search_Matrix_Data()
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     oForm01.Freeze True
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
-    Group = oForm01.Items("Group").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
+    Group = Trim(oForm01.Items("Group").Specific.VALUE)
     
     
 
@@ -1029,9 +1029,9 @@ Private Function Save_Data(ByVal A_B As String, Optional Cancel As Boolean) As B
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     
     For i = 1 To oMat01.VisualRowCount
         MSTCOD = oMat01.Columns("MSTCOD").Cells(i).Specific.VALUE
@@ -1092,7 +1092,7 @@ Private Sub Matrix_Grade_Set()
     
     oForm01.Freeze True
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Cnt = oForm01.Items("Cnt").Specific.VALUE
     
     sQry = "Select b.U_A, b.U_B, b.U_C, b.U_D"
@@ -1152,9 +1152,9 @@ Private Function TValue_Set()
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     
     For i = 1 To oMat01.VisualRowCount
         MSTCOD = oMat01.Columns("MSTCOD").Cells(i).Specific.VALUE

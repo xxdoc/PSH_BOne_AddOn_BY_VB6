@@ -481,13 +481,13 @@ On Error GoTo ComboBox_Setting_Error
     End If
     
     Call oForm01.Items("TeamCode").Specific.ValidValues.Add("%", "º±≈√")
-    sQry = "            SELECT      U_Minor AS [Code],"
-    sQry = sQry & "                 U_CdName As [Name]"
-    sQry = sQry & "  FROM       [@PS_SY001L]"
-    sQry = sQry & "  WHERE      Code = 'I001'"
-    sQry = sQry & "                 AND U_UseYN = 'Y'"
+    sQry = "        SELECT      U_Minor AS [Code],"
+    sQry = sQry & "             U_CdName As [Name]"
+    sQry = sQry & " FROM        [@PS_SY001L]"
+    sQry = sQry & " WHERE       Code = 'I001'"
+    sQry = sQry & "             AND U_UseYN = 'Y'"
     'sQry = sQry & "                 AND U_Char2 = '" & CLTCOD & "'"
-    sQry = sQry & "  ORDER BY  U_Seq"
+    sQry = sQry & " ORDER BY    U_Minor"
     Call MDC_SetMod.Set_ComboList(oForm01.Items("TeamCode").Specific, sQry, "", False, False)
     Call oForm01.Items("TeamCode").Specific.Select(0, psk_Index)
     

@@ -221,9 +221,9 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 
                 If pval.ItemUID = "Btn01" Then '조회버튼
-                    BPLID = oForm01.Items("BPLId").Specific.VALUE
-                    Year = oForm01.Items("Year").Specific.VALUE
-                    Number = oForm01.Items("Number").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+                    Number = Trim(oForm01.Items("Number").Specific.VALUE)
                     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
                     FULLNAME = oForm01.Items("FULLNAME").Specific.VALUE
                     
@@ -339,7 +339,7 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_COMBO_SELECT: '//5
                 If pval.ItemUID = "Mat01" Then
                     If pval.ColUID = "Grade" Then
-                        Year = oForm01.Items("Year").Specific.VALUE
+                        Year = Trim(oForm01.Items("Year").Specific.VALUE)
                         RateCode = oMat01.Columns("RateCode").Cells(pval.Row).Specific.VALUE
                         Grade = oMat01.Columns("Grade").Cells(pval.Row).Specific.VALUE
                         
@@ -703,9 +703,9 @@ On Error GoTo FlushToItemValue_Error
     'Header--------------------------------------------------------
     Select Case oUID
         Case "MSTCOD"
-            BPLID = oForm01.Items("BPLId").Specific.VALUE
-            Year = oForm01.Items("Year").Specific.VALUE
-            Number = oForm01.Items("Number").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+            Year = Trim(oForm01.Items("Year").Specific.VALUE)
+            Number = Trim(oForm01.Items("Number").Specific.VALUE)
             MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
             
             sQry = "Select U_FULLNAME From OHEM Where U_MSTCOD = '" & Trim(oForm01.Items("MSTCOD").Specific.String) & "'"
@@ -956,9 +956,9 @@ Public Sub Search_Grid_Data()
     oForm01.Items("EmpName").Specific.VALUE = ""
     oForm01.Items("CName").Specific.VALUE = ""
             
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
      
@@ -1092,7 +1092,7 @@ Public Sub Search_Grid_Data1(ByVal oRow As Long)
 '    oForm01.Items("DocDate").Specific.VALUE = Format(Now, "YYYYMMDD")
     
     RateCode = oMat01.Columns("RateCode").Cells(oRow).Specific.VALUE
-    BPLID = oForm01.Items("BPLId").Specific.VALUE '사업장도 함께 매개변수로 전달할 필요가 있음(2013.06.14 송명규)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장도 함께 매개변수로 전달할 필요가 있음(2013.06.14 송명규)
     MSTCOD = oForm01.Items("EmpNo").Specific.VALUE '평가대상자
     
     'sQry = "EXEC PS_HR416_03 '" & RateCode & "'"
@@ -1224,10 +1224,10 @@ Private Sub Search_Matrix_Data()
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     oForm01.Freeze True
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
     
     
@@ -1331,9 +1331,9 @@ Private Function Save_Data(ByVal A_B As String, Optional Cancel As Boolean) As B
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Code = oForm01.Items("Code").Specific.VALUE
     EmpNo = oForm01.Items("EmpNo").Specific.VALUE
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
@@ -1457,9 +1457,9 @@ Private Function Complete_Data()
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Code = oForm01.Items("Code").Specific.VALUE
     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
@@ -1579,9 +1579,9 @@ Private Function InComplete_Data()
     
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
-    Number = oForm01.Items("Number").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Code = oForm01.Items("Code").Specific.VALUE
     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE

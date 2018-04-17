@@ -341,7 +341,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                     BubbleEvent = False
                     Exit Sub
                 End If
-                If oForm01.Items("BPLId").Specific.VALUE = "1" And oForm01.Items("OrdGbn").Specific.VALUE = "102" Then
+                If Trim(oForm01.Items("BPLId").Specific.VALUE) = "1" And Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "102" Then
                     Sbo_Application.SetStatusBarMessage "창원사업장의 부품Item은 갱신할 수 없습니다..", bmt_Short, True
                     Call PS_PP080_AddMatrixRow(oMat01.VisualRowCount) '//UDO방식
                     BubbleEvent = False
@@ -637,7 +637,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                         End If
                     Next
                     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
-                    If oForm01.Items("OrdGbn").Specific.VALUE = "101" Then
+                    If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "101" Then
                         Query01 = "EXEC PS_PP070_04 '" & oMat01.Columns("PP030No").Cells(pval.Row).Specific.VALUE & "'"
                     Else
                         Query01 = "EXEC PS_PP080_02 '" & oMat01.Columns("PP030No").Cells(pval.Row).Specific.VALUE & "','" & oForm01.Items("OrdGbn").Specific.Selected.VALUE & "'"

@@ -549,7 +549,7 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
     
     Dim sCount As Integer, sSeq As Integer
     
-    Dim BPLId As String
+    Dim BPLID As String
     Dim Team As String
     Dim i As Long
     
@@ -581,10 +581,10 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
                 sSeq = sSeq - 1
             Next i
             
-            BPLId = oForm01.Items("BPLId").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             
             '//해당사업장의 사업팀을 Set
-            sQry = "SELECT b.U_Code, b.U_CodeNm From [@PS_HR200H] a Inner Join [@PS_HR200L] b On a.Code = b.Code And a.Name = '부서' And b.U_Char2 = '" + BPLId + "' order by b.U_Seq"
+            sQry = "SELECT b.U_Code, b.U_CodeNm From [@PS_HR200H] a Inner Join [@PS_HR200L] b On a.Code = b.Code And a.Name = '부서' And b.U_Char2 = '" + BPLID + "' order by b.U_Seq"
             oRecordSet01.DoQuery sQry
             
             oForm01.Items("Team").Specific.ValidValues.Add "-", "선택"

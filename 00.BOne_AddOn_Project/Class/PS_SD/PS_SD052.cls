@@ -819,7 +819,7 @@ On Error GoTo PS_SD052_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '기간(Fr)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '기간(To)
     OrdNum = Trim(oForm01.Items("OrdNum").Specific.VALUE) '품목코드(작번)
@@ -1058,7 +1058,7 @@ On Error GoTo Print_Query_Error
     Dim InputYN  As String
     Dim Class    As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     Purchase = Trim(oForm01.Items("Purchase").Specific.VALUE)

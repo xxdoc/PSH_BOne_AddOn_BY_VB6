@@ -179,7 +179,6 @@ Raise_ItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
     If (pval.BeforeAction = True) Then '//BeforeAction = True
@@ -658,7 +657,6 @@ Raise_EVENT_CHOOSE_FROM_LIST_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_CHOOSE_FROM_LIST_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub Raise_EVENT_GOT_FOCUS(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_EVENT_GOT_FOCUS_Error
     If pval.ItemUID = "Mat01" Or pval.ItemUID = "Mat02" Then
@@ -717,7 +715,6 @@ On Error GoTo Raise_EVENT_ROW_DELETE_Error
 Raise_EVENT_ROW_DELETE_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_ROW_DELETE_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Private Function PS_CO923_CreateItems() As Boolean
 On Error GoTo PS_CO923_CreateItems_Error
@@ -800,7 +797,7 @@ On Error GoTo PS_CO923_ComboBox_Setting_Error
     
     '사업장
     Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID").Specific, "SELECT BPLId, BPLName FROM OBPL order by BPLId", MDC_PS_Common.User_BPLId, False, False)
-'    Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId, psk_ByValue)
+'    Call oForm01.Items("BPLID").Specific.Select(MDC_PS_Common.User_BPLId, psk_ByValue)
     
 '    '거래처구분
 '    sQry = "            SELECT  U_Minor,"
@@ -957,8 +954,8 @@ On Error GoTo PS_CO923_FlushToItemValue_Error
         
     End Select
 
-   Set oRecordSet01 = Nothing
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Set oRecordSet01 = Nothing
+
     Exit Sub
 PS_CO923_FlushToItemValue_Error:
 
@@ -968,8 +965,15 @@ PS_CO923_FlushToItemValue_Error:
 
 End Sub
 
-
 Private Sub PS_CO923_MTX01()
+'******************************************************************************
+'Function ID : PS_CO923_MTX01()
+'해당모듈    : PS_CO923
+'기능        : 데이터 조회(집계)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_CO923_MTX01_Error
 
     '//메트릭스에 데이터 로드
@@ -989,7 +993,7 @@ On Error GoTo PS_CO923_MTX01_Error
 '    Dim SalesYN As String
     
     CntcCode = MDC_PS_Common.User_MSTCOD
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1070,6 +1074,14 @@ PS_CO923_MTX01_Error:
 End Sub
 
 Private Sub PS_CO923_MTX02()
+'******************************************************************************
+'Function ID : PS_CO923_MTX02()
+'해당모듈    : PS_CO923
+'기능        : 데이터 조회(설계비)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_CO923_MTX02_Error
 
     '//메트릭스에 데이터 로드
@@ -1089,7 +1101,7 @@ On Error GoTo PS_CO923_MTX02_Error
 '    Dim SalesYN As String
     
     CntcCode = MDC_PS_Common.User_MSTCOD
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1177,6 +1189,14 @@ PS_CO923_MTX02_Error:
 End Sub
 
 Private Sub PS_CO923_MTX03()
+'******************************************************************************
+'Function ID : PS_CO923_MTX03()
+'해당모듈    : PS_CO923
+'기능        : 데이터 조회(원재료비)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_CO923_MTX03_Error
 
     '//메트릭스에 데이터 로드
@@ -1194,7 +1214,7 @@ On Error GoTo PS_CO923_MTX03_Error
 '    Dim CardType As String
 '    Dim SalesYN As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1281,6 +1301,14 @@ PS_CO923_MTX03_Error:
 End Sub
 
 Private Sub PS_CO923_MTX04()
+'******************************************************************************
+'Function ID : PS_CO923_MTX04()
+'해당모듈    : PS_CO923
+'기능        : 데이터 조회(가공비)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_CO923_MTX04_Error
 
     '//메트릭스에 데이터 로드
@@ -1300,7 +1328,7 @@ On Error GoTo PS_CO923_MTX04_Error
 '    Dim SalesYN As String
     
     CntcCode = MDC_PS_Common.User_MSTCOD
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1388,6 +1416,14 @@ PS_CO923_MTX04_Error:
 End Sub
 
 Private Sub PS_CO923_MTX05()
+'******************************************************************************
+'Function ID : PS_CO923_MTX05()
+'해당모듈    : PS_CO923
+'기능        : 데이터 조회(외주제작,외주가공)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_CO923_MTX05_Error
 
     '//메트릭스에 데이터 로드
@@ -1405,7 +1441,7 @@ On Error GoTo PS_CO923_MTX05_Error
 '    Dim CardType As String
 '    Dim SalesYN As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1521,7 +1557,7 @@ Private Function PS_CO923_DI_API() As Boolean
 '
 '    LineNumCount = 0
 '    Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+'    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
 '    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
 '    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
 '    For i = 0 To UBound(ItemInformation)
@@ -1651,7 +1687,7 @@ On Error GoTo Print_Query_Error
     Dim CardType As String
     Dim SalesYN  As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
@@ -1750,7 +1786,7 @@ On Error GoTo Print_Query_Error
     Dim CardType As String
     Dim SalesYN  As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrMt = oForm01.Items("FrMt").Specific.VALUE
     ToMt = oForm01.Items("ToMt").Specific.VALUE
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)

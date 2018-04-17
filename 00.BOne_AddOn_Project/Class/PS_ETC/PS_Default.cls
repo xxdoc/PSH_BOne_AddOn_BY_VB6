@@ -406,22 +406,22 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
             If (pval.ItemUID = "Mat01") Then
                 If (pval.ColUID = "ItemCode") Then
                     '//기타작업
-                    Call oDS_PS_DefaultL.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_DefaultL.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                     If oMat01.RowCount = pval.Row And Trim(oDS_PS_DefaultL.GetValue("U_" & pval.ColUID, pval.Row - 1)) <> "" Then
                         PS_Default_AddMatrixRow (pval.Row)
                     End If
                 Else
-                    Call oDS_PS_DefaultL.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.Value)
+                    Call oDS_PS_DefaultL.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                 End If
                 oMat01.Columns(pval.ColUID).Cells(pval.Row).Click ct_Regular
             Else
                 If (pval.ItemUID = "DocEntry") Then
-                    Call oDS_PS_DefaultH.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_DefaultH.setValue(pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 ElseIf (pval.ItemUID = "CardCode") Then
-                    Call oDS_PS_DefaultH.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
-                    Call oDS_PS_DefaultH.setValue("U_CardName", 0, MDC_GetData.Get_ReData("CardName", "CardCode", "[OCRD]", "'" & oForm01.Items(pval.ItemUID).Specific.Value & "'"))
+                    Call oDS_PS_DefaultH.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
+                    Call oDS_PS_DefaultH.setValue("U_CardName", 0, MDC_GetData.Get_ReData("CardName", "CardCode", "[OCRD]", "'" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"))
                 Else
-                    Call oDS_PS_DefaultH.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.Value)
+                    Call oDS_PS_DefaultH.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                 End If
                 oForm01.Items(pval.ItemUID).Click ct_Regular
             End If
@@ -699,9 +699,9 @@ On Error GoTo PS_Default_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_Default'", "")
     If DocEntry = 0 Then
-        oForm01.Items("DocEntry").Specific.Value = 1
+        oForm01.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm01.Items("DocEntry").Specific.Value = DocEntry
+        oForm01.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PS_Default_FormClear_Error:
@@ -790,10 +790,10 @@ On Error GoTo PS_Default_MTX01_Error
     Dim Param02 As String
     Dim Param03 As String
     Dim Param04 As String
-    Param01 = oForm01.Items("Param01").Specific.Value
-    Param02 = oForm01.Items("Param01").Specific.Value
-    Param03 = oForm01.Items("Param01").Specific.Value
-    Param04 = oForm01.Items("Param01").Specific.Value
+    Param01 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param02 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param03 = Trim(oForm01.Items("Param01").Specific.VALUE)
+    Param04 = Trim(oForm01.Items("Param01").Specific.VALUE)
     
     Query01 = "SELECT 10"
     Call RecordSet01.DoQuery(Query01)
@@ -815,11 +815,11 @@ On Error GoTo PS_Default_MTX01_Error
             oDS_PS_DefaultL.InsertRecord (i)
         End If
         oDS_PS_DefaultL.Offset = i
-        Call oDS_PS_DefaultL.setValue("U_COL01", i, RecordSet01.Fields(0).Value)
-        Call oDS_PS_DefaultL.setValue("U_COL02", i, RecordSet01.Fields(1).Value)
+        Call oDS_PS_DefaultL.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
+        Call oDS_PS_DefaultL.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & RecordSet01.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & RecordSet01.RecordCount & "건 조회중...!"
     Next
     oMat01.LoadFromDataSource
     oMat01.AutoResizeColumns
@@ -862,20 +862,20 @@ On Error GoTo PS_Default_DI_API_Error
     ItemInformationCount = 0
     For i = 1 To oMat01.VisualRowCount
         ReDim Preserve ItemInformation(ItemInformationCount)
-        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).BatchNum = oMat01.Columns("BatchNum").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.Value
-        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.Value
+        ItemInformation(ItemInformationCount).ItemCode = oMat01.Columns("ItemCode").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).BatchNum = oMat01.Columns("BatchNum").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).Quantity = oMat01.Columns("Quantity").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).OPORNo = oMat01.Columns("OPORNo").Cells(i).Specific.VALUE
+        ItemInformation(ItemInformationCount).POR1No = oMat01.Columns("POR1No").Cells(i).Specific.VALUE
         ItemInformation(ItemInformationCount).Check = False
         ItemInformationCount = ItemInformationCount + 1
     Next
     
     LineNumCount = 0
     Set oDIObject = Sbo_Company.GetBusinessObject(oPurchaseDeliveryNotes)
-    oDIObject.BPL_IDAssignedToInvoice = oForm01.Items("BPLId").Specific.Selected.Value
-    oDIObject.CardCode = oForm01.Items("CardCode").Specific.Value
-    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.Value, "&&&&-&&-&&")
+    oDIObject.BPL_IDAssignedToInvoice = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    oDIObject.CardCode = Trim(oForm01.Items("CardCode").Specific.VALUE)
+    oDIObject.DocDate = Format(oForm01.Items("InDate").Specific.VALUE, "&&&&-&&-&&")
     For i = 0 To ItemInformationCount - 1
         If ItemInformation(i).Check = True Then
             GoTo Continue_First
@@ -884,7 +884,7 @@ On Error GoTo PS_Default_DI_API_Error
             oDIObject.Lines.Add
         End If
         oDIObject.Lines.ItemCode = ItemInformation(i).ItemCode
-        oDIObject.Lines.WarehouseCode = oForm01.Items("WhsCode").Specific.Value
+        oDIObject.Lines.WarehouseCode = Trim(oForm01.Items("WhsCode").Specific.VALUE)
         oDIObject.Lines.BaseType = "22"
         oDIObject.Lines.BaseEntry = ItemInformation(i).OPORNo
         oDIObject.Lines.BaseLine = ItemInformation(i).POR1No

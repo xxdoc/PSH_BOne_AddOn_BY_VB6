@@ -12,62 +12,45 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '****************************************************************************************************************
-'//  File : PS_GA150.cls
-'//  Module : 총무관리>안전환경관리>안전보호구지급관리>안전보호구지급등록
-'//  Desc : 안전보호구지급 이력 등록
-'//  FormType : PS_GA150
+'//  File               : PS_GA150.cls
+'//  Module             : 총무관리>안전환경관리>안전보호구지급관리>안전보호구지급등록
+'//  Desc               : 안전보호구지급 이력 등록
+'//  FormType           : PS_GA150
 '//  Create Date(Start) : 2012.09.18
-'//  Create Date(End) : 2012.09.18
-'//  Creator : Song Myoung gyu
-'//  Modified Date :
-'//  Modifier :
-'//  Company : Poongsan Holdings
+'//  Create Date(End)   : 2012.09.18
+'//  Creator            : Song Myoung gyu
+'//  Modified Date      :
+'//  Modifier           :
+'//  Company            : Poongsan Holdings
 '****************************************************************************************************************
 Option Explicit
 
 Public oFormUniqueID01 As String
-Public oForm01 As SAPbouiCOM.Form
-Public oMat01 As SAPbouiCOM.Matrix
-Private oDS_PS_GA150H As SAPbouiCOM.DBDataSource '등록헤더
-Private oDS_PS_GA150L As SAPbouiCOM.DBDataSource '등록라인
+Public oForm01         As SAPbouiCOM.Form
+Public oMat01          As SAPbouiCOM.Matrix
+Private oDS_PS_GA150H  As SAPbouiCOM.DBDataSource '등록헤더
+Private oDS_PS_GA150L  As SAPbouiCOM.DBDataSource '등록라인
 
 Private oLastItemUID01 As String '클래스에서 선택한 마지막 아이템 Uid값
-Private oLastColUID01 As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLastColRow01 As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
-
-'//사용자구조체
-Private Type ItemInformations
-    ItemCode As String
-    LotNo As String
-    Quantity As Long
-    OPORNo As Long
-    POR1No As Long
-    Check As Boolean
-    OPDNNo As Long
-    PDN1No As Long
-End Type
-
-Private oLast_Mode&
-
-Private ItemInformation() As ItemInformations
-Private ItemInformationCount As Long
-
+Private oLastColUID01  As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLastColRow01  As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
 '*******************************************************************
+
 ' .srf 파일로부터 폼을 로드한다.
 '*******************************************************************
 Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
 On Error GoTo LoadForm_Error
-    Dim i As Long
+
+    Dim i           As Long
     Dim oInnerXml01 As String
+    
     Dim oXmlDoc01 As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_GA150.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
-    
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
@@ -98,12 +81,12 @@ On Error GoTo LoadForm_Error
     Call PS_GA150_LoadCaption
     Call PS_GA150_FormItemEnabled
     
-    oForm01.EnableMenu ("1283"), False        '// 삭제
-    oForm01.EnableMenu ("1286"), False        '// 닫기
-    oForm01.EnableMenu ("1287"), False        '// 복제
-    oForm01.EnableMenu ("1285"), False        '// 복원
-    oForm01.EnableMenu ("1284"), False         '// 취소
-    oForm01.EnableMenu ("1293"), False         '// 행삭제
+    oForm01.EnableMenu ("1283"), False  '// 삭제
+    oForm01.EnableMenu ("1286"), False  '// 닫기
+    oForm01.EnableMenu ("1287"), False  '// 복제
+    oForm01.EnableMenu ("1285"), False  '// 복원
+    oForm01.EnableMenu ("1284"), False  '// 취소
+    oForm01.EnableMenu ("1293"), False  '// 행삭제
     oForm01.EnableMenu ("1281"), False
     oForm01.EnableMenu ("1282"), True
 
@@ -126,9 +109,13 @@ On Error GoTo LoadForm_Error
     Set oXmlDoc01 = Nothing
 
     '지급일자 설정
-    oForm01.Items("PrvdDt").Specific.VALUE = Format(Date, "yyyyMMdd")
-    Call oForm01.Items("CntcCode").Click
+    oForm01.Items("PrvdDt").Specific.VALUE = Format(Date, "YYYYMMDD")
+    '등록일 설정
+    oForm01.Items("RegDt").Specific.VALUE = Format(Date, "YYYYMMDD")
+    '등록일(조회) 설정
+    oForm01.Items("SRegDt").Specific.VALUE = Format(Date, "YYYYMMDD")
     
+    Call oForm01.Items("CntcCode").Click
     
     Exit Sub
 LoadForm_Error:
@@ -142,11 +129,11 @@ End Sub
 Private Sub PS_GA150_LoadCaption()
 '******************************************************************************
 'Function ID : PS_GA150_LoadCaption()
-'해당모듈 : PS_GA150
-'기능 : Form의 Mode에 따라 추가, 확인, 갱신 버튼 이름 변경
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : Form의 Mode에 따라 추가, 확인, 갱신 버튼 이름 변경
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_LoadCaption_Error
 
@@ -165,25 +152,33 @@ On Error GoTo PS_GA150_LoadCaption_Error
     Call oForm01.Freeze(False)
 
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 PS_GA150_LoadCaption_Error:
     MDC_Com.MDC_GF_Message "Delete_EmptyRow_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
 
-'/메트릭스 Row추가
 Sub PS_GA150_Add_MatrixRow(ByVal oRow As Long, Optional RowIserted As Boolean)
+'******************************************************************************
+'Function ID : PS_GA150_Add_MatrixRow()
+'해당모듈    : PS_GA150
+'기능        : 메트릭스 행 추가
+'인수        : oRow, RowInserted
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_GA150_Add_MatrixRow_Error
+
     If RowIserted = False Then '//행추가여부
         oDS_PS_GA150L.InsertRecord (oRow)
     End If
     
     oMat01.AddRow
-    oDS_PS_GA150L.Offset = oRow
+    oDS_PS_GA150L.offset = oRow
     oDS_PS_GA150L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_Add_MatrixRow_Error:
     MDC_Com.MDC_GF_Message "PS_GA150_Add_MatrixRow_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
@@ -191,37 +186,65 @@ End Sub
 Public Sub PS_GA150_MTX01()
 '******************************************************************************
 'Function ID : PS_GA150_MTX01()
-'해당모듈 : PS_GA150
-'기능 : 데이터 조회
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 데이터 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_MTX01_Error
 
-    Dim i As Integer
-    Dim sQry As String
+    Dim i      As Integer
+    Dim sQry   As String
     Dim ErrNum As Integer
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim SBPLID As String '사업장
+    Dim SBPLID    As String '사업장
     Dim SCntcCode As String '사번
     Dim SPrvdDtFr As String '지급일자(시작)
     Dim SPrvdDtTo As String '지급일자(종료)
+    Dim SRegDt    As String '등록일
+    Dim ChkMaxDt  As String '최근등록자료 조회
     
     SBPLID = IIf(Trim(oForm01.Items("SBPLId").Specific.VALUE) = "%", "", Trim(oForm01.Items("SBPLId").Specific.VALUE))
     SCntcCode = Trim(oForm01.Items("SCntcCode").Specific.VALUE)
     SPrvdDtFr = Trim(oForm01.Items("SPrvdDtFr").Specific.VALUE)
     SPrvdDtTo = Trim(oForm01.Items("SPrvdDtTo").Specific.VALUE)
+    SRegDt = Trim(oForm01.Items("SRegDt").Specific.VALUE)
+    
+    If oForm01.DataSources.UserDataSources.Item("ChkMaxDt").VALUE = "Y" Then '최근등록자료 조회
+        ChkMaxDt = "Y"
+    Else
+        ChkMaxDt = "N"
+    End If
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
     
     Call oForm01.Freeze(True)
     
-    sQry = "EXEC [PS_GA150_01] '" & SBPLID & "','" & SCntcCode & "','" & SPrvdDtFr & "','" & SPrvdDtTo & "'"
+    If ChkMaxDt = "N" Then
+    
+        sQry = "      EXEC [PS_GA150_01] '"
+        sQry = sQry & SBPLID & "','"
+        sQry = sQry & SCntcCode & "','"
+        sQry = sQry & SPrvdDtFr & "','"
+        sQry = sQry & SPrvdDtTo & "','"
+        sQry = sQry & SRegDt & "'"
+        
+    Else
+    
+        sQry = "      EXEC [PS_GA150_03] '"
+        sQry = sQry & SBPLID & "','"
+        sQry = sQry & SCntcCode & "','"
+        sQry = sQry & SPrvdDtFr & "','"
+        sQry = sQry & SPrvdDtTo & "','"
+        sQry = sQry & SRegDt & "'"
+    
+    End If
+    
     Call oRecordSet01.DoQuery(sQry)
     
     oMat01.Clear
@@ -249,7 +272,7 @@ On Error GoTo PS_GA150_MTX01_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_GA150L.Offset = i
+        oDS_PS_GA150L.offset = i
         
         Call oDS_PS_GA150L.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_GA150L.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("DocEntry").VALUE)) '관리번호
@@ -264,11 +287,13 @@ On Error GoTo PS_GA150_MTX01_Error
         Call oDS_PS_GA150L.setValue("U_ColReg10", i, Trim(oRecordSet01.Fields("PrtrNm").VALUE)) '보호구명
         Call oDS_PS_GA150L.setValue("U_ColReg11", i, Trim(oRecordSet01.Fields("PrtrSpec").VALUE)) '보호구규격
         Call oDS_PS_GA150L.setValue("U_ColDt01", i, Format(Trim(oRecordSet01.Fields("PrvdDt").VALUE), "yyyyMMdd")) '지급일자
+        Call oDS_PS_GA150L.setValue("U_ColDt02", i, Format(Trim(oRecordSet01.Fields("LPrvdDt").VALUE), "yyyyMMdd")) '전지급일
         Call oDS_PS_GA150L.setValue("U_ColSum01", i, Trim(oRecordSet01.Fields("Pred").VALUE)) '주기
         Call oDS_PS_GA150L.setValue("U_ColSum02", i, Trim(oRecordSet01.Fields("Qty").VALUE)) '수량
         Call oDS_PS_GA150L.setValue("U_ColReg12", i, Trim(oRecordSet01.Fields("RtrnDt").VALUE)) '반납일자
         Call oDS_PS_GA150L.setValue("U_ColReg13", i, Trim(oRecordSet01.Fields("RtrnRsn").VALUE)) '반납사유
         Call oDS_PS_GA150L.setValue("U_ColTxt01", i, Trim(oRecordSet01.Fields("Note").VALUE)) '비고
+        Call oDS_PS_GA150L.setValue("U_ColReg14", i, Format(Trim(oRecordSet01.Fields("RegDt").VALUE), "YYYYMMDD")) '등록일(2018.04.02 송명규 추가)
         
         oRecordSet01.MoveNext
         ProgBar01.VALUE = ProgBar01.VALUE + 1
@@ -284,9 +309,9 @@ On Error GoTo PS_GA150_MTX01_Error
     Set ProgBar01 = Nothing
     Set oRecordSet01 = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_MTX01_Error:
-'    ProgBar01.Stop
+
     Call oForm01.Freeze(False)
     Set ProgBar01 = Nothing
     Set oRecordSet01 = Nothing
@@ -301,16 +326,16 @@ End Sub
 Public Sub PS_GA150_DeleteData()
 '******************************************************************************
 'Function ID : PS_GA150_DeleteData()
-'해당모듈 : PS_GA150
-'기능 : 기본정보 삭제
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 기본정보 삭제
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_DeleteData_Error
 
-    Dim i As Integer
-    Dim sQry As String
+    Dim i      As Integer
+    Dim sQry   As String
     Dim ErrNum As Integer
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
@@ -337,19 +362,8 @@ On Error GoTo PS_GA150_DeleteData_Error
     
     Call MDC_Com.MDC_GF_Message("삭제 완료!", "S")
     
-'    Call PS_GA150_FormReset
-    
-'    oForm01.Mode = fm_ADD_MODE
-    
-'    Call oForm01.Items("BtnSearch").Click(ct_Regular)
-    
-'    oMat01.Clear
-'    oMat01.FlushToDataSource
-'    oMat01.LoadFromDataSource
-'    Call PS_GA150_Add_MatrixRow(0, True)
-    
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_DeleteData_Error:
     Set oRecordSet01 = Nothing
     If ErrNum = 1 Then
@@ -362,37 +376,39 @@ End Sub
 Public Function PS_GA150_UpdateData() As Boolean
 '******************************************************************************
 'Function ID : PS_GA150_UpdateData()
-'해당모듈 : PS_GA150
-'기능 : 기본정보를 수정
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 기본정보 수정
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_UpdateData_Error
 
-    Dim i As Integer
-    Dim j As Integer
+    Dim i    As Integer
+    Dim j    As Integer
     Dim sQry As String
+    
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim DocEntry As Integer
-    Dim BPLID As String '사업장
+    Dim BPLID    As String '사업장
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
-    Dim TeamCd As String '팀
-    Dim TeamNm As String '팀명
-    Dim RspCd As String '담당
-    Dim RspNm As String '담당명
-    Dim PrtrCd As String '보호구코드
-    Dim PrtrNm As String '보호구명
+    Dim TeamCd   As String '팀
+    Dim TeamNm   As String '팀명
+    Dim RspCd    As String '담당
+    Dim RspNm    As String '담당명
+    Dim PrtrCd   As String '보호구코드
+    Dim PrtrNm   As String '보호구명
     Dim PrtrSpec As String '보호구규격
-    Dim PrvdDt As String '지급일자
-    Dim Pred As Integer '주기
-    Dim Qty As Integer '수량
-    Dim RtrnDt As String '반납일자
-    Dim RtrnRsn As String '반납사유
-    Dim Note As String '비고
+    Dim PrvdDt   As String '지급일자
+    Dim Pred     As Integer '주기
+    Dim Qty      As Integer '수량
+    Dim RtrnDt   As String '반납일자
+    Dim RtrnRsn  As String '반납사유
+    Dim Note     As String '비고
+    Dim RegDt    As String '등록일
 
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
@@ -411,6 +427,7 @@ On Error GoTo PS_GA150_UpdateData_Error
     RtrnDt = Trim(oForm01.Items("RtrnDt").Specific.VALUE) '반납일자
     RtrnRsn = Trim(oForm01.Items("RtrnRsn").Specific.VALUE) '반납사유
     Note = Trim(oForm01.Items("Note").Specific.VALUE) '비고
+    RegDt = Trim(oForm01.Items("RegDt").Specific.VALUE) '등록일
     
     If Trim(DocEntry) = "" Then
         MDC_Com.MDC_GF_Message "수정할 항목이 없습니다. 수정하실려면 항목을 선택하세요!", "E"
@@ -418,23 +435,24 @@ On Error GoTo PS_GA150_UpdateData_Error
         Exit Function
     End If
     
-    sQry = "           UPDATE   [@PS_GA150H]"
-    sQry = sQry & " SET         U_BPLId = '" & BPLID & "'," '사업장
-    sQry = sQry & "              U_CntcCode = '" & CntcCode & "'," '사번
-    sQry = sQry & "              U_CntcName = '" & CntcName & "',"  '성명
-    sQry = sQry & "              U_TeamCd = '" & TeamCd & "',"  '팀
-    sQry = sQry & "              U_TeamNm = '" & TeamNm & "',"  '팀명
-    sQry = sQry & "              U_RspCd = '" & RspCd & "',"  '담당
-    sQry = sQry & "              U_RspNm = '" & RspNm & "',"  '담당명
-    sQry = sQry & "              U_PrtrCd = '" & PrtrCd & "',"  '보호구코드
-    sQry = sQry & "              U_PrtrNm = '" & PrtrNm & "',"  '보호구명
-    sQry = sQry & "              U_PrtrSpec = '" & PrtrSpec & "',"  '보호구규격
-    sQry = sQry & "              U_PrvdDt = '" & PrvdDt & "',"  '지급일자
-    sQry = sQry & "              U_Pred = '" & Pred & "',"  '주기
-    sQry = sQry & "              U_Qty = '" & Qty & "',"  '수량
-    sQry = sQry & "              U_RtrnDt = '" & RtrnDt & "',"  '반납일자
-    sQry = sQry & "              U_RtrnRsn = '" & RtrnRsn & "',"  '반납사유
-    sQry = sQry & "              U_Note = '" & Note & "'"  '비고
+    sQry = "        UPDATE   [@PS_GA150H]"
+    sQry = sQry & " SET      U_BPLId = '" & BPLID & "'," '사업장
+    sQry = sQry & "          U_CntcCode = '" & CntcCode & "'," '사번
+    sQry = sQry & "          U_CntcName = '" & CntcName & "',"  '성명
+    sQry = sQry & "          U_TeamCd = '" & TeamCd & "',"  '팀
+    sQry = sQry & "          U_TeamNm = '" & TeamNm & "',"  '팀명
+    sQry = sQry & "          U_RspCd = '" & RspCd & "',"  '담당
+    sQry = sQry & "          U_RspNm = '" & RspNm & "',"  '담당명
+    sQry = sQry & "          U_PrtrCd = '" & PrtrCd & "',"  '보호구코드
+    sQry = sQry & "          U_PrtrNm = '" & PrtrNm & "',"  '보호구명
+    sQry = sQry & "          U_PrtrSpec = '" & PrtrSpec & "',"  '보호구규격
+    sQry = sQry & "          U_PrvdDt = '" & PrvdDt & "',"  '지급일자
+    sQry = sQry & "          U_Pred = '" & Pred & "',"  '주기
+    sQry = sQry & "          U_Qty = '" & Qty & "',"  '수량
+    sQry = sQry & "          U_RtrnDt = '" & RtrnDt & "',"  '반납일자
+    sQry = sQry & "          U_RtrnRsn = '" & RtrnRsn & "',"  '반납사유
+    sQry = sQry & "          U_Note = '" & Note & "',"  '비고
+    sQry = sQry & "          U_RegDt = '" & RegDt & "'"  '등록일
     sQry = sQry & " WHERE    DocEntry = '" & DocEntry & "'"
     
     Call RecordSet01.DoQuery(sQry)
@@ -444,7 +462,7 @@ On Error GoTo PS_GA150_UpdateData_Error
     Set RecordSet01 = Nothing
     PS_GA150_UpdateData = True
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_UpdateData_Error:
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "PS_GA150_UpdateData_Error:" & Err.Number & " - " & Err.Description, "E"
@@ -453,15 +471,15 @@ End Function
 Public Function PS_GA150_AddData() As Boolean
 '******************************************************************************
 'Function ID : PS_GA150_AddData()
-'해당모듈 : PS_GA150
-'기능 : 데이터 INSERT
-'인수 : 없음
-'반환값 : 성공여부
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 데이터 INSERT
+'인수        : 없음
+'반환값      : 성공여부
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_AddData_Error
 
-    Dim i As Integer
+    Dim i    As Integer
     Dim sQry As String
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
@@ -471,22 +489,24 @@ On Error GoTo PS_GA150_AddData_Error
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim DocEntry As Integer
-    Dim BPLID As String '사업장
+    Dim BPLID    As String '사업장
     Dim CntcCode As String '사번
     Dim CntcName As String '성명
-    Dim TeamCd As String '팀
-    Dim TeamNm As String '팀명
-    Dim RspCd As String '담당
-    Dim RspNm As String '담당명
-    Dim PrtrCd As String '보호구코드
-    Dim PrtrNm As String '보호구명
+    Dim TeamCd   As String '팀
+    Dim TeamNm   As String '팀명
+    Dim RspCd    As String '담당
+    Dim RspNm    As String '담당명
+    Dim PrtrCd   As String '보호구코드
+    Dim PrtrNm   As String '보호구명
     Dim PrtrSpec As String '보호구규격
-    Dim PrvdDt As String '지급일자
-    Dim Pred As Integer '주기
-    Dim Qty As Integer '수량
-    Dim RtrnDt As String '반납일자
-    Dim RtrnRsn As String '반납사유
-    Dim Note As String '비고
+    Dim PrvdDt   As String '지급일자
+    Dim LPrvdDt  As String '전지급일
+    Dim Pred     As Integer '주기
+    Dim Qty      As Integer '수량
+    Dim RtrnDt   As String '반납일자
+    Dim RtrnRsn  As String '반납사유
+    Dim Note     As String '비고
+    Dim RegDt    As String '등록일
 
 '    DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
@@ -500,11 +520,13 @@ On Error GoTo PS_GA150_AddData_Error
     PrtrNm = Trim(oForm01.Items("PrtrNm").Specific.VALUE) '보호구명
     PrtrSpec = Trim(oForm01.Items("PrtrSpec").Specific.VALUE) '보호구규격
     PrvdDt = Trim(oForm01.Items("PrvdDt").Specific.VALUE) '지급일자
+    LPrvdDt = Trim(oForm01.Items("LPrvdDt").Specific.VALUE) '전지급일
     Pred = Trim(oForm01.Items("Pred").Specific.VALUE) '주기
     Qty = Trim(oForm01.Items("Qty").Specific.VALUE) '수량
     RtrnDt = Trim(oForm01.Items("RtrnDt").Specific.VALUE) '반납일자
     RtrnRsn = Trim(oForm01.Items("RtrnRsn").Specific.VALUE) '반납사유
     Note = Trim(oForm01.Items("Note").Specific.VALUE) '비고
+    RegDt = Trim(oForm01.Items("RegDt").Specific.VALUE) '등록일
 
     'DocEntry는 화면상의 DocEntry가 아닌 입력 시점의 최종 DocEntry를 조회한 후 +1하여 INSERT를 해줘야 함
     sQry = "SELECT ISNULL(MAX(DocEntry), 0) FROM[@PS_GA150H]"
@@ -516,7 +538,7 @@ On Error GoTo PS_GA150_AddData_Error
         DocEntry = Trim(RecordSet01.Fields(0).VALUE) + 1
     End If
     
-    sQry = "           INSERT INTO [@PS_GA150H]"
+    sQry = "        INSERT INTO [@PS_GA150H]"
     sQry = sQry & " ("
     sQry = sQry & "     DocEntry,"
     sQry = sQry & "     DocNum,"
@@ -532,11 +554,13 @@ On Error GoTo PS_GA150_AddData_Error
     sQry = sQry & "     U_PrtrNm," '보호구명"
     sQry = sQry & "     U_PrtrSpec," '보호구규격"
     sQry = sQry & "     U_PrvdDt," '지급일자"
+    sQry = sQry & "     U_LPrvdDt," '전지급일"
     sQry = sQry & "     U_Pred," '주기"
     sQry = sQry & "     U_Qty," '수량"
     sQry = sQry & "     U_RtrnDt," '반납일자"
     sQry = sQry & "     U_RtrnRsn," '반납사유"
-    sQry = sQry & "     U_Note" '비고"
+    sQry = sQry & "     U_Note," '비고"
+    sQry = sQry & "     U_RegDt" '등록일
     
     sQry = sQry & " )"
     sQry = sQry & " VALUES"
@@ -555,11 +579,13 @@ On Error GoTo PS_GA150_AddData_Error
     sQry = sQry & "'" & PrtrNm & "'," '보호구명"
     sQry = sQry & "'" & PrtrSpec & "'," '보호구규격"
     sQry = sQry & "'" & PrvdDt & "'," '지급일자"
+    sQry = sQry & "'" & LPrvdDt & "'," '전지급일"
     sQry = sQry & "'" & Pred & "'," '주기"
     sQry = sQry & "'" & Qty & "'," '수량"
     sQry = sQry & "'" & RtrnDt & "'," '반납일자"
     sQry = sQry & "'" & RtrnRsn & "'," '반납사유"
-    sQry = sQry & "'" & Note & "'" '비고"
+    sQry = sQry & "'" & Note & "'," '비고"
+    sQry = sQry & "'" & RegDt & "'" '등록일
     
     sQry = sQry & ")"
     
@@ -572,7 +598,7 @@ On Error GoTo PS_GA150_AddData_Error
     PS_GA150_AddData = True
 
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_AddData_Error:
     PS_GA150_AddData = False
     Set RecordSet01 = Nothing
@@ -583,35 +609,35 @@ End Function
 Private Function PS_GA150_HeaderSpaceLineDel() As Boolean
 '******************************************************************************
 'Function ID : PS_GA150_HeaderSpaceLineDel()
-'해당모듈 : PS_GA150
-'기능 : 필수입력사항 체크
-'인수 : 없음
-'반환값 : True:필수입력사항을 모두 입력, Fasle:필수입력사항 중 하나라도 입력하지 않았음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 필수입력사항 체크
+'인수        : 없음
+'반환값      : True:필수입력사항을 모두 입력, Fasle:필수입력사항 중 하나라도 입력하지 않았음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_HeaderSpaceLineDel_Error
 
     Dim ErrNum As Integer
     ErrNum = 0
-
-    Select Case True
-        Case Trim(oForm01.Items("CntcCode").Specific.VALUE) = "" '사번
-            ErrNum = 1
-            GoTo PS_GA150_HeaderSpaceLineDel_Error
-        Case Trim(oForm01.Items("PrtrCd").Specific.VALUE) = "" '보호구코드
-            ErrNum = 2
-            GoTo PS_GA150_HeaderSpaceLineDel_Error
-        Case Trim(oForm01.Items("PrvdDt").Specific.VALUE) = "" '지급일자
-            ErrNum = 3
-            GoTo PS_GA150_HeaderSpaceLineDel_Error
-        Case Trim(oForm01.Items("Qty").Specific.VALUE) = 0 '수량
-            ErrNum = 4
-            GoTo PS_GA150_HeaderSpaceLineDel_Error
-    End Select
+    
+    If Trim(oForm01.Items("CntcCode").Specific.VALUE) = "" Then '사번
+        ErrNum = 1
+        GoTo PS_GA150_HeaderSpaceLineDel_Error
+    ElseIf Trim(oForm01.Items("PrtrCd").Specific.VALUE) = "" Then '보호구코드
+        ErrNum = 2
+        GoTo PS_GA150_HeaderSpaceLineDel_Error
+    ElseIf Trim(oForm01.Items("PrvdDt").Specific.VALUE) = "" Then '지급일자
+        ErrNum = 3
+        GoTo PS_GA150_HeaderSpaceLineDel_Error
+    ElseIf Trim(oForm01.Items("Qty").Specific.VALUE) = 0 Then '수량
+        ErrNum = 4
+        GoTo PS_GA150_HeaderSpaceLineDel_Error
+    End If
 
     PS_GA150_HeaderSpaceLineDel = True
-Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    Exit Function
+
 PS_GA150_HeaderSpaceLineDel_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "사번은 필수사항입니다. 확인하세요.", "E"
@@ -625,9 +651,44 @@ PS_GA150_HeaderSpaceLineDel_Error:
     ElseIf ErrNum = 4 Then
         MDC_Com.MDC_GF_Message "수량은 필수사항입니다. 확인하세요.", "E"
         Call oForm01.Items("Qty").Click(ct_Regular)
+    ElseIf ErrNum = 5 Then
+        MDC_Com.MDC_GF_Message "부자재청구서 출력시에는 등록일을 필수로 입력해야합니다. 확인하세요.", "E"
+        Call oForm01.Items("SRegDt").Click(ct_Regular)
     End If
     PS_GA150_HeaderSpaceLineDel = False
 End Function
+
+Private Function PS_GA150_RegDtCheck() As Boolean
+'******************************************************************************
+'Function ID : PS_GA150_RegDtCheck()
+'해당모듈    : PS_GA150
+'기능        : 부자재 청구서 출력 시 필수입력사항 체크
+'인수        : 없음
+'반환값      : True:필수입력사항을 모두 입력, Fasle:필수입력사항 중 하나라도 입력하지 않았음
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_GA150_RegDtCheck_Error
+
+    Dim ErrNum As Integer
+    ErrNum = 0
+    
+    If Trim(oForm01.Items("SRegDt").Specific.VALUE) = "" Then '등록일
+        ErrNum = 1
+        GoTo PS_GA150_RegDtCheck_Error
+    End If
+
+    PS_GA150_RegDtCheck = True
+    
+    Exit Function
+
+PS_GA150_RegDtCheck_Error:
+    If ErrNum = 1 Then
+        MDC_Com.MDC_GF_Message "부자재청구서 출력시에는 등록일을 필수로 입력해야합니다. 확인하세요.", "E"
+        Call oForm01.Items("SRegDt").Click(ct_Regular)
+    End If
+    PS_GA150_RegDtCheck = False
+End Function
+
 
 '/ 메트릭스 필수 사항 check
 Private Function PS_GA150_MatrixSpaceLineDel() As Boolean
@@ -640,8 +701,9 @@ On Error GoTo PS_GA150_MatrixSpaceLineDel_Error
 
     Set oRecordSet01 = Nothing
     PS_GA150_MatrixSpaceLineDel = True
-Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    Exit Function
+
 PS_GA150_MatrixSpaceLineDel_Error:
     Set oRecordSet01 = Nothing
     If ErrNum = 1 Then
@@ -663,11 +725,11 @@ End Function
 Private Sub PS_GA150_FlushToItemValue(ByVal oUID As String, Optional oRow As Long, Optional oCol As String)
 On Error GoTo PS_GA150_FlushToItemValue_Error
 
-    Dim i As Integer
-    Dim ErrNum As Integer
-    Dim sQry As String
+    Dim i        As Integer
+    Dim ErrNum   As Integer
+    Dim sQry     As String
     Dim ItemCode As String
-    Dim Qty As Integer
+    Dim Qty      As Integer
     Dim Calculate_Weight As Double
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
@@ -679,9 +741,10 @@ On Error GoTo PS_GA150_FlushToItemValue_Error
 '
 '    End Select
 
-   Set oRecordSet01 = Nothing
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Set oRecordSet01 = Nothing
+
     Exit Sub
+    
 PS_GA150_FlushToItemValue_Error:
 
     Set oRecordSet01 = Nothing
@@ -693,6 +756,7 @@ End Sub
 '/폼의 아이템 사용지정
 Sub PS_GA150_FormItemEnabled()
 On Error GoTo PS_GA150_FormItemEnabled_Error
+
     If (oForm01.Mode = fm_ADD_MODE) Then
 '        oMat01.Columns("ItemCode").Cells(1).Click ct_Regular
 '        oForm01.Items("ItemCode").Enabled = True
@@ -701,8 +765,9 @@ On Error GoTo PS_GA150_FormItemEnabled_Error
     ElseIf (oForm01.Mode = fm_OK_MODE) Then
         
     End If
+    
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_GA150_FormItemEnabled_Error:
     MDC_Com.MDC_GF_Message "PS_GA150_FormItemEnabled_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
@@ -885,8 +950,6 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 Call PS_GA150_LoadCaption
                 Call PS_GA150_MTX01
                 
-                oLast_Mode = oForm01.Mode
-                
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
             
                 If PS_GA150_HeaderSpaceLineDel = False Then
@@ -936,6 +999,15 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             Else
             
             End If
+            
+        ElseIf pval.ItemUID = "BtnPrt" Then
+            
+            If PS_GA150_RegDtCheck = False Then
+                BubbleEvent = False
+                Exit Sub
+            End If
+            
+            Call PS_GA150_Print_Report01
             
         End If
   
@@ -1000,11 +1072,13 @@ On Error GoTo Raise_EVENT_CLICK_Error
                 Call oDS_PS_GA150H.setValue("U_PrtrNm", 0, oMat01.Columns("PrtrNm").Cells(pval.Row).Specific.VALUE) '보호구명
                 Call oDS_PS_GA150H.setValue("U_PrtrSpec", 0, oMat01.Columns("PrtrSpec").Cells(pval.Row).Specific.VALUE) '보호구규격
                 Call oDS_PS_GA150H.setValue("U_PrvdDt", 0, oMat01.Columns("PrvdDt").Cells(pval.Row).Specific.VALUE) '지급일자
+                Call oDS_PS_GA150H.setValue("U_LPrvdDt", 0, oMat01.Columns("LPrvdDt").Cells(pval.Row).Specific.VALUE) '전지급일
                 Call oDS_PS_GA150H.setValue("U_Pred", 0, oMat01.Columns("Pred").Cells(pval.Row).Specific.VALUE) '주기
                 Call oDS_PS_GA150H.setValue("U_Qty", 0, oMat01.Columns("Qty").Cells(pval.Row).Specific.VALUE) '수량
                 Call oDS_PS_GA150H.setValue("U_RtrnDt", 0, Replace(oMat01.Columns("RtrnDt").Cells(pval.Row).Specific.VALUE, ".", "")) '반납일자
                 Call oDS_PS_GA150H.setValue("U_RtrnRsn", 0, oMat01.Columns("RtrnRsn").Cells(pval.Row).Specific.VALUE)  '반납사유
                 Call oDS_PS_GA150H.setValue("U_Note", 0, oMat01.Columns("Note").Cells(pval.Row).Specific.VALUE) '비고
+                Call oDS_PS_GA150H.setValue("U_RegDt", 0, Replace(oMat01.Columns("RegDt").Cells(pval.Row).Specific.VALUE, ".", "")) '등록일
                 
                 oForm01.Mode = fm_UPDATE_MODE
                 Call PS_GA150_LoadCaption
@@ -1089,10 +1163,14 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                     oForm01.Items("TeamNm").Specific.VALUE = MDC_GetData.Get_ReData("U_CodeNm", "U_Code", "[@PS_HR200L]", "'" & oForm01.Items("TeamCd").Specific.VALUE & "'")  '팀명
                     oForm01.Items("RspNm").Specific.VALUE = MDC_GetData.Get_ReData("U_CodeNm", "U_Code", "[@PS_HR200L]", "'" & oForm01.Items("RspCd").Specific.VALUE & "'")  '담당명
                     
+                    oForm01.Items("LPrvdDt").Specific.VALUE = Format(MDC_GetData.Get_ReData("MAX(U_PrvdDt)", "U_CntcCode", "[@PS_GA150H]", "'" & oForm01.Items("CntcCode").Specific.VALUE & "'", "AND U_PrtrNm = '" & oForm01.Items("PrtrNm").Specific.VALUE & "'"), "YYYYMMDD") '전지급일
+                    
                 ElseIf pval.ItemUID = "PrtrCd" Then
                 
                     oForm01.Items("PrtrNm").Specific.VALUE = MDC_GetData.Get_ReData("FrgnName", "ItemCode", "[OITM]", "'" & oForm01.Items("PrtrCd").Specific.VALUE & "'")  '보호구명
                     oForm01.Items("PrtrSpec").Specific.VALUE = MDC_GetData.Get_ReData("U_Size", "ItemCode", "[OITM]", "'" & oForm01.Items("PrtrCd").Specific.VALUE & "'")  '규격
+                    
+                    oForm01.Items("LPrvdDt").Specific.VALUE = Format(MDC_GetData.Get_ReData("MAX(U_PrvdDt)", "U_CntcCode", "[@PS_GA150H]", "'" & oForm01.Items("CntcCode").Specific.VALUE & "'", "AND U_PrtrNm = '" & oForm01.Items("PrtrNm").Specific.VALUE & "'"), "YYYYMMDD") '전지급일
                     
                 ElseIf pval.ItemUID = "SCntcCode" Then
                 
@@ -1269,10 +1347,22 @@ On Error GoTo PS_GA150_CreateItems_Error
     Call oForm01.Items("SPrvdDtTo").Specific.DataBind.SetBound(True, "", "SPrvdDtTo")
     '지급일자(종료)_E
     
+    '등록일_S
+    Call oForm01.DataSources.UserDataSources.Add("SRegDt", dt_DATE)
+    Call oForm01.Items("SRegDt").Specific.DataBind.SetBound(True, "", "SRegDt")
+    '등록일_E
+    
+    '최근등록자료 조회_S
+    Call oForm01.DataSources.UserDataSources.Add("ChkMaxDt", dt_SHORT_TEXT, 1)
+    Call oForm01.Items("ChkMaxDt").Specific.DataBind.SetBound(True, "", "ChkMaxDt")
+    oForm01.Items("ChkMaxDt").Specific.Checked = False
+    '최근등록자료 조회_E
+    
     Set oRecordSet01 = Nothing
     Call oForm01.Freeze(False)
     
     Exit Function
+    
 PS_GA150_CreateItems_Error:
     Set oRecordSet01 = Nothing
     Call oForm01.Freeze(False)
@@ -1312,6 +1402,7 @@ On Error GoTo PS_GA150_ComboBox_Setting_Error
     Set oRecordSet01 = Nothing
     
     Exit Sub
+    
 PS_GA150_ComboBox_Setting_Error:
     Call oForm01.Freeze(False)
     Sbo_Application.SetStatusBarMessage "PS_GA150_ComboBox_Setting_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
@@ -1352,6 +1443,12 @@ End Sub
 Private Sub PS_GA150_FormResize()
 On Error GoTo PS_GA150_FormResize_Error
     
+    '그룹박스 크기 동적 할당
+    oForm01.Items("GrpBox01").Height = 190
+    oForm01.Items("GrpBox01").Width = 450 'oForm01.Items("Mat01").Width / 2 + 30
+    
+    oForm01.Items("GrpBox02").Height = 190
+    
     Call oMat01.AutoResizeColumns
     
     Exit Sub
@@ -1362,11 +1459,11 @@ End Sub
 Public Sub PS_GA150_FormReset()
 '******************************************************************************
 'Function ID : PS_GA150_FormReset()
-'해당모듈 : PS_GA150
-'기능 : 화면 초기화
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 화면 초기화
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_FormReset_Error
 
@@ -1397,17 +1494,19 @@ On Error GoTo PS_GA150_FormReset_Error
     Call oDS_PS_GA150H.setValue("U_PrtrNm", 0, "") '보호구명
     Call oDS_PS_GA150H.setValue("U_PrtrSpec", 0, "") '보호구규격
     Call oDS_PS_GA150H.setValue("U_PrvdDt", 0, Format(Now, "yyyyMMdd")) '지급일자
+    Call oDS_PS_GA150H.setValue("U_LPrvdDt", 0, "") '전지급일
     Call oDS_PS_GA150H.setValue("U_Pred", 0, "") '주기
     Call oDS_PS_GA150H.setValue("U_Qty", 0, 1) '수량
     Call oDS_PS_GA150H.setValue("U_RtrnDt", 0, "") '반납일자
     Call oDS_PS_GA150H.setValue("U_RtrnRsn", 0, "") '반납사유
     Call oDS_PS_GA150H.setValue("U_Note", 0, "") '비고
+    Call oDS_PS_GA150H.setValue("U_RegDt", 0, Format(Now, "YYYYMMDD")) '등록일
     
     Set RecordSet01 = Nothing
     Call oForm01.Freeze(False)
 
-Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Sub
+
 PS_GA150_FormReset_Error:
     Call oForm01.Freeze(False)
     Set RecordSet01 = Nothing
@@ -1417,11 +1516,11 @@ End Sub
 Public Function PS_GA150_DataCheck() As Boolean
 '******************************************************************************
 'Function ID : PS_GA150_DataCheck()
-'해당모듈 : PS_GA150
-'기능 : 중복데이터 체크
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_GA150
+'기능        : 중복데이터 체크
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_GA150_DataCheck_Error
 
@@ -1434,9 +1533,9 @@ On Error GoTo PS_GA150_DataCheck_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLID As String
+    Dim BPLID    As String
     Dim CntcCode As String
-    Dim PrvdDt As String
+    Dim PrvdDt   As String
     Dim ItemCode As String
     
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
@@ -1444,7 +1543,11 @@ On Error GoTo PS_GA150_DataCheck_Error
     PrvdDt = oForm01.Items("PrvdDt").Specific.VALUE
     ItemCode = oForm01.Items("PrtrCd").Specific.VALUE
 
-    sQry = "EXEC PS_GA150_02 '" & BPLID & "','" & CntcCode & "','" & PrvdDt & "','" & ItemCode & "'"
+    sQry = "      EXEC PS_GA150_02 '"
+    sQry = sQry & BPLID & "','"
+    sQry = sQry & CntcCode & "','"
+    sQry = sQry & PrvdDt & "','"
+    sQry = sQry & ItemCode & "'"
     
     Call oRecordSet01.DoQuery(sQry)
     
@@ -1470,3 +1573,87 @@ PS_GA150_DataCheck_Error:
     Set oRecordSet01 = Nothing
     PS_GA150_DataCheck = False
 End Function
+
+Private Sub PS_GA150_Print_Report01()
+On Error GoTo Print_Query_Error
+
+    Dim DocNum     As String
+    Dim WinTitle   As String
+    Dim ReportName As String
+    Dim sQry       As String
+
+    Dim i As Integer
+    Dim ErrNum     As Integer
+    Dim Sub_sQry   As String
+    
+    Dim oRecordSet As SAPbobsCOM.Recordset
+    
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
+
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+
+    Call ConnectODBC
+    
+    Dim BPLID   As String '사업장
+    Dim RegDt   As String '등록일
+
+    BPLID = Trim(oForm01.Items("SBPLId").Specific.Selected.VALUE) '사업장
+    RegDt = Trim(oForm01.Items("SRegDt").Specific.VALUE) '등록일
+
+    '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+    WinTitle = "[PS_GA150] 레포트"
+    
+    ReportName = "PS_GA150_01.rpt"
+
+    sQry = "      EXEC PS_GA150_51 '"
+    sQry = sQry & BPLID & "','"
+    sQry = sQry & RegDt & "'"
+    
+    '// Formula 수식필드
+    ReDim gRpt_Formula(2)
+    ReDim gRpt_Formula_Value(2)
+       
+    '// SubReport
+    ReDim gRpt_SRptSqry(1)
+    ReDim gRpt_SRptName(1)
+    
+    ReDim gRpt_SFormula(1, 1)
+    ReDim gRpt_SFormula_Value(1, 1)
+    
+    gRpt_SFormula(1, 1) = ""
+    gRpt_SFormula_Value(1, 1) = ""
+
+'    Call oRecordSet.DoQuery(sQry)
+'
+'    If oRecordSet.RecordCount = 0 Then
+'        ErrNum = 1
+'        GoTo Print_Query_Error
+'    End If
+
+    '/ Action (sub_query가 있을때는 'Y'로...)/
+    If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "", "N", "V") = False Then
+    End If
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
+    Set oRecordSet = Nothing
+    Exit Sub
+
+Print_Query_Error:
+
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
+    Set oRecordSet = Nothing
+    
+    If ErrNum = 1 Then
+        MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
+    Else
+        MDC_Com.MDC_GF_Message "PS_GA150_Print_Report01_Error:" & Err.Number & " - " & Err.Description, "E"
+    End If
+End Sub
+

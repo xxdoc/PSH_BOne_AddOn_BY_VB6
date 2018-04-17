@@ -684,7 +684,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_PP010H.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP010H.Offset = oRow
+    oDS_PS_PP010H.offset = oRow
     oDS_PS_PP010H.setValue "DocNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -733,7 +733,7 @@ On Error GoTo FlushToItemValue_Error
                 End If
                 
                 RegNum = Trim(oMat01.Columns("RegNum").Cells(oRow).Specific.VALUE)
-                ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
+                ItmBsort = Trim(oForm01.Items("ItmBSort").Specific.VALUE)
                 
                 sQry = "        Select  IsNull(U_SjDocLin, '') "
                 sQry = sQry & " From    [@PS_SD010H] "
@@ -1597,7 +1597,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_PP010H.Offset = i
+        oDS_PS_PP010H.offset = i
         oDS_PS_PP010H.setValue "DocNum", i, i + 1
         oDS_PS_PP010H.setValue "U_RegNum", i, Trim(oRecordSet01.Fields("U_RegNum").VALUE)
         oDS_PS_PP010H.setValue "U_ItemCode", i, Trim(oRecordSet01.Fields("U_ItemCode").VALUE)

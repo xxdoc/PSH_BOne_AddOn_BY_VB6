@@ -92,7 +92,7 @@ On Error GoTo Raise_ItemEvent_Error
     Dim sQry            As String
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     Dim Cnt             As Integer
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim MSTCOD          As String
     Dim FULLNAME        As String
     Dim PassWd          As String
@@ -139,7 +139,7 @@ On Error GoTo Raise_ItemEvent_Error
         Select Case pval.EventType
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "Btn01" Then
-                    BPLId = oForm01.Items("BPLId").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
                     FULLNAME = oForm01.Items("FULLNAME").Specific.VALUE
                     PassWd = oForm01.Items("PassWd").Specific.VALUE
@@ -147,7 +147,7 @@ On Error GoTo Raise_ItemEvent_Error
                     PassWd2 = oForm01.Items("ChPWd2").Specific.VALUE
                     
                     
-                    sQry = " Select Count(*) From Z_PS_HRPASS Where BPLId = '" & BPLId & "' and MSTCOD = '" & MSTCOD & "'"
+                    sQry = " Select Count(*) From Z_PS_HRPASS Where BPLId = '" & BPLID & "' and MSTCOD = '" & MSTCOD & "'"
                     
                     oRecordSet01.DoQuery sQry
                     
@@ -156,7 +156,7 @@ On Error GoTo Raise_ItemEvent_Error
                     If Cnt > 0 Then '
                         '//있으면 Update
                         
-                        sQry = " Select PassWd From Z_PS_HRPASS Where BPLId = '" & BPLId & "' and MSTCOD = '" & MSTCOD & "'"
+                        sQry = " Select PassWd From Z_PS_HRPASS Where BPLId = '" & BPLID & "' and MSTCOD = '" & MSTCOD & "'"
                     
                         oRecordSet01.DoQuery sQry
                         
@@ -166,7 +166,7 @@ On Error GoTo Raise_ItemEvent_Error
                             If PassWd1 <> PassWd2 Then
                                 Sbo_Application.SetStatusBarMessage "변경비밀번호와 변경비밀번호확인 번호가 틀립니다.. 확인바랍니다.", bmt_Short, True
                             Else
-                                sQry = "Update Z_PS_HRPASS set PassWd = '" & PassWd1 & "' Where BPLId = '" & BPLId & "' and MSTCOD = '" & MSTCOD & "'"
+                                sQry = "Update Z_PS_HRPASS set PassWd = '" & PassWd1 & "' Where BPLId = '" & BPLID & "' and MSTCOD = '" & MSTCOD & "'"
                                 oRecordSet01.DoQuery sQry
                                 Sbo_Application.SetStatusBarMessage "변경 처리를 하였습니다.. 확인바랍니다.", bmt_Short, True
                             End If
@@ -178,7 +178,7 @@ On Error GoTo Raise_ItemEvent_Error
                             '//사원이 없을경우 insert
                             vReturnValue = Sbo_Application.MessageBox("비밀번호 등록된 사번이 아닙니다. 등록하시겠습니까? (신규비번은 1111 입니다.)", 1, "&확인", "&취소")
                             If vReturnValue = 1 Then
-                                sQry = " insert into Z_PS_HRPASS Values ('" & BPLId & "','" & MSTCOD & "','" & FULLNAME & "','1111')"
+                                sQry = " insert into Z_PS_HRPASS Values ('" & BPLID & "','" & MSTCOD & "','" & FULLNAME & "','1111')"
                                 oRecordSet01.DoQuery sQry
                                 Sbo_Application.SetStatusBarMessage "신규 처리를 하였습니다.. 확인바랍니다.", bmt_Short, True
                             Else
@@ -232,7 +232,7 @@ On Error GoTo FlushToItemValue_Error
     Dim i&
     Dim ErrNum          As Integer
     Dim sQry            As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     
     Dim sSeq$
@@ -243,7 +243,7 @@ On Error GoTo FlushToItemValue_Error
 ' Matrix 필드에 질의 응답 창 띄워주기
    Select Case oUID
         Case "MSTCOD"
-            BPLId = oForm01.Items("BPLId").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             sQry = "Select a.U_FULLNAME From OHEM a  "
             sQry = sQry & " Where a.U_MSTCOD = '" & Trim(oForm01.Items("MSTCOD").Specific.VALUE) & "' And a.branch = '" & oForm01.Items("BPLId").Specific.VALUE & "'"
             oRecordSet01.DoQuery sQry

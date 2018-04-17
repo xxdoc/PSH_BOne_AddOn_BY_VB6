@@ -1088,12 +1088,12 @@ Private Sub Adjust_Value() '//계수조정 처리
     
     oForm01.Freeze True
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
     
-    Number = oForm01.Items("Number").Specific.VALUE
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
-    Group = oForm01.Items("Group").Specific.VALUE
+    Group = Trim(oForm01.Items("Group").Specific.VALUE)
         
      For i = 0 To oGrid01.Rows.Count - 1
         MSTCOD = Trim(oGrid01.DataTable.GetValue(0, i))
@@ -1226,12 +1226,12 @@ Private Sub Adjust_Cancel() '//계수조정 처리
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     oForm01.Freeze True
     
-    BPLID = oForm01.Items("BPLId").Specific.VALUE
-    Year = oForm01.Items("Year").Specific.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    Year = Trim(oForm01.Items("Year").Specific.VALUE)
     
-    Number = oForm01.Items("Number").Specific.VALUE
+    Number = Trim(oForm01.Items("Number").Specific.VALUE)
     Evaluate = oForm01.Items("Evaluate").Specific.VALUE
-    Group = oForm01.Items("Group").Specific.VALUE
+    Group = Trim(oForm01.Items("Group").Specific.VALUE)
         
      For i = 0 To oGrid01.Rows.Count - 1
         MSTCOD = Trim(oGrid01.DataTable.GetValue(0, i))

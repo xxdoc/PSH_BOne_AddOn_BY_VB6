@@ -1072,7 +1072,7 @@ On Error GoTo PS_HR412_SetBaseForm_Error
         If oMat01.Columns("CHK").Cells(i).Specific.Checked = True Then
             
             Param01 = oMat01.Columns("MSTCOD").Cells(i).Specific.VALUE
-            Param02 = oForm01.Items("BPLId").Specific.VALUE '//사업장
+            Param02 = Trim(oForm01.Items("BPLId").Specific.VALUE) '//사업장
             Param03 = oForm01.Items("Year").Specific.VALUE '//평가년도
             Param04 = oForm01.Items("Number").Specific.VALUE '//평가차수
             Param05 = oForm01.Items("Evaluate").Specific.VALUE '//평가권한

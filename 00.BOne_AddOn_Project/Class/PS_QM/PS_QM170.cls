@@ -159,7 +159,7 @@ On Error GoTo PS_QM170_Add_MatrixRow_Error
     End If
 
     oMat01.AddRow
-    oDS_PS_QM170B.Offset = oRow
+    oDS_PS_QM170B.offset = oRow
     oDS_PS_QM170B.setValue "U_LineNum", oRow, oRow + 1
 
     oMat01.LoadFromDataSource
@@ -262,7 +262,7 @@ On Error GoTo PS_QM170_MTX01_Error
         End If
 
         oMat01.AddRow
-        oDS_PS_QM170B.Offset = i
+        oDS_PS_QM170B.offset = i
 
         Call oDS_PS_QM170B.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_QM170B.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("Check").VALUE)) 'º±≈√
@@ -1752,7 +1752,7 @@ On Error GoTo PS_QM170_GetRegNo_Error
     Dim RegDate As String
     Dim BPLID As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     RegDate = Left(Trim(oForm01.Items("RegDate").Specific.VALUE), 6)
     
     sQry = "EXEC PS_QM170_05 '" & BPLID & "', '" & RegDate & "'"

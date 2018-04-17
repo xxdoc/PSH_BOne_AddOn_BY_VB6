@@ -312,7 +312,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             End If
         End If
         If pval.ItemUID = "Btn1" Then
-            If oForm01.Items("OrdGbn").Specific.VALUE = "601" Then
+            If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "601" Then
                 If oForm01.Mode = fm_ADD_MODE Then
                     PP030No = oForm01.Items("PP030No").Specific.VALUE
                     BoxCnt = oForm01.Items("BoxCnt").Specific.VALUE
@@ -475,14 +475,14 @@ On Error GoTo Raise_EVENT_COMBO_SELECT_Error
                         oMat01.Columns("YWeight").Visible = True
                         oMat01.Columns("NWeight").Visible = True
                     End If
-                    If oForm01.Items("OrdGbn").Specific.VALUE = "111" Then
+                    If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "111" Then
                         oForm01.Items("PP030No").Enabled = False
                         oForm01.Items("PQty").Enabled = False
                         oForm01.Items("BoxCnt").Enabled = False
                         oForm01.Items("Btn1").Enabled = False
                         
                         Call LoadData '분말포장대기 자료 SELECT
-                    ElseIf oForm01.Items("OrdGbn").Specific.VALUE = "601" Then
+                    ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "601" Then
                         oForm01.Items("BoxCnt").Specific.VALUE = 1
                         
                         oForm01.Items("PP030No").Enabled = True

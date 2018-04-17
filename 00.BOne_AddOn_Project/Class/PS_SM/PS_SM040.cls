@@ -744,8 +744,8 @@ On Error GoTo PS_SM040_MTX01_Error
     Dim ItemCode As String
     
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-    DocDateFr = Trim(oForm01.Items("DocDatefr").Specific.VALUE)
-    DocDateTo = Trim(oForm01.Items("DocDateto").Specific.VALUE)
+    DocDateFr = Trim(oForm01.Items("DocDateFr").Specific.VALUE)
+    DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
     
     Query01 = "EXEC PS_SM040_01 '" & BPLID & "','" & DocDateFr & "','" & DocDateTo & "','" & ItemCode & "'"

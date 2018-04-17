@@ -107,7 +107,7 @@ On Error GoTo Raise_ItemEvent_Error
     Dim sQry            As String
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     Dim Cnt             As Integer
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim MSTCOD          As String
     Dim FULLNAME        As String
     Dim Year            As String
@@ -164,9 +164,9 @@ On Error GoTo Raise_ItemEvent_Error
         Select Case pval.EventType
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "Btn01" Then
-                    BPLId = oForm01.Items("BPLId").Specific.VALUE
-                    Year = oForm01.Items("Year").Specific.VALUE
-                    Number = oForm01.Items("Number").Specific.VALUE
+                    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                    Year = Trim(oForm01.Items("Year").Specific.VALUE)
+                    Number = Trim(oForm01.Items("Number").Specific.VALUE)
                     MSTCOD = oForm01.Items("MSTCOD").Specific.VALUE
                     FULLNAME = oForm01.Items("FULLNAME").Specific.VALUE
                     If oForm01.Items("Check1").Specific.Checked = True Then
@@ -276,7 +276,7 @@ On Error GoTo Raise_ItemEvent_Error
                     
                     
                     
-                    sQry = " Select Count(*) From Z_PS_HR403 Where BPLId = '" & BPLId & "' and Year = '" & Year & "' And Number = '" & Number & "' And MSTCOD = '" & MSTCOD & "'"
+                    sQry = " Select Count(*) From Z_PS_HR403 Where BPLId = '" & BPLID & "' and Year = '" & Year & "' And Number = '" & Number & "' And MSTCOD = '" & MSTCOD & "'"
                     
                     oRecordSet01.DoQuery sQry
                     
@@ -290,7 +290,7 @@ On Error GoTo Raise_ItemEvent_Error
                         '//사원이 없을경우 insert
                         vReturnValue = Sbo_Application.MessageBox("평가서약을 하시겠습니까? ", 1, "&확인", "&취소")
                         If vReturnValue = 1 Then
-                            sQry = " insert into Z_PS_HR403 Values ('" & BPLId & "','" & Year & "','" & Number & "','" & MSTCOD & "','" & FULLNAME & "','" & Check1 & "','" & Check2 & "','" & Check3 & "','" & Check4 & "','" & Check5 & "','"
+                            sQry = " insert into Z_PS_HR403 Values ('" & BPLID & "','" & Year & "','" & Number & "','" & MSTCOD & "','" & FULLNAME & "','" & Check1 & "','" & Check2 & "','" & Check3 & "','" & Check4 & "','" & Check5 & "','"
                             sQry = sQry + Check6 & "','" & Check7 & "','" & Check8 & "','" & Check9 & "','" & Check10 & "','" & Check11 & "')"
                             oRecordSet01.DoQuery sQry
                             Sbo_Application.SetStatusBarMessage "평가서약을 완료하였습니다.", bmt_Short, True
@@ -346,7 +346,7 @@ On Error GoTo FlushToItemValue_Error
     Dim i&
     Dim ErrNum          As Integer
     Dim sQry            As String
-    Dim BPLId           As String
+    Dim BPLID           As String
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     
     Dim sSeq$
@@ -357,7 +357,7 @@ On Error GoTo FlushToItemValue_Error
 ' Matrix 필드에 질의 응답 창 띄워주기
    Select Case oUID
         Case "MSTCOD"
-            BPLId = oForm01.Items("BPLId").Specific.VALUE
+            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
             sQry = "Select a.U_FULLNAME From OHEM a  "
             sQry = sQry & " Where a.U_MSTCOD = '" & Trim(oForm01.Items("MSTCOD").Specific.VALUE) & "' And a.branch = '" & oForm01.Items("BPLId").Specific.VALUE & "'"
             oRecordSet01.DoQuery sQry

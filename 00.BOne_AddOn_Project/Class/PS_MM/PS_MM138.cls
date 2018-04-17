@@ -184,13 +184,13 @@ On Error GoTo Raise_ItemEvent_Error
                         End If
                         
                         
-                        '문서만 생성할때 막음 시작
+                        '문서만 생성할때 막음 시작 주석
                         If PS_MM138_DI_API01 = False Then
                             BubbleEvent = False
                             Exit Sub
                         End If
-                        '문서만 생성할때 막음 끝
-'
+                        '문서만 생성할때 막음 끝 주석
+                        
                         Call Delete_EmptyRow
                     ElseIf oForm01.Mode = fm_UPDATE_MODE Then
                         If HeaderSpaceLineDel = False Then
@@ -314,7 +314,7 @@ On Error GoTo Raise_ItemEvent_Error
                     ElseIf pval.ItemUID = "Qty" Then
                         If oMat01.VisualRowCount > 0 Then
                             oForm01.Freeze True
-                            If (oForm01.Items("BPLId").Specific.VALUE = "3" Or oForm01.Items("BPLId").Specific.VALUE = "5") And oForm01.Items("ItmGrpCd").Specific.VALUE <> "" Then
+                            If (Trim(oForm01.Items("BPLId").Specific.VALUE) = "3" Or Trim(oForm01.Items("BPLId").Specific.VALUE) = "5") And Trim(oForm01.Items("ItmGrpCd").Specific.VALUE) <> "" Then
                                 oMat01.FlushToDataSource
                                 For i = 0 To oMat01.VisualRowCount - 1
                                     If Trim(oDS_PS_MM138L.GetValue("U_ItemCode", i)) <> "" Then
@@ -350,7 +350,7 @@ On Error GoTo Raise_ItemEvent_Error
                                 
                                 oMat01.LoadFromDataSource
                                 oMat01.Columns("OutQty").Cells(1).Click ct_Regular
-                            ElseIf oForm01.Items("BPLId").Specific.VALUE = "3" And oForm01.Items("ItmGrpCd").Specific.VALUE = "" Then
+                            ElseIf Trim(oForm01.Items("BPLId").Specific.VALUE) = "3" And Trim(oForm01.Items("ItmGrpCd").Specific.VALUE) = "" Then
                                 oForm01.Items("Qty").Specific.VALUE = 0
                                 MDC_Com.MDC_GF_Message "외주관리그룹을 입력하시기 바랍니다.", "E"
                             End If

@@ -701,7 +701,7 @@ On Error GoTo PS_HR105_MTX01_Error
     Dim FrGrpDt As String '조치일시작
     Dim ToGrpDt As String '조치일종료
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     GrpCode = oForm01.Items("GrpCode").Specific.Selected.VALUE
     VioCode = oForm01.Items("VioCode").Specific.VALUE
     FrGrpDt = oForm01.Items("FrGrpDt").Specific.VALUE
@@ -811,7 +811,7 @@ On Error GoTo Print_Query_Error
     Dim FrGrpDt As String '조치일시작
     Dim ToGrpDt As String '조치일종료
     
-    BPLID = oForm01.Items("BPLId").Specific.Selected.VALUE
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
     GrpCode = oForm01.Items("GrpCode").Specific.Selected.VALUE
     VioCode = oForm01.Items("VioCode").Specific.VALUE
     FrGrpDt = oForm01.Items("FrGrpDt").Specific.VALUE

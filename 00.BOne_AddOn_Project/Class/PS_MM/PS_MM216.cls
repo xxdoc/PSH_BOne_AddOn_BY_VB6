@@ -811,8 +811,8 @@ On Error GoTo PS_MM216_Print_Report01_Error
         sQry = sQry & CardCode & "','"
         sQry = sQry & OrdType & "','"
         sQry = sQry & ItemCode & "','"
-        sQry = sQry & RotateYN & "'"
-        '전체/장비/공구 조회 조건 추가
+        sQry = sQry & RotateYN & "','"
+        sQry = sQry & ItemType & "'" '전체/장비/공구 조회 조건 추가
     Else '거래처리스트 이외
         sQry = "      EXEC [PS_MM216_01] '"
         sQry = sQry & BPLID & "','"
@@ -822,8 +822,7 @@ On Error GoTo PS_MM216_Print_Report01_Error
         sQry = sQry & OrdType & "','"
         sQry = sQry & ItemCode & "','"
         sQry = sQry & RotateYN & "','"
-        sQry = sQry & ItemType & "'"
-        '전체/장비/공구 조회 조건 추가
+        sQry = sQry & ItemType & "'" '전체/장비/공구 조회 조건 추가
     End If
     
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "Y", sQry, "1", "Y", "V") = False Then

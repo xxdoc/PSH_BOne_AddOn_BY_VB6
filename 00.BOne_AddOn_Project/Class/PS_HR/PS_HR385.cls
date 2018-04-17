@@ -653,13 +653,13 @@ On Error GoTo PS_HR385_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdYear As String '년월
     
     
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    StdYear = oForm01.Items("StdYear").Specific.VALUE '년월
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '년월
         
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
@@ -667,7 +667,7 @@ On Error GoTo PS_HR385_MTX01_Error
     
     Call oForm01.Freeze(True)
     
-    Query01 = "EXEC PS_HR385_01 '" & BPLId & "','" & StdYear & "'"
+    Query01 = "EXEC PS_HR385_01 '" & BPLID & "','" & StdYear & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear
@@ -769,11 +769,11 @@ On Error GoTo Print_Query_Error
 '    If CardCode = "" Then CardCode = "%"
 '
     
-    Dim BPLId As String '사업장
+    Dim BPLID As String '사업장
     Dim StdYear As String '년월
     
-    BPLId = oForm01.Items("BPLId").Specific.Selected.VALUE '사업장
-    StdYear = oForm01.Items("StdYear").Specific.VALUE '년월
+    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE) '사업장
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '년월
     
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
@@ -795,7 +795,7 @@ On Error GoTo Print_Query_Error
     gRpt_SFormula_Value(1, 1) = ""
     
     '/ Procedure 실행"
-    sQry = "EXEC PS_HR385_01 '" & BPLId & "','" & StdYear & "'"
+    sQry = "EXEC PS_HR385_01 '" & BPLID & "','" & StdYear & "'"
 
     Call oRecordSet.DoQuery(sQry)
     If oRecordSet.RecordCount = 0 Then

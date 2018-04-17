@@ -81,16 +81,16 @@ On Error GoTo LoadData_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim sBPLId$, SYear$, SMSTCOD$, SEmpNo1$
+    Dim SBPLID$, SYear$, SMSTCOD$, SEmpNo1$
     
-    sBPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    SBPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     SYear = Trim(oForm01.Items("Year").Specific.VALUE)
     SMSTCOD = Trim(oForm01.Items("MSTCOD").Specific.VALUE)
     SEmpNo1 = Trim(oForm01.Items("EmpNo1").Specific.VALUE)
     
     If SEmpNo1 = "" Then SEmpNo1 = "%"
          
-    sQry = "EXEC [PS_HR405_01] '" & sBPLId & "','" & SYear & "', '" & SMSTCOD & "', '" & SEmpNo1 & "'"
+    sQry = "EXEC [PS_HR405_01] '" & SBPLID & "','" & SYear & "', '" & SMSTCOD & "', '" & SEmpNo1 & "'"
     oRecordSet01.DoQuery sQry
     
     oMat01.Clear
@@ -226,21 +226,21 @@ Add_MatrixRow_Error:
     MDC_Com.MDC_GF_Message "Add_MatrixRow_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
 '// 데이타 Update
-Public Function Updatedata(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
-On Error GoTo Updatedata_Error
+Public Function UpdateData(ByRef pval As SAPbouiCOM.ItemEvent) As Boolean
+On Error GoTo UpdateData_Error
     Dim i As Integer
     Dim j As Integer
     Dim sQry As String
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry$, BPLId$, Year$, MSTCOD$, FULLNAME$, EmpNo1$, EmpName1$, RateCode$, RateMNm$, DocDate$
+    Dim DocEntry$, BPLID$, Year$, MSTCOD$, FULLNAME$, EmpNo1$, EmpName1$, RateCode$, RateMNm$, DocDate$
     Dim Contents$, EvalScr$
     
     
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Year = Trim(oForm01.Items("Year").Specific.VALUE)
     MSTCOD = Trim(oForm01.Items("MSTCOD").Specific.VALUE)
     FULLNAME = Trim(oForm01.Items("FULLNAME").Specific.VALUE)
@@ -254,14 +254,14 @@ On Error GoTo Updatedata_Error
     
     If Trim(DocEntry) = "" Then
         MDC_Com.MDC_GF_Message "수정할 항목이 없습니다. 수정하실려면 항목을 선택을 하세요!", "E"
-        Updatedata = False
+        UpdateData = False
         Exit Function
     End If
         
     
     sQry = "Update [@PS_HR405H]"
     sQry = sQry & " set "
-    sQry = sQry & " U_BPLId = '" & BPLId & "',"
+    sQry = sQry & " U_BPLId = '" & BPLID & "',"
     sQry = sQry & " U_Year = '" & Year & "',"
     sQry = sQry & " U_MSTCOD = '" & MSTCOD & "',"
     sQry = sQry & " U_FULLNAME = '" & FULLNAME & "',"
@@ -287,10 +287,10 @@ On Error GoTo Updatedata_Error
     gPassWd = Trim(oForm01.Items("PassWd").Specific.VALUE)
     
     Set RecordSet01 = Nothing
-    Updatedata = True
+    UpdateData = True
     Exit Function
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Updatedata_Error:
+UpdateData_Error:
     Set RecordSet01 = Nothing
     MDC_Com.MDC_GF_Message "Updatedata_Error:" & Err.Number & " - " & Err.Description, "E"
 End Function
@@ -305,13 +305,13 @@ On Error GoTo Add_PurchaseDemand_Error
     Dim RecordSet02 As SAPbobsCOM.Recordset
     Set RecordSet02 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-   Dim DocEntry$, BPLId$, Year$, MSTCOD$, FULLNAME$, EmpNo1$, EmpName1$, RateCode$, RateMNm$, DocDate$
+   Dim DocEntry$, BPLID$, Year$, MSTCOD$, FULLNAME$, EmpNo1$, EmpName1$, RateCode$, RateMNm$, DocDate$
     Dim Contents$, EvalScr$
     
     
     
     DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
-    BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
     Year = Trim(oForm01.Items("Year").Specific.VALUE)
     MSTCOD = Trim(oForm01.Items("MSTCOD").Specific.VALUE)
     FULLNAME = Trim(oForm01.Items("FULLNAME").Specific.VALUE)
@@ -365,7 +365,7 @@ On Error GoTo Add_PurchaseDemand_Error
         sQry = sQry & "VALUES("
         sQry = sQry & DocEntry & ","
         sQry = sQry & DocEntry & ","
-        sQry = sQry & "'" & BPLId & "',"
+        sQry = sQry & "'" & BPLID & "',"
         sQry = sQry & "'" & Year & "',"
         sQry = sQry & "'" & MSTCOD & "',"
         sQry = sQry & "'" & FULLNAME & "',"
@@ -901,7 +901,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
-                If Updatedata(pval) = False Then
+                If UpdateData(pval) = False Then
                     BubbleEvent = False
                     Exit Sub
                 End If
@@ -1040,7 +1040,7 @@ Dim sQry            As String
 
 Dim sCount&, sSeq&
 Dim ClasCode As String
-Dim BPLId As String
+Dim BPLID As String
 
 Dim oRecordSet01      As SAPbobsCOM.Recordset
 
@@ -1051,7 +1051,7 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     ElseIf pval.BeforeAction = False Then
 '        If pval.ItemUID = "BPLId" Then
-'            BPLId = oForm01.Items("BPLId").Specific.VALUE
+'            BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
 '
 '        End If
     End If

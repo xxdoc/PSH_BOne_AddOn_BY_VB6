@@ -165,7 +165,8 @@ On Error GoTo Raise_ItemEvent_Error
                                 Set oForm02 = Sbo_Application.Forms.ActiveForm
 
                                 Set oMat02 = oForm02.Items("10000003").Specific
-                                oMat02.Columns("10000003").Cells(1).Specific.Select Trim(oRecordSet01.Fields(1).VALUE)
+                                'oMat02.Columns("10000003").Cells(1).Specific.Select Trim(oRecordSet01.Fields(1).VALUE)
+                                oMat02.Columns("10000003").Cells(1).Specific.VALUE = Trim(oRecordSet01.Fields(1).VALUE) '9.2버전 콤보박스에서 텍스트박스로 변경(2018.04.06 송명규)
                                 oForm02.Items("10000001").Click ct_Regular
                                 oForm02.Items("10000001").Click ct_Regular
 
@@ -229,7 +230,8 @@ On Error GoTo Raise_ItemEvent_Error
                                 Set oForm02 = Sbo_Application.Forms.ActiveForm
 
                                 Set oMat02 = oForm02.Items("10000003").Specific
-                                oMat02.Columns("10000003").Cells(1).Specific.Select Trim(oRecordSet01.Fields(1).VALUE)
+                                'oMat02.Columns("10000003").Cells(1).Specific.Select Trim(oRecordSet01.Fields(1).VALUE)
+                                oMat02.Columns("10000003").Cells(1).Specific.VALUE = Trim(oRecordSet01.Fields(1).VALUE) '9.2버전 콤보박스에서 텍스트박스로 변경(2018.04.06 송명규)
                                 oForm02.Items("10000001").Click ct_Regular
                                 oForm02.Items("10000001").Click ct_Regular
 
