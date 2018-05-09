@@ -178,6 +178,9 @@ On Error GoTo Raise_ItemEvent_Error
 'et_ITEM_PRESSED ////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
+                    '//종전값을 넣기위해
+                    oPurchase = Trim(oDS_PS_MM010H.GetValue("U_Purchase", 0))
+                    oPQType = Trim(oDS_PS_MM010H.GetValue("U_PQType", 0))
                     If oForm01.Mode = fm_ADD_MODE Or oForm01.Mode = fm_UPDATE_MODE Then
                         If HeaderSpaceLineDel = False Then
                             BubbleEvent = False
@@ -437,9 +440,9 @@ On Error GoTo Raise_ItemEvent_Error
 'et_ITEM_PRESSED ////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
-                    '//종전값을 넣기위해
-                    oPurchase = Trim(oDS_PS_MM010H.GetValue("U_Purchase", 0))
-                    oPQType = Trim(oDS_PS_MM010H.GetValue("U_PQType", 0))
+                    '//종전값을 넣기위해 이값에 입력시 화면에 값이 이미 사라져서 변수에 입력을 못함. BeforeAction = True에 입력함
+                 '   oPurchase = Trim(oDS_PS_MM010H.GetValue("U_Purchase", 0))
+                 '   oPQType = Trim(oDS_PS_MM010H.GetValue("U_PQType", 0))
                     
                     If oForm01.Mode = fm_OK_MODE Then
                         If oLast_Mode = fm_UPDATE_MODE Then
@@ -463,13 +466,13 @@ On Error GoTo Raise_ItemEvent_Error
                         
                     If Trim(oDS_PS_MM010H.GetValue("U_PQType", 0)) = "10" And (Trim(oDS_PS_MM010H.GetValue("U_Purchase", 0)) <> "30" Or Trim(oDS_PS_MM010H.GetValue("U_Purchase", 0)) <> "40") Then
                         '자체구매 이고 외주제작, 외주가공이 아닐때
-                        If Trim(oDS_PS_MM010H.GetValue("U_BPLId", 0)) = "2" Then
+                       ' If Trim(oDS_PS_MM010H.GetValue("U_BPLId", 0)) = "2" Then ' 이영진과장 & 류석태 대리 요청으로 기계사업부 & 창원사업부 공통 레포트 출력되도록 수정처리함.
                             '기계사업부
                             Call Print_Report01
-                            Call Print_Report03
-                        Else
-                            Call Print_Report03
-                        End If
+                       '     Call Print_Report03
+                       ' Else
+                       '     Call Print_Report03
+                       ' End If
                     ElseIf Trim(oDS_PS_MM010H.GetValue("U_PQType", 0)) = "20" Then
                         '통합구매
                         Call Print_Report02

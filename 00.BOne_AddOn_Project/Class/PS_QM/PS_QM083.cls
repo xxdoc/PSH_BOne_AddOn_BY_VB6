@@ -344,8 +344,12 @@ On Error GoTo Raise_MenuEvent_Error
                 Call FormClear
                 oDS_PS_QM083H.setValue "U_DocDate", 0, Format(Now, "YYYYMMDD")
                 oForm01.Items("Qty").Click ct_Regular
-                
-                
+                oForm01.Items("ExSize7").Specific.VALUE = "V.C"
+                oForm01.Items("Weight7").Specific.VALUE = "저울"
+                oForm01.Items("Length7").Specific.VALUE = "V.C"
+                oForm01.Items("Exterio7").Specific.VALUE = "육안"
+                oForm01.Items("Parall7").Specific.VALUE = "직각자"
+                         
             Case "1288", "1289", "1290", "1291": '레코드이동버튼
                 FormItemEnabled
                 FlushToItemValue "BaseCode"
@@ -565,7 +569,7 @@ On Error GoTo Check_Exist_Error
     
     OutWeight = oRecordSet.Fields(0).VALUE + oDS_PS_QM083H.GetValue("U_Weight", 0)
     
-    If Trim(InWeight) < Trim(OutWeight) Then
+    If InWeight < OutWeight Then
         Check_Exist = False
     Else
         Check_Exist = True

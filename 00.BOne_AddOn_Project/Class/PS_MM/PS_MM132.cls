@@ -295,7 +295,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             
                  
             '//외주 재고 이동 취소 DI API
-            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And oForm01.Items("OKYNC").Specific.VALUE = "Y" And oForm01.Items("STDocNo").Specific.VALUE = "" Then
+            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And Trim(oForm01.Items("OKYNC").Specific.VALUE) = "Y" And oForm01.Items("STDocNo").Specific.VALUE = "" Then
                 If PS_MM132_DataValidCheck = False Then
                     BubbleEvent = False
                     Exit Sub
@@ -319,7 +319,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                      
                  Next
                  
-            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And oForm01.Items("OKYNC").Specific.VALUE = "C" Then
+            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And Trim(oForm01.Items("OKYNC").Specific.VALUE) = "C" Then
                    
                 If PS_MM132_DataValidCheck = False Then
                     BubbleEvent = False
@@ -339,12 +339,12 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                         End If
                      End If
                  Next
-            ElseIf oForm01.Mode = fm_UPDATE_MODE And (oForm01.Items("OKYNC").Specific.VALUE = "N" And oForm01.Items("STDocNo").Specific.VALUE = "") Then   '//창원 문서 수정
+            ElseIf oForm01.Mode = fm_UPDATE_MODE And (Trim(oForm01.Items("OKYNC").Specific.VALUE) = "N" And oForm01.Items("STDocNo").Specific.VALUE = "") Then   '//창원 문서 수정
                 If PS_MM132_DataValidCheck = False Then
                     BubbleEvent = False
                     Exit Sub
                 End If
-            ElseIf oForm01.Mode = fm_UPDATE_MODE And (oForm01.Items("OKYNC").Specific.VALUE = "N" And oForm01.Items("STDocNo").Specific.VALUE <> "") Then   '//창원
+            ElseIf oForm01.Mode = fm_UPDATE_MODE And (Trim(oForm01.Items("OKYNC").Specific.VALUE) = "N" And oForm01.Items("STDocNo").Specific.VALUE <> "") Then   '//창원
 '                   GoTo Raise_EVENT_ITEM_PRESSED_Error
                    MDC_Com.MDC_GF_Message "이미 승인되었습니다." & Err.Number & " - " & Err.Description, "E"
                   BubbleEvent = False
@@ -354,7 +354,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             
             '/* 반품승인 또는 반품시 기준문서에 반품수량 Update */
             If (oForm01.Mode = fm_UPDATE_MODE) Then
-                OKYNC = oForm01.Items("OKYNC").Specific.VALUE
+                OKYNC = Trim(oForm01.Items("OKYNC").Specific.VALUE)
                 If OKYNC = "Y" Or OKYNC = "C" Then
                     For i = 0 To oMat01.RowCount - 1
                         OutDoc = oMat01.Columns("OutDoc").Cells(i + 1).Specific.VALUE
@@ -1171,7 +1171,7 @@ On Error GoTo PS_MM132_DataValidCheck_Error
     
     
     If Trim(Sbo_Company.UserName) = "66302" Or Trim(Sbo_Company.UserName) = "71090" Or Trim(Sbo_Company.UserName) = "66510" Then
-        If oForm01.Items("OKYNC").Specific.VALUE <> "N" Then
+        If Trim(oForm01.Items("OKYNC").Specific.VALUE) <> "N" Then
             Sbo_Application.SetStatusBarMessage "이동승인상태 N- 반품만 선택 할 수 있습니다.", bmt_Short, True
             oForm01.Items("OKYNC").Click ct_Regular
             PS_MM132_DataValidCheck = False

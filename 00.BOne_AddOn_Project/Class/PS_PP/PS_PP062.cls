@@ -834,7 +834,7 @@ On Error GoTo PS_PP062_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
    
-    Query01 = "              EXEC PS_PP062_01 '"
+    Query01 = "         EXEC PS_PP062_01 '"
     Query01 = Query01 & BPLID & "','"
     Query01 = Query01 & FrDt & "','"
     Query01 = Query01 & ToDt & "','"
@@ -1023,74 +1023,56 @@ End Sub
 
 Private Sub PS_PP062_Print_Report01()
 On Error GoTo Print_Query_Error
-    Dim DocNum As String
+
+    Dim i        As Long
+    Dim sQry     As String
+
+    Dim ErrNum   As Integer
+    Dim Sub_sQry As String
     Dim WinTitle As String
     Dim ReportName As String
-    Dim sQry As String
-
-    Dim i As Integer
-    Dim ErrNum As Integer
-    Dim Sub_sQry As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
 
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
 
     Call ConnectODBC
-    
-    Dim BPLID As String '사업장
-    Dim OrdGbn As String '작업구분
-    Dim FrYM As String '기준년월(시작)
-    Dim ToYM As String '기준년월(종료)
-    Dim MachCode As String '장비코드
+        
+    Dim BPLID    As String '사업장
+    Dim FrDt     As String '기간(Fr)
+    Dim ToDt     As String '기간(To)
+    Dim MachCode As String '설비코드
+    Dim MachName As String '설비명
+    Dim WkCode   As String '작업자사번
+    Dim ClsCode  As String '반(설비코드기준)
+    Dim WorkGbn  As String '작업구분
     
     BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE) '사업장
-    OrdGbn = Trim(oForm01.Items("OrdGbn").Specific.Selected.VALUE) '작업구분
-    FrYM = Trim(oForm01.Items("FrYM").Specific.VALUE) '기준년월(시작)
-    ToYM = Trim(oForm01.Items("ToYM").Specific.VALUE) '기준년월(종료)
-    MachCode = Trim(oForm01.Items("MachCode").Specific.VALUE) '장비코드
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE) '기간(Fr)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE) '기간(To)
+    MachCode = Trim(oForm01.Items("MachCode").Specific.VALUE) '설비코드
+    MachName = Trim(oForm01.Items("MachName").Specific.VALUE) '설비명
+    WkCode = Trim(oForm01.Items("WkCode").Specific.VALUE) '작업자사번
+    ClsCode = Trim(oForm01.Items("ClsCode").Specific.Selected.VALUE) '반(설비코드기준)
+    WorkGbn = Trim(oForm01.Items("WorkGbn").Specific.Selected.VALUE) '작업구분
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
     WinTitle = "[PS_PP062] 레포트"
     
-    If OrdGbn = "104" Then 'MG
+    ReportName = "PS_PP062_01.rpt"
+
+    sQry = "      EXEC PS_PP062_51 '"
+    sQry = sQry & BPLID & "','"
+    sQry = sQry & FrDt & "','"
+    sQry = sQry & ToDt & "','"
+    sQry = sQry & MachCode & "','"
+    sQry = sQry & MachName & "','"
+    sQry = sQry & WkCode & "','"
+    sQry = sQry & ClsCode & "','"
+    sQry = sQry & WorkGbn & "'"
     
-        ReportName = "PS_PP062_01.rpt"
-    
-        sQry = "         EXEC PS_PP062_51 '"
-        sQry = sQry & BPLID & "','"
-        sQry = sQry & OrdGbn & "','"
-        sQry = sQry & FrYM & "','"
-        sQry = sQry & ToYM & "','"
-        sQry = sQry & MachCode & "'"
-    
-    ElseIf OrdGbn = "105" Then '기계공구
-    
-        ReportName = "PS_PP062_02.rpt"
-    
-        sQry = "         EXEC PS_PP062_52 '"
-        sQry = sQry & BPLID & "','"
-        sQry = sQry & OrdGbn & "','"
-        sQry = sQry & FrYM & "','"
-        sQry = sQry & ToYM & "','"
-        sQry = sQry & MachCode & "'"
-        
-    ElseIf OrdGbn = "102" Then '부품
-    
-        ReportName = "PS_PP062_03.rpt"
-    
-        sQry = "         EXEC PS_PP062_53 '"
-        sQry = sQry & BPLID & "','"
-        sQry = sQry & OrdGbn & "','"
-        sQry = sQry & FrYM & "','"
-        sQry = sQry & ToYM & "','"
-        sQry = sQry & MachCode & "'"
-    
-    End If
- 
     '// Formula 수식필드
     ReDim gRpt_Formula(2)
     ReDim gRpt_Formula_Value(2)
@@ -1122,7 +1104,7 @@ On Error GoTo Print_Query_Error
     
     Set oRecordSet = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Print_Query_Error:
 
     ProgBar01.VALUE = 100

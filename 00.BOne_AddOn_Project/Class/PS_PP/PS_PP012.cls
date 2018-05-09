@@ -144,10 +144,13 @@ On Error GoTo PS_PP012_MTX01_Error
     
     Dim BPLID    As String '사업장
     Dim ItemCode As String '품목코드
+    Dim gubun As String '품목코드
 
     
     BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
-    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '팀
+    ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '품목코드
+    gubun = Trim(oForm01.Items("Gubun").Specific.VALUE) '품목코드
+    
 
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -156,8 +159,8 @@ On Error GoTo PS_PP012_MTX01_Error
     Call oForm01.Freeze(True)
     
     sQry = "            EXEC [PS_PP012_01]"
-    sQry = sQry & "'" & ItemCode & "'"
-    
+    sQry = sQry & "'" & ItemCode & "',"
+    sQry = sQry & "'" & gubun & "'"
     Call oRecordSet01.DoQuery(sQry)
     
     oMat01.Clear
@@ -265,7 +268,7 @@ On Error GoTo PS_PP012_UpdateData_Error
         sQry = "            EXEC [PS_PP012_02]"
       '  sQry = sQry & "'" & BPLID & "',"
         sQry = sQry & "'" & ItemCode & "',"
-        sQry = sQry & "'" & ItemName & "',"
+       ' sQry = sQry & "'" & ItemName & "',"
         sQry = sQry & "'" & Unit & "',"
         sQry = sQry & "'" & StdName & "',"
         sQry = sQry & "'" & StdVal & "',"
@@ -798,9 +801,13 @@ On Error GoTo PS_PP012_CreateItems_Error
     Call oForm01.Items("BPLId").Specific.DataBind.SetBound(True, "", "BPLId")
     '사업장_E
     
-    '팀
+    '아이템코드
     Call oForm01.DataSources.UserDataSources.Add("ItemCode", dt_SHORT_TEXT, 20)
     Call oForm01.Items("ItemCode").Specific.DataBind.SetBound(True, "", "ItemCode")
+    
+    '팀
+    Call oForm01.DataSources.UserDataSources.Add("Gubun", dt_SHORT_TEXT, 20)
+    Call oForm01.Items("Gubun").Specific.DataBind.SetBound(True, "", "Gubun")
     
     Set oRecordSet01 = Nothing
     Call oForm01.Freeze(False)
@@ -831,7 +838,7 @@ On Error GoTo PS_PP012_ComboBox_Setting_Error
     
     Set oCombo = oForm01.Items("BPLId").Specific
     Call oCombo.Select(MDC_PS_Common.User_BPLId, psk_ByValue)
-    
+       
     '매트릭스 거래처
     sQry = "SELECT CODE, NAME FROM [@PSH_QUALITY] order by 1"
     
@@ -840,7 +847,10 @@ On Error GoTo PS_PP012_ComboBox_Setting_Error
         oMat01.Columns("GCode").ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
         oRecordSet01.MoveNext
     Loop
-    
+        
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("Gubun").Specific, "SELECT CODE, NAME FROM [@PSH_QUALITY] order by CODE", "미지정", False, False)
+       
+   ' Set oCombo = oForm01.Items("Gubun").Specific
     
     Call oForm01.Freeze(False)
     Set oCombo = Nothing

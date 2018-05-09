@@ -706,7 +706,7 @@ On Error GoTo Raise_EVENT_MATRIX_LINK_PRESSED_Error
        If pval.ColUID = "DocEntry" Then
             If oMat01.Columns("DocEntry").Cells(pval.Row).Specific.String <> "0" Then
                 Set TempForm01 = New PS_MM010
-                Call TempForm01.LoadForm(oMat01.Columns("DocEntry").Cells(pval.Row).Specific.String, oForm01.Items("BPLId").Specific.VALUE)
+                Call TempForm01.LoadForm(oMat01.Columns("DocEntry").Cells(pval.Row).Specific.String, Trim(oForm01.Items("BPLId").Specific.VALUE))
                 BubbleEvent = False
             End If
        End If

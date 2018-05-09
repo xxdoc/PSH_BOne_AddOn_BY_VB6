@@ -387,20 +387,20 @@ On Error GoTo Raise_ItemEvent_Error
                     End If
                 End If
             
-            Case et_CLICK: '//6
-                If pval.ItemUID = "RadioMat01" Then
-                    oForm01.Freeze True
-                    oForm01.Settings.MatrixUID = "Mat01"
-                    oForm01.Settings.EnableRowFormat = True
-                    oForm01.Settings.Enabled = True
-                    oForm01.Freeze False
-                ElseIf pval.ItemUID = "RadioMat02" Then
-                    oForm01.Freeze True
-                    oForm01.Settings.MatrixUID = "Mat02"
-                    oForm01.Settings.EnableRowFormat = True
-                    oForm01.Settings.Enabled = True
-                    oForm01.Freeze False
-                End If
+            Case et_CLICK: '//6 ' 이영진 과장 요청으로 서식세팅 라디오버튼 삭제처
+              '  If pval.ItemUID = "RadioMat01" Then
+              '      oForm01.Freeze True
+              '      oForm01.Settings.MatrixUID = "Mat01"
+              '      oForm01.Settings.EnableRowFormat = True
+              '      oForm01.Settings.Enabled = True
+              '      oForm01.Freeze False
+              '  ElseIf pval.ItemUID = "RadioMat02" Then
+              '      oForm01.Freeze True
+              '      oForm01.Settings.MatrixUID = "Mat02"
+              '      oForm01.Settings.EnableRowFormat = True
+              '      oForm01.Settings.Enabled = True
+              '      oForm01.Freeze False
+              '  End If
 'et_DOUBLE_CLICK ///////////'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Case et_DOUBLE_CLICK: '//7
                 If pval.ItemUID = "Mat01" And pval.Row <> "0" And pval.ColUID = "LineNum" Then
@@ -722,13 +722,13 @@ On Error GoTo CreateItems_Error
     Call oForm01.DataSources.UserDataSources.Add("SumWeight", dt_QUANTITY)
     oForm01.Items("SumWeight").Specific.DataBind.SetBound True, "", "SumWeight"
     
-    oForm01.DataSources.UserDataSources.Add "RadioMat01", dt_SHORT_TEXT, 1
-    oForm01.Items("RadioMat01").Specific.DataBind.SetBound True, "", "RadioMat01"
+  '  oForm01.DataSources.UserDataSources.Add "RadioMat01", dt_SHORT_TEXT, 1
+   ' oForm01.Items("RadioMat01").Specific.DataBind.SetBound True, "", "RadioMat01"
     
-    oForm01.DataSources.UserDataSources.Add "RadioMat02", dt_SHORT_TEXT, 1
-    oForm01.Items("RadioMat02").Specific.DataBind.SetBound True, "", "RadioMat02"
+   ' oForm01.DataSources.UserDataSources.Add "RadioMat02", dt_SHORT_TEXT, 1
+  ' oForm01.Items("RadioMat02").Specific.DataBind.SetBound True, "", "RadioMat02"
     
-    oForm01.Items("RadioMat01").Specific.GroupWith "RadioMat02"
+   ' oForm01.Items("RadioMat01").Specific.GroupWith "RadioMat02"
     
    Exit Sub
 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////

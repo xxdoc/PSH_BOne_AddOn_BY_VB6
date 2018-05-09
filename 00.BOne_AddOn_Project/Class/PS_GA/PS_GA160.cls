@@ -58,17 +58,16 @@ Private oFormMode01 As SAPbouiCOM.BoFormMode
 '*******************************************************************
 Public Sub LoadForm(Optional ByVal prmManageNo As String)
 On Error GoTo LoadForm_Error
+
     Dim i As Long
     Dim oInnerXml01 As String
-    Dim oXmlDoc01             As New MSXML2.DOMDocument
+    Dim oXmlDoc01   As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_GA160.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
-    
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
@@ -720,7 +719,7 @@ On Error GoTo PS_GA160_AddMatrixRow_Error
         oDS_PS_GA160L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_GA160L.Offset = oRow
+    oDS_PS_GA160L.offset = oRow
     oDS_PS_GA160L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -925,7 +924,7 @@ On Error GoTo PS_GA160_MTX01_Error
         If i <> 0 Then
             oDS_PS_GA160L.InsertRecord (i)
         End If
-        oDS_PS_GA160L.Offset = i
+        oDS_PS_GA160L.offset = i
         Call oDS_PS_GA160L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_GA160L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext

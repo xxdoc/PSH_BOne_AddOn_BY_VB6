@@ -473,7 +473,12 @@ On Error GoTo Add_PurchaseDemand_Error
     sQry = sQry & "'" & TempChr1 & "'"
     sQry = sQry & ")"
     RecordSet02.DoQuery sQry
-    
+    ' 기존 테이블에 값을 추가하면 ZPS_FX005_PIC 테이블 고정자산 사진용으로 추가.
+    sQry = "insert into PSHDB_IMG.dbo.ZPS_FX005_PIC(BPLId,FixCode,SubCode) SELECT "
+    sQry = sQry & "'" & BPLID & "',"
+    sQry = sQry & "'" & FixCode & "',"
+    sQry = sQry & "'" & SubCode & "'"
+    RecordSet02.DoQuery sQry
     MDC_Com.MDC_GF_Message "등록 완료!", "S"
     
     Set RecordSet01 = Nothing

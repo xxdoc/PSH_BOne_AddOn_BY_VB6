@@ -1092,9 +1092,12 @@ Private Sub Adjust_Value() '//계수조정 처리
     Year = Trim(oForm01.Items("Year").Specific.VALUE)
     
     Number = Trim(oForm01.Items("Number").Specific.VALUE)
-    Evaluate = oForm01.Items("Evaluate").Specific.VALUE
+    Evaluate = Trim(oForm01.Items("Evaluate").Specific.VALUE)
     Group = Trim(oForm01.Items("Group").Specific.VALUE)
         
+    sQry = "EXEC PS_HR418_02 '" & BPLID & "', '" & Year & "', '" & Number & "', '" & Evaluate & "', '" & Group & "'"
+    oRecordSet.DoQuery sQry
+         
      For i = 0 To oGrid01.Rows.Count - 1
         MSTCOD = Trim(oGrid01.DataTable.GetValue(0, i))
         StaffAvg = Trim(oGrid01.DataTable.GetValue(4, i))
@@ -1102,15 +1105,14 @@ Private Sub Adjust_Value() '//계수조정 처리
         TeamCode = Trim(oGrid01.DataTable.GetValue(7, i))
         RspCode = Trim(oGrid01.DataTable.GetValue(8, i))
         PeakYN = Trim(oGrid01.DataTable.GetValue(9, i))
-        
-        
-        Avg = RspAvg / StaffAvg
+
+        'Avg = RspAvg / StaffAvg
         
         Select Case Evaluate
             Case "1"
                 sQry = " Update [@PS_HR410L] "
-                sQry = sQry + " Set U_AValue1 = U_Value1 * " & Avg & ","
-                sQry = sQry + " U_AAvg1 = Round(U_Value1 * " & Avg & " * 4 / 10, 1) "
+                sQry = sQry + " Set U_AValue1 = U_Value1 * U_Rate1,"
+                sQry = sQry + " U_AAvg1 = Round(U_Value1 * U_Rate1 * 4 / 10, 1) "
                 sQry = sQry + " from [@PS_HR410H] a"
                 sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                 sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
@@ -1124,8 +1126,8 @@ Private Sub Adjust_Value() '//계수조정 처리
                 
             Case "2"
                 sQry = " Update [@PS_HR410L] "
-                sQry = sQry + " Set U_AValue2 = U_Value2 * " & Avg & ","
-                sQry = sQry + " U_AAvg2 = Round(U_Value2 * " & Avg & " * 3 / 10, 1) "
+                sQry = sQry + " Set U_AValue2 = U_Value2 * U_Rate2,"
+                sQry = sQry + " U_AAvg2 = Round(U_Value2 * U_Rate2 * 3 / 10, 1) "
                 sQry = sQry + " from [@PS_HR410H] a"
                 sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                 sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
@@ -1139,37 +1141,38 @@ Private Sub Adjust_Value() '//계수조정 처리
 
 
             Case "3"
-                sQry = " Select Count(Distinct b.U_MSTCOD3) "
-                sQry = sQry + " From [@PS_HR410H] a inner join [@PS_HR410L] b On a.Code = b.Code "
-                sQry = sQry + " Where a.U_BPLId = '" & BPLID & "'"
-                sQry = sQry + "  and a.U_Year = '" & Year & "'"
-                sQry = sQry + "  and a.U_Number = '" & Number & "'"
-                sQry = sQry + "  and b.U_Group = '" & Group & "'"
-                oRecordSet1.DoQuery sQry
+             '   sQry = " Select Count(Distinct b.U_MSTCOD3) "
+             '   sQry = sQry + " From [@PS_HR410H] a inner join [@PS_HR410L] b On a.Code = b.Code "
+             '   sQry = sQry + " Where a.U_BPLId = '" & BPLID & "'"
+             '   sQry = sQry + "  and a.U_Year = '" & Year & "'"
+             '   sQry = sQry + "  and a.U_Number = '" & Number & "'"
+             '   sQry = sQry + "  and b.U_MSTCOD3 = '" & MSTCOD & "'"
+             '   sQry = sQry + "  and b.U_Group = '" & Group & "'group by b.U_MSTCOD3"
+             '   oRecordSet1.DoQuery sQry
 
                 '//평가자가 1명이면 평가그대로 반영
-                If Trim(oRecordSet1.Fields(0).VALUE) = 1 Then
+               ' If Trim(oRecordSet1.Fields(0).VALUE) = 1 Then
 
-                    sQry = " Update [@PS_HR410L] "
-                    sQry = sQry + " Set U_AValue3 = U_Value3,"
-                    sQry = sQry + " U_AAvg3 = Round(U_Value3 * 3 / 10, 1) "
-                    sQry = sQry + " from [@PS_HR410H] a"
-                    sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
-                    sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
-                    sQry = sQry + " and a.U_Number = '" & Number & "'"
-                    sQry = sQry + " and Isnull([@PS_HR410L].U_MSTCOD3,'') =  (case when '" & MSTCOD & "'" & " = '9999' then Isnull(U_MSTCOD3,'') else '" & MSTCOD & "'" & " end )"
-                    sQry = sQry + " and [@PS_HR410L].U_Group = '" & Group & "'"
-                    sQry = sQry + " and [@PS_HR410L].U_Complet3 = 'Y'"
-                    sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
-                    sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
-                    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
+                '    sQry = " Update [@PS_HR410L] "
+                '    sQry = sQry + " Set U_AValue3 = U_Value3,"
+                '    sQry = sQry + " U_AAvg3 = Round(U_Value3 * 3 / 10, 1) "
+                '    sQry = sQry + " from [@PS_HR410H] a"
+                '    sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
+                '    sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
+                '    sQry = sQry + " and a.U_Number = '" & Number & "'"
+                '    sQry = sQry + " and Isnull([@PS_HR410L].U_MSTCOD3,'') =  (case when '" & MSTCOD & "'" & " = '9999' then Isnull(U_MSTCOD3,'') else '" & MSTCOD & "'" & " end )"
+                '    sQry = sQry + " and [@PS_HR410L].U_Group = '" & Group & "'"
+                '    sQry = sQry + " and [@PS_HR410L].U_Complet3 = 'Y'"
+                '    sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
+                '    sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
+                '    sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
                     
                     
-                Else
+                'Else
                                   
                     sQry = " Update [@PS_HR410L] "
-                    sQry = sQry + " Set U_AValue3 = U_Value3 * " & Avg & ","
-                    sQry = sQry + " U_AAvg3 = Round(U_Value3 * " & Avg & " * 3 / 10, 1) "
+                    sQry = sQry + " Set U_AValue3 = U_Value3 * U_Rate3,"
+                    sQry = sQry + " U_AAvg3 = Round(U_Value3 * U_Rate3 * 3 / 10, 1) "
                     sQry = sQry + " from [@PS_HR410H] a"
                     sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                     sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
@@ -1180,7 +1183,7 @@ Private Sub Adjust_Value() '//계수조정 처리
                     sQry = sQry + " and [@PS_HR410L].U_S_TeamCd =  (case when '" & TeamCode & "'" & " = '9999' then U_S_TeamCd else '" & TeamCode & "'" & " end )"
                     sQry = sQry + " and [@PS_HR410L].U_S_RspCd =  (case when '" & RspCode & "'" & " = '9999' then U_S_RspCd else '" & RspCode & "'" & " end )"
                     sQry = sQry + " and isnull([@PS_HR410L].U_PeakYN,'N') = (case when '" & PeakYN & "'" & "='N' then 'N' else 'Y' end)"
-                End If
+                'End If
         End Select
         
         
@@ -1243,8 +1246,8 @@ Private Sub Adjust_Cancel() '//계수조정 처리
         Select Case Evaluate
             Case "1"
                 sQry = " Update [@PS_HR410L] "
-                sQry = sQry + " Set U_AValue1 = U_Value1 * " & Avg & ","
-                sQry = sQry + " U_AAvg1 = Round(U_Value1 * " & Avg & " * 4 / 10, 1) "
+                sQry = sQry + " Set U_AValue1 = U_Value1 * 0,"
+                sQry = sQry + " U_AAvg1 = Round(U_Value1 * 0 * 4 / 10, 1) "
                 sQry = sQry + " from [@PS_HR410H] a"
                 sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                 sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
@@ -1254,8 +1257,8 @@ Private Sub Adjust_Cancel() '//계수조정 처리
                 sQry = sQry + " and [@PS_HR410L].U_Complet1 = 'Y'"
             Case "2"
                 sQry = " Update [@PS_HR410L] "
-                sQry = sQry + " Set U_AValue2 = U_Value2 * " & Avg & ","
-                sQry = sQry + " U_AAvg2 = Round(U_Value2 * " & Avg & " * 3 / 10, 1) "
+                sQry = sQry + " Set U_AValue2 = U_Value2 * 0"
+                sQry = sQry + " U_AAvg2 = Round(U_Value2 * 0 * 3 / 10, 1) "
                 sQry = sQry + " from [@PS_HR410H] a"
                 sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                 sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"
@@ -1265,8 +1268,8 @@ Private Sub Adjust_Cancel() '//계수조정 처리
                 sQry = sQry + " and [@PS_HR410L].U_Complet2 = 'Y'"
             Case "3"
                 sQry = " Update [@PS_HR410L] "
-                sQry = sQry + " Set U_AValue3 = U_Value3 * " & Avg & ","
-                sQry = sQry + " U_AAvg3 = Round(U_Value3 * " & Avg & " * 3 / 10, 1) "
+                sQry = sQry + " Set U_AValue3 = U_Value3 * 0,"
+                sQry = sQry + " U_AAvg3 = Round(U_Value3 * 0 * 3 / 10, 1) "
                 sQry = sQry + " from [@PS_HR410H] a"
                 sQry = sQry + " where a.U_BPLId = '" & BPLID & "'"
                 sQry = sQry + " and [@PS_HR410L].code = a.code and a.U_Year = '" & Year & "'"

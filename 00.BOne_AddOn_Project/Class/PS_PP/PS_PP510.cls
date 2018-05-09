@@ -803,7 +803,7 @@ On Error GoTo PS_PP510_MTX01_Error
     Dim InOut As String
     Dim YearPdYN As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE
@@ -1045,7 +1045,7 @@ On Error GoTo Print_Query_Error
     Dim InOut As String
     Dim YearPdYN As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
     CardType = oForm01.Items("CardType").Specific.VALUE

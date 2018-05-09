@@ -1205,7 +1205,7 @@ On Error GoTo MatrixSpaceLineDel_Error
 '                ErrNum = 4
 '                GoTo MatrixSpaceLineDel_Error
  '           Case oDS_PS_MM152L.GetValue("U_OutWt", i) = 0 And oDS_PS_MM152L.GetValue("U_ScrapWt", i) = 0 And oDS_PS_MM152L.GetValue("U_MUseWt", i) = 0 And oDS_PS_MM152L.GetValue("U_Loss", i) = 0 '2017.11.04 Loss만 (이영진과장요청) - 반납받은 스크랩등록
-            Case oDS_PS_MM152L.GetValue("U_OutWt", i) = 0 And oDS_PS_MM152L.GetValue("U_NWeight", i) = 0 And oDS_PS_MM152L.GetValue("U_ScrapWt", i) = 0 And oDS_PS_MM152L.GetValue("U_MUseWt", i) = 0 And oDS_PS_MM152L.GetValue("U_Loss", i) = 0 '2017.11.04 Loss만 (이영진과장요청) - 반납받은 스크랩등록
+            Case oDS_PS_MM152L.GetValue("U_OutWt", i) = 0 And oDS_PS_MM152L.GetValue("U_NWeight", i) = 0 And oDS_PS_MM152L.GetValue("U_ScrapWt", i) = 0 And oDS_PS_MM152L.GetValue("U_MUseWt", i) = 0 And oDS_PS_MM152L.GetValue("U_Loss", i) = 0 And oDS_PS_MM152L.GetValue("U_Sample", i) = 0 '2017.11.04 Loss만 (이영진과장요청) - 반납받은 스크랩등록
                 ErrNum = 5
                 GoTo MatrixSpaceLineDel_Error
 '            Case oDS_PS_MM152L.GetValue("U_Price", i) = 0
@@ -1407,8 +1407,8 @@ On Error GoTo Add_PS_PP040_Error
     ElseIf Trim(oDS_PS_MM152H.GetValue("U_OKYNC", 0)) = "Y" Then
         For i = 0 To oMat01.RowCount - 2
             If Trim(oDS_PS_MM152L.GetValue("U_OtDocLin", i)) <> "" And Trim(oDS_PS_MM152L.GetValue("U_PP040Doc", i)) <> "" Then
-            ElseIf Trim(oDS_PS_MM152L.GetValue("U_OtDocLin", i)) <> "" And Trim(oDS_PS_MM152L.GetValue("U_PP040Doc", i)) = "" And oDS_PS_MM152L.GetValue("U_OutQty", i) + oDS_PS_MM152L.GetValue("U_OutWt", i) <> 0 Then
-'                DocDate = Format(Trim(oDS_PS_MM152H.GetValue("U_DocDate", 0)), "YYYYMMDD")
+            ElseIf Trim(oDS_PS_MM152L.GetValue("U_OtDocLin", i)) <> "" And Trim(oDS_PS_MM152L.GetValue("U_PP040Doc", i)) = "" Then 'And oDS_PS_MM152L.GetValue("U_OutQty", i) + oDS_PS_MM152L.GetValue("U_OutWt", i) <> 0
+'                DocDate = Format(Trim(oDS_PS_MM152H.GetValue("U_DocDate", 0)), "YYYYMMDD")                                        '로직추가되어있었으며, 불량만 등록하기 위해서 로직 변경함. 20180501
                 DocDate = Trim(oDS_PS_MM152H.GetValue("U_DocDate", 0))
                 
                 JakNum = Trim(oDS_PS_MM152L.GetValue("U_JakNum", i))

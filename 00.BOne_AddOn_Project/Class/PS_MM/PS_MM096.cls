@@ -466,7 +466,7 @@ On Error GoTo Raise_FormDataEvent_Error
         Select Case BusinessObjectInfo.EventType
             Case et_FORM_DATA_LOAD: '//33
             Case et_FORM_DATA_ADD: '//34
-                If oForm01.Items("ExitGbn").Specific.VALUE <> "9" Then
+                If Trim(oForm01.Items("ExitGbn").Specific.VALUE) <> "9" Then
                     If Add_oInventoryGenExit(2) = False Then
                         BubbleEvent = False
                         Exit Sub
@@ -1115,7 +1115,7 @@ On Error GoTo Add_oInventoryGenExit_Error
     If ChkType = 2 Then Call FormClear
     DocNum = Trim(oDS_PS_MM096H.GetValue("DocNum", 0))
     
-    If oForm01.Items("ExitGbn").Specific.VALUE <> "9" Then
+    If Trim(oForm01.Items("ExitGbn").Specific.VALUE) <> "9" Then
         If Trim(oDS_PS_MM096H.GetValue("U_OIGEDoc", 0)) = "" Then
             Sbo_Company.StartTransaction
             Set DI_oInventoryGenExit = Nothing
@@ -1212,7 +1212,7 @@ On Error GoTo Add_oInventoryGenEntry_Error
     DocNum = Trim(oDS_PS_MM096H.GetValue("DocNum", 0))
     OIGEDoc = Trim(oDS_PS_MM096H.GetValue("U_OIGEDoc", 0))
     
-    If oForm01.Items("ExitGbn").Specific.VALUE <> "9" Then
+    If Trim(oForm01.Items("ExitGbn").Specific.VALUE) <> "9" Then
     
         If Trim(OIGEDoc) <> "" And Trim(oDS_PS_MM096H.GetValue("U_OIGNDoc", 0)) = "" Then
             Sbo_Company.StartTransaction

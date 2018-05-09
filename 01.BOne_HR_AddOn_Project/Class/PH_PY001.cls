@@ -326,7 +326,7 @@ Private Function PH_PY001_CreateItems() As Boolean
     '// 1.급여형태
     Set oCombo = oForm.Items("PAYTYP").Specific
     sQry = " SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code='P132' AND U_UseYN= 'Y' ORDER BY CAST(U_Code AS NUMERIC) "
-    Call SetReDataCombo(oForm, sQry, oCombo)
+    Call SetReDataCombo(oForm, sQry, oCombo, "Y")
 
     '// 2.직급형태
     Set oCombo = oForm.Items("JIGCOD").Specific

@@ -411,9 +411,9 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             If oForm01.Mode = fm_ADD_MODE Then
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
             ElseIf oForm01.Mode = fm_OK_MODE Then
-                   If oForm01.Items("Opt03").Specific.Selected = True Then  '분말일경우
+                   'If oForm01.Items("Opt03").Specific.Selected = True Then  '이영진과장 요청으로 모든 제품에 다 출력되도록 처리함.
                       Call PS_SD040_Print_Report03_1("N") '거래명세표(금액)
-                   End If
+                  ' End If
             End If
         End If
         If pval.ItemUID = "Button03" Then

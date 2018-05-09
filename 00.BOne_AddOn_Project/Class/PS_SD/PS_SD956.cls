@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 '****************************************************************************************************************
 '//  File               : PS_SD956.cls
 '//  Module             : 판매관리 > 애드온 > 판매리포트
-'//  Desc               : 전산장비조회
+'//  Desc               : 작번이력관리
 '//  FormType           : PS_SD956
 '//  Create Date(Start) : 2018.03.30
 '//  Create Date(End)   :
@@ -250,8 +250,8 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
         
             If oForm01.Mode = fm_ADD_MODE Then
                 Call PS_SD956_MTX01 '영업정보
-                '생산정보
-                '구매정보
+                Call PS_SD956_MTX02 '생산정보
+                Call PS_SD956_MTX03 '구매정보
                 '회계정보
                 
             ElseIf oForm01.Mode = fm_UPDATE_MODE Then
@@ -382,15 +382,18 @@ End Sub
 
 Private Sub Raise_EVENT_DOUBLE_CLICK(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_EVENT_DOUBLE_CLICK_Error
+
     If pval.BeforeAction = True Then
-        If pval.ItemUID = "Grid01" Then
+    
+        If pval.ItemUID = "Grid02" Then
+        
             If pval.Row = -1 Then
-'                oGrid01.Columns(pval.ColUID).TitleObject.Sortable = True
-                
+                oGrid02.Columns(pval.ColUID).TitleObject.Sortable = True
             Else
-                If oGrid01.Rows.SelectedRows.Count > 0 Then
+            
+                If oGrid02.Rows.SelectedRows.Count > 0 Then '생산정보
                 
-                    Call PS_SD956_GetDetail
+                    Call PS_SD956_GetProductionDetail
                 
 '                    Call PS_SD956_SetBaseForm '//부모폼에입력
 '                    If Trim(oForm01.DataSources.UserDataSources("Check01").VALUE) = "N" Then
@@ -399,8 +402,27 @@ On Error GoTo Raise_EVENT_DOUBLE_CLICK_Error
                 Else
                     BubbleEvent = False
                 End If
+                
             End If
+            
+        ElseIf pval.ItemUID = "Grid03" Then
+        
+            If pval.Row = -1 Then
+                oGrid03.Columns(pval.ColUID).TitleObject.Sortable = True
+            Else
+            
+                If oGrid03.Rows.SelectedRows.Count > 0 Then '구매정보
+                
+                    Call PS_SD956_GetPurchaseDetail
+                    
+                Else
+                    BubbleEvent = False
+                End If
+                
+            End If
+            
         End If
+        
     ElseIf pval.BeforeAction = False Then
         
     End If
@@ -606,6 +628,14 @@ On Error GoTo PS_SD956_CreateItems_Error
     Call oForm01.DataSources.UserDataSources.Add("ItemSpec", dt_SHORT_TEXT, 200)
     Call oForm01.Items("ItemSpec").Specific.DataBind.SetBound(True, "", "ItemSpec")
     
+    '장비/공구
+    Call oForm01.DataSources.UserDataSources.Add("ItemType", dt_SHORT_TEXT, 5)
+    Call oForm01.Items("ItemType").Specific.DataBind.SetBound(True, "", "ItemType")
+    
+    '순환품
+    Call oForm01.DataSources.UserDataSources.Add("YearPdYN", dt_SHORT_TEXT, 5)
+    Call oForm01.Items("YearPdYN").Specific.DataBind.SetBound(True, "", "YearPdYN")
+    
 '    Set oRecordSet01 = Nothing
     Call oForm01.Freeze(False)
     Exit Function
@@ -652,6 +682,20 @@ On Error GoTo PS_SD956_ComboBox_Setting_Error
     Call MDC_SetMod.Set_ComboList(oForm01.Items("CardTeam").Specific, sQry, "", False, False)
     Call oForm01.Items("CardTeam").Specific.Select(0, psk_Index)
     '거래처팀_E
+    
+    '장비/공구_S
+    Call oForm01.Items("ItemType").Specific.ValidValues.Add("%", "전체")
+    Call oForm01.Items("ItemType").Specific.ValidValues.Add("M", "장비")
+    Call oForm01.Items("ItemType").Specific.ValidValues.Add("T", "공구")
+    Call oForm01.Items("ItemType").Specific.Select(0, psk_Index)
+    '장비/공구_E
+    
+    '순환품_S
+    Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("%", "전체")
+    Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("Y", "Y")
+    Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("N", "N")
+    Call oForm01.Items("YearPdYN").Specific.Select(0, psk_Index)
+    '순환품_E
     
     Call oForm01.Freeze(False)
     Exit Sub
@@ -789,6 +833,14 @@ PS_SD956_FlushToItemValue_Error:
 End Sub
 
 Private Sub PS_SD956_MTX01()
+'******************************************************************************
+'Function ID : PS_SD956_MTX01()
+'해당모듈    : PS_SD956
+'기능        : 영업정보 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_SD956_MTX01_Error
 
     '//메트릭스에 데이터 로드
@@ -805,12 +857,16 @@ On Error GoTo PS_SD956_MTX01_Error
     Dim CardType  As String '거래처구분
     Dim CardTeam  As String '팀(거래처)
     Dim ItemCode  As String '작번
+    Dim ItemType  As String '품목구분(장비/공구)
+    Dim YearPdYN  As String '순환품(연간품)
     
     OrdFrDt = Trim(oForm01.Items("OrdFrDt").Specific.VALUE) '수주기간(시작)
     OrdToDt = Trim(oForm01.Items("OrdToDt").Specific.VALUE) '수주기간(종료)
     CardType = Trim(oForm01.Items("CardType").Specific.VALUE) '거래처구분
     CardTeam = Trim(oForm01.Items("CardTeam").Specific.VALUE) '팀(거래처)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '작번
+    ItemType = Trim(oForm01.Items("ItemType").Specific.VALUE) '품목구분(장비/공구)
+    YearPdYN = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '순환품(연간품)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -820,7 +876,9 @@ On Error GoTo PS_SD956_MTX01_Error
     Query = Query & OrdToDt & "','"
     Query = Query & CardType & "','"
     Query = Query & CardTeam & "','"
-    Query = Query & ItemCode & "'"
+    Query = Query & ItemCode & "','"
+    Query = Query & ItemType & "','"
+    Query = Query & YearPdYN & "'"
     
     Call oGrid01.DataTable.Clear
     Call oDS_PS_SD956A.ExecuteQuery(Query)
@@ -890,6 +948,14 @@ PS_SD956_MTX01_Error:
 End Sub
 
 Private Sub PS_SD956_MTX02()
+'******************************************************************************
+'Function ID : PS_SD956_MTX02()
+'해당모듈    : PS_SD956
+'기능        : 생산정보 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_SD956_MTX02_Error
 
     '//메트릭스에 데이터 로드
@@ -906,12 +972,16 @@ On Error GoTo PS_SD956_MTX02_Error
     Dim CardType  As String '거래처구분
     Dim CardTeam  As String '팀(거래처)
     Dim ItemCode  As String '작번
+    Dim ItemType  As String '품목구분(장비/공구)
+    Dim YearPdYN  As String '순환품(연간품)
     
     OrdFrDt = Trim(oForm01.Items("OrdFrDt").Specific.VALUE) '수주기간(시작)
     OrdToDt = Trim(oForm01.Items("OrdToDt").Specific.VALUE) '수주기간(종료)
     CardType = Trim(oForm01.Items("CardType").Specific.VALUE) '거래처구분
     CardTeam = Trim(oForm01.Items("CardTeam").Specific.VALUE) '팀(거래처)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '작번
+    ItemType = Trim(oForm01.Items("ItemType").Specific.VALUE) '품목구분(장비/공구)
+    YearPdYN = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '순환품(연간품)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -921,14 +991,16 @@ On Error GoTo PS_SD956_MTX02_Error
     Query = Query & OrdToDt & "','"
     Query = Query & CardType & "','"
     Query = Query & CardTeam & "','"
-    Query = Query & ItemCode & "'"
+    Query = Query & ItemCode & "','"
+    Query = Query & ItemType & "','"
+    Query = Query & YearPdYN & "'"
     
     Call oGrid02.DataTable.Clear
     Call oDS_PS_SD956B.ExecuteQuery(Query)
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
     
-'    oGrid01.Columns(14).RightJustified = True
-'    oGrid01.Columns(15).RightJustified = True
+    oGrid02.Columns(10).RightJustified = True
+    oGrid02.Columns(14).RightJustified = True
 '    oGrid01.Columns(16).RightJustified = True
 '    oGrid01.Columns(17).RightJustified = True
 '    oGrid01.Columns(18).RightJustified = True
@@ -991,6 +1063,14 @@ PS_SD956_MTX02_Error:
 End Sub
 
 Private Sub PS_SD956_MTX03()
+'******************************************************************************
+'Function ID : PS_SD956_MTX03()
+'해당모듈    : PS_SD956
+'기능        : 구매정보 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
 On Error GoTo PS_SD956_MTX03_Error
 
     '//메트릭스에 데이터 로드
@@ -1007,12 +1087,16 @@ On Error GoTo PS_SD956_MTX03_Error
     Dim CardType  As String '거래처구분
     Dim CardTeam  As String '팀(거래처)
     Dim ItemCode  As String '작번
+    Dim ItemType  As String '품목구분
+    Dim YearPdYN  As String '순환품(연간품)
     
     OrdFrDt = Trim(oForm01.Items("OrdFrDt").Specific.VALUE) '수주기간(시작)
     OrdToDt = Trim(oForm01.Items("OrdToDt").Specific.VALUE) '수주기간(종료)
     CardType = Trim(oForm01.Items("CardType").Specific.VALUE) '거래처구분
     CardTeam = Trim(oForm01.Items("CardTeam").Specific.VALUE) '팀(거래처)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '작번
+    ItemType = Trim(oForm01.Items("ItemType").Specific.VALUE) '품목구분(장비/공구)
+    YearPdYN = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '순환품(연간품)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -1022,19 +1106,21 @@ On Error GoTo PS_SD956_MTX03_Error
     Query = Query & OrdToDt & "','"
     Query = Query & CardType & "','"
     Query = Query & CardTeam & "','"
-    Query = Query & ItemCode & "'"
+    Query = Query & ItemCode & "','"
+    Query = Query & ItemType & "','"
+    Query = Query & YearPdYN & "'"
     
     Call oGrid03.DataTable.Clear
     Call oDS_PS_SD956C.ExecuteQuery(Query)
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
     
-'    oGrid01.Columns(14).RightJustified = True
-'    oGrid01.Columns(15).RightJustified = True
-'    oGrid01.Columns(16).RightJustified = True
-'    oGrid01.Columns(17).RightJustified = True
-'    oGrid01.Columns(18).RightJustified = True
-'    oGrid01.Columns(19).RightJustified = True
-'    oGrid01.Columns(20).RightJustified = True
+    oGrid03.Columns(7).RightJustified = True
+    oGrid03.Columns(10).RightJustified = True
+    oGrid03.Columns(13).RightJustified = True
+    oGrid03.Columns(14).RightJustified = True
+    oGrid03.Columns(15).RightJustified = True
+    oGrid03.Columns(18).RightJustified = True
+    oGrid03.Columns(21).RightJustified = True
 '    oGrid01.Columns(21).RightJustified = True
 '    oGrid01.Columns(22).RightJustified = True
 '    oGrid01.Columns(23).RightJustified = True
@@ -1567,27 +1653,31 @@ Print_Query_Error:
     End If
 End Sub
 
-Public Sub PS_SD956_GetDetail()
-On Error GoTo PS_SD956_GetDetail_Error
+Public Sub PS_SD956_GetProductionDetail()
+'******************************************************************************
+'Function ID : PS_SD956_GetProductionDetail()
+'해당모듈    : PS_SD956
+'기능        : 생산세부정보 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_SD956_GetProductionDetail_Error
 
-    Dim loopCount1 As Integer
+    Dim loopCount   As Integer
+    Dim ItemCode    As String
     
-'    Dim BPLID As Integer
-'    Dim CntcCode As String
-'    Dim CntcName As String
-'    Dim FrDt As String
-'    Dim ToDt As String
+    Dim oTempClass  As Variant
     
-    Dim MngNo As String
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
-    Dim oTempClass As Variant
-
-    For loopCount1 = 0 To oGrid01.Rows.Count - 1
-        If oGrid01.Rows.IsSelected(loopCount1) = True Then
+    For loopCount = 0 To oGrid02.Rows.Count - 1
+        If oGrid02.Rows.IsSelected(loopCount) = True Then
             
             '/ Procedure 실행
 '             sQry = "EXEC PS_PP361_02 '" & Trim(oGrid01.DataTable.GetValue(0, i)) & "'"
-''            sQry = "EXEC PS_PP361_02 '" & Trim(oGrid01.DataTable.GetValue(0, i)) & "','" & SYYYYMM & "','" & EYYYYMM & "'"
+'             sQry = "EXEC PS_PP361_02 '" & Trim(oGrid01.DataTable.GetValue(0, i)) & "','" & SYYYYMM & "','" & EYYYYMM & "'"
 '            oRecordSet.DoQuery sQry
 '
 '            '// Procedure 실행(Grid 사용)
@@ -1597,33 +1687,90 @@ On Error GoTo PS_SD956_GetDetail_Error
 '            SumPkQty = Trim(oGrid02.DataTable.GetValue(7, i))
 '            SumPkWt = Trim(oGrid02.DataTable.GetValue(8, i))
 
-            MngNo = Trim(oGrid01.DataTable.GetValue(5, loopCount1))
+            ItemCode = Trim(oGrid02.DataTable.GetValue(1, loopCount))
             
         End If
-     Next
+    Next
+     
+    Set oTempClass = New PS_SD956_01
+    Call oTempClass.LoadForm(ItemCode)
 
-'    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-'    FrDt = oForm01.Items("DocDatefr").Specific.VALUE
-'    ToDt = oForm01.Items("DocDateto").Specific.VALUE
+    'Call Sbo_Application.MessageBox(MngNo)
 
-    Set oTempClass = New PS_GA160
-    Call oTempClass.LoadForm(MngNo)
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
 
-'    Call Sbo_Application.MessageBox(MngNo)
+    Call oTempClass.oForm01.Select '조회중이라는 표현을 위한 ProgressBor를 사용하면, 메인폼에 포커스가 고정되는 문제 해결을 위해 모달폼을 Select하여 강제 포커스 이동
     
     Exit Sub
 
-PS_SD956_GetDetail_Error:
-    Sbo_Application.SetStatusBarMessage "PS_SD956_GetDetail_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+PS_SD956_GetProductionDetail_Error:
+
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
+    Sbo_Application.SetStatusBarMessage "PS_SD956_GetProductionDetail_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
+Public Sub PS_SD956_GetPurchaseDetail()
+'******************************************************************************
+'Function ID : PS_SD956_GetPurchaseDetail()
+'해당모듈    : PS_SD956
+'기능        : 구매세부정보 조회
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_SD956_GetPurchaseDetail_Error
 
+    Dim loopCount   As Integer
+    Dim ItemCode    As String
+    
+    Dim oTempClass  As Variant
+    
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+    
+    For loopCount = 0 To oGrid02.Rows.Count - 1
+        If oGrid03.Rows.IsSelected(loopCount) = True Then
+            
+            '/ Procedure 실행
+'             sQry = "EXEC PS_PP361_02 '" & Trim(oGrid01.DataTable.GetValue(0, i)) & "'"
+'             sQry = "EXEC PS_PP361_02 '" & Trim(oGrid01.DataTable.GetValue(0, i)) & "','" & SYYYYMM & "','" & EYYYYMM & "'"
+'            oRecordSet.DoQuery sQry
+'
+'            '// Procedure 실행(Grid 사용)
+'            oForm01.DataSources.DataTables.Item("ZTEMP02").ExecuteQuery (sQry)
+'            oGrid02.DataTable = oForm01.DataSources.DataTables.Item("ZTEMP02")
+    
+'            SumPkQty = Trim(oGrid02.DataTable.GetValue(7, i))
+'            SumPkWt = Trim(oGrid02.DataTable.GetValue(8, i))
 
+            ItemCode = Trim(oGrid03.DataTable.GetValue(1, loopCount))
+            
+        End If
+    Next
+     
+    Set oTempClass = New PS_SD956_02
+    Call oTempClass.LoadForm(ItemCode)
 
+    'Call Sbo_Application.MessageBox(MngNo)
 
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
 
+    Call oTempClass.oForm01.Select '조회중이라는 표현을 위한 ProgressBor를 사용하면, 메인폼에 포커스가 고정되는 문제 해결을 위해 모달폼을 Select하여 강제 포커스 이동
+    
+    Exit Sub
 
+PS_SD956_GetPurchaseDetail_Error:
 
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
 
-
-
+    Sbo_Application.SetStatusBarMessage "PS_SD956_GetPurchaseDetail_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+End Sub

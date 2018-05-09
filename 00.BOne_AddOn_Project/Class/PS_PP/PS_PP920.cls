@@ -14,10 +14,10 @@ Attribute VB_Exposed = False
 '****************************************************************************************************************
 '//  File           : PS_PP920.cls
 '//  Module         : PP
-'//  Description    : 부문별 P/O 입력
+'//  Description    : 부품 월판매및생산목표등록
 '//  FormType       : PS_PP920
 '//  Create Date    : 2011.05.26
-'//  Modified Date  :
+'//  Modified Date  : 2018.05.02
 '//  Creator        : Ryu Yung Jo
 '//  Company        : Poongsan Holdings
 '****************************************************************************************************************
@@ -127,12 +127,12 @@ On Error GoTo Raise_ItemEvent_Error
                             Exit Sub
                         End If
                         
-                        Dim Code$, BPLId$, YM$, ItmBsort$
-                        BPLId = Trim(oForm01.Items("BPLId").Specific.VALUE)
+                        Dim Code$, BPLID$, YM$, ItmBsort$
+                        BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
                         YM = Trim(Right(oForm01.Items("YM").Specific.VALUE, 4))
                         ItmBsort = Trim(oForm01.Items("ItmBsort").Specific.VALUE)
                         
-                        Code = BPLId & YM & ItmBsort
+                        Code = BPLID & YM & ItmBsort
                         Call oDS_PS_PP920H.setValue("Code", 0, Code)
                     End If
                 End If
@@ -497,7 +497,8 @@ On Error GoTo LoadData_Error
         sQry = sQry & " Price = Isnull((Select U_Price From [@PS_PP920H] t Inner Join [@PS_PP920L] t1 On t.Code = t1.Code And t1.U_ItemCode = a.ItemCode And t.U_YM = '" & YM & "'),0),"
         sQry = sQry & " MkCapa = Isnull((Select U_MkCapa From [@PS_PP920H] t Inner Join [@PS_PP920L] t1 On t.Code = t1.Code And t1.U_ItemCode = a.ItemCode And t.U_YM = '" & YM & "'),0)"
         sQry = sQry & " From [OITM] a "
-        sQry = sQry & "Where a.U_ItmBsort = '" & Trim(oForm01.Items("ItmBsort").Specific.VALUE) & "' Order By a.U_ItmMsort, a.ItemCode"
+        sQry = sQry & "Where a.U_ItmBsort = '" & Trim(oForm01.Items("ItmBsort").Specific.VALUE) & "' AND isnull(frozento,'') = '' Order By a.U_ItmMsort, a.ItemCode" '비활성 종료일자
+       ' sQry = sQry & "Where a.U_ItmBsort = '" & Trim(oForm01.Items("ItmBsort").Specific.VALUE) & "'  Order By a.U_ItmMsort, a.ItemCode"
     End If
     oRecordSet01.DoQuery sQry
     

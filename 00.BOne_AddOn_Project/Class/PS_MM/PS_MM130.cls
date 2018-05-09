@@ -296,7 +296,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 End If
                 
                 '//외주 재고 이동 DI API
-                If oForm01.Items("OKYNC").Specific.VALUE = "N" And oForm01.Items("STDocNum").Specific.VALUE = "" Then
+                If Trim(oForm01.Items("OKYNC").Specific.VALUE) = "N" And oForm01.Items("STDocNum").Specific.VALUE = "" Then
                     Dim i As Integer
                     Dim j As Integer
                     For i = 0 To oMat01.RowCount - 1
@@ -316,7 +316,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 End If
      
             '//외주 재고 이동 취소 DI API
-            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And oForm01.Items("OKYNC").Specific.VALUE = "C" And oForm01.Items("STDocNum").Specific.VALUE <> "" Then
+            ElseIf (oForm01.Mode = fm_UPDATE_MODE) And Trim(oForm01.Items("OKYNC").Specific.VALUE) = "C" And oForm01.Items("STDocNum").Specific.VALUE <> "" Then
                     If PS_MM130_DataValidCheck = False Then
                         BubbleEvent = False
                         Exit Sub
@@ -1232,7 +1232,7 @@ On Error GoTo PS_MM130_DataValidCheck_Error
     End If
     
     If Trim(Sbo_Company.UserName) = "66302" Or Trim(Sbo_Company.UserName) = "71090" Or Trim(Sbo_Company.UserName) = "66510" Then
-        If oForm01.Items("OKYNC").Specific.VALUE <> "Y" Then
+        If Trim(oForm01.Items("OKYNC").Specific.VALUE) <> "Y" Then
             Sbo_Application.SetStatusBarMessage "이동승인상태 Y - 승인만 선택 할 수 있습니다.", bmt_Short, True
             oForm01.Items("OKYNC").Click ct_Regular
             PS_MM130_DataValidCheck = False
