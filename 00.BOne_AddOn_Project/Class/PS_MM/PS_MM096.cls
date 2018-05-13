@@ -81,6 +81,18 @@ On Error GoTo LoadForm_Error
     oForm01.DataBrowser.BrowseBy = "DocNum"
     '************************************************************************************************************
     '////////////////////////////////////////////////////////////////////////////////////////////////////////////
+'----------------------------------------------------------------------------------------------------------------
+    oForm01.Items("Mat02").Top = 81 '
+    oForm01.Items("Mat02").Left = 6
+    oForm01.Items("Mat02").Width = oForm01.Width - 18
+    oForm01.Items("Mat02").Height = oForm01.Height / 3 ' - 280
+
+    oForm01.Items("Mat01").Top = oForm01.Items("Mat02").Top + oForm01.Height / 3
+    oForm01.Items("Mat01").Left = 6
+    oForm01.Items("Mat01").Width = oForm01.Width - 18
+    oForm01.Items("Mat01").Height = oForm01.Height / 2.4 ' - 280
+    
+'----------------------------------------------------------------------------------------------------------------
     
     oForm01.Freeze True
     Call CreateItems
@@ -333,7 +345,7 @@ On Error GoTo Raise_ItemEvent_Error
                 oForm01.Items("Mat01").Top = oForm01.Items("Mat02").Top + oForm01.Height / 3
                 oForm01.Items("Mat01").Left = 6
                 oForm01.Items("Mat01").Width = oForm01.Width - 18
-                oForm01.Items("Mat01").Height = oForm01.Height / 4 ' - 280
+                oForm01.Items("Mat01").Height = oForm01.Height / 2.4 ' - 280
             Case et_CHOOSE_FROM_LIST '//27
             Case et_GOT_FOCUS: '//3
             Case et_LOST_FOCUS: '//4

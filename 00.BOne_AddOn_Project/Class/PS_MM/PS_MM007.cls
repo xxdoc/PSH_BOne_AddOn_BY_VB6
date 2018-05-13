@@ -264,8 +264,8 @@ On Error GoTo Raise_ItemEvent_Error
                     End If
                 End If
                 If pval.ItemUID = "Btn_01" Then
-                    Path = "\\191.1.1.220\ERP_Project\9999. Add_On\牢磐其捞胶05(前格积己夸没)\"
-                    exeFileName = "\\191.1.1.220\ERP_Project\9999. Add_On\牢磐其捞胶05(前格积己夸没)\RFC_INTERFACE_OITM.exe"
+                    Path = "\\191.1.1.221\ERP_Project\9999. Add_On\牢磐其捞胶05(前格积己夸没)\"
+                    exeFileName = "\\191.1.1.221\ERP_Project\9999. Add_On\牢磐其捞胶05(前格积己夸没)\RFC_INTERFACE_OITM.exe"
                     Call ShellExecute(0, "Open", exeFileName, "", Path, 5)
                 End If
 'et_KEY_DOWN ////////////////''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
