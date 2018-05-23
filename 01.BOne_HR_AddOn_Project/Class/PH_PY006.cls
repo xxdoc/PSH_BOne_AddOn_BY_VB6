@@ -222,6 +222,12 @@ Private Function PH_PY006_CreateItems() As Boolean
     oColumn.ValidValues.Add "N", "승호제외자"
     oColumn.DisplayDesc = True
 
+    '승호대상자 여부
+    Set oColumn = oMat1.Columns("PeakYN")
+    oColumn.ValidValues.Add "Y", "대상"
+    oColumn.ValidValues.Add "N", "비대상"
+    oColumn.DisplayDesc = True
+    
     Set oEdit = Nothing
     Set oCombo = Nothing
     Set oColumn = Nothing
@@ -896,7 +902,7 @@ On Error GoTo PH_PY006_DataValidCheck_Error
     End If
     
     '라인
-    If oMat1.VisualRowCount > 1 Then
+    If oMat1.VisualRowCount >= 1 Then
 '        For i = 1 To oMat1.VisualRowCount - 1
 '
 '        Next
@@ -1023,7 +1029,8 @@ Private Sub PH_PY006_MTX01()
         Call oDS_PH_PY006B.setValue("U_UPSTDAMT", i, oRecordSet.Fields(15).VALUE)
         Call oDS_PH_PY006B.setValue("U_UPBNSAMT", i, oRecordSet.Fields(16).VALUE)
         Call oDS_PH_PY006B.setValue("U_APPLYYN", i, oRecordSet.Fields(17).VALUE)
-        Call oDS_PH_PY006B.setValue("U_LineMemo", i, oRecordSet.Fields(18).VALUE)
+        Call oDS_PH_PY006B.setValue("U_PeakYN", i, oRecordSet.Fields(18).VALUE)
+        Call oDS_PH_PY006B.setValue("U_LineMemo", i, oRecordSet.Fields(19).VALUE)
         oRecordSet.MoveNext
         ProgressBar01.VALUE = ProgressBar01.VALUE + 1
         ProgressBar01.Text = ProgressBar01.VALUE & "/" & oRecordSet.RecordCount & "건 조회중...!"
@@ -1099,6 +1106,9 @@ Private Sub PH_PY006_MTX02()
     sQry = "EXEC [PH_PY006_02] '" & Param01 & "', '" & Param02 & "', '" & Param03 & "'"
     Call oRecordSet.DoQuery(sQry)
     
+    sQry = "EXEC [PH_PY006_03] '" & Param01 & "', '" & Param03 & "'"
+    Call oRecordSet.DoQuery(sQry)
+    
     Call MDC_Com.MDC_GF_Message("승호작업을 정상 처리했습니다.", "S")
     
     Set oRecordSet = Nothing
@@ -1155,6 +1165,9 @@ Private Sub PH_PY006_MTX03()
     
     
     sQry = "EXEC [PH_PY006_02] '" & Param01 & "', '" & Param02 & "', '" & Param03 & "'"
+    Call oRecordSet.DoQuery(sQry)
+      
+    sQry = "EXEC [PH_PY006_03] '" & Param01 & "', '" & Param03 & "'"
     Call oRecordSet.DoQuery(sQry)
     
     Call MDC_Com.MDC_GF_Message("승호작업을 취소 처리했습니다.", "S")

@@ -977,4 +977,33 @@ Check_Finish_Status_Error:
     Call Sbo_Application.SetStatusBarMessage("Check_Finish_Status_Error " & Err.Number & " - " & Err.Description, bmt_Short, True)
 End Function
 
+Public Function Split_String(ByVal pSplitString As String, ByVal pSeparateChar As String, ByVal pIndex As Integer) As String
+'******************************************************************************
+'Function ID : Split_String()
+'해당모듈    : MDC_PS_Common
+'기    능    : 문자열 Split
+'인    수    : pSplitString(대상 문자열), pSeparateChar(분할 기준 Char), pIndex(분할된 문자열 중 반환할 문자열의 Index)
+'반 환 값    : 분할된 문자열
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo Split_String_Error
+
+    Dim StringTemp As Variant
+    
+    StringTemp = Split(pSplitString, pSeparateChar)
+
+    If pIndex > 0 And pIndex - 1 <= UBound(StringTemp) Then
+        Split_String = StringTemp(pIndex - 1)
+    Else
+        Split_String = ""
+    End If
+    
+    Exit Function
+    
+Split_String_Error:
+
+    Split_String = ""
+    Call Sbo_Application.SetStatusBarMessage("Split_String_Error " & Err.Number & " - " & Err.Description, bmt_Short, True)
+    
+End Function
 

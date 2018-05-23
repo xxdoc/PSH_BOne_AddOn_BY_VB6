@@ -729,6 +729,7 @@ Class=PS_SD956; Class\PS_SD\PS_SD956.cls
 Class=PS_SD956_01; Class\PS_SD\PS_SD956_01.cls
 Class=PS_SD956_02; Class\PS_SD\PS_SD956_02.cls
 Class=PS_SD956_03; Class\PS_SD\PS_SD956_03.cls
+Class=PS_PP982; Class\PS_PP\PS_PP982.cls
 Startup="Sub Main"
 HelpFile=""
 Title="MDC_PS_Addon"

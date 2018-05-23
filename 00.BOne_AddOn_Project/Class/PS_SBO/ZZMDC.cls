@@ -2304,6 +2304,9 @@ On Error GoTo CreateUserForm_Error
         ElseIf (pval.MenuUID = "PS_SD956") Then '작번 이력 관리(2018.03.30)
             Set oTempClass = New PS_SD956
             Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_PP982") Then '반별가동률 조회(2018.05.16)
+            Set oTempClass = New PS_PP982
+            Call oTempClass.LoadForm
         End If
 
     End If

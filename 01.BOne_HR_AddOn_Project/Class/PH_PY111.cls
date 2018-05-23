@@ -582,7 +582,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             oForm.Items("1").CLICK ct_Regular
                         ElseIf oForm.Mode = fm_OK_MODE Then
                             Sbo_Application.StatusBar.SetText "급상여계산이 진행중입니다.", bmt_Short, smt_Warning
-                            If oForm.Items("JOBGBN").Specific.VALUE <> "2" Then
+                            If Trim(oForm.Items("JOBGBN").Specific.VALUE) <> "2" Then
                                 '//정상계산
                                 oRecordSet.DoQuery "EXEC PH_PY111 '" & tDocEntry & "'"
                             Else
@@ -602,7 +602,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                             CalcYN = False
                             If oForm.Mode = fm_ADD_MODE Or fm_UPDATE_MODE Then
                                 Sbo_Application.StatusBar.SetText "급상여계산이 진행중입니다.", bmt_Short, smt_Warning
-                                If oForm.Items("JOBGBN").Specific.VALUE <> "2" Then
+                                If Trim(oForm.Items("JOBGBN").Specific.VALUE) <> "2" Then
                                 '//정상계산
                                     oRecordSet.DoQuery "EXEC PH_PY111 '" & tDocEntry & "'"
                                 Else

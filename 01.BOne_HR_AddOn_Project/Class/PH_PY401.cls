@@ -457,20 +457,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 
                 If pval.ItemUID = "Btn01" Then
                 
-                    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
-                    yyyy = oForm.Items("Year").Specific.VALUE
-                    sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & yyyy & CLTCOD & "'"
-                    oRecordSet.DoQuery sQry
-                       
-                    Result = oRecordSet.Fields(0).VALUE
-                    If Result <> "" Then
-                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
-                    End If
-                    If Result = "" Then
+'                    CLTCOD = oForm.Items("CLTCOD").Specific.VALUE
+'                    yyyy = oForm.Items("Year").Specific.VALUE
+'                    sQry = " Select CODE from [@PSH_PAYBACK] WHERE CODE = '" & yyyy & CLTCOD & "'"
+'                    oRecordSet.DoQuery sQry
+'
+'                    Result = oRecordSet.Fields(0).VALUE
+'                    If Result <> "" Then
+'                        Call MDC_Com.MDC_GF_Message("등록불가 년도입니다. 담당자에게 문의바랍니다.", "E")
+'                    End If
+'                    If Result = "" Then
                         Call PH_PY401_SAVE
-                    End If
-                    
-                    
+'                    End If
                 End If
                 
                                 

@@ -171,7 +171,7 @@ On Error GoTo PS_GA030_Add_MatrixRow_Error
     End If
     
     oMat01.AddRow
-    oDS_PS_GA030L.Offset = oRow
+    oDS_PS_GA030L.offset = oRow
     oDS_PS_GA030L.setValue "U_LineNum", oRow, oRow + 1
     
     oMat01.LoadFromDataSource
@@ -205,7 +205,7 @@ On Error GoTo PS_GA030_MTX01_Error
     Dim AcctCode02 As String '계정과목코드
     Dim AcctCode03 As String '세부계정과목코드
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
     StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
@@ -263,7 +263,7 @@ On Error GoTo PS_GA030_MTX01_Error
         End If
         
         Call oMat01.AddRow
-        oDS_PS_GA030L.Offset = loopCount
+        oDS_PS_GA030L.offset = loopCount
         
         Call oDS_PS_GA030L.setValue("U_LineNum", loopCount, loopCount + 1)
         Call oDS_PS_GA030L.setValue("U_ColReg01", loopCount, RecordSet01.Fields("StdYear").VALUE) '년도
