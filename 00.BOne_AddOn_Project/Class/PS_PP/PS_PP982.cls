@@ -181,16 +181,21 @@ On Error GoTo PS_PP982_SelectGrid01_Error
 '    Dim RecordSet01 As SAPbobsCOM.Recordset
 '    Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim BPLID As String
-    Dim FrDt  As String
-    Dim ToDt  As String
+    Dim BPLID      As String
+    Dim FrDt       As String
+    Dim ToDt       As String
+    Dim CntcCode   As String
     Dim ClsCodeChk As String
     Dim CheckBoxID As String
     
     BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
     ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
     ClsCodeChk = ""
+    
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
     For loopCount = 1 To CheckBoxCount
     
@@ -207,26 +212,24 @@ On Error GoTo PS_PP982_SelectGrid01_Error
         End If
     
     Next
-    
-    Dim ProgBar01 As SAPbouiCOM.ProgressBar
-    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
         
     Query01 = "         EXEC PS_PP982_01 '"
     Query01 = Query01 & BPLID & "','"
     Query01 = Query01 & FrDt & "','"
     Query01 = Query01 & ToDt & "','"
+    Query01 = Query01 & CntcCode & "','"
     Query01 = Query01 & ClsCodeChk & "'"
     
     Call oGrid01.DataTable.Clear
     Call oDS_PS_PP982L.ExecuteQuery(Query01)
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
 
-    oGrid01.Columns(5).RightJustified = True
-    oGrid01.Columns(6).RightJustified = True
     oGrid01.Columns(7).RightJustified = True
     oGrid01.Columns(8).RightJustified = True
     oGrid01.Columns(9).RightJustified = True
     oGrid01.Columns(10).RightJustified = True
+    oGrid01.Columns(11).RightJustified = True
+    oGrid01.Columns(12).RightJustified = True
     
 '    oGrid01.Columns(12).BackColor = RGB(255, 255, 125) '[결산]계, 노랑
 '    oGrid01.Columns(19).BackColor = RGB(255, 255, 125) '[계산]계, 노랑
@@ -280,7 +283,7 @@ Public Sub PS_PP982_SelectGrid02()
 '******************************************************************************
 'Function ID : PS_PP982_SelectGrid02()
 '해당모듈    : PS_PP982
-'기능        : 작번별 주별 공수 현황 조회
+'기능        : 집계자료(주별)
 '인수        : 없음
 '반환값      : 없음
 '특이사항    : 없음
@@ -289,42 +292,69 @@ On Error GoTo PS_PP982_SelectGrid02_Error
 
     '//메트릭스에 데이터 로드
     Call oForm01.Freeze(True)
-    Dim i       As Long
-    Dim Query01 As String
-    Dim ErrNum  As String
     
-    Dim RecordSet01 As SAPbobsCOM.Recordset
-    Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
-
-    Dim BPLID    As String
-    Dim StdDt    As String
+    Dim loopCount As Integer
+    Dim Query01   As String
+    Dim ErrNum    As String
     
-    BPLID = Trim(oForm01.Items("BPLID02").Specific.VALUE)
-    StdDt = Trim(oForm01.Items("StdDt02").Specific.VALUE)
+'    Dim RecordSet01 As SAPbobsCOM.Recordset
+'    Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
+    
+    Dim BPLID      As String
+    Dim FrDt       As String
+    Dim ToDt       As String
+    Dim CntcCode   As String
+    Dim ClsCodeChk As String
+    Dim CheckBoxID As String
+    
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
+    ClsCodeChk = ""
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+    
+    For loopCount = 1 To CheckBoxCount
+    
+        If loopCount >= 1 And loopCount < 10 Then
+            CheckBoxID = "Check0" & loopCount
+        Else
+            CheckBoxID = "Check" & loopCount
+        End If
+    
+        If oForm01.DataSources.UserDataSources.Item(CheckBoxID).VALUE = "Y" Then
+    
+            ClsCodeChk = ClsCodeChk & Left(Right(MDC_PS_Common.Split_String(oForm01.Items(CheckBoxID).Specific.Caption, "-", 1), 5), 4) & ","
+        
+        End If
+    
+    Next
         
     Query01 = "         EXEC PS_PP982_02 '"
     Query01 = Query01 & BPLID & "','"
-    Query01 = Query01 & StdDt & "'"
+    Query01 = Query01 & FrDt & "','"
+    Query01 = Query01 & ToDt & "','"
+    Query01 = Query01 & CntcCode & "','"
+    Query01 = Query01 & ClsCodeChk & "'"
     
     Call oGrid02.DataTable.Clear
     Call oDS_PS_PP982M.ExecuteQuery(Query01)
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
 
+    oGrid02.Columns(2).RightJustified = True
+    oGrid02.Columns(3).RightJustified = True
+    oGrid02.Columns(4).RightJustified = True
+    oGrid02.Columns(5).RightJustified = True
     oGrid02.Columns(6).RightJustified = True
     oGrid02.Columns(7).RightJustified = True
     oGrid02.Columns(8).RightJustified = True
-    oGrid02.Columns(9).RightJustified = True
-    oGrid02.Columns(10).RightJustified = True
-    oGrid02.Columns(11).RightJustified = True
-    oGrid02.Columns(12).RightJustified = True
-    oGrid02.Columns(13).RightJustified = True
-    oGrid02.Columns(14).RightJustified = True
-    oGrid02.Columns(15).RightJustified = True
-    oGrid02.Columns(16).RightJustified = True
-    oGrid02.Columns(17).RightJustified = True
+'    oGrid02.Columns(13).RightJustified = True
+'    oGrid02.Columns(14).RightJustified = True
+'    oGrid02.Columns(15).RightJustified = True
+'    oGrid02.Columns(16).RightJustified = True
+'    oGrid02.Columns(17).RightJustified = True
 
 '    oGrid01.Columns(12).BackColor = RGB(255, 255, 125) '[결산]계, 노랑
 '    oGrid01.Columns(19).BackColor = RGB(255, 255, 125) '[계산]계, 노랑
@@ -349,11 +379,11 @@ On Error GoTo PS_PP982_SelectGrid02_Error
     ProgBar01.Stop
     Set ProgBar01 = Nothing
     
-    Set RecordSet01 = Nothing
+'    Set RecordSet01 = Nothing
     Call oForm01.Freeze(False)
     Exit Sub
 PS_PP982_SelectGrid02_Exit:
-    Set RecordSet01 = Nothing
+'    Set RecordSet01 = Nothing
     Call oForm01.Freeze(False)
     Exit Sub
 PS_PP982_SelectGrid02_Error:
@@ -372,7 +402,7 @@ PS_PP982_SelectGrid02_Error:
     
     End If
     
-    Set RecordSet01 = Nothing
+'    Set RecordSet01 = Nothing
     
     Call oForm01.Freeze(False)
     
@@ -398,17 +428,16 @@ On Error GoTo PS_PP982_SelectMatrix01_Error
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim BPLID     As String '사업장
-    Dim StdDt     As String '기준일
     
-    BPLID = Trim(oForm01.Items("BPLID03").Specific.VALUE) '사업장
-    StdDt = Trim(oForm01.Items("StdDt03").Specific.VALUE) '기준일자
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
     
     Call oForm01.Freeze(True)
     
-    sQry = "EXEC [PS_PP982_03]"
+    sQry = "EXEC [PS_PP982_04] '"
+    sQry = sQry & BPLID & "'"
     
     Call oRecordSet01.DoQuery(sQry)
     
@@ -440,11 +469,12 @@ On Error GoTo PS_PP982_SelectMatrix01_Error
     
         Call oDS_PS_PP982O.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP982O.setValue("U_ColReg01", i, Trim(oRecordSet01.Fields("Select").VALUE)) '선택
-        Call oDS_PS_PP982O.setValue("U_ColReg02", i, Trim(oRecordSet01.Fields("PP030Entry").VALUE)) '작업지시번호
-        Call oDS_PS_PP982O.setValue("U_ColReg03", i, Trim(oRecordSet01.Fields("OrdNum").VALUE)) '작번
-        Call oDS_PS_PP982O.setValue("U_ColReg04", i, Trim(oRecordSet01.Fields("OrdSub1").VALUE)) '서브작번1
-        Call oDS_PS_PP982O.setValue("U_ColReg05", i, Trim(oRecordSet01.Fields("OrdSub2").VALUE)) '서브작번2
-        Call oDS_PS_PP982O.setValue("U_ColReg06", i, Trim(oRecordSet01.Fields("ItemName").VALUE)) '품명
+        Call oDS_PS_PP982O.setValue("U_ColReg02", i, Trim(oRecordSet01.Fields("CntcCode").VALUE)) '사번
+        Call oDS_PS_PP982O.setValue("U_ColReg03", i, Trim(oRecordSet01.Fields("CntcName").VALUE)) '성명
+        Call oDS_PS_PP982O.setValue("U_ColReg04", i, Trim(oRecordSet01.Fields("TeamName").VALUE)) '팀
+        Call oDS_PS_PP982O.setValue("U_ColReg05", i, Trim(oRecordSet01.Fields("RspName").VALUE)) '담당
+        Call oDS_PS_PP982O.setValue("U_ColReg06", i, Trim(oRecordSet01.Fields("ClsName").VALUE)) '반
+        Call oDS_PS_PP982O.setValue("U_ColReg07", i, Trim(oRecordSet01.Fields("Comments").VALUE)) '비고
         
         oRecordSet01.MoveNext
         ProgBar01.VALUE = ProgBar01.VALUE + 1
@@ -467,7 +497,7 @@ On Error GoTo PS_PP982_SelectMatrix01_Error
     Set oRecordSet01 = Nothing
     
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_PP982_SelectMatrix01_Error:
 
     Call oForm01.Freeze(False)
@@ -502,31 +532,29 @@ On Error GoTo PS_PP982_InsertMatrix01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim PP030Entry  As String '작업지시번호
-    Dim OrdNum      As String '작번
-    Dim OrdSub1     As String '서브작번1
-    Dim OrdSub2     As String '서브작번2
-    Dim ItemName    As String '품명
+    Dim BPLID       As String '사업장
+    Dim CntcCode    As String '사번
+    Dim CntcName    As String '성명
+    Dim Comments    As String '비고
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", oMat01.VisualRowCount - 1, False)
+    
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     
     Call oMat01.FlushToDataSource
     For loopCount = 0 To oMat01.VisualRowCount - 1
         If Trim(oDS_PS_PP982O.GetValue("U_ColReg01", loopCount)) = "Y" Then
             
-            PP030Entry = Trim(oDS_PS_PP982O.GetValue("U_ColReg02", loopCount)) '작업지시번호
-            OrdNum = Trim(oDS_PS_PP982O.GetValue("U_ColReg03", loopCount)) '작번
-            OrdSub1 = Trim(oDS_PS_PP982O.GetValue("U_ColReg04", loopCount)) '서브작번1
-            OrdSub2 = Trim(oDS_PS_PP982O.GetValue("U_ColReg05", loopCount)) '서브작번2
-            ItemName = Trim(oDS_PS_PP982O.GetValue("U_ColReg06", loopCount)) '품명
+            CntcCode = Trim(oDS_PS_PP982O.GetValue("U_ColReg02", loopCount)) '사번
+            CntcName = Trim(oDS_PS_PP982O.GetValue("U_ColReg03", loopCount)) '성명
+            Comments = Trim(oDS_PS_PP982O.GetValue("U_ColReg07", loopCount)) '비고
             
-            sQry = "      EXEC [PS_PP982_04] '"
-            sQry = sQry & PP030Entry & "','" '작업지시번호
-            sQry = sQry & OrdNum & "','" '작번
-            sQry = sQry & OrdSub1 & "','" '서브작번1
-            sQry = sQry & OrdSub2 & "','" '서브작번1
-            sQry = sQry & ItemName & "'" '품명
+            sQry = "      EXEC [PS_PP982_05] '"
+            sQry = sQry & BPLID & "','" '사업장
+            sQry = sQry & CntcCode & "','" '사번
+            sQry = sQry & CntcName & "','" '성명
+            sQry = sQry & Comments & "'" '비고
             
             Call RecordSet01.DoQuery(sQry)
             
@@ -577,20 +605,24 @@ On Error GoTo PS_PP982_DeleteMatrix01_Error
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim PP030Entry As String
+    Dim BPLID As String
+    Dim CntcCode As String
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("삭제 중...", 100, False)
+    
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
     
     Call oMat01.FlushToDataSource
     
     For loopCount = 0 To oMat01.VisualRowCount - 1
         If Trim(oDS_PS_PP982O.GetValue("U_ColReg01", loopCount)) = "Y" Then
             
-            PP030Entry = Trim(oDS_PS_PP982O.GetValue("U_ColReg02", loopCount))
+            CntcCode = Trim(oDS_PS_PP982O.GetValue("U_ColReg02", loopCount))
             
-            sQry = "      EXEC [PS_PP982_05] '"
-            sQry = sQry & PP030Entry & "'"
+            sQry = "      EXEC [PS_PP982_06] '"
+            sQry = sQry & BPLID & "','"
+            sQry = sQry & CntcCode & "'"
             
             Call oRecordSet01.DoQuery(sQry)
         End If
@@ -704,8 +736,23 @@ On Error GoTo PS_PP982_FlushToItemValue_Error
             If oCol = "CntcCode" Then
             
                 sQry = "        SELECT      T0.Code AS [CntcCode]," '사번
-                sQry = sQry & "             T0.U_FullName AS [CntcName]" '성명
+                sQry = sQry & "             T0.U_FullName AS [CntcName]," '성명
+                sQry = sQry & "             T1.U_CodeNm AS [TeamName]," '팀
+                sQry = sQry & "             T2.U_CodeNm AS [RspName]," '담당
+                sQry = sQry & "             T3.U_CodeNm AS [ClsName]" '반
                 sQry = sQry & " FROM        [@PH_PY001A] AS T0"
+                sQry = sQry & "             LEFT JOIN"
+                sQry = sQry & "             [@PS_HR200L] AS T1"
+                sQry = sQry & "                 ON T0.U_TeamCode = T1.U_Code"
+                sQry = sQry & "                 AND T1.Code = '1'"
+                sQry = sQry & "             LEFT JOIN"
+                sQry = sQry & "             [@PS_HR200L] AS T2"
+                sQry = sQry & "                 ON T0.U_RspCode = T2.U_Code"
+                sQry = sQry & "                 AND T2.Code = '2'"
+                sQry = sQry & "             LEFT JOIN"
+                sQry = sQry & "             [@PS_HR200L] AS T3"
+                sQry = sQry & "                 ON T0.U_ClsCode = T3.U_Code"
+                sQry = sQry & "                 AND T3.Code = '9'"
                 sQry = sQry & " WHERE       T0.Code = '" & oDS_PS_PP982O.GetValue("U_ColReg02", oRow - 1) & "'"
                 
                 Call oRecordSet01.DoQuery(sQry)
@@ -713,6 +760,9 @@ On Error GoTo PS_PP982_FlushToItemValue_Error
                 Call oDS_PS_PP982O.setValue("U_ColReg01", oRow - 1, "Y") '선택
                 Call oDS_PS_PP982O.setValue("U_ColReg02", oRow - 1, oRecordSet01.Fields("CntcCode").VALUE) '사번
                 Call oDS_PS_PP982O.setValue("U_ColReg03", oRow - 1, oRecordSet01.Fields("CntcName").VALUE) '성명
+                Call oDS_PS_PP982O.setValue("U_ColReg04", oRow - 1, oRecordSet01.Fields("TeamName").VALUE) '팀
+                Call oDS_PS_PP982O.setValue("U_ColReg05", oRow - 1, oRecordSet01.Fields("RspName").VALUE) '담당
+                Call oDS_PS_PP982O.setValue("U_ColReg06", oRow - 1, oRecordSet01.Fields("ClsName").VALUE) '반
                 
                 Call oMat01.LoadFromDataSource
                 
@@ -768,6 +818,12 @@ On Error GoTo PS_PP982_FlushToItemValue_Error
             
             Next
             '반 체크박스 제목 바인딩_E
+            
+            
+        Case "CntcCode"
+            
+            'oForm01.Items("CntcName").Specific.VALUE = MDC_GetData.Get_ReData("U_FULLNAME", "U_MSTCOD", "[OHEM]", "'" & Trim(oForm01.Items("CntcCode").Specific.VALUE) & "'") '성명
+            oForm01.DataSources.UserDataSources("CntcName").VALUE = MDC_GetData.Get_ReData("U_FULLNAME", "U_MSTCOD", "[OHEM]", "'" & Trim(oForm01.Items("CntcCode").Specific.VALUE) & "'") '성명
             
     End Select
 
@@ -943,6 +999,7 @@ On Error GoTo Raise_RightClickEvent_Error
             oLastItemUID01 = pval.ItemUID
             oLastColUID01 = pval.ColUID
             oLastColRow01 = pval.Row
+            
         End If
     Else
         oLastItemUID01 = pval.ItemUID
@@ -972,7 +1029,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
                 Exit Sub
             Else
                 Call PS_PP982_SelectGrid01 '반별자료
-'                Call PS_PP982_SelectGrid02 '집계자료(주별)
+                Call PS_PP982_SelectGrid02 '집계자료(주별)
 '                Call PS_PP982_SelectGrid03 '집계자료(일별)
             End If
             
@@ -1058,7 +1115,8 @@ Private Sub Raise_EVENT_KEY_DOWN(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEve
 On Error GoTo Raise_EVENT_KEY_DOWN_Error
     If pval.BeforeAction = True Then
     
-        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "PP030Entry") '//사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "CntcCode", "") '헤더_조회조건-사번
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "CntcCode") '매트릭스-사번
         
     ElseIf pval.BeforeAction = False Then
     
@@ -1322,6 +1380,14 @@ On Error GoTo PS_PP982_CreateItems_Error
     '일자To
     Call oForm01.DataSources.UserDataSources.Add("ToDt", dt_DATE)
     Call oForm01.Items("ToDt").Specific.DataBind.SetBound(True, "", "ToDt")
+    
+    '사번
+    Call oForm01.DataSources.UserDataSources.Add("CntcCode", dt_SHORT_TEXT, 20)
+    Call oForm01.Items("CntcCode").Specific.DataBind.SetBound(True, "", "CntcCode")
+    
+    '성명
+    Call oForm01.DataSources.UserDataSources.Add("CntcName", dt_SHORT_TEXT, 50)
+    Call oForm01.Items("CntcName").Specific.DataBind.SetBound(True, "", "CntcName")
     
     '반 체크박스
     Call oForm01.DataSources.UserDataSources.Add("Check01", dt_SHORT_TEXT, 5)

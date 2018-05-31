@@ -916,7 +916,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_TEMPTABLE.InsertRecord (oRow)
         End If
         oMat01.AddRow
-        oDS_PS_TEMPTABLE.Offset = oRow
+        oDS_PS_TEMPTABLE.offset = oRow
         oDS_PS_TEMPTABLE.setValue "U_LineNum", oRow, oRow + 1
         oMat01.LoadFromDataSource
     ElseIf ItemUID = "Mat02" Then
@@ -924,7 +924,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_MM050L.InsertRecord (oRow)
         End If
         oMat02.AddRow
-        oDS_PS_MM050L.Offset = oRow
+        oDS_PS_MM050L.offset = oRow
         oDS_PS_MM050L.setValue "U_LineNum", oRow, oRow + 1
         oMat02.LoadFromDataSource
     End If
@@ -1339,7 +1339,7 @@ On Error GoTo Display_MatrixData_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.Offset = sCnt
+            oDS_PS_TEMPTABLE.offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_iField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)
@@ -1453,7 +1453,7 @@ On Error GoTo Update_PO_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.Offset = sCnt
+            oDS_PS_TEMPTABLE.offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_sField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)
@@ -1547,18 +1547,18 @@ On Error GoTo PS_MM050_Validate_Error
             If (oMat02.Columns("LineNum").Cells(oLast_Col_Row).Specific.VALUE = "") Then '//새로추가된 행인경우, 삭제하여도 무방하다
             Else
        
-                Query01 = "                SELECT      COUNT(*) AS [Count],"
-                Query01 = Query01 & "                T0.DocEntry AS [DocEntry],"
-                Query01 = Query01 & "                T1.U_LineNum AS [LineNum]"
-                Query01 = Query01 & " FROM       [@PS_MM070H] AS T0"
-                Query01 = Query01 & "                INNER JOIN"
-                Query01 = Query01 & "                [@PS_MM070L] AS T1"
-                Query01 = Query01 & "                   ON T0.DocEntry = T1.DocEntry"
-                Query01 = Query01 & " WHERE      T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(oLast_Col_Row).Specific.VALUE & "'"
-    '            Query01 = Query01 & "                AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
-                Query01 = Query01 & "                AND T0.Status = 'O'"
-                Query01 = Query01 & " GROUP BY T0.DocEntry,"
-                Query01 = Query01 & "                T1.U_LineNum"
+                Query01 = "           SELECT    COUNT(*) AS [Count],"
+                Query01 = Query01 & "           T0.DocEntry AS [DocEntry],"
+                Query01 = Query01 & "           T1.U_LineNum AS [LineNum]"
+                Query01 = Query01 & " FROM      [@PS_MM070H] AS T0"
+                Query01 = Query01 & "           INNER JOIN"
+                Query01 = Query01 & "           [@PS_MM070L] AS T1"
+                Query01 = Query01 & "               ON T0.DocEntry = T1.DocEntry"
+                Query01 = Query01 & " WHERE     T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(oLast_Col_Row).Specific.VALUE & "'"
+    '            Query01 = Query01 & "          AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
+                Query01 = Query01 & "           AND T0.Status = 'O'"
+                Query01 = Query01 & " GROUP BY  T0.DocEntry,"
+                Query01 = Query01 & "           T1.U_LineNum"
            
                 Call RecordSet01.DoQuery(Query01)
             
@@ -1581,18 +1581,18 @@ On Error GoTo PS_MM050_Validate_Error
     
         For i = 1 To oMat02.VisualRowCount
         
-            Query01 = "                SELECT      COUNT(*) AS [Count],"
-            Query01 = Query01 & "                T0.DocEntry AS [DocEntry],"
-            Query01 = Query01 & "                T1.U_LineNum AS [LineNum]"
-            Query01 = Query01 & " FROM       [@PS_MM070H] AS T0"
-            Query01 = Query01 & "                INNER JOIN"
-            Query01 = Query01 & "                [@PS_MM070L] AS T1"
-            Query01 = Query01 & "                   ON T0.DocEntry = T1.DocEntry"
-            Query01 = Query01 & " WHERE      T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(i).Specific.VALUE & "'"
-'            Query01 = Query01 & "                AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
-            Query01 = Query01 & "                AND T0.Status = 'O'"
-            Query01 = Query01 & " GROUP BY T0.DocEntry,"
-            Query01 = Query01 & "                T1.U_LineNum"
+            Query01 = "           SELECT    COUNT(*) AS [Count],"
+            Query01 = Query01 & "           T0.DocEntry AS [DocEntry],"
+            Query01 = Query01 & "           T1.U_LineNum AS [LineNum]"
+            Query01 = Query01 & " FROM      [@PS_MM070H] AS T0"
+            Query01 = Query01 & "           INNER JOIN"
+            Query01 = Query01 & "           [@PS_MM070L] AS T1"
+            Query01 = Query01 & "               ON T0.DocEntry = T1.DocEntry"
+            Query01 = Query01 & " WHERE     T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(i).Specific.VALUE & "'"
+'            Query01 = Query01 & "          AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
+            Query01 = Query01 & "           AND T0.Status = 'O'"
+            Query01 = Query01 & " GROUP BY  T0.DocEntry,"
+            Query01 = Query01 & "           T1.U_LineNum"
        
             Call RecordSet01.DoQuery(Query01)
         
@@ -1610,18 +1610,18 @@ On Error GoTo PS_MM050_Validate_Error
     
         For i = 1 To oMat02.VisualRowCount
         
-            Query01 = "                SELECT      COUNT(*) AS [Count],"
-            Query01 = Query01 & "                T0.DocEntry AS [DocEntry],"
-            Query01 = Query01 & "                T1.U_LineNum AS [LineNum]"
-            Query01 = Query01 & " FROM       [@PS_MM070H] AS T0"
-            Query01 = Query01 & "                INNER JOIN"
-            Query01 = Query01 & "                [@PS_MM070L] AS T1"
-            Query01 = Query01 & "                   ON T0.DocEntry = T1.DocEntry"
-            Query01 = Query01 & " WHERE      T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(i).Specific.VALUE & "'"
-'            Query01 = Query01 & "                AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
-            Query01 = Query01 & "                AND T0.Status = 'O'"
-            Query01 = Query01 & " GROUP BY T0.DocEntry,"
-            Query01 = Query01 & "                T1.U_LineNum"
+            Query01 = "           SELECT    COUNT(*) AS [Count],"
+            Query01 = Query01 & "           T0.DocEntry AS [DocEntry],"
+            Query01 = Query01 & "           T1.U_LineNum AS [LineNum]"
+            Query01 = Query01 & " FROM      [@PS_MM070H] AS T0"
+            Query01 = Query01 & "           INNER JOIN"
+            Query01 = Query01 & "           [@PS_MM070L] AS T1"
+            Query01 = Query01 & "               ON T0.DocEntry = T1.DocEntry"
+            Query01 = Query01 & " WHERE     T1.U_GADocLin = '" & oForm01.Items("DocNum").Specific.VALUE & "-" & oMat02.Columns("LineID").Cells(i).Specific.VALUE & "'"
+'            Query01 = Query01 & "          AND T1.U_POR1Num = " & oMat02.Columns("BLineNum").Cells(i).Specific.VALUE
+            Query01 = Query01 & "           AND T0.Status = 'O'"
+            Query01 = Query01 & " GROUP BY  T0.DocEntry,"
+            Query01 = Query01 & "           T1.U_LineNum"
        
             Call RecordSet01.DoQuery(Query01)
         

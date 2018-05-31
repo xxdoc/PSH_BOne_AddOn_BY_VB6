@@ -37,22 +37,21 @@ Private oLastColUID     As String
 Private oLastColRow     As Long
 
 Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
+On Error GoTo LoadForm_Error
 
-    Dim i           As Long
-    Dim oXmlDoc     As New MSXML2.DOMDocument
-    
-    On Error GoTo LoadForm_Error
+    Dim i       As Long
+    Dim oXmlDoc As New MSXML2.DOMDocument
     
     oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PY735.srf")
     oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    
     For i = 1 To (oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
     Next
+    
     oFormUniqueID = "PH_PY735_" & GetTotalFormsCount
     AddForms Me, oFormUniqueID, "PH_PY735"
     Sbo_Application.LoadBatchActions oXmlDoc.xml
@@ -84,6 +83,7 @@ LoadForm_Error:
 End Sub
 
 Private Function PH_PY735_CreateItems() As Boolean
+On Error GoTo PH_PY735_CreateItems_Error
 
     Dim sQry        As String
     Dim i           As Long
@@ -95,14 +95,10 @@ Private Function PH_PY735_CreateItems() As Boolean
     Dim oColumns    As SAPbouiCOM.Columns
     Dim optBtn      As SAPbouiCOM.OptionBtn
     
-    Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY735_CreateItems_Error
-    
     Call oForm.Freeze(True)
     
+    Dim oRecordSet  As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
-    
     
     '//----------------------------------------------------------------------------------------------
     '// 아이템 설정
@@ -120,7 +116,6 @@ Private Function PH_PY735_CreateItems() As Boolean
     
     '//지급년월
     oForm.Items("YM").Specific.String = Format(Now, "YYYYMM")
-    
     
     '//지급구분
     Call oForm.DataSources.UserDataSources.Add("JOBGBN", dt_SHORT_TEXT, 10)
@@ -143,7 +138,6 @@ Private Function PH_PY735_CreateItems() As Boolean
     oForm.Items("JIGBIL").Specific.DataBind.SetBound True, "", "JIGBIL"
    ' oForm.DataSources.UserDataSources.Item("DocDateFr").Value = Format(Now, "YYYYMMDD")
     
-    
     '//부서
     Call oForm.DataSources.UserDataSources.Add("TeamCode", dt_SHORT_TEXT, 10)
     Set oCombo = oForm.Items("TeamCode").Specific
@@ -162,7 +156,6 @@ Private Function PH_PY735_CreateItems() As Boolean
     
     '//커서를 첫번째 ITEM으로 지정
     oForm.ActiveItem = "CLTCOD"
-        
     
     Set oCheck = Nothing
     Set oEdit = Nothing
@@ -187,8 +180,7 @@ PH_PY735_CreateItems_Error:
 End Function
 
 Private Sub PH_PY735_EnableMenus()
-    
-    On Error GoTo PH_PY735_EnableMenus_Error
+On Error GoTo PH_PY735_EnableMenus_Error
 
     Call oForm.EnableMenu("1283", True)     '//제거
     Call oForm.EnableMenu("1284", False)    '//취소
@@ -201,7 +193,7 @@ PH_PY735_EnableMenus_Error:
 End Sub
 
 Private Sub PH_PY735_SetDocument(ByVal oFromDocEntry01 As String)
-    On Error GoTo PH_PY735_SetDocument_Error
+On Error GoTo PH_PY735_SetDocument_Error
     
     If (oFromDocEntry01 = "") Then
         Call PH_PY735_FormItemEnabled
@@ -219,10 +211,9 @@ PH_PY735_SetDocument_Error:
 End Sub
 
 Sub PH_PY735_FormItemEnabled()
-    Dim oCombo      As SAPbouiCOM.ComboBox
-    
-    On Error GoTo PH_PY735_FormItemEnabled_Error
-    
+On Error GoTo PH_PY735_FormItemEnabled_Error
+
+    Dim oCombo As SAPbouiCOM.ComboBox
     
     Call oForm.Freeze(True)
     If (oForm.Mode = fm_ADD_MODE) Then
@@ -249,15 +240,14 @@ PH_PY735_FormItemEnabled_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY735_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormItemEvent_Error
+    
     Dim sQry        As String
     Dim i           As Long
     Dim oCombo      As SAPbouiCOM.ComboBox
+    
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo Raise_FormItemEvent_Error
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Select Case pval.EventType
@@ -271,7 +261,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     
                 End If
             ElseIf pval.BeforeAction = False Then
-
 
             End If
      
@@ -292,7 +281,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End If
             End If
-            
                 
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
@@ -315,8 +303,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_COMBO_SELECT: '//5
             Call oForm.Freeze(True)
             If pval.BeforeAction = True Then
-                
-                
                 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
@@ -360,7 +346,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                            '//지급구분이 바뀌면 지급일자 초기화
                            Case "JOBGBN"
                                 oForm.Items("JIGBIL").Specific.VALUE = ""
-                                
                            
                     End Select
                 End If
@@ -501,10 +486,11 @@ Raise_FormItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormMenuEvent_Error
+
     Dim i As Long
-    On Error GoTo Raise_FormMenuEvent_Error
+    
     Call oForm.Freeze(True)
     
     If (pval.BeforeAction = True) Then
@@ -571,8 +557,7 @@ Raise_FormMenuEvent_Error:
 End Sub
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_FormDataEvent_Error
+On Error GoTo Raise_FormDataEvent_Error
     
     If (BusinessObjectInfo.BeforeAction = True) Then
         Select Case BusinessObjectInfo.EventType
@@ -593,13 +578,12 @@ Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo
     
 Raise_FormDataEvent_Error:
     
-        Sbo_Application.SetStatusBarMessage "Raise_FormDataEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    Sbo_Application.SetStatusBarMessage "Raise_FormDataEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 
 End Sub
 
 Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.ContextMenuInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_RightClickEvent_Error
+On Error GoTo Raise_RightClickEvent_Error
     
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
@@ -623,9 +607,9 @@ Raise_RightClickEvent_Error:
 End Sub
 
 Sub PH_PY735_AddMatrixRow()
-    Dim oRow    As Long
+On Error GoTo PH_PY735_AddMatrixRow_Error
     
-    On Error GoTo PH_PY735_AddMatrixRow_Error
+    Dim oRow    As Long
     
     Call oForm.Freeze(True)
     
@@ -684,11 +668,13 @@ End Sub
 
 Function PH_PY735_DataValidCheck() As Boolean
 On Error GoTo PH_PY735_DataValidCheck_Error
+
     PH_PY735_DataValidCheck = False
+    
     Dim i       As Long
     Dim sQry    As String
-    Dim oRecordSet  As SAPbobsCOM.Recordset
     
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     '//----------------------------------------------------------------------------------
@@ -715,13 +701,11 @@ On Error GoTo PH_PY735_DataValidCheck_Error
         Exit Function
     End If
 
-    
     PH_PY735_DataValidCheck = True
     
     Exit Function
     
     Set oRecordSet = Nothing
-    
     
 PH_PY735_DataValidCheck_Error:
     Set oRecordSet = Nothing
@@ -729,12 +713,14 @@ PH_PY735_DataValidCheck_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY735_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Function PH_PY735_Validate(ByVal ValidateType As String) As Boolean
 On Error GoTo PH_PY735_Validate_Error
+
     PH_PY735_Validate = True
+    
     Dim i, j As Long
     Dim sQry As String
+    
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
@@ -761,17 +747,14 @@ PH_PY735_Validate_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY735_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Sub PH_PY735_Print_Report01()
+On Error GoTo PH_PY735_Print_Report01_Error
 
     Dim DocNum          As String
     Dim ErrNum          As Integer
     Dim WinTitle        As String
     Dim ReportName      As String
     Dim sQry            As String
-    Dim oRecordSet      As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY735_Print_Report01_Error
     
     Dim CLTCOD          As String
     Dim YM              As String
@@ -781,16 +764,17 @@ Private Sub PH_PY735_Print_Report01()
     Dim TeamCode        As String
     Dim RspCode         As String
     Dim MSTCOD          As String
-   
     
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
-    
     
      '/ ODBC 연결 체크
     If ConnectODBC = False Then
         GoTo PH_PY735_Print_Report01_Error
     End If
-    
     
     '//인자 MOVE , Trim 시키기..
     CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
@@ -801,7 +785,6 @@ Private Sub PH_PY735_Print_Report01()
     TeamCode = Trim(oForm.Items("TeamCode").Specific.VALUE)
     RspCode = Trim(oForm.Items("RspCode").Specific.VALUE)
     MSTCOD = Trim(oForm.Items("MSTCOD").Specific.VALUE)
-    
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
@@ -829,14 +812,12 @@ Private Sub PH_PY735_Print_Report01()
     gRpt_Formula(3) = "DocDate"
     gRpt_Formula_Value(3) = Format(JIGBIL, "####-##-##")
     
-    
     '/ SubReport
     ReDim gRpt_SRptSqry(1)
     ReDim gRpt_SRptName(1)
     
     ReDim gRpt_SFormula(1, 1)
     ReDim gRpt_SFormula_Value(1, 1)
-    
     
     '/ Procedure 실행 창원,사상은 같은 PROC를 사용
     If CLTCOD = "1" Then
@@ -847,26 +828,35 @@ Private Sub PH_PY735_Print_Report01()
        sQry = "EXEC [PH_PY735_01] '" & CLTCOD & "', '" & JOBGBN & "',  '" & YM & "',  '" & JIGBIL & "', '" & PAYTYP & "', '" & TeamCode & "', '" & RspCode & "', '" & MSTCOD & "'"
     End If
     
-    oRecordSet.DoQuery sQry
-    If oRecordSet.RecordCount = 0 Then
-        ErrNum = 1
-        GoTo PH_PY735_Print_Report01_Error
-    End If
+'    oRecordSet.DoQuery sQry
+'    If oRecordSet.RecordCount = 0 Then
+'        ErrNum = 1
+'        GoTo PH_PY735_Print_Report01_Error
+'    End If
     
     If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "1", "Y", "V", , 2) = False Then
         Sbo_Application.SetStatusBarMessage "gCryReport_Action : 실패!", bmt_Short, True
     End If
     
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
     Set oRecordSet = Nothing
     Exit Sub
     
 PH_PY735_Print_Report01_Error:
+
+    Set oRecordSet = Nothing
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
     If ErrNum = 1 Then
-        Set oRecordSet = Nothing
         MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
     Else
-    Set oRecordSet = Nothing
-    Sbo_Application.SetStatusBarMessage "PH_PY735_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+        Sbo_Application.SetStatusBarMessage "PH_PY735_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
     End If
     
 End Sub

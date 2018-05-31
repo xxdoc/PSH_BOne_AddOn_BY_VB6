@@ -588,15 +588,16 @@ On Error GoTo Raise_EVENT_KEY_DOWN_Error
                 End If
             End If
         End If
-        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat02", "WorkCode") '//사용자값활성
-        Call MDC_PS_Common.ActiveUserDefineValueAlways(oForm01, pval, BubbleEvent, "Mat02", "NCode") '//사용자값활성
-        Call MDC_PS_Common.ActiveUserDefineValueAlways(oForm01, pval, BubbleEvent, "Mat03", "FailCode") '//사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat02", "WorkCode") '사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValueAlways(oForm01, pval, BubbleEvent, "Mat02", "NCode") '사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValueAlways(oForm01, pval, BubbleEvent, "Mat03", "FailCode") '사용자값활성
         
-        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "MachCode") '//설비코드 사용자값활성
-'        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "SubLot") '//sub작지번호 사용자값활성
-        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "CItemCod") '//원재료코드 사용자값활성
-        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "UseMCode", "") '//작업장비 사용자값활성
-'        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "ItemCode") '//사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "MachCode") '설비코드 사용자값활성
+'        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "SubLot") 'sub작지번호 사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "CItemCod") '원재료코드 사용자값활성
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "SCpCode") '지원공정추가(2018.05.30 송명규)
+        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "UseMCode", "") '작업장비 사용자값활성
+'        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "ItemCode") '사용자값활성
     ElseIf pval.BeforeAction = False Then
         '// 화살표 이동 강제 코딩 - 류영조
         If pval.ItemUID = "Mat01" Then
@@ -1263,6 +1264,9 @@ skip_Nqty:
                     ElseIf pval.ColUID = "CItemCod" Then
                         Call oDS_PS_PP040L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                         Call oDS_PS_PP040L.setValue("U_CItemNam", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_ItemNam2 FROM [@PS_PP005H] WHERE U_ItemCod1 = '" & oMat01.Columns("ItemCode").Cells(pval.Row).Specific.VALUE & "' and U_ItemCod2 = '" & oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE & "'", 0, 1))
+                    ElseIf pval.ColUID = "SCpCode" Then '지원공정코드
+                        Call oDS_PS_PP040L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
+                        Call oDS_PS_PP040L.setValue("U_SCpName", pval.Row - 1, MDC_PS_Common.GetValue("SELECT U_CpName FROM [@PS_PP001L] WHERE U_CpCode = '" & oMat01.Columns("SCpCode").Cells(pval.Row).Specific.VALUE & "'", 0, 1))
                     Else
                         Call oDS_PS_PP040L.setValue("U_" & pval.ColUID, pval.Row - 1, oMat01.Columns(pval.ColUID).Cells(pval.Row).Specific.VALUE)
                     End If
@@ -2052,7 +2056,7 @@ On Error GoTo PS_PP040_AddMatrixRow01_Error
         oDS_PS_PP040L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP040L.Offset = oRow
+    oDS_PS_PP040L.offset = oRow
     oDS_PS_PP040L.setValue "U_LineNum", oRow, oRow + 1
     oDS_PS_PP040L.setValue "U_WorkCls", oRow, "A" '작업구분을 기본으로 선택(2014.04.15 송명규 추가)
     oMat01.LoadFromDataSource
@@ -2070,7 +2074,7 @@ On Error GoTo PS_PP040_AddMatrixRow02_Error
         oDS_PS_PP040M.InsertRecord (oRow)
     End If
     oMat02.AddRow
-    oDS_PS_PP040M.Offset = oRow
+    oDS_PS_PP040M.offset = oRow
     oDS_PS_PP040M.setValue "U_LineNum", oRow, oRow + 1
     oMat02.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -2087,7 +2091,7 @@ On Error GoTo PS_PP040_AddMatrixRow03_Error
         oDS_PS_PP040N.InsertRecord (oRow)
     End If
     oMat03.AddRow
-    oDS_PS_PP040N.Offset = oRow
+    oDS_PS_PP040N.offset = oRow
     oDS_PS_PP040N.setValue "U_LineNum", oRow, oRow + 1
     oMat03.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -2331,6 +2335,7 @@ On Error GoTo PS_PP040_DataValidCheck_Error
     End If
     PS_PP040_DataValidCheck = True
     Exit Function
+    
 PS_PP040_DataValidCheck_Error:
     PS_PP040_DataValidCheck = False
     Sbo_Application.SetStatusBarMessage "PS_PP040_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
@@ -2373,7 +2378,7 @@ On Error GoTo PS_PP040_MTX01_Error
         If i <> 0 Then
             oDS_PS_PP040L.InsertRecord (i)
         End If
-        oDS_PS_PP040L.Offset = i
+        oDS_PS_PP040L.offset = i
         Call oDS_PS_PP040L.setValue("U_COL01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_PP040L.setValue("U_COL02", i, RecordSet01.Fields(1).VALUE)
         RecordSet01.MoveNext

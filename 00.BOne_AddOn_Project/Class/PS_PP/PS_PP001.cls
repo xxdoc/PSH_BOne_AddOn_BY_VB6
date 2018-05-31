@@ -42,17 +42,16 @@ Private TmpCode As String
 '*******************************************************************
 Public Sub LoadForm()
 On Error GoTo LoadForm_Error
+
     Dim i As Long
     Dim oInnerXml01 As String
-    Dim oXmlDoc01             As New MSXML2.DOMDocument
+    Dim oXmlDoc01   As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_PP001.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
-    
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
@@ -92,8 +91,9 @@ On Error GoTo LoadForm_Error
     Call AddMatrixRow(0, oMat01.RowCount, True) '//UDO방식일때
     '//Call MDC_GP_EnableMenus(oForm01, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False) '//메뉴설정
     
-    oForm01.Update      ' Reloads the form from the application.
-                        ' Use this method to update an object from the database.
+    Call oForm01.Items("CpBCode").Click
+    
+    oForm01.Update
 
     oForm01.Freeze False
        
@@ -110,10 +110,11 @@ End Sub
 
 Public Sub Raise_ItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_ItemEvent_Error
+
     Dim sQry As String
     Dim ErrNum As Integer
-    Dim oRecordSet01 As SAPbobsCOM.Recordset
     
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     If (pval.BeforeAction = True) Then '//BeforeAction = True
@@ -274,14 +275,21 @@ On Error GoTo Raise_ItemEvent_Error
                         oForm01.Items("CpBName").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
                     End If
                     
+                    'Matrix AutoResizeColumn
+                    If pval.ItemUID = "Mat01" Then
+                    
+                        Call oMat01.AutoResizeColumns
+                    
+                    End If
+                    
                     '팀명
                     If (pval.ItemUID = "Mat01" And (pval.ColUID = "DeptCode")) Then
                         
-                        sQry = "           SELECT      T0.U_CodeNm"
-                        sQry = sQry & " FROM       [@PS_HR200L] AS T0"
-                        sQry = sQry & " WHERE      T0.Code = '1'"
-                        sQry = sQry & "                AND T0.U_UseYN = 'Y'"
-                        sQry = sQry & "                AND T0.U_Code = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = "        SELECT  T0.U_CodeNm"
+                        sQry = sQry & " FROM    [@PS_HR200L] AS T0"
+                        sQry = sQry & " WHERE   T0.Code = '1'"
+                        sQry = sQry & "         AND T0.U_UseYN = 'Y'"
+                        sQry = sQry & "         AND T0.U_Code = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
                         
                         'Select  Name From [OUDP] Where Code = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
                         
@@ -293,12 +301,12 @@ On Error GoTo Raise_ItemEvent_Error
                     '담당명
                     If (pval.ItemUID = "Mat01" And (pval.ColUID = "PartCode")) Then
                     
-                        sQry = "           SELECT      T0.U_CodeNm"
-                        sQry = sQry & " FROM       [@PS_HR200L] AS T0"
-                        sQry = sQry & " WHERE      T0.Code = '2'"
-                        sQry = sQry & "                AND T0.U_UseYN = 'Y'"
-                        sQry = sQry & "                AND T0.U_Code = '" & Trim(oMat01.Columns("PartCode").Cells(pval.Row).Specific.VALUE) & "'"
-                        sQry = sQry & "                AND T0.U_Char1 = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = "        SELECT  T0.U_CodeNm"
+                        sQry = sQry & " FROM    [@PS_HR200L] AS T0"
+                        sQry = sQry & " WHERE   T0.Code = '2'"
+                        sQry = sQry & "         AND T0.U_UseYN = 'Y'"
+                        sQry = sQry & "         AND T0.U_Code = '" & Trim(oMat01.Columns("PartCode").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = sQry & "         AND T0.U_Char1 = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
                     
 '                        sQry = "Select U_CdName From [@PS_SY001L] Where Code = 'P003'"
 '                        sQry = sQry & " And U_Minor = '" & Trim(oMat01.Columns("PartCode").Cells(pval.Row).Specific.VALUE) & "'"
@@ -311,13 +319,13 @@ On Error GoTo Raise_ItemEvent_Error
                     '반명
                     If (pval.ItemUID = "Mat01" And (pval.ColUID = "WkClsCod")) Then
                     
-                        sQry = "           SELECT      T0.U_CodeNm"
-                        sQry = sQry & " FROM       [@PS_HR200L] AS T0"
-                        sQry = sQry & " WHERE      T0.Code = '9'"
-                        sQry = sQry & "                AND T0.U_UseYN = 'Y'"
-                        sQry = sQry & "                AND T0.U_Code = '" & Trim(oMat01.Columns("WkClsCod").Cells(pval.Row).Specific.VALUE) & "'"
-                        sQry = sQry & "                AND T0.U_Char1 = '" & Trim(oMat01.Columns("PartCode").Cells(pval.Row).Specific.VALUE) & "'"
-                        sQry = sQry & "                AND T0.U_Char2 = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = "        SELECT  T0.U_CodeNm"
+                        sQry = sQry & " FROM    [@PS_HR200L] AS T0"
+                        sQry = sQry & " WHERE   T0.Code = '9'"
+                        sQry = sQry & "         AND T0.U_UseYN = 'Y'"
+                        sQry = sQry & "         AND T0.U_Code = '" & Trim(oMat01.Columns("WkClsCod").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = sQry & "         AND T0.U_Char1 = '" & Trim(oMat01.Columns("PartCode").Cells(pval.Row).Specific.VALUE) & "'"
+                        sQry = sQry & "         AND T0.U_Char2 = '" & Trim(oMat01.Columns("DeptCode").Cells(pval.Row).Specific.VALUE) & "'"
                         
 '                        sQry = "Select U_CdName From [@PS_SY001L] Where Code = 'P002'"
 '                        sQry = sQry & " And U_Minor = '" & Trim(oMat01.Columns("WkClsCod").Cells(pval.Row).Specific.VALUE) & "'"
@@ -413,7 +421,6 @@ Raise_ItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
     Dim i&
@@ -424,7 +431,7 @@ On Error GoTo Raise_MenuEvent_Error
             Case "1281": '찾기
             Case "1282": '추가
             Case "1288", "1289", "1290", "1291": '레코드이동버튼
-            Case "1293"     '행삭제
+            Case "1293"  '행삭제
         End Select
         
     ElseIf (pval.BeforeAction = False) Then '//BeforeAction = False
@@ -476,7 +483,6 @@ On Error GoTo Raise_MenuEvent_Error
                     Else
                         If Trim(oDS_PS_PP001L.GetValue("U_CpCode", oMat01.RowCount - 1)) <> "" Then
                             Call AddMatrixRow(1, oMat01.RowCount, True)
-
                         End If
                     End If
                 End If
@@ -486,7 +492,6 @@ On Error GoTo Raise_MenuEvent_Error
 Raise_MenuEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_MenuEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_FormDataEvent_Error
@@ -565,6 +570,7 @@ On Error GoTo FormItemEnabled_Error
         '//각모드에따른 아이템설정
 '        oForm01.Items("DocEntry").Enabled = False
         oForm01.Items("CpBCode").Enabled = True
+        oForm01.Items("CpBName").Enabled = True
 '        oForm01.Items("ItmMcode").Enabled = True
 '        oForm01.Items("CntcCode").Enabled = True
 '        oMat01.Columns("Price1").Editable = True
@@ -574,6 +580,7 @@ On Error GoTo FormItemEnabled_Error
         '//각모드에따른 아이템설정
 '        oForm01.Items("DocEntry").Enabled = False
         oForm01.Items("CpBCode").Enabled = True
+        oForm01.Items("CpBName").Enabled = False
 '        oForm01.Items("ItmMcode").Enabled = True
 '        oForm01.Items("CntcCode").Enabled = True
 '        oMat01.Columns("Price1").Editable = False
@@ -584,6 +591,7 @@ On Error GoTo FormItemEnabled_Error
         '//각모드에따른 아이템설정
 '            oForm01.Items("DocEntry").Enabled = False
         oForm01.Items("CpBCode").Enabled = False
+        oForm01.Items("CpBName").Enabled = False
 '        oForm01.Items("ItmMcode").Enabled = False
 '        oForm01.Items("CntcCode").Enabled = False
 '        oMat01.Columns("Price1").Editable = True
@@ -635,7 +643,6 @@ DataValidCheck_Error:
     Sbo_Application.SetStatusBarMessage "DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Function HeaderSpaceLineDel() As Boolean
 On Error GoTo HeaderSpaceLineDel_Error
     Dim ErrNum      As Integer
@@ -651,8 +658,8 @@ On Error GoTo HeaderSpaceLineDel_Error
     End Select
     
     HeaderSpaceLineDel = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 HeaderSpaceLineDel_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "대분류 또는 대분류명은 필수입력 사항입니다. 확인하세요.", "E"
@@ -690,7 +697,7 @@ On Error GoTo MatrixSpaceLineDel_Error
     'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     If oMat01.VisualRowCount > 0 Then
         For i = 0 To oMat01.VisualRowCount - 2
-            oDS_PS_PP001L.Offset = i
+            oDS_PS_PP001L.offset = i
             Select Case True
                 Case oDS_PS_PP001L.GetValue("U_CpCode", i) = ""
                     ErrNum = 2
@@ -718,8 +725,8 @@ On Error GoTo MatrixSpaceLineDel_Error
     
     Set oRecordSet01 = Nothing
     MatrixSpaceLineDel = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 MatrixSpaceLineDel_Error:
     Set oRecordSet01 = Nothing
     If ErrNum = 1 Then
@@ -782,10 +789,9 @@ Private Sub FlushToItemValue(ByVal oUID As String, ByVal oCID As String, Optiona
 '                        oMat01.Columns("Unit").Cells(oRow).Click ct_Regular
 '                    End If
            End Select
+           
+        Call oMat01.AutoResizeColumns
+        
     End Select
     Set oRecordSet01 = Nothing
 End Sub
-
-
-
-
