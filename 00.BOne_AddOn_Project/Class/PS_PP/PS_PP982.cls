@@ -230,6 +230,8 @@ On Error GoTo PS_PP982_SelectGrid01_Error
     oGrid01.Columns(10).RightJustified = True
     oGrid01.Columns(11).RightJustified = True
     oGrid01.Columns(12).RightJustified = True
+    oGrid01.Columns(13).RightJustified = True
+    oGrid01.Columns(14).RightJustified = True
     
 '    oGrid01.Columns(12).BackColor = RGB(255, 255, 125) '[결산]계, 노랑
 '    oGrid01.Columns(19).BackColor = RGB(255, 255, 125) '[계산]계, 노랑
@@ -399,6 +401,129 @@ PS_PP982_SelectGrid02_Error:
     Else
 
         Sbo_Application.SetStatusBarMessage "PS_PP982_SelectGrid02_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    
+    End If
+    
+'    Set RecordSet01 = Nothing
+    
+    Call oForm01.Freeze(False)
+    
+End Sub
+
+Public Sub PS_PP982_SelectGrid03()
+'******************************************************************************
+'Function ID : PS_PP982_SelectGrid03()
+'해당모듈    : PS_PP982
+'기능        : 집계자료(일별)
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_PP982_SelectGrid03_Error
+
+    '//메트릭스에 데이터 로드
+    Call oForm01.Freeze(True)
+    
+    Dim loopCount As Integer
+    Dim Query01   As String
+    Dim ErrNum    As String
+    
+'    Dim RecordSet01 As SAPbobsCOM.Recordset
+'    Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
+    
+    Dim BPLID      As String
+    Dim FrDt       As String
+    Dim ToDt       As String
+    Dim CntcCode   As String
+    Dim ClsCodeChk As String
+    Dim CheckBoxID As String
+    
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
+    FrDt = Trim(oForm01.Items("FrDt").Specific.VALUE)
+    ToDt = Trim(oForm01.Items("ToDt").Specific.VALUE)
+    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
+    ClsCodeChk = ""
+    
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+    
+    For loopCount = 1 To CheckBoxCount
+    
+        If loopCount >= 1 And loopCount < 10 Then
+            CheckBoxID = "Check0" & loopCount
+        Else
+            CheckBoxID = "Check" & loopCount
+        End If
+    
+        If oForm01.DataSources.UserDataSources.Item(CheckBoxID).VALUE = "Y" Then
+    
+            ClsCodeChk = ClsCodeChk & Left(Right(MDC_PS_Common.Split_String(oForm01.Items(CheckBoxID).Specific.Caption, "-", 1), 5), 4) & ","
+        
+        End If
+    
+    Next
+        
+    Query01 = "         EXEC PS_PP982_03 '"
+    Query01 = Query01 & BPLID & "','"
+    Query01 = Query01 & FrDt & "','"
+    Query01 = Query01 & ToDt & "','"
+    Query01 = Query01 & CntcCode & "','"
+    Query01 = Query01 & ClsCodeChk & "'"
+    
+    Call oGrid03.DataTable.Clear
+    Call oDS_PS_PP982N.ExecuteQuery(Query01)
+'    oGrid03.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
+
+    oGrid03.Columns(3).RightJustified = True
+    oGrid03.Columns(4).RightJustified = True
+    oGrid03.Columns(5).RightJustified = True
+    oGrid03.Columns(6).RightJustified = True
+    oGrid03.Columns(7).RightJustified = True
+    oGrid03.Columns(8).RightJustified = True
+
+'    oGrid03.Columns(12).BackColor = RGB(255, 255, 125) '[결산]계, 노랑
+'    oGrid03.Columns(19).BackColor = RGB(255, 255, 125) '[계산]계, 노랑
+'    oGrid03.Columns(26).BackColor = RGB(255, 255, 125) '[완료]계, 노랑
+    
+'    oGrid03.Columns(9).BackColor = RGB(255, 255, 125) '품의일, 노랑
+'    oGrid03.Columns(10).BackColor = RGB(255, 255, 125) '가입고일, 노랑
+'    oGrid03.Columns(11).BackColor = RGB(0, 210, 255) '차이(품의-가입고), 하늘
+'    oGrid03.Columns(12).BackColor = RGB(255, 255, 125) '검수입고일, 노랑
+'    oGrid03.Columns(13).BackColor = RGB(0, 210, 255) '차이(가입고-품의), 하늘
+'    oGrid03.Columns(14).BackColor = RGB(255, 167, 167) '총소요일, 빨강
+        
+    If oGrid03.Rows.Count = 1 Then
+        ErrNum = 1
+        GoTo PS_PP982_SelectGrid03_Error:
+    End If
+        
+    oGrid03.AutoResizeColumns
+    oForm01.Update
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
+'    Set RecordSet01 = Nothing
+    Call oForm01.Freeze(False)
+    Exit Sub
+PS_PP982_SelectGrid03_Exit:
+'    Set RecordSet01 = Nothing
+    Call oForm01.Freeze(False)
+    Exit Sub
+PS_PP982_SelectGrid03_Error:
+
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
+    If ErrNum = 1 Then
+    
+        Call MDC_Com.MDC_GF_Message("결과가 존재하지 않습니다.", "E")
+    
+    Else
+
+        Sbo_Application.SetStatusBarMessage "PS_PP982_SelectGrid03_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
     
     End If
     
@@ -1030,7 +1155,7 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             Else
                 Call PS_PP982_SelectGrid01 '반별자료
                 Call PS_PP982_SelectGrid02 '집계자료(주별)
-'                Call PS_PP982_SelectGrid03 '집계자료(일별)
+                Call PS_PP982_SelectGrid03 '집계자료(일별)
             End If
             
         ElseIf pval.ItemUID = "BtnPrt01" Then '출력

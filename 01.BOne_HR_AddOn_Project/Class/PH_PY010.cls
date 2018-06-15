@@ -590,7 +590,7 @@ On Error GoTo Err
     ProgBar01.Stop
     Set ProgBar01 = Nothing
 
-    Sbo_Application.StatusBar.SetText "근태처리 완료되었습니다..", bmt_Short, smt_Warning
+    Sbo_Application.StatusBar.SetText "근태처리 완료되었습니다.", bmt_Short, smt_Warning
 
     Exit Sub
 
