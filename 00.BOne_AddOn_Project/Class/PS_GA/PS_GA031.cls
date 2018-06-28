@@ -144,7 +144,7 @@ On Error GoTo PS_GA031_MTX01_Error
     Dim AcctCode03 As String '세부계정과목코드
     Dim Check0 As String '0값 제외
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
     StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctCode02 = oForm01.Items("AcctCode02").Specific.VALUE
@@ -907,7 +907,7 @@ On Error GoTo Print_Query_Error
     Dim AcctName03 As String
     Dim Check0 As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
     StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctName01 = oForm01.Items("AcctName01").Specific.VALUE
@@ -1007,7 +1007,7 @@ On Error GoTo Print_Query_Error
     Dim AcctName03 As String
     Dim Check0 As String
     
-    BPLID = Trim(oForm01.Items("BPLId").Specific.Selected.VALUE)
+    BPLID = Trim(oForm01.Items("BPLID").Specific.Selected.VALUE)
     StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE)
     AcctCode01 = oForm01.Items("AcctCode01").Specific.VALUE
     AcctName01 = oForm01.Items("AcctName01").Specific.VALUE

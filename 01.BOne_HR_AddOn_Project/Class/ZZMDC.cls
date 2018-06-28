@@ -579,6 +579,7 @@ Private Sub CreateUSERForm(ByRef pval As SAPbouiCOM.IMenuEvent)
         Case "PH_PYA30":  Set oTempClass = New PH_PYA30: Call oTempClass.LoadForm      '//상여지급대장(부서)
         Case "PH_PYA40":  Set oTempClass = New PH_PYA40: Call oTempClass.LoadForm      '//상여부서별집계대장(부서)
         Case "PH_PYA50":  Set oTempClass = New PH_PYA50: Call oTempClass.LoadForm      '//DC전환자부담금지급내역
+        Case "PH_PYA75":  Set oTempClass = New PH_PYA75: Call oTempClass.LoadForm      '//교통비외수당지급대장
         
         '---------------------------------------------------------------------------------------
         '// 정산

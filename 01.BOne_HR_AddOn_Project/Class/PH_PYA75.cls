@@ -6,17 +6,17 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "PH_PY870"
+Attribute VB_Name = "PH_PYA75"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '//********************************************************************************
-'//  File           : PH_PY870.cls
+'//  File           : PH_PYA75.cls
 '//  Module         : PH
-'//  Desc           : 담당별월O/T및수당현황
-'//  작성자         : NGY
-'//  DATE           : 2013.08.12
+'//  Desc           : 교통비외수당지급대장
+'//  작성자         : HYS
+'//  DATE           : 2018.06.15
 '//********************************************************************************
 Option Explicit
 
@@ -25,12 +25,12 @@ Public oForm As SAPbouiCOM.Form
 
 ''// 그리드 사용시
 'Public oGrid1           As SAPbouiCOM.Grid
-'Public oDS_PH_PY870     As SAPbouiCOM.DataTable
+'Public oDS_PH_PYA75     As SAPbouiCOM.DataTable
 '
 ''// 매트릭스 사용시
 'Public oMat1 As SAPbouiCOM.Matrix
-'Private oDS_PH_PY870A As SAPbouiCOM.DBDataSource
-'Private oDS_PH_PY870B As SAPbouiCOM.DBDataSource
+'Private oDS_PH_PYA75A As SAPbouiCOM.DBDataSource
+'Private oDS_PH_PYA75B As SAPbouiCOM.DBDataSource
 
 Private oLastItemUID    As String
 Private oLastColUID     As String
@@ -43,7 +43,7 @@ Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
     
     On Error GoTo LoadForm_Error
     
-    oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PY870.srf")
+    oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PYA75.srf")
     oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
     oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
             oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
@@ -53,8 +53,8 @@ Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
     Next
-    oFormUniqueID = "PH_PY870_" & GetTotalFormsCount
-    AddForms Me, oFormUniqueID, "PH_PY870"
+    oFormUniqueID = "PH_PYA75_" & GetTotalFormsCount
+    AddForms Me, oFormUniqueID, "PH_PYA75"
     Sbo_Application.LoadBatchActions oXmlDoc.xml
     Set oForm = Sbo_Application.Forms.Item(oFormUniqueID)
 
@@ -63,10 +63,10 @@ Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
 '    oForm.DataBrowser.BrowseBy = "Code"
         
     oForm.Freeze True
-    Call PH_PY870_CreateItems
-    Call PH_PY870_EnableMenus
-    Call PH_PY870_SetDocument(oFromDocEntry01)
-'    Call PH_PY870_FormResize
+    Call PH_PYA75_CreateItems
+    Call PH_PYA75_EnableMenus
+    Call PH_PYA75_SetDocument(oFromDocEntry01)
+'    Call PH_PYA75_FormResize
     
     oForm.Update
     oForm.Freeze False
@@ -83,7 +83,7 @@ LoadForm_Error:
     Sbo_Application.SetStatusBarMessage "Form_Load Error:" & Err.Description, bmt_Short, True
 End Sub
 
-Private Function PH_PY870_CreateItems() As Boolean
+Private Function PH_PYA75_CreateItems() As Boolean
 
     Dim sQry        As String
     Dim i           As Long
@@ -97,7 +97,7 @@ Private Function PH_PY870_CreateItems() As Boolean
     
     Dim oRecordSet  As SAPbobsCOM.Recordset
     
-    On Error GoTo PH_PY870_CreateItems_Error
+    On Error GoTo PH_PYA75_CreateItems_Error
     
     Call oForm.Freeze(True)
     
@@ -112,35 +112,19 @@ Private Function PH_PY870_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("CLTCOD", dt_SHORT_TEXT, 10)
     Set oCombo = oForm.Items("CLTCOD").Specific
     oCombo.DataBind.SetBound True, "", "CLTCOD"
-    
+    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P144' AND U_UseYN= 'Y'"
+    Call SetReDataCombo(oForm, sQry, oCombo)
     oForm.Items("CLTCOD").DisplayDesc = True
     
-    '// 접속자에 따른 권한별 사업장 콤보박스세팅
-    Call CLTCOD_Select(oForm, "CLTCOD")
+    '// 접속자에 따른 사업장 선택
+    oForm.DataSources.UserDataSources.Item("CLTCOD").VALUE = MDC_SetMod.Get_ReData("Branch", "USER_CODE", "OUSR", "'" & oCompany.UserName & "'")
     
-    '//지급년월
-    oForm.Items("FYM").Specific.String = Format(Now, "YYYY") + "01"
-    oForm.Items("TYM").Specific.String = Format(Now, "YYYYMM")
-    
-    '//출력선택 RAD
-    Call oForm.DataSources.UserDataSources.Add("OptionDS", dt_SHORT_TEXT, 1)
-    Set optBtn = oForm.Items("Rad01").Specific
-    optBtn.ValOn = "1"
-    optBtn.ValOff = "0"
-    optBtn.DataBind.SetBound True, , "OptionDS"
-    
-    optBtn.Selected = True
-    
-    Set optBtn = oForm.Items("Rad02").Specific
-    optBtn.ValOn = "2"
-    optBtn.ValOff = "0"
-    optBtn.DataBind.SetBound True, , "OptionDS"
-    optBtn.GroupWith ("Rad01")
-    
-    Set optBtn = Nothing
+    '//년월
+    oForm.Items("YM").Specific.String = Format(Now, "YYYYMM")
     
     '//커서를 첫번째 ITEM으로 지정
     oForm.ActiveItem = "CLTCOD"
+        
     
     Set oCheck = Nothing
     Set oEdit = Nothing
@@ -152,7 +136,7 @@ Private Function PH_PY870_CreateItems() As Boolean
     Call oForm.Freeze(False)
     Exit Function
     
-PH_PY870_CreateItems_Error:
+PH_PYA75_CreateItems_Error:
     Set oCheck = Nothing
     Set oEdit = Nothing
     Set oCombo = Nothing
@@ -161,12 +145,12 @@ PH_PY870_CreateItems_Error:
     Set optBtn = Nothing
     Set oRecordSet = Nothing
     Call oForm.Freeze(False)
-    Sbo_Application.SetStatusBarMessage "PH_PY870_CreateItems_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_CreateItems_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-Private Sub PH_PY870_EnableMenus()
+Private Sub PH_PYA75_EnableMenus()
     
-    On Error GoTo PH_PY870_EnableMenus_Error
+    On Error GoTo PH_PYA75_EnableMenus_Error
 
     Call oForm.EnableMenu("1283", True)     '//제거
     Call oForm.EnableMenu("1284", False)    '//취소
@@ -174,32 +158,32 @@ Private Sub PH_PY870_EnableMenus()
     
     Exit Sub
     
-PH_PY870_EnableMenus_Error:
-    Sbo_Application.SetStatusBarMessage "PH_PY870_EnableMenus_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+PH_PYA75_EnableMenus_Error:
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_EnableMenus_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-Private Sub PH_PY870_SetDocument(ByVal oFromDocEntry01 As String)
-    On Error GoTo PH_PY870_SetDocument_Error
+Private Sub PH_PYA75_SetDocument(ByVal oFromDocEntry01 As String)
+    On Error GoTo PH_PYA75_SetDocument_Error
     
     If (oFromDocEntry01 = "") Then
-        Call PH_PY870_FormItemEnabled
-        Call PH_PY870_AddMatrixRow
+        Call PH_PYA75_FormItemEnabled
+        Call PH_PYA75_AddMatrixRow
     Else
         oForm.Mode = fm_FIND_MODE
-        Call PH_PY870_FormItemEnabled
+        Call PH_PYA75_FormItemEnabled
         oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
     
-PH_PY870_SetDocument_Error:
-    Sbo_Application.SetStatusBarMessage "PH_PY870_SetDocument_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+PH_PYA75_SetDocument_Error:
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_SetDocument_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-Sub PH_PY870_FormItemEnabled()
+Sub PH_PYA75_FormItemEnabled()
     Dim oCombo      As SAPbouiCOM.ComboBox
     
-    On Error GoTo PH_PY870_FormItemEnabled_Error
+    On Error GoTo PH_PYA75_FormItemEnabled_Error
     
     
     Call oForm.Freeze(True)
@@ -222,9 +206,9 @@ Sub PH_PY870_FormItemEnabled()
     Call oForm.Freeze(False)
     Exit Sub
     
-PH_PY870_FormItemEnabled_Error:
+PH_PYA75_FormItemEnabled_Error:
     Call oForm.Freeze(False)
-    Sbo_Application.SetStatusBarMessage "PH_PY870_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 
@@ -243,10 +227,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             
             If pval.BeforeAction = True Then
                 If pval.ItemUID = "Btn01" Then
-                    If PH_PY870_DataValidCheck() = True Then
-                        Call PH_PY870_Print_Report01
-                    End If
-                    
+                    Call PH_PYA75_Print_Report01
                 End If
             ElseIf pval.BeforeAction = False Then
 
@@ -255,23 +236,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
      
 '----------------------------------------------------------
         Case et_KEY_DOWN: '//2
-            If pval.CharPressed = 9 Then
-                If pval.ItemUID = "JIGBIL" Then
-                    If Trim(oForm.Items("JIGBIL").Specific.VALUE) = "" Then
-                        Sbo_Application.ActivateMenuItem ("7425")
-                        BubbleEvent = False
-                    End If
-                End If
-                
-                If pval.ItemUID = "MSTCOD" Then
-                    If oForm.Items("MSTCOD").Specific.VALUE = "" Then
-                        Sbo_Application.ActivateMenuItem ("7425")
-                        BubbleEvent = False
-                    End If
-                End If
-            End If
-            
-                
+
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
             Select Case pval.ItemUID
@@ -299,7 +264,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
                     Select Case pval.ItemUID
-                          
+                           
                            
                     End Select
                 End If
@@ -352,8 +317,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '                            sQry = "SELECT U_FullName FROM [@PH_PY001A] WHERE Code =  '" & Trim(oForm.Items("MSTCOD").Specific.Value) & "'"
 '                            oRecordSet.DoQuery sQry
 '                            oForm.Items("MSTNAME").Specific.String = Trim(oRecordSet.Fields("U_FullName").Value)
-                        
-                        
                     End Select
                 End If
             End If
@@ -364,8 +327,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             ElseIf pval.BeforeAction = False Then
                'oMat1.LoadFromDataSource
 
-                Call PH_PY870_FormItemEnabled
-                Call PH_PY870_AddMatrixRow
+                Call PH_PYA75_FormItemEnabled
+                Call PH_PYA75_AddMatrixRow
                 
             End If
 '----------------------------------------------------------
@@ -380,8 +343,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             ElseIf pval.BeforeAction = False Then
                 RemoveForms oFormUniqueID
                 Set oForm = Nothing
-'                Set oDS_PH_PY870A = Nothing
-'                Set oDS_PH_PY870B = Nothing
+'                Set oDS_PH_PYA75A = Nothing
+'                Set oDS_PH_PYA75B = Nothing
                 
                 'Set oMat1 = Nothing
                 'Set oGrid1 = Nothing
@@ -463,42 +426,42 @@ Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM
         Select Case pval.MenuUID
             Case "1283":
                 oForm.Mode = fm_ADD_MODE
-                Call PH_PY870_FormItemEnabled
-                Call PH_PY870_AddMatrixRow
+                Call PH_PYA75_FormItemEnabled
+                Call PH_PYA75_AddMatrixRow
             Case "1284":
             Case "1286":
 '            Case "1293":
 '                Call Raise_EVENT_ROW_DELETE(FormUID, pval, BubbleEvent)
             Case "1281":    '//문서찾기
-                Call PH_PY870_FormItemEnabled
-                Call PH_PY870_AddMatrixRow
+                Call PH_PYA75_FormItemEnabled
+                Call PH_PYA75_AddMatrixRow
                 oForm.Items("Code").CLICK ct_Regular
             Case "1282":    '//문서추가
-                Call PH_PY870_FormItemEnabled
-                Call PH_PY870_AddMatrixRow
+                Call PH_PYA75_FormItemEnabled
+                Call PH_PYA75_AddMatrixRow
             Case "1288", "1289", "1290", "1291":
-                Call PH_PY870_FormItemEnabled
+                Call PH_PYA75_FormItemEnabled
             Case "1293" '// 행삭제
 '                '// [MAT1 용]
 '                 If oMat1.RowCount <> oMat1.VisualRowCount Then
 '                    oMat1.FlushToDataSource
 '
-'                    While (i <= oDS_PH_PY870B.Size - 1)
-'                        If oDS_PH_PY870B.GetValue("U_FILD01", i) = "" Then
-'                            oDS_PH_PY870B.RemoveRecord (i)
+'                    While (i <= oDS_PH_PYA75B.Size - 1)
+'                        If oDS_PH_PYA75B.GetValue("U_FILD01", i) = "" Then
+'                            oDS_PH_PYA75B.RemoveRecord (i)
 '                            i = 0
 '                        Else
 '                            i = i + 1
 '                        End If
 '                    Wend
 '
-'                    For i = 0 To oDS_PH_PY870B.Size
-'                        Call oDS_PH_PY870B.setValue("U_LineNum", i, i + 1)
+'                    For i = 0 To oDS_PH_PYA75B.Size
+'                        Call oDS_PH_PYA75B.setValue("U_LineNum", i, i + 1)
 '                    Next i
 '
 '                    oMat1.LoadFromDataSource
                 'End If
-                Call PH_PY870_AddMatrixRow
+                Call PH_PYA75_AddMatrixRow
         End Select
     End If
     Call oForm.Freeze(False)
@@ -560,10 +523,10 @@ Raise_RightClickEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_RightClickEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-Sub PH_PY870_AddMatrixRow()
+Sub PH_PYA75_AddMatrixRow()
     Dim oRow    As Long
     
-    On Error GoTo PH_PY870_AddMatrixRow_Error
+    On Error GoTo PH_PYA75_AddMatrixRow_Error
     
     Call oForm.Freeze(True)
     
@@ -572,100 +535,104 @@ Sub PH_PY870_AddMatrixRow()
     'oRow = oMat1.VisualRowCount
 '
 '    If oMat1.VisualRowCount > 0 Then
-'        If Trim(oDS_PH_PY870B.GetValue("U_FILD01", oRow - 1)) <> "" Then
-'            If oDS_PH_PY870B.Size <= oMat1.VisualRowCount Then
-'                oDS_PH_PY870B.InsertRecord (oRow)
+'        If Trim(oDS_PH_PYA75B.GetValue("U_FILD01", oRow - 1)) <> "" Then
+'            If oDS_PH_PYA75B.Size <= oMat1.VisualRowCount Then
+'                oDS_PH_PYA75B.InsertRecord (oRow)
 '            End If
-'            oDS_PH_PY870B.Offset = oRow
-'            oDS_PH_PY870B.setValue "U_LineNum", oRow, oRow + 1
-'            oDS_PH_PY870B.setValue "U_FILD01", oRow, ""
-'            oDS_PH_PY870B.setValue "U_FILD02", oRow, ""
-'            oDS_PH_PY870B.setValue "U_FILD03", oRow, 0
+'            oDS_PH_PYA75B.Offset = oRow
+'            oDS_PH_PYA75B.setValue "U_LineNum", oRow, oRow + 1
+'            oDS_PH_PYA75B.setValue "U_FILD01", oRow, ""
+'            oDS_PH_PYA75B.setValue "U_FILD02", oRow, ""
+'            oDS_PH_PYA75B.setValue "U_FILD03", oRow, 0
 '            oMat1.LoadFromDataSource
 '        Else
-'            oDS_PH_PY870B.Offset = oRow - 1
-'            oDS_PH_PY870B.setValue "U_LineNum", oRow - 1, oRow
-'            oDS_PH_PY870B.setValue "U_FILD01", oRow - 1, ""
-'            oDS_PH_PY870B.setValue "U_FILD02", oRow - 1, ""
-'            oDS_PH_PY870B.setValue "U_FILD03", oRow - 1, 0
+'            oDS_PH_PYA75B.Offset = oRow - 1
+'            oDS_PH_PYA75B.setValue "U_LineNum", oRow - 1, oRow
+'            oDS_PH_PYA75B.setValue "U_FILD01", oRow - 1, ""
+'            oDS_PH_PYA75B.setValue "U_FILD02", oRow - 1, ""
+'            oDS_PH_PYA75B.setValue "U_FILD03", oRow - 1, 0
 '            oMat1.LoadFromDataSource
 '        End If
 '    ElseIf oMat1.VisualRowCount = 0 Then
-'        oDS_PH_PY870B.Offset = oRow
-'        oDS_PH_PY870B.setValue "U_LineNum", oRow, oRow + 1
-'        oDS_PH_PY870B.setValue "U_FILD01", oRow, ""
-'        oDS_PH_PY870B.setValue "U_FILD02", oRow, ""
-'        oDS_PH_PY870B.setValue "U_FILD03", oRow, 0
+'        oDS_PH_PYA75B.Offset = oRow
+'        oDS_PH_PYA75B.setValue "U_LineNum", oRow, oRow + 1
+'        oDS_PH_PYA75B.setValue "U_FILD01", oRow, ""
+'        oDS_PH_PYA75B.setValue "U_FILD02", oRow, ""
+'        oDS_PH_PYA75B.setValue "U_FILD03", oRow, 0
 '        oMat1.LoadFromDataSource
 '    End If
     
     Call oForm.Freeze(False)
     Exit Sub
-PH_PY870_AddMatrixRow_Error:
+PH_PYA75_AddMatrixRow_Error:
     Call oForm.Freeze(False)
-    Sbo_Application.SetStatusBarMessage "PH_PY870_AddMatrixRow_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_AddMatrixRow_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-Sub PH_PY870_FormClear()
-On Error GoTo PH_PY870_FormClear_Error
+Sub PH_PYA75_FormClear()
+On Error GoTo PH_PYA75_FormClear_Error
     Dim DocEntry As String
-    DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY870'", "")
+    DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PYA75'", "")
     If DocEntry = 0 Then
         oForm.Items("DocEntry").Specific.VALUE = 1
     Else
         oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
-PH_PY870_FormClear_Error:
-    Sbo_Application.SetStatusBarMessage "PH_PY870_FormClear_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+PH_PYA75_FormClear_Error:
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_FormClear_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-Function PH_PY870_DataValidCheck() As Boolean
-On Error GoTo PH_PY870_DataValidCheck_Error
-    PH_PY870_DataValidCheck = False
+Function PH_PYA75_DataValidCheck() As Boolean
+On Error GoTo PH_PYA75_DataValidCheck_Error
+    PH_PYA75_DataValidCheck = False
     Dim i       As Long
     Dim sQry    As String
     Dim oRecordSet  As SAPbobsCOM.Recordset
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    '//----------------------------------------------------------------------------------
-    '//필수 체크
-    '//----------------------------------------------------------------------------------
-    If Trim(oForm.Items("FYM").Specific.VALUE) = "" Then
-        Sbo_Application.SetStatusBarMessage "지급년월은 필수입니다.", bmt_Short, True
-        oForm.Items("YM").CLICK ct_Regular
-        PH_PY870_DataValidCheck = False
-        Exit Function
-    End If
+'    '//----------------------------------------------------------------------------------
+'    '//필수 체크
+'    '//----------------------------------------------------------------------------------
+'    If Trim(oDS_PH_PYA75A.GetValue("Code", 0)) = "" Then
+'        Sbo_Application.SetStatusBarMessage "사원번호는 필수입니다.", bmt_Short, True
+'        oForm.Items("Code").CLICK ct_Regular
+'        PH_PYA75_DataValidCheck = False
+'        Exit Function
+'    End If
+'
+'    oMat1.FlushToDataSource
+'    '// Matrix 마지막 행 삭제(DB 저장시)
+'    If oDS_PH_PYA75B.Size > 1 Then oDS_PH_PYA75B.RemoveRecord (oDS_PH_PYA75B.Size - 1)
+'    oMat1.LoadFromDataSource
     
-    
-    PH_PY870_DataValidCheck = True
+    PH_PYA75_DataValidCheck = True
     
     Exit Function
     
     Set oRecordSet = Nothing
     
     
-PH_PY870_DataValidCheck_Error:
+PH_PYA75_DataValidCheck_Error:
     Set oRecordSet = Nothing
-    PH_PY870_DataValidCheck = False
-    Sbo_Application.SetStatusBarMessage "PH_PY870_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    PH_PYA75_DataValidCheck = False
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
 
-Function PH_PY870_Validate(ByVal ValidateType As String) As Boolean
-On Error GoTo PH_PY870_Validate_Error
-    PH_PY870_Validate = True
+Function PH_PYA75_Validate(ByVal ValidateType As String) As Boolean
+On Error GoTo PH_PYA75_Validate_Error
+    PH_PYA75_Validate = True
     Dim i, j As Long
     Dim sQry As String
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY870A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PYA75A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
-        PH_PY870_Validate = False
-        GoTo PH_PY870_Validate_Exit
+        PH_PYA75_Validate = False
+        GoTo PH_PYA75_Validate_Exit
     End If
 '
     If ValidateType = "수정" Then
@@ -677,16 +644,16 @@ On Error GoTo PH_PY870_Validate_Error
     End If
     Set oRecordSet = Nothing
     Exit Function
-PH_PY870_Validate_Exit:
+PH_PYA75_Validate_Exit:
     Set oRecordSet = Nothing
     Exit Function
-PH_PY870_Validate_Error:
-    PH_PY870_Validate = False
-    Sbo_Application.SetStatusBarMessage "PH_PY870_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+PH_PYA75_Validate_Error:
+    PH_PYA75_Validate = False
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
 
-Private Sub PH_PY870_Print_Report01()
+Private Sub PH_PYA75_Print_Report01()
 
     Dim DocNum          As String
     Dim ErrNum          As Integer
@@ -694,55 +661,43 @@ Private Sub PH_PY870_Print_Report01()
     Dim ReportName      As String
     Dim sQry            As String
     Dim oRecordSet      As SAPbobsCOM.Recordset
-    Dim OptBtnValue     As String
     
-    On Error GoTo PH_PY870_Print_Report01_Error
+    On Error GoTo PH_PYA75_Print_Report01_Error
     
     Dim CLTCOD          As String
-    Dim FYM             As String
-    Dim TYM             As String
+    Dim YM              As String
     
-    OptBtnValue = oForm.DataSources.UserDataSources("OptionDS").VALUE
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    Dim ProgBar01 As SAPbouiCOM.ProgressBar
-    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
     
      '/ ODBC 연결 체크
     If ConnectODBC = False Then
-        GoTo PH_PY870_Print_Report01_Error
+        GoTo PH_PYA75_Print_Report01_Error
     End If
+    
     
     '//인자 MOVE , Trim 시키기..
     CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
-    FYM = Trim(oForm.Items("FYM").Specific.VALUE)
-    TYM = Trim(oForm.Items("TYM").Specific.VALUE)
+    YM = Trim(oForm.Items("YM").Specific.VALUE)
+    
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
-    WinTitle = "[PH_PY870] 담당별월O/T및수당현황"
-    
-    If OptBtnValue = "1" Then
-       ReportName = "PH_PY870_01.rpt"
-    Else
-       ReportName = "PH_PY870_02.rpt"
-    End If
+    WinTitle = "[PH_PYA75] 교통비외수당지급대장"
+    ReportName = "PH_PYA75_01.rpt"
     
     '/ Formula 수식필드
-    ReDim gRpt_Formula(3)
-    ReDim gRpt_Formula_Value(3)
+    ReDim gRpt_Formula(2)
+    ReDim gRpt_Formula_Value(2)
     
     gRpt_Formula(1) = "CLTCOD"
     sQry = "SELECT U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P144' AND U_UseYN= 'Y' AND U_Code = '" & CLTCOD & "'"
     Call oRecordSet.DoQuery(sQry)
     gRpt_Formula_Value(1) = oRecordSet.Fields(0).VALUE
     
-    gRpt_Formula(2) = "FYM"
-    gRpt_Formula_Value(2) = Format(FYM, "####-##")
-    
-    gRpt_Formula(3) = "TYM"
-    gRpt_Formula_Value(3) = Format(TYM, "####-##")
+    gRpt_Formula(2) = "YM"
+    gRpt_Formula_Value(2) = Format(YM, "####-##")
     
     
     '/ SubReport
@@ -752,45 +707,52 @@ Private Sub PH_PY870_Print_Report01()
     ReDim gRpt_SFormula(1, 1)
     ReDim gRpt_SFormula_Value(1, 1)
     
-    
     '/ Procedure 실행"
+    sQry = "EXEC [PH_PYA75_01] '" & CLTCOD & "', '" & YM & "'"
     
-    If OptBtnValue = "1" Then
-       sQry = "EXEC [PH_PY870_01] '" & CLTCOD & "', '" & FYM & "', '" & TYM & "'"
-    Else
-       sQry = "EXEC [PH_PY870_02] '" & CLTCOD & "', '" & FYM & "', '" & TYM & "'"
+    oRecordSet.DoQuery sQry
+    If oRecordSet.RecordCount = 0 Then
+        ErrNum = 1
+        GoTo PH_PYA75_Print_Report01_Error
     End If
     
-    
-'    oRecordSet.DoQuery sQry
-'    If oRecordSet.RecordCount = 0 Then
-'        ErrNum = 1
-'        GoTo PH_PY870_Print_Report01_Error
-'    End If
-    
-    If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "1", "Y", "V", , 2) = False Then
+    If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "1", "Y", "V", , 1) = False Then
         Sbo_Application.SetStatusBarMessage "gCryReport_Action : 실패!", bmt_Short, True
     End If
-    
-    ProgBar01.VALUE = 100
-    ProgBar01.Stop
-    Set ProgBar01 = Nothing
     
     Set oRecordSet = Nothing
     Exit Sub
     
-PH_PY870_Print_Report01_Error:
-
-    ProgBar01.VALUE = 100
-    ProgBar01.Stop
-    Set ProgBar01 = Nothing
-    
-    Set oRecordSet = Nothing
-
+PH_PYA75_Print_Report01_Error:
     If ErrNum = 1 Then
+        Set oRecordSet = Nothing
         MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
     Else
-        Sbo_Application.SetStatusBarMessage "PH_PY870_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+    Set oRecordSet = Nothing
+    Sbo_Application.SetStatusBarMessage "PH_PYA75_Print_Report01_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
     End If
     
 End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

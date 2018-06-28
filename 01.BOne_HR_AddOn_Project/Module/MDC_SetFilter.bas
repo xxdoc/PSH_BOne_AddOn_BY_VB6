@@ -232,6 +232,7 @@ Private Sub ITEM_PRESSED(ByRef oFilter As SAPbouiCOM.EventFilter, _
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     
@@ -618,6 +619,7 @@ Private Sub GOT_FOCUS(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters As
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     oFilter.AddEx "PH_PY401"            '전근무지등록
@@ -867,6 +869,7 @@ Private Sub COMBO_SELECT(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     oFilter.AddEx "PH_PY402"            '정산기초자료등록
@@ -1097,6 +1100,7 @@ Private Sub CLICK(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters As SAP
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     
     '//정산관리
@@ -1387,6 +1391,7 @@ Private Sub VALIDATE(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters As 
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     oFilter.AddEx "PH_PY401"            '전근무지등록
@@ -1729,6 +1734,7 @@ Private Sub Form_Load(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters As
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     oFilter.AddEx "PH_PY401"            '전근무지등록
@@ -1989,6 +1995,7 @@ Private Sub FORM_UNLOAD(ByRef oFilter As SAPbouiCOM.EventFilter, ByRef oFilters 
     oFilter.AddEx "PH_PYA30"            '상여지급대장(부서)
     oFilter.AddEx "PH_PYA40"            '상여부서별집계대장(부서)
     oFilter.AddEx "PH_PYA50"            'DC전환자부담금지급내역
+    oFilter.AddEx "PH_PYA75"            '교통비외수당지급대장
     
     '//정산관리
     oFilter.AddEx "PH_PY401"            '전근무지등록

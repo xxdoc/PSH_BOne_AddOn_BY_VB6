@@ -295,13 +295,13 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             ElseIf oForm01.Mode = fm_OK_MODE Then
             End If
 
-'        ElseIf pval.ItemUID = "BtnPrt91" Then
-'
-'            If oForm01.Mode = fm_ADD_MODE Then
-'                Call PS_GA167_Print_Report91
-'            ElseIf oForm01.Mode = fm_UPDATE_MODE Then
-'            ElseIf oForm01.Mode = fm_OK_MODE Then
-'            End If
+        ElseIf pval.ItemUID = "BtnPrt91" Then
+
+            If oForm01.Mode = fm_ADD_MODE Then
+                Call PS_GA167_Print_Report91
+            ElseIf oForm01.Mode = fm_UPDATE_MODE Then
+            ElseIf oForm01.Mode = fm_OK_MODE Then
+            End If
             
         End If
         
@@ -1951,6 +1951,111 @@ Print_Query_Error:
         MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
     Else
         MDC_Com.MDC_GF_Message "PS_GA167_Print_Report05_Error:" & Err.Number & " - " & Err.Description, "E"
+    End If
+End Sub
+
+Private Sub PS_GA167_Print_Report91()
+On Error GoTo Print_Query_Error
+
+    Dim DocNum     As String
+    Dim WinTitle   As String
+    Dim ReportName As String
+    Dim sQry       As String
+
+    Dim i          As Integer
+    Dim ErrNum     As Integer
+    Dim Sub_sQry   As String
+    
+    Dim oRecordSet As SAPbobsCOM.Recordset
+    
+    Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
+
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
+
+    Call ConnectODBC
+    
+'    Dim BPLID    As String '사업장
+'    Dim CntcCode As String '사용자
+'    Dim Ctgr     As String '전산장비분류
+'    Dim ModelNm  As String '모델명
+'    Dim LocCls   As String '위치구분
+'    Dim MngNo    As String '관리번호
+'    Dim ChkFrDt  As String '점검기간(시작)
+'    Dim ChkToDt  As String '점검기간(종료)
+'    Dim ChkCls   As String '점검분류
+'
+'    BPLID = Trim(oForm01.Items("BPLID05").Specific.Selected.VALUE) '사업장
+'    CntcCode = Trim(oForm01.Items("CntcCode05").Specific.VALUE) '사용자
+'    Ctgr = Trim(oForm01.Items("Ctgr05").Specific.Selected.VALUE) '전산장비분류
+'    ModelNm = Trim(oForm01.Items("ModelNm05").Specific.VALUE) '모델명
+'    LocCls = Trim(oForm01.Items("LocCls05").Specific.Selected.VALUE) '위치구분
+'    MngNo = Trim(oForm01.Items("MngNo05").Specific.VALUE) '관리번호
+'    ChkFrDt = Trim(oForm01.Items("ChkFrDt05").Specific.VALUE) '점검기간(시작)
+'    ChkToDt = Trim(oForm01.Items("ChkToDt05").Specific.VALUE) '점검기간(종료)
+'    ChkCls = Trim(oForm01.Items("ChkCls05").Specific.VALUE)
+    
+    '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+    WinTitle = "[PS_GA167] 레포트"
+    
+    ReportName = "PS_GA167_91.rpt"
+    
+    '쿼리
+    sQry = "      EXEC PS_GA167_91 "
+'    sQry = sQry & BPLID & "','"
+'    sQry = sQry & CntcCode & "','"
+'    sQry = sQry & Ctgr & "','"
+'    sQry = sQry & ModelNm & "','"
+'    sQry = sQry & LocCls & "','"
+'    sQry = sQry & MngNo & "','"
+'    sQry = sQry & ChkFrDt & "','"
+'    sQry = sQry & ChkToDt & "','"
+'    sQry = sQry & ChkCls & "'"
+ 
+    '// Formula 수식필드
+    ReDim gRpt_Formula(2)
+    ReDim gRpt_Formula_Value(2)
+       
+    '// SubReport
+    ReDim gRpt_SRptSqry(1)
+    ReDim gRpt_SRptName(1)
+    
+    ReDim gRpt_SFormula(1, 1)
+    ReDim gRpt_SFormula_Value(1, 1)
+    
+    gRpt_SFormula(1, 1) = ""
+    gRpt_SFormula_Value(1, 1) = ""
+
+'    Call oRecordSet.DoQuery(sQry)
+'
+'    If oRecordSet.RecordCount = 0 Then
+'        ErrNum = 1
+'        GoTo Print_Query_Error
+'    End If
+
+    '/ Action (sub_query가 있을때는 'Y'로...)/
+    If MDC_SetMod.gCryReport_Action(WinTitle, ReportName, "N", sQry, "", "N", "V") = False Then
+    End If
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
+    Set oRecordSet = Nothing
+    Exit Sub
+'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Print_Query_Error:
+
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
+    Set oRecordSet = Nothing
+    
+    If ErrNum = 1 Then
+        MDC_Com.MDC_GF_Message "출력할 데이터가 없습니다. 확인해 주세요.", "E"
+    Else
+        MDC_Com.MDC_GF_Message "PS_GA167_Print_Report91_Error:" & Err.Number & " - " & Err.Description, "E"
     End If
 End Sub
 

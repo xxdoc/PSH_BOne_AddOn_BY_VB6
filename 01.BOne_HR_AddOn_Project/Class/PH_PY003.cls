@@ -141,7 +141,7 @@ Private Function PH_PY003_CreateItems() As Boolean
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount > 0 Then
         Do Until oRecordSet.EOF
-            oColumn.ValidValues.Add Trim$(oRecordSet.Fields(0).Value), Trim$(oRecordSet.Fields(1).Value)
+            oColumn.ValidValues.Add Trim$(oRecordSet.Fields(0).VALUE), Trim$(oRecordSet.Fields(1).VALUE)
             oRecordSet.MoveNext
         Loop
     End If
@@ -154,7 +154,7 @@ Private Function PH_PY003_CreateItems() As Boolean
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount > 0 Then
         Do Until oRecordSet.EOF
-            oColumn.ValidValues.Add Trim$(oRecordSet.Fields(0).Value), Trim$(oRecordSet.Fields(1).Value)
+            oColumn.ValidValues.Add Trim$(oRecordSet.Fields(0).VALUE), Trim$(oRecordSet.Fields(1).VALUE)
             oRecordSet.MoveNext
         Loop
     End If
@@ -206,7 +206,7 @@ Private Sub PH_PY003_SetDocument(ByVal oFromDocEntry01 As String)
     Else
         oForm.Mode = fm_FIND_MODE
         Call PH_PY003_FormItemEnabled
-        oForm.Items("Code").Specific.Value = oFromDocEntry01
+        oForm.Items("Code").Specific.VALUE = oFromDocEntry01
         oForm.Items("1").CLICK ct_Regular
     End If
     Exit Sub
@@ -273,7 +273,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_ITEM_PRESSED: '//1
             
             If pval.BeforeAction = True Then
-                If pval.ItemUid = "1" Then
+                If pval.ItemUID = "1" Then
                     If oForm.Mode = fm_ADD_MODE Then
                         If PH_PY003_DataValidCheck("Y") = False Then
                             BubbleEvent = False
@@ -286,7 +286,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         
                     End If
                 End If
-                If pval.ItemUid = "Btn01" Then
+                If pval.ItemUID = "Btn01" Then
                     If PH_PY003_DataValidCheck("N") = False Then
                         BubbleEvent = False
                     Else
@@ -296,7 +296,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     End If
                 End If
             ElseIf pval.BeforeAction = False Then
-                If pval.ItemUid = "1" Then
+                If pval.ItemUID = "1" Then
                     If oForm.Mode = fm_ADD_MODE Then
                         If pval.ActionSuccess = True Then
                             Call PH_PY003_FormItemEnabled
@@ -321,15 +321,15 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 
 '----------------------------------------------------------
         Case et_GOT_FOCUS: '//3
-            Select Case pval.ItemUid
+            Select Case pval.ItemUID
             Case "Mat01"
                 If pval.Row > 0 Then
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = pval.ColUID
                     oLastColRow = pval.Row
                 End If
             Case Else
-                oLastItemUID = pval.ItemUid
+                oLastItemUID = pval.ItemUID
                 oLastColUID = ""
                 oLastColRow = 0
             End Select
@@ -350,22 +350,22 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_CLICK: '//6
             If pval.BeforeAction = True Then
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01"
                     If pval.Row > 0 Then
                         Call oMat1.SelectRow(pval.Row, True, False)
                     End If
                 End Select
                 
-                Select Case pval.ItemUid
+                Select Case pval.ItemUID
                 Case "Mat01"
                     If pval.Row > 0 Then
-                        oLastItemUID = pval.ItemUid
+                        oLastItemUID = pval.ItemUID
                         oLastColUID = pval.ColUID
                         oLastColRow = pval.Row
                     End If
                 Case Else
-                    oLastItemUID = pval.ItemUid
+                    oLastItemUID = pval.ItemUID
                     oLastColUID = ""
                     oLastColRow = 0
                 End Select
@@ -564,15 +564,15 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
     End If
-    Select Case pval.ItemUid
+    Select Case pval.ItemUID
     Case "Mat01"
         If pval.Row > 0 Then
-            oLastItemUID = pval.ItemUid
+            oLastItemUID = pval.ItemUID
             oLastColUID = pval.ColUID
             oLastColRow = pval.Row
         End If
     Case Else
-        oLastItemUID = pval.ItemUid
+        oLastItemUID = pval.ItemUID
         oLastColUID = ""
         oLastColRow = 0
     End Select
@@ -636,9 +636,9 @@ On Error GoTo PH_PY003_FormClear_Error
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY003'", "")
     If DocEntry = 0 Then
-        oForm.Items("DocEntry").Specific.Value = 1
+        oForm.Items("DocEntry").Specific.VALUE = 1
     Else
-        oForm.Items("DocEntry").Specific.Value = DocEntry
+        oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
 PH_PY003_FormClear_Error:
@@ -826,10 +826,10 @@ Private Sub PH_PY003_MTX01()
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
-    Param01 = oForm.Items("Param01").Specific.Value
-    Param02 = oForm.Items("Param01").Specific.Value
-    Param03 = oForm.Items("Param01").Specific.Value
-    Param04 = oForm.Items("Param01").Specific.Value
+    Param01 = oForm.Items("Param01").Specific.VALUE
+    Param02 = oForm.Items("Param01").Specific.VALUE
+    Param03 = oForm.Items("Param01").Specific.VALUE
+    Param04 = oForm.Items("Param01").Specific.VALUE
     
     sQry = "SELECT 10"
     Call oRecordSet.DoQuery(sQry)
@@ -851,11 +851,11 @@ Private Sub PH_PY003_MTX01()
             oDS_PH_PY003B.InsertRecord (i)
         End If
         oDS_PH_PY003B.Offset = i
-        Call oDS_PH_PY003B.setValue("U_COL01", i, oRecordSet.Fields(0).Value)
-        Call oDS_PH_PY003B.setValue("U_COL02", i, oRecordSet.Fields(1).Value)
+        Call oDS_PH_PY003B.setValue("U_COL01", i, oRecordSet.Fields(0).VALUE)
+        Call oDS_PH_PY003B.setValue("U_COL02", i, oRecordSet.Fields(1).VALUE)
         oRecordSet.MoveNext
-        ProgressBar01.Value = ProgressBar01.Value + 1
-        ProgressBar01.Text = ProgressBar01.Value & "/" & oRecordSet.RecordCount & "건 조회중...!"
+        ProgressBar01.VALUE = ProgressBar01.VALUE + 1
+        ProgressBar01.Text = ProgressBar01.VALUE & "/" & oRecordSet.RecordCount & "건 조회중...!"
     Next
     oMat1.LoadFromDataSource
     oMat1.AutoResizeColumns
@@ -889,7 +889,7 @@ On Error GoTo PH_PY003_Validate_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY003A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.Value & "'", 0, 1) = "Y" Then
+    If MDC_Company_Common.GetValue("SELECT Canceled FROM [@PH_PY003A] WHERE DocEntry = '" & oForm.Items("DocEntry").Specific.VALUE & "'", 0, 1) = "Y" Then
         Sbo_Application.SetStatusBarMessage "해당문서는 다른사용자에 의해 취소되었습니다. 작업을 진행할수 없습니다.", bmt_Short, True
         PH_PY003_Validate = False
         GoTo PH_PY003_Validate_Exit

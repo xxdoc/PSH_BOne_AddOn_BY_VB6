@@ -811,7 +811,7 @@ On Error GoTo PS_PP035_AddMatrixRow_Error
         oDS_PS_PP035L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_PP035L.Offset = oRow
+    oDS_PS_PP035L.offset = oRow
     oDS_PS_PP035L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Call oForm01.Freeze(False)
@@ -984,7 +984,7 @@ On Error GoTo PS_PP035_MTX01_Error
         If i <> 0 Then
             oDS_PS_PP035L.InsertRecord (i)
         End If
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         Call oDS_PS_PP035L.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_PP035L.setValue("U_ColReg01", i, False)
         Call oDS_PS_PP035L.setValue("U_ColReg02", i, RecordSet01.Fields("DocEntry").VALUE)
@@ -1217,7 +1217,7 @@ On Error GoTo Chk_Data_Error
     '/ 조회화면에서 선택한 문서번호만 임시테이블에 삽입
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         If Trim(oDS_PS_PP035L.GetValue("U_ColReg01", i)) = "Y" Then
             sQry = "INSERT INTO Temp_LBG10 (DocEntry) VALUES  (" & Trim(oDS_PS_PP035L.GetValue("U_ColReg02", i)) & ")"
             oRecordSet01.DoQuery sQry
@@ -1270,7 +1270,7 @@ If Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "105" Or Trim(oForm01.Items("O
     '/ 조회화면에서 선택한 문서번호만 임시테이블에 삽입
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         If Trim(oDS_PS_PP035L.GetValue("U_ColReg01", i)) = "Y" Then
             sQry = "INSERT INTO Temp_LBG11 (DocEntry) VALUES  (" & Trim(oDS_PS_PP035L.GetValue("U_ColReg02", i)) & ")"
             
@@ -1307,7 +1307,7 @@ ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "101" Or Trim(oForm01.Item
     '/ 조회화면에서 선택한 문서번호만 임시테이블에 삽입
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         If Trim(oDS_PS_PP035L.GetValue("U_ColReg01", i)) = "Y" Then
             sQry = "INSERT INTO Temp_LBG12 (DocEntry) VALUES  (" & Trim(oDS_PS_PP035L.GetValue("U_ColReg02", i)) & ")"
             oRecordSet01.DoQuery sQry
@@ -1340,7 +1340,7 @@ ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "107" Then
     '/ 조회화면에서 선택한 문서번호만 임시테이블에 삽입
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         If Trim(oDS_PS_PP035L.GetValue("U_ColReg01", i)) = "Y" Then
             sQry = "INSERT INTO Temp_LBG13 (DocEntry) VALUES  (" & Trim(oDS_PS_PP035L.GetValue("U_ColReg02", i)) & ")"
             oRecordSet01.DoQuery sQry
@@ -1373,7 +1373,7 @@ ElseIf Trim(oForm01.Items("OrdGbn").Specific.VALUE) = "104" Then
     '/ 조회화면에서 선택한 문서번호만 임시테이블에 삽입
     oMat01.FlushToDataSource
     For i = 0 To oMat01.VisualRowCount - 1
-        oDS_PS_PP035L.Offset = i
+        oDS_PS_PP035L.offset = i
         If Trim(oDS_PS_PP035L.GetValue("U_ColReg01", i)) = "Y" Then
             sQry = "INSERT INTO Temp_LBG14 (DocEntry) VALUES  (" & Trim(oDS_PS_PP035L.GetValue("U_ColReg02", i)) & ")"
             oRecordSet01.DoQuery sQry

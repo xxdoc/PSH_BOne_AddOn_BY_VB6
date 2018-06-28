@@ -150,6 +150,7 @@ Private Function PH_PY119_CreateItems() As Boolean
     Set oCombo = oForm.Items("JOBTYP").Specific
     oCombo.ValidValues.Add "1", "급여"
     oCombo.ValidValues.Add "2", "상여"
+    oCombo.ValidValues.Add "8", "차량유지비 외"
     oCombo.ValidValues.Add "9", "연차"
     oForm.Items("JOBTYP").DisplayDesc = True
     oCombo.Select "1", psk_ByValue

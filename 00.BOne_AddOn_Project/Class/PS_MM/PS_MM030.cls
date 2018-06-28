@@ -1148,7 +1148,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM030L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM030L.Offset = oRow
+    oDS_PS_MM030L.offset = oRow
     oDS_PS_MM030L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub

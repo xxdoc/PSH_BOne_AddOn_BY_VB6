@@ -261,6 +261,7 @@ Class=PH_PY133; Class\PH_PY133.cls
 Class=PH_PY134; Class\PH_PY134.cls
 Class=PH_PYA70; Class\PH_PYA70.cls
 Class=PH_PY524; Class\PH_PY524.cls
+Class=PH_PYA75; Class\PH_PYA75.cls
 Startup="Sub Main"
 HelpFile=""
 Title="MDC_HR_Addon"

@@ -6,50 +6,50 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "PS_FX025"
+Attribute VB_Name = "PS_CO670"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'//********************************************************************************
-'//  File           : PS_FX025.cls
-'//  Module         : FX
-'//  Desc           : 감가상각 분개처리
-'//  FormType       : PS_FX025
-'//  Create Date    : 2012.10.05
-'//  Modified Date  :
-'//  Creator        : N.G.Y
-'//  Copyright  (c) Poongsan Holdings
-'//********************************************************************************
+'****************************************************************************************************************
+'//  File               : PS_CO670.cls
+'//  Module             : 재무관리>풍산홀딩스애드온>결산분개>기간비용관리
+'//  Desc               : 기간비용분개등록
+'//  FormType           : PS_CO660
+'//  Create Date(Start) : 2018.06.21
+'//  Create Date(End)   :
+'//  Creator            : Song Myoung gyu
+'//  Modified Date      :
+'//  Modifier           :
+'//  Company            : Poongsan Holdings
+'****************************************************************************************************************
+
 Option Explicit
 
-Public oFormUniqueID01      As String
-Public oForm01              As SAPbouiCOM.Form
-Public oForm02              As SAPbouiCOM.Form
-Public oMat01               As SAPbouiCOM.Matrix
-Private oDS_PS_FX025H       As SAPbouiCOM.DBDataSource    '등록헤더
-Private oDS_PS_FX025L       As SAPbouiCOM.DBDataSource    '등록라인
+Public oFormUniqueID01  As String
+Public oForm01          As SAPbouiCOM.Form
+Public oForm02          As SAPbouiCOM.Form
+Public oMat01           As SAPbouiCOM.Matrix
+Private oDS_PS_CO670H   As SAPbouiCOM.DBDataSource    '등록헤더
+Private oDS_PS_CO670L   As SAPbouiCOM.DBDataSource    '등록라인
 
-Private oLast_Item_UID   As String                     '클래스에서 선택한 마지막 아이템 Uid값
-Private oLast_Col_UID    As String                     '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLast_Col_Row    As Long                       '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oLast_Item_UID  As String                     '클래스에서 선택한 마지막 아이템 Uid값
+Private oLast_Col_UID   As String                     '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLast_Col_Row   As Long                       '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
 
 Private oSeq&
-'*******************************************************************
-' .srf 파일로부터 폼을 로드한다.
-'*******************************************************************
+
 Public Sub LoadForm()
 On Error GoTo LoadForm_Error
-    Dim i As Long
+
+    Dim i           As Long
     Dim oInnerXml01 As String
-    Dim oXmlDoc01             As New MSXML2.DOMDocument
+    Dim oXmlDoc01   As New MSXML2.DOMDocument
     
-    oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_FX025.srf")
+    oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_CO670.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -57,7 +57,7 @@ On Error GoTo LoadForm_Error
         oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
     Next
     
-    oFormUniqueID01 = "PS_FX025_" & GetTotalFormsCount
+    oFormUniqueID01 = "PS_CO670_" & GetTotalFormsCount
     AddForms Me, oFormUniqueID01 '//폼추가
     Sbo_Application.LoadBatchActions oXmlDoc01.xml
     
@@ -72,12 +72,7 @@ On Error GoTo LoadForm_Error
     Call oForm01.EnableMenu("1293", True)
     Call CreateItems
     
-    '////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    '************************************************************************************************************
-    '화면키값(화면에서 유일키값을 담고 있는 아이템의 Uid값)
-    oForm01.DataBrowser.BrowseBy = "DocNum"
-    '************************************************************************************************************
-    '////////////////////////////////////////////////////////////D////////////////////////////////////////////////
+    oForm01.DataBrowser.BrowseBy = "DocEntry" '화면키값(화면에서 유일키값을 담고 있는 아이템의 Uid값)
     
     Call ComboBox_Setting
     Call CF_ChooseFromList
@@ -108,107 +103,130 @@ End Sub
 
 Public Sub Raise_ItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_ItemEvent_Error
-Dim i As Integer
-Dim sQry                As String
-Dim oRecordSet01        As SAPbobsCOM.Recordset
-Dim TempForm01 As Variant
-Dim ErrNum As Integer
 
-Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)   '// 객체 정의 및 데이터 할당
+    Dim i           As Integer
+    Dim sQry        As String
+    Dim TempForm01  As Variant
+    Dim ErrNum      As Integer
+
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
+    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)   '// 객체 정의 및 데이터 할당
     
     If (pval.BeforeAction = True) Then '//BeforeAction = True
         Select Case pval.EventType
         
             Case et_ITEM_PRESSED: '//1
-            If pval.ItemUID = "1" Then
-                If oForm01.Mode = fm_ADD_MODE Or oForm01.Mode = fm_UPDATE_MODE Then
-                   If HeaderSpaceLineDel = False Then
-                        BubbleEvent = False                   ' BubbleEvent = True 이면, 사용자에게 제어권을 넘겨준다. BeforeAction = True일 경우만 쓴다.
-                        Exit Sub
+                If pval.ItemUID = "1" Then
+                    If oForm01.Mode = fm_ADD_MODE Or oForm01.Mode = fm_UPDATE_MODE Then
+                       If HeaderSpaceLineDel = False Then
+                            BubbleEvent = False                   ' BubbleEvent = True 이면, 사용자에게 제어권을 넘겨준다. BeforeAction = True일 경우만 쓴다.
+                            Exit Sub
+                        End If
+                        If MatrixSpaceLineDel = False Then
+                            BubbleEvent = False
+                            Exit Sub
+                        End If
                     End If
-                    If MatrixSpaceLineDel = False Then
-                        BubbleEvent = False
-                        Exit Sub
+                ElseIf pval.ItemUID = "Btn01" Then      '// 상각자료 불러오기
+                    Call MTX01
+                ElseIf pval.ItemUID = "Btn02" Then      '// DI API - 분개 생성
+                   If oForm01.Mode = fm_OK_MODE Then
+                      If oForm01.Items("JdtDate").Specific.VALUE = "" Then
+                         ErrNum = 1
+                         Call Item_Error_Message(ErrNum)
+                         BubbleEvent = False
+                         Exit Sub
+                      ElseIf oForm01.Items("Status").Specific.VALUE = "C" Then
+                         ErrNum = 2
+                         Call Item_Error_Message(ErrNum)
+                         BubbleEvent = False
+                         Exit Sub
+                      Else
+                        If Create_oJournalEntries(1) = False Then
+                          BubbleEvent = False
+                          Exit Sub
+                        End If
+                      End If
+                   
+                   Else
+                       Call MDC_Com.MDC_GF_Message("먼저 저장한 후 분개 처리 바랍니다.", "W")
+                       BubbleEvent = False
+                       Exit Sub
+                   End If
+                           
+                ElseIf pval.ItemUID = "Btn03" Then      '// DI API - 분개 취소
+                   If oForm01.Mode = fm_OK_MODE Then
+                      If oForm01.Items("JdtDate").Specific.VALUE = "" Then
+                         ErrNum = 1
+                         Call Item_Error_Message(ErrNum)
+                         BubbleEvent = False
+                         Exit Sub
+                      ElseIf oForm01.Items("JdtCC").Specific.VALUE <> "Y" Then
+                         ErrNum = 3
+                         Call Item_Error_Message(ErrNum)
+                         BubbleEvent = False
+                         Exit Sub
+                      ElseIf oForm01.Items("Status").Specific.VALUE = "C" Then
+                         ErrNum = 2
+                         Call Item_Error_Message(ErrNum)
+                         BubbleEvent = False
+                         Exit Sub
+                      Else
+                         If Cancel_oJournalEntries(1) = False Then
+                            BubbleEvent = False
+                            Exit Sub
+                         End If
+                      End If
+                   Else
+                         Call MDC_Com.MDC_GF_Message("먼저 저장한 후 분개 처리 바랍니다.", "W")
+                         BubbleEvent = False
+                         Exit Sub
+                   End If
+                   
+                Else
+                    If pval.ItemChanged = True Then
+                        
                     End If
                 End If
-            ElseIf pval.ItemUID = "Btn01" Then      '// 상각자료 불러오기
-                Call MTX01
-            ElseIf pval.ItemUID = "Btn02" Then      '// DI API - 분개 생성
-               If oForm01.Mode = fm_OK_MODE Then
-                  If oForm01.Items("JdtDate").Specific.VALUE = "" Then
-                     ErrNum = 1
-                     Call Item_Error_Message(ErrNum)
-                     BubbleEvent = False
-                     Exit Sub
-                  ElseIf oForm01.Items("Status").Specific.VALUE = "C" Then
-                     ErrNum = 2
-                     Call Item_Error_Message(ErrNum)
-                     BubbleEvent = False
-                     Exit Sub
-                  Else
-                    If Create_oJournalEntries(1) = False Then
-                      BubbleEvent = False
-                      Exit Sub
-                    End If
-                  End If
-               
-               Else
-                   Call MDC_Com.MDC_GF_Message("먼저 저장한 후 분개 처리 바랍니다.", "W")
-                   BubbleEvent = False
-                   Exit Sub
-               End If
-                       
-            ElseIf pval.ItemUID = "Btn03" Then      '// DI API - 분개 취소
-               If oForm01.Mode = fm_OK_MODE Then
-                  If oForm01.Items("JdtDate").Specific.VALUE = "" Then
-                     ErrNum = 1
-                     Call Item_Error_Message(ErrNum)
-                     BubbleEvent = False
-                     Exit Sub
-                  ElseIf oForm01.Items("JdtCC").Specific.VALUE <> "Y" Then
-                     ErrNum = 3
-                     Call Item_Error_Message(ErrNum)
-                     BubbleEvent = False
-                     Exit Sub
-                  ElseIf oForm01.Items("Status").Specific.VALUE = "C" Then
-                     ErrNum = 2
-                     Call Item_Error_Message(ErrNum)
-                     BubbleEvent = False
-                     Exit Sub
-                  Else
-                     If Cancel_oJournalEntries(1) = False Then
-                        BubbleEvent = False
-                        Exit Sub
-                     End If
-                  End If
-               Else
-                     Call MDC_Com.MDC_GF_Message("먼저 저장한 후 분개 처리 바랍니다.", "W")
-                     BubbleEvent = False
-                     Exit Sub
-               End If
-               
-            Else
-                If pval.ItemChanged = True Then
-                    
-                End If
-            End If
-   
                
             Case et_KEY_DOWN: '//2
-                ' 거래처코드
+            
+                If pval.ItemUID = "Mat01" Then
+        
+'                    If pval.ColUID = "PGCd" Then
+'
+'                        Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "Mat01", "PGCd") '//사용자값활성
+'                        'Call MDC_PS_Common.ActiveUserDefineValueAlways(oForm01, pval, BubbleEvent, "Mat01", "PGCd") '프로그램코드 포맷서치설정
+'
+'                    End If
                 
-                          
+                ElseIf pval.ItemUID = "CoAcctCD" Then '상대계정
+                
+                    Call MDC_PS_Common.ActiveUserDefineValue(oForm01, pval, BubbleEvent, "CoAcctCD", "") '계정 포맷서치 설정
+               
+                End If
+                
             Case et_COMBO_SELECT: '//5
             Case et_CLICK: '//6
+            
+                If pval.ItemUID = "Mat01" Then
+                    If pval.Row > 0 Then
+                        oLast_Item_UID = pval.ItemUID
+                        oLast_Col_UID = pval.ColUID
+                        oLast_Col_Row = pval.Row
+                        
+                        Call oMat01.SelectRow(pval.Row, True, False)
+                    End If
+                Else
+                    oLast_Item_UID = pval.ItemUID
+                    oLast_Col_UID = ""
+                    oLast_Col_Row = 0
+                End If
+            
             Case et_DOUBLE_CLICK: '//7
-            If pval.ItemChanged = True Then
-            End If
-        
             Case et_MATRIX_LINK_PRESSED '//8
             Case et_VALIDATE: '//10
             
-                
-                
             Case et_MATRIX_LOAD: '//11
             Case et_FORM_ACTIVATE: '//18
             Case et_FORM_DEACTIVATE: '//19
@@ -240,12 +258,18 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)   '// 객체 정의 및
                 End If
             Case et_COMBO_SELECT: '//5
             
-            
             Case et_CLICK: '//6
             Case et_DOUBLE_CLICK: '//7
             Case et_MATRIX_LINK_PRESSED '//8
             Case et_VALIDATE: '//10
             
+                If pval.ItemUID = "CoAcctCD" Then '상대계정
+            
+                    sQry = "SELECT AcctName FROM OACT WHERE AcctCode = '" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'"
+                    Call oRecordSet01.DoQuery(sQry)
+                    oForm01.Items("CoAcctNM").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+                    
+                End If
             
             Case et_MATRIX_LOAD: '//11
 '                AddMatrixRow 1, oMat01.VisualRowCount, True
@@ -274,8 +298,6 @@ Raise_ItemEvent_Error:
         Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
-
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
   Dim i&
@@ -301,7 +323,7 @@ On Error GoTo Raise_MenuEvent_Error
                 FormItemEnabled
                 FormClear
                 AddMatrixRow 0, oMat01.RowCount, True
-                oForm01.Items("YM").Click ct_Collapsed
+                oForm01.Items("StdDate").Click ct_Collapsed
                 
             Case "1288", "1289", "1290", "1291": '레코드이동버튼
                 FormItemEnabled
@@ -366,12 +388,15 @@ On Error GoTo CreateItems_Error
      
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Set oDS_PS_FX025H = oForm01.DataSources.DBDataSources("@PS_FX025H")
-    Set oDS_PS_FX025L = oForm01.DataSources.DBDataSources("@PS_FX025L")
+    Set oDS_PS_CO670H = oForm01.DataSources.DBDataSources("@PS_CO670H")
+    Set oDS_PS_CO670L = oForm01.DataSources.DBDataSources("@PS_CO670L")
     Set oMat01 = oForm01.Items("Mat01").Specific                        '// 매트릭스 데이터 셋
     
-     oDS_PS_FX025H.setValue "U_YM", 0, Format(Now, "yyyymm")
-     oDS_PS_FX025H.setValue "U_JdtDate", 0, Format(Now, "yyyymmdd")
+    oMat01.SelectionMode = ms_NotSupported
+    oMat01.AutoResizeColumns
+    
+    oDS_PS_CO670H.setValue "U_StdDate", 0, Format(Now, "yyyymmdd")
+    oDS_PS_CO670H.setValue "U_JdtDate", 0, Format(Now, "yyyymmdd")
      
     '// 사업장 리스트
     sQry = "SELECT BPLId, BPLName From [OBPL] order by BPLId"
@@ -379,11 +404,9 @@ On Error GoTo CreateItems_Error
     oRecordSet01.DoQuery sQry
     
     Do Until oRecordSet01.EOF
-        oForm01.Items("BPLId").Specific.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
+        oForm01.Items("BPLID").Specific.ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
         oRecordSet01.MoveNext
     Loop
-    
-    
     
     Set oRecordSet01 = Nothing
     Exit Function
@@ -395,12 +418,12 @@ End Function
 
 Sub ComboBox_Setting()
 On Error GoTo ComboBox_Setting_Error
-    '//콤보에 기본값설정
-        Call oForm01.Freeze(True)
+
+    Call oForm01.Freeze(True)
     
 
     Call oForm01.Freeze(False)
-    Exit Sub
+
     Exit Sub
 ComboBox_Setting_Error:
     Sbo_Application.SetStatusBarMessage "ComboBox_Setting_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
@@ -408,7 +431,7 @@ End Sub
 
 Sub CF_ChooseFromList()
 On Error GoTo CF_ChooseFromList_Error
-    '//ChooseFromList 설정
+
     Exit Sub
 CF_ChooseFromList_Error:
     Sbo_Application.SetStatusBarMessage "CF_ChooseFromList_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
@@ -416,8 +439,8 @@ End Sub
 
 Sub Initial_Setting()
 On Error GoTo Initial_Setting_Error
- ' 사업장
-    Call oForm01.Items("BPLId").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue)
+    
+    Call oForm01.Items("BPLID").Specific.Select(MDC_PS_Common.User_BPLId(), psk_ByValue) '사업장
 
     Exit Sub
 Initial_Setting_Error:
@@ -427,15 +450,17 @@ End Sub
 Sub FormItemEnabled()
 On Error GoTo FormItemEnabled_Error
     If (oForm01.Mode = fm_ADD_MODE) Then
-        oForm01.Items("DocNum").Enabled = False
+        oForm01.Items("DocEntry").Enabled = False
         oForm01.Items("JdtDate").Enabled = True
     ElseIf (oForm01.Mode = fm_FIND_MODE) Then
-        oForm01.Items("DocNum").Enabled = True
+        oForm01.Items("DocEntry").Enabled = True
         oForm01.Items("JdtDate").Enabled = True
     ElseIf (oForm01.Mode = fm_OK_MODE) Then
-        oForm01.Items("DocNum").Enabled = False
+        oForm01.Items("DocEntry").Enabled = False
         oForm01.Items("JdtDate").Enabled = True
     End If
+    
+    Call oMat01.AutoResizeColumns
     
     Exit Sub
 
@@ -450,11 +475,11 @@ Sub AddMatrixRow(ByVal oSeq As Integer, ByVal oRow As Long, Optional RowIserted 
    Select Case oSeq
         Case 0:
             oMat01.AddRow           ' 매트릭스에 새로운 로를 추가한다.
-            oDS_PS_FX025L.setValue "U_LineNum", oRow, oRow + 1
+            oDS_PS_CO670L.setValue "U_LineNum", oRow, oRow + 1
             oMat01.LoadFromDataSource
         Case 1:
-            oDS_PS_FX025L.InsertRecord oRow
-            oDS_PS_FX025L.setValue "U_LineNum", oRow, oRow + 1
+            oDS_PS_CO670L.InsertRecord oRow
+            oDS_PS_CO670L.setValue "U_LineNum", oRow, oRow + 1
             oMat01.LoadFromDataSource
     End Select
 'AddMatrixRow_Error:
@@ -463,12 +488,15 @@ End Sub
 
 Sub FormClear()
 On Error GoTo FormClear_Error
-    Dim DocNum As String
-    DocNum = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_FX025'", "")
-    If DocNum = 0 Then
-        oDS_PS_FX025H.setValue "DocNum", 0, "1"
+
+    Dim DocEntry As Integer
+    
+    DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PS_CO670'", "")
+    
+    If DocEntry = 0 Then
+        oDS_PS_CO670H.setValue "DocEntry", 0, "1"
     Else
-        oDS_PS_FX025H.setValue "DocNum", 0, DocNum    ' 화면에 적용이 안되기 때문
+        oDS_PS_CO670H.setValue "DocEntry", 0, DocEntry    ' 화면에 적용이 안되기 때문
     End If
     Exit Sub
 FormClear_Error:
@@ -483,30 +511,33 @@ DataValidCheck_Error:
     Sbo_Application.SetStatusBarMessage "DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
-
 Private Sub MTX01()
 On Error GoTo MTX01_Error
     
     '//메트릭스에 데이터 로드
-    Dim i As Long
-    Dim sQry As String
+    Dim i           As Long
+    Dim sQry        As String
+    Dim BPLID       As String
+    Dim StdDate     As String
+    Dim CoAcctCD    As String
+    
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim YM As String
-    Dim BPLID As String
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE)
+    StdDate = Trim(oForm01.Items("StdDate").Specific.VALUE)
+    CoAcctCD = Trim(oForm01.Items("CoAcctCD").Specific.VALUE)
     
-    YM = Trim(oForm01.Items("YM").Specific.VALUE)
-    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
-    
-    sQry = "EXEC [PS_FX025_01] '" & BPLID & "','" & YM & "'"
+    sQry = "EXEC [PS_CO670_01] '"
+    sQry = sQry & BPLID & "','"
+    sQry = sQry & StdDate & "','"
+    sQry = sQry & CoAcctCD & "'"
     Call oRecordSet01.DoQuery(sQry)
     
 '    oRecordSet01.DoQuery sQry
     
     oMat01.Clear
-    oDS_PS_FX025L.Clear
+    oDS_PS_CO670L.Clear
     
     If (oRecordSet01.RecordCount = 0) Then
         MDC_Com.MDC_GF_Message "조회 결과가 없습니다. 확인하세요.:" & Err.Number & " - " & Err.Description, "W"
@@ -519,21 +550,22 @@ On Error GoTo MTX01_Error
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet01.RecordCount, False)
     
     For i = 0 To oRecordSet01.RecordCount - 1
-        If i + 1 > oDS_PS_FX025L.Size Then
-            oDS_PS_FX025L.InsertRecord (i)
+        If i + 1 > oDS_PS_CO670L.Size Then
+            oDS_PS_CO670L.InsertRecord (i)
         End If
         
         oMat01.AddRow
-        oDS_PS_FX025L.offset = i
-        oDS_PS_FX025L.setValue "U_LineNum", i, i + 1
-        oDS_PS_FX025L.setValue "U_ClasCode", i, Trim(oRecordSet01.Fields("ClasCode").VALUE)
-        oDS_PS_FX025L.setValue "U_ClasName", i, Trim(oRecordSet01.Fields("ClasName").VALUE)
-        oDS_PS_FX025L.setValue "U_AcctCode", i, Trim(oRecordSet01.Fields("AcctCode").VALUE)
-        oDS_PS_FX025L.setValue "U_AcctName", i, Trim(oRecordSet01.Fields("AcctName").VALUE)
-        oDS_PS_FX025L.setValue "U_PrcCode", i, Trim(oRecordSet01.Fields("PrcCode").VALUE)
-        oDS_PS_FX025L.setValue "U_Debit", i, Trim(oRecordSet01.Fields("Debit").VALUE)
-        oDS_PS_FX025L.setValue "U_Credit", i, Trim(oRecordSet01.Fields("Credit").VALUE)
-        oDS_PS_FX025L.setValue "U_LineMemo", i, Trim(oRecordSet01.Fields("LineMemo").VALUE)
+        oDS_PS_CO670L.offset = i
+        oDS_PS_CO670L.setValue "U_LineNum", i, i + 1
+        oDS_PS_CO670L.setValue "U_BasEntry", i, Trim(oRecordSet01.Fields("BasEntry").VALUE)
+        oDS_PS_CO670L.setValue "U_BasLine", i, Trim(oRecordSet01.Fields("BasLine").VALUE)
+        oDS_PS_CO670L.setValue "U_AcctCode", i, Trim(oRecordSet01.Fields("AcctCode").VALUE)
+        oDS_PS_CO670L.setValue "U_AcctName", i, Trim(oRecordSet01.Fields("AcctName").VALUE)
+        oDS_PS_CO670L.setValue "U_Debit", i, Trim(oRecordSet01.Fields("Debit").VALUE)
+        oDS_PS_CO670L.setValue "U_Credit", i, Trim(oRecordSet01.Fields("Credit").VALUE)
+        oDS_PS_CO670L.setValue "U_OcrCode", i, Trim(oRecordSet01.Fields("OcrCode").VALUE)
+        oDS_PS_CO670L.setValue "U_OcrName", i, Trim(oRecordSet01.Fields("OcrName").VALUE)
+        oDS_PS_CO670L.setValue "U_LineMemo", i, Trim(oRecordSet01.Fields("LineMemo").VALUE)
         
         oRecordSet01.MoveNext
         ProgBar01.VALUE = ProgBar01.VALUE + 1
@@ -554,6 +586,7 @@ End Sub
 
 Private Function HeaderSpaceLineDel() As Boolean
 On Error GoTo HeaderSpaceLineDel_Error
+
     Dim ErrNum      As Integer
     Dim DocNum      As String
     
@@ -561,19 +594,20 @@ On Error GoTo HeaderSpaceLineDel_Error
     
     '// Check
     Select Case True
-        Case oDS_PS_FX025H.GetValue("U_BPLId", 0) = "" Or _
-             oDS_PS_FX025H.GetValue("U_YM", 0) = ""
-        
+        Case oDS_PS_CO670H.GetValue("U_BPLID", 0) = "" Or oDS_PS_CO670H.GetValue("U_StdDate", 0) = ""
+             
             ErrNum = 1
             GoTo HeaderSpaceLineDel_Error
+            
     End Select
     
     HeaderSpaceLineDel = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    Exit Function
+
 HeaderSpaceLineDel_Error:
     If ErrNum = 1 Then
-        MDC_Com.MDC_GF_Message "사업장, 년월은 필수입력 사항입니다. 확인하세요.", "E"
+        MDC_Com.MDC_GF_Message "사업장, 일자는 필수입력 사항입니다. 확인하세요.", "E"
     Else
         MDC_Com.MDC_GF_Message "HeaderSpaceLineDel_Error:" & Err.Description, "E"
     End If
@@ -585,6 +619,7 @@ Private Function MatrixSpaceLineDel() As Boolean
 ' 저장할 데이터의 유효성을 점검한다
 '------------------------------------------------------------------------------
 On Error GoTo MatrixSpaceLineDel_Error
+
     Dim i           As Long
     Dim K           As Long
     Dim ErrNum      As Integer
@@ -617,13 +652,13 @@ On Error GoTo MatrixSpaceLineDel_Error
     If oMat01.VisualRowCount > 0 Then
         
     For i = 0 To oMat01.VisualRowCount - 2
-        oDS_PS_FX025L.offset = i
+        oDS_PS_CO670L.offset = i
             Select Case True
-                Case oDS_PS_FX025L.GetValue("U_AcctCode", i) = ""
+                Case oDS_PS_CO670L.GetValue("U_AcctCode", i) = ""
                     ErrNum = 2
                     GoTo MatrixSpaceLineDel_Error
     
-                Case oDS_PS_FX025L.GetValue("U_AcctName", i) = ""
+                Case oDS_PS_CO670L.GetValue("U_AcctName", i) = ""
                     ErrNum = 3
                     GoTo MatrixSpaceLineDel_Error
                     
@@ -631,8 +666,8 @@ On Error GoTo MatrixSpaceLineDel_Error
      Next i
      End If
 
-    If oDS_PS_FX025L.GetValue("U_AcctCode", oMat01.VisualRowCount - 1) = "" Then
-        oDS_PS_FX025L.RemoveRecord oMat01.VisualRowCount - 1
+    If oDS_PS_CO670L.GetValue("U_AcctCode", oMat01.VisualRowCount - 1) = "" Then
+        oDS_PS_CO670L.RemoveRecord oMat01.VisualRowCount - 1
     End If
     'ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     '행을 삭제하였으니 DB데이터 소스를 다시 가져온다
@@ -641,8 +676,8 @@ On Error GoTo MatrixSpaceLineDel_Error
     
     Set oRecordSet01 = Nothing
     MatrixSpaceLineDel = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 MatrixSpaceLineDel_Error:
     Set oRecordSet01 = Nothing
     If ErrNum = 1 Then
@@ -664,7 +699,7 @@ Private Function Exist_YN(DocNum$) As String
     
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    sQry = "SELECT Top 1 T1.DocNum FROM [@PS_FX025H] T1 "
+    sQry = "SELECT Top 1 T1.DocNum FROM [@PS_CO670H] T1 "
     sQry = sQry & " WHERE T1.DocNum  = '" & DocNum & "'"
     oRecordSet01.DoQuery sQry
     
@@ -697,73 +732,79 @@ Item_Error_Message:
     MDC_Com.MDC_GF_Message "거래처코드와, 사업장을 먼저 입력하세요.", "E"
  End If
 End Function
-        
-        
+
 Private Function Create_oJournalEntries(ChkType As Integer) As Boolean
 On Error GoTo Create_oJournalEntries
+
     Dim f_oJournalEntries As SAPbobsCOM.JournalEntries
     
-    Dim i             As Long
-    Dim ErrNum        As Integer
-    Dim ErrCode       As Long
-    Dim ErrMsg        As String
-    Dim RetVal&
-    Dim sTransId$
-    Dim SDebit As Currency
-    Dim SCredit As Currency
+    Dim i           As Long
+    Dim ErrNum      As Integer
+    Dim ErrCode     As Long
+    Dim ErrMsg      As String
+    Dim RetVal      As Long
+    Dim sTransId    As String
+    Dim SDebit      As Currency
+    Dim SCredit     As Currency
         
-    Dim SAcctCode, sDocDate$
-    Dim SPrcCode As String
-    Dim SLineMemo As String
+    Dim SAcctCode   As String
+    Dim sDocDate    As String
+    Dim SPrcCode    As String
+    Dim SLineMemo   As String
     
-    Dim sCC             As String
-    Dim oRecordSet01 As SAPbobsCOM.Recordset
-    Dim sQry            As String
-    
+    Dim sCC         As String
+    Dim sQry        As String
     
     If (Sbo_Company.InTransaction = True) Then
         Sbo_Company.EndTransaction wf_RollBack
     End If
     Sbo_Company.StartTransaction
     
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     oMat01.FlushToDataSource
     
-    
-    sDocDate = Format(oDS_PS_FX025H.GetValue("U_JdtDate", 0), "0000-00-00")
-
+    sDocDate = Format(oDS_PS_CO670H.GetValue("U_JdtDate", 0), "0000-00-00")
  
     Set f_oJournalEntries = Sbo_Company.GetBusinessObject(oJournalEntries)
         
     With f_oJournalEntries
-         .ReferenceDate = sDocDate            '전기일
+         .ReferenceDate = sDocDate '전기일
          .DueDate = sDocDate
          .TaxDate = sDocDate
          
-         For i = 1 To oMat01.VisualRowCount
+         For i = 1 To oMat01.VisualRowCount - 1
             SAcctCode = oMat01.Columns("AcctCode").Cells(i).Specific.VALUE
             SDebit = oMat01.Columns("Debit").Cells(i).Specific.VALUE
             SCredit = oMat01.Columns("Credit").Cells(i).Specific.VALUE
-            SPrcCode = oMat01.Columns("PrcCode").Cells(i).Specific.VALUE
+            SPrcCode = oMat01.Columns("OcrCode").Cells(i).Specific.VALUE
             SLineMemo = oMat01.Columns("LineMemo").Cells(i).Specific.VALUE
             .Lines.Add
             If SAcctCode <> "" Then
                 
                 .Lines.SetCurrentLine i - 1
-                .Lines.AccountCode = SAcctCode     '관리계정
-                .Lines.ShortName = SAcctCode        'G/L계정/BP 코드
-                .Lines.LineMemo = SLineMemo         '비고
+                .Lines.AccountCode = SAcctCode '관리계정
+                .Lines.ShortName = SAcctCode 'G/L계정/BP 코드
+                .Lines.LineMemo = SLineMemo '비고
                 
-                .Lines.CostingCode = SPrcCode        '배부규칙
-                .Lines.Debit = SDebit                 '차변
-                .Lines.Credit = SCredit                '대변
+                .Lines.CostingCode = SPrcCode '배부규칙
+                .Lines.Debit = SDebit '차변
+                .Lines.Credit = SCredit '대변
                 
-                .Lines.UserFields("U_BillCode").VALUE = "P90010" '법정지출증빙코드
-                .Lines.UserFields("U_BillName").VALUE = "규정" '법정지출증빙명
+                .Lines.UserFields("U_BillCode").VALUE = "P90030" '법정지출증빙코드
+                .Lines.UserFields("U_BillName").VALUE = "기타" '법정지출증빙명
                 
-                .UserFields("U_BPLId").VALUE = Trim(oForm01.Items("BPLId").Specific.VALUE) '사업장
+                .UserFields("U_BPLId").VALUE = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
             End If
+            
+            '분개여부 UPDATE
+            sQry = "        UPDATE  [@PS_CO660L]"
+            sQry = sQry & " SET     U_JEYN = 'Y'"
+            sQry = sQry & " WHERE   DocEntry = " & oMat01.Columns("BasEntry").Cells(i).Specific.VALUE
+            sQry = sQry & "         AND LineID = " & oMat01.Columns("BasLine").Cells(i).Specific.VALUE
+            
+            Call oRecordSet01.DoQuery(sQry)
         Next
          
     End With
@@ -778,17 +819,17 @@ On Error GoTo Create_oJournalEntries
     
     If ChkType = 1 Then
         Sbo_Company.GetNewObjectCode sTransId
-        sQry = "Update [@PS_FX025H] Set U_JdtNo = '" & sTransId & "', U_JdtDate = '" & sDocDate & "', U_JdtCC = '" & sCC & "' "
-        sQry = sQry & "Where DocNum = '" & Trim(oDS_PS_FX025H.GetValue("DocNum", 0)) & "'"
+        sQry = "Update [@PS_CO670H] Set U_JdtNo = '" & sTransId & "', U_JdtDate = '" & sDocDate & "', U_JdtCC = '" & sCC & "' "
+        sQry = sQry & "Where DocNum = '" & Trim(oDS_PS_CO670H.GetValue("DocNum", 0)) & "'"
         oRecordSet01.DoQuery sQry
         If (Sbo_Company.InTransaction = True) Then
             Sbo_Company.EndTransaction wf_Commit
         End If
     End If
 
-  oDS_PS_FX025H.setValue "U_JdtNo", 0, sTransId
+  oDS_PS_CO670H.setValue "U_JdtNo", 0, sTransId
   
-  oDS_PS_FX025H.setValue "U_JdtCC", 0, sCC
+  oDS_PS_CO670H.setValue "U_JdtCC", 0, sCC
 
   Set oRecordSet01 = Nothing
   Set f_oJournalEntries = Nothing
@@ -798,8 +839,7 @@ On Error GoTo Create_oJournalEntries
   oForm01.Items("Btn03").Enabled = True
   
   Exit Function
-  
-'///////////////////////////////////////////////////////////////////////////////////////
+
 Create_oJournalEntries:
     Set oRecordSet01 = Nothing
     Set f_oJournalEntries = Nothing
@@ -810,23 +850,25 @@ Create_oJournalEntries:
     MDC_Com.MDC_GF_Message "Create_oJournalEntries:" & Err.Description & ErrMsg, "E"
 End Function
         
-        
 Private Function Cancel_oJournalEntries(ChkType As Integer) As Boolean
 On Error GoTo Cancel_oJournalEntries
     Dim f_oJournalEntries As SAPbobsCOM.JournalEntries
     
-    Dim i             As Long
-    Dim ErrNum        As Integer
-    Dim ErrCode       As Long
-    Dim ErrMsg        As String
-    Dim RetVal&
-    Dim sTransId$
+    Dim i         As Long
+    Dim ErrNum    As Integer
+    Dim ErrCode   As Long
+    Dim ErrMsg    As String
+    Dim RetVal    As Integer
+    Dim sTransId  As String
         
-    Dim SCardCode$, sDocDate$
-    Dim sCC             As String
-        
+    Dim SCardCode As String
+    Dim sDocDate  As String
+    Dim sCC       As String
+    
+    Dim sQry      As String
+    
     Dim oRecordSet01 As SAPbobsCOM.Recordset
-    Dim sQry            As String
+    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     If (Sbo_Company.InTransaction = True) Then
         Sbo_Company.EndTransaction wf_RollBack
@@ -834,17 +876,27 @@ On Error GoTo Cancel_oJournalEntries
     
     Sbo_Company.StartTransaction
     
-    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
-    
     oMat01.FlushToDataSource
     
     Set f_oJournalEntries = Nothing
     Set f_oJournalEntries = Sbo_Company.GetBusinessObject(oJournalEntries)
         
-    If (f_oJournalEntries.GetByKey(Trim(oDS_PS_FX025H.GetValue("U_JdtNo", 0))) = False) Then
+    If (f_oJournalEntries.GetByKey(Trim(oDS_PS_CO670H.GetValue("U_JdtNo", 0))) = False) Then
         Call Sbo_Company.GetLastError(ErrCode, ErrMsg)
         GoTo Cancel_oJournalEntries
     End If
+    
+    '분개여부 환원
+    For i = 1 To oMat01.VisualRowCount - 1
+        
+        '분개여부 UPDATE
+        sQry = "        UPDATE  [@PS_CO660L]"
+        sQry = sQry & " SET     U_JEYN = 'N'"
+        sQry = sQry & " WHERE   DocEntry = " & oMat01.Columns("BasEntry").Cells(i).Specific.VALUE
+        sQry = sQry & "         AND LineID = " & oMat01.Columns("BasLine").Cells(i).Specific.VALUE
+        
+        Call oRecordSet01.DoQuery(sQry)
+    Next
     
     '// 완료
     RetVal = f_oJournalEntries.Cancel
@@ -857,8 +909,8 @@ On Error GoTo Cancel_oJournalEntries
     
     If ChkType = 1 Then
         Sbo_Company.GetNewObjectCode sTransId
-        sQry = "Update [@PS_FX025H] Set U_JdtCanNo = '" & sTransId & "', U_JdtCC = '" & sCC & "' "
-        sQry = sQry & "Where DocNum = '" & Trim(oDS_PS_FX025H.GetValue("DocNum", 0)) & "'"
+        sQry = "Update [@PS_CO670H] Set U_JdtCanNo = '" & sTransId & "', U_JdtCC = '" & sCC & "' "
+        sQry = sQry & "Where DocNum = '" & Trim(oDS_PS_CO670H.GetValue("DocNum", 0)) & "'"
         oRecordSet01.DoQuery sQry
         
         If (Sbo_Company.InTransaction = True) Then
@@ -867,8 +919,8 @@ On Error GoTo Cancel_oJournalEntries
     End If
     
 '    oForm01.Update
-  oDS_PS_FX025H.setValue "U_JdtCanNo", 0, sTransId
-  oDS_PS_FX025H.setValue "U_JdtCC", 0, sCC
+  oDS_PS_CO670H.setValue "U_JdtCanNo", 0, sTransId
+  oDS_PS_CO670H.setValue "U_JdtCC", 0, sCC
   
   Set oRecordSet01 = Nothing
   Set f_oJournalEntries = Nothing
@@ -878,8 +930,7 @@ On Error GoTo Cancel_oJournalEntries
   oForm01.Items("Btn03").Enabled = False
   
   Exit Function
-  
-'///////////////////////////////////////////////////////////////////////////////////////
+
 Cancel_oJournalEntries:
     Set oRecordSet01 = Nothing
     Set f_oJournalEntries = Nothing
@@ -887,7 +938,9 @@ Cancel_oJournalEntries:
         Sbo_Company.EndTransaction wf_RollBack
     End If
     Cancel_oJournalEntries = False
-    MDC_Com.MDC_GF_Message "Create_oJournalEntries:" & Err.Description & ErrMsg, "E"
+    MDC_Com.MDC_GF_Message "Cancel_oJournalEntries:" & Err.Description & ErrMsg, "E"
 End Function
+
+
 
 
