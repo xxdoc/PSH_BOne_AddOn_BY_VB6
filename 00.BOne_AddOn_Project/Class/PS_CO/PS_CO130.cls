@@ -175,7 +175,10 @@ On Error GoTo Raise_ItemEvent_Error
                         BubbleEvent = False
                         Exit Sub
                     End If
-                    Call LoadData
+                    'Call LoadData
+                    Call SaveData '백그라운드(쿼리)에서 저장하는 로직으로 수정(2018.07.05 송명규)
+                    Call FindForm '계산 실행 후 결과 확인을 위한 Find Mode 변경
+                    
                 End If
             Case et_KEY_DOWN: '//2
             Case et_COMBO_SELECT: '//5
@@ -663,4 +666,85 @@ LoadData_Error:
     MDC_Com.MDC_GF_Message "LoadData_Error:" & Err.Number & " - " & Err.Description, "E"
 End Sub
 
+Public Sub SaveData()
+'******************************************************************************
+'Function ID : PS_CO130
+'해당모듈    : SaveData
+'기능        : 제품별원가계산 결과 저장
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo SaveData_Error
 
+    Call oForm01.Freeze(True)
+
+    Dim i            As Long
+    Dim sQry         As String
+    
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
+    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
+    
+    Dim YM       As String
+    Dim BPLID    As String
+    Dim UserSign As String
+    
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
+    
+    YM = Trim(oForm01.Items("YM").Specific.VALUE)
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    UserSign = Sbo_Company.UserSignature
+    
+    sQry = "      EXEC [PS_CO130_50] '"
+    sQry = sQry & YM & "','"
+    sQry = sQry & BPLID & "','"
+    sQry = sQry & UserSign & "'"
+    
+    Call oRecordSet01.DoQuery(sQry)
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+
+    Set oRecordSet01 = Nothing
+    
+    Call oForm01.Freeze(False)
+    Exit Sub
+
+SaveData_Error:
+    
+    Call oForm01.Freeze(False)
+    
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
+    
+    Set oRecordSet01 = Nothing
+    
+    MDC_Com.MDC_GF_Message "SaveData_Error:" & Err.Number & " - " & Err.Description, "E"
+    
+End Sub
+
+Public Sub FindForm()
+On Error GoTo FindFomr_Error
+    
+    Dim BPLID As String
+    Dim StdYM As String
+    
+    BPLID = Trim(oForm01.Items("BPLId").Specific.VALUE)
+    StdYM = oForm01.Items("YM").Specific.VALUE
+
+    '찾기모드 변경
+    oForm01.Mode = fm_FIND_MODE
+
+    Call oForm01.Items("BPLId").Specific.Select(BPLID)
+    oForm01.Items("YM").Specific.VALUE = StdYM
+    
+    Call oForm01.Items("1").Click
+
+    Exit Sub
+
+FindFomr_Error:
+    Call MDC_Com.MDC_GF_Message("FindForm_Error:" & Err.Number & " - " & Err.Description, "E")
+End Sub

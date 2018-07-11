@@ -37,22 +37,21 @@ Private oLastColUID     As String
 Private oLastColRow     As Long
 
 Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
+On Error GoTo LoadForm_Error
 
     Dim i           As Long
     Dim oXmlDoc     As New MSXML2.DOMDocument
     
-    On Error GoTo LoadForm_Error
-    
     oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PY580.srf")
     oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     For i = 1 To (oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
     Next
+    
     oFormUniqueID = "PH_PY580_" & GetTotalFormsCount
     AddForms Me, oFormUniqueID, "PH_PY580"
     Sbo_Application.LoadBatchActions oXmlDoc.xml
@@ -72,6 +71,10 @@ Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
     oForm.Freeze False
     
     oForm.Visible = True
+    
+    '//커서를 첫번째 ITEM으로 지정
+    oForm.ActiveItem = "CLTCOD"
+    
     Set oXmlDoc = Nothing
     Exit Sub
     
@@ -84,6 +87,7 @@ LoadForm_Error:
 End Sub
 
 Private Function PH_PY580_CreateItems() As Boolean
+On Error GoTo PH_PY580_CreateItems_Error
 
     Dim sQry        As String
     Dim i           As Long
@@ -96,13 +100,9 @@ Private Function PH_PY580_CreateItems() As Boolean
     Dim optBtn      As SAPbouiCOM.OptionBtn
     
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY580_CreateItems_Error
-    
-    Call oForm.Freeze(True)
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
+    Call oForm.Freeze(True)
     
     '//----------------------------------------------------------------------------------------------
     '// 아이템 설정
@@ -139,23 +139,29 @@ Private Function PH_PY580_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("RspCode", dt_SHORT_TEXT, 10)
     Set oCombo = oForm.Items("RspCode").Specific
     oCombo.DataBind.SetBound True, "", "RspCode"
-    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
-    Call SetReDataCombo(oForm, sQry, oCombo, "Y")
     oForm.Items("RspCode").DisplayDesc = True
+    
+    '반
+    Call oForm.DataSources.UserDataSources.Add("ClsCode", dt_SHORT_TEXT, 10)
+    Set oCombo = oForm.Items("ClsCode").Specific
+    oCombo.DataBind.SetBound True, "", "ClsCode"
+    oForm.Items("ClsCode").DisplayDesc = True
     
     '//사번
     Call oForm.DataSources.UserDataSources.Add("MSTCOD", dt_SHORT_TEXT, 10)
     oForm.Items("MSTCOD").Specific.DataBind.SetBound True, "", "MSTCOD"
     
+    '조합근무자 포함 여부
     Call oForm.DataSources.UserDataSources.Add("NojoYN", dt_SHORT_TEXT, 1)
     Set oCheck = oForm.Items("NojoYN").Specific
     oCheck.DataBind.SetBound True, "", "NojoYN"
     oForm.Items("NojoYN").Specific.Checked = False
     
-    
-    '//커서를 첫번째 ITEM으로 지정
-    oForm.ActiveItem = "CLTCOD"
-        
+    '주간 소계 포함 여부
+    Call oForm.DataSources.UserDataSources.Add("WeekYN", dt_SHORT_TEXT, 1)
+    Set oCheck = oForm.Items("WeekYN").Specific
+    oCheck.DataBind.SetBound True, "", "WeekYN"
+    oForm.Items("WeekYN").Specific.Checked = False
     
     Set oCheck = Nothing
     Set oEdit = Nothing
@@ -180,8 +186,7 @@ PH_PY580_CreateItems_Error:
 End Function
 
 Private Sub PH_PY580_EnableMenus()
-    
-    On Error GoTo PH_PY580_EnableMenus_Error
+On Error GoTo PH_PY580_EnableMenus_Error
 
     Call oForm.EnableMenu("1283", True)     '//제거
     Call oForm.EnableMenu("1284", False)    '//취소
@@ -194,7 +199,7 @@ PH_PY580_EnableMenus_Error:
 End Sub
 
 Private Sub PH_PY580_SetDocument(ByVal oFromDocEntry01 As String)
-    On Error GoTo PH_PY580_SetDocument_Error
+On Error GoTo PH_PY580_SetDocument_Error
     
     If (oFromDocEntry01 = "") Then
         Call PH_PY580_FormItemEnabled
@@ -212,10 +217,9 @@ PH_PY580_SetDocument_Error:
 End Sub
 
 Sub PH_PY580_FormItemEnabled()
-    Dim oCombo      As SAPbouiCOM.ComboBox
+On Error GoTo PH_PY580_FormItemEnabled_Error
     
-    On Error GoTo PH_PY580_FormItemEnabled_Error
-    
+    Dim oCombo As SAPbouiCOM.ComboBox
     
     Call oForm.Freeze(True)
     If (oForm.Mode = fm_ADD_MODE) Then
@@ -234,6 +238,7 @@ Sub PH_PY580_FormItemEnabled()
         Call oForm.EnableMenu("1282", True)     '//문서추가
 
     End If
+    
     Call oForm.Freeze(False)
     Exit Sub
     
@@ -242,15 +247,14 @@ PH_PY580_FormItemEnabled_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY580_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
-    Dim sQry        As String
-    Dim i           As Long
-    Dim oCombo      As SAPbouiCOM.ComboBox
-    Dim oRecordSet  As SAPbobsCOM.Recordset
+On Error GoTo Raise_FormItemEvent_Error
+
+    Dim sQry   As String
+    Dim i      As Long
+    Dim oCombo As SAPbouiCOM.ComboBox
     
-    On Error GoTo Raise_FormItemEvent_Error
-    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Select Case pval.EventType
@@ -297,8 +301,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
             Call oForm.Freeze(True)
             If pval.BeforeAction = True Then
                 
-                
-                
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
                     Select Case pval.ItemUID
@@ -307,23 +309,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 '//부서
                                 Set oCombo = oForm.Items("TeamCode").Specific
                                 If oCombo.ValidValues.Count > 0 Then              '//삭제
-                                   For i = oCombo.ValidValues.Count - 1 To 0 Step -1
-                                           oCombo.ValidValues.Remove i, psk_Index
-                                   Next i
+                                    For i = oCombo.ValidValues.Count - 1 To 0 Step -1
+                                        oCombo.ValidValues.Remove i, psk_Index
+                                    Next i
                                 End If
                                 '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '1' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
-                                Call SetReDataCombo(oForm, sQry, oCombo, "Y")
+                                sQry = "        SELECT      U_Code,"
+                                sQry = sQry & "             U_CodeNm"
+                                sQry = sQry & " FROM        [@PS_HR200L]"
+                                sQry = sQry & " WHERE       Code = '1'"
+                                sQry = sQry & "             AND U_UseYN = 'Y'"
+                                sQry = sQry & "             AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                                 
-                                '//담당
-                                Set oCombo = oForm.Items("RspCode").Specific
-                                If oCombo.ValidValues.Count > 0 Then              '//삭제
-                                   For i = oCombo.ValidValues.Count - 1 To 0 Step -1
-                                           oCombo.ValidValues.Remove i, psk_Index
-                                   Next i
-                                End If
-                                '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
                                 Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                                 
                            '//부서가 바뀌면 담당 재설정
@@ -331,12 +328,39 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 '//담당은 그 부서의 담당만 표시
                                 Set oCombo = oForm.Items("RspCode").Specific
                                 If oCombo.ValidValues.Count > 0 Then              '//삭제
-                                   For i = oCombo.ValidValues.Count - 1 To 0 Step -1
-                                           oCombo.ValidValues.Remove i, psk_Index
-                                   Next i
+                                    For i = oCombo.ValidValues.Count - 1 To 0 Step -1
+                                        oCombo.ValidValues.Remove i, psk_Index
+                                    Next i
                                 End If
                                 '//현재 사업장으로 다시 Qry
-                                sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = '2' AND U_UseYN= 'Y' AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "' AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
+                                sQry = "        SELECT      U_Code,"
+                                sQry = sQry & "             U_CodeNm"
+                                sQry = sQry & " FROM        [@PS_HR200L]"
+                                sQry = sQry & " WHERE       Code = '2'"
+                                sQry = sQry & "             AND U_UseYN = 'Y'"
+                                sQry = sQry & "             AND U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
+                                sQry = sQry & "             AND U_Char2 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
+                                
+                                Call SetReDataCombo(oForm, sQry, oCombo, "Y")
+                                
+                            Case "RspCode"
+                            
+                                Set oCombo = oForm.Items("ClsCode").Specific
+                                If oCombo.ValidValues.Count > 0 Then '초기화
+                                    For i = oCombo.ValidValues.Count - 1 To 0 Step -1
+                                        oCombo.ValidValues.Remove i, psk_Index
+                                    Next i
+                                End If
+                                
+                                sQry = "        SELECT      U_Code,"
+                                sQry = sQry & "             U_CodeNm"
+                                sQry = sQry & " FROM        [@PS_HR200L]"
+                                sQry = sQry & " WHERE       Code = '9'"
+                                sQry = sQry & "             AND U_UseYN= 'Y'"
+                                sQry = sQry & "             AND U_Char1 = '" & Trim(oForm.Items.Item("RspCode").Specific.VALUE) & "' "
+                                sQry = sQry & "             AND U_Char2 = '" & Trim(oForm.Items.Item("TeamCode").Specific.VALUE) & "' "
+                                sQry = sQry & "             AND U_Char3 = '" & Trim(oForm.Items.Item("CLTCOD").Specific.VALUE) & "'"
+                                
                                 Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                            
                     End Select
@@ -475,10 +499,11 @@ Raise_FormItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormMenuEvent_Error
+
     Dim i As Long
-    On Error GoTo Raise_FormMenuEvent_Error
+
     Call oForm.Freeze(True)
     
     If (pval.BeforeAction = True) Then
@@ -545,8 +570,7 @@ Raise_FormMenuEvent_Error:
 End Sub
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_FormDataEvent_Error
+On Error GoTo Raise_FormDataEvent_Error
     
     If (BusinessObjectInfo.BeforeAction = True) Then
         Select Case BusinessObjectInfo.EventType
@@ -566,14 +590,11 @@ Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo
     Exit Sub
     
 Raise_FormDataEvent_Error:
-    
-        Sbo_Application.SetStatusBarMessage "Raise_FormDataEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
-
+    Sbo_Application.SetStatusBarMessage "Raise_FormDataEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.ContextMenuInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_RightClickEvent_Error
+On Error GoTo Raise_RightClickEvent_Error
     
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
@@ -592,14 +613,13 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     End Select
     Exit Sub
 Raise_RightClickEvent_Error:
-
     Sbo_Application.SetStatusBarMessage "Raise_RightClickEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Sub PH_PY580_AddMatrixRow()
+On Error GoTo PH_PY580_AddMatrixRow_Error
+
     Dim oRow    As Long
-    
-    On Error GoTo PH_PY580_AddMatrixRow_Error
     
     Call oForm.Freeze(True)
     
@@ -644,6 +664,7 @@ End Sub
 
 Sub PH_PY580_FormClear()
 On Error GoTo PH_PY580_FormClear_Error
+
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY580'", "")
     If DocEntry = 0 Then
@@ -652,17 +673,20 @@ On Error GoTo PH_PY580_FormClear_Error
         oForm.Items("DocEntry").Specific.VALUE = DocEntry
     End If
     Exit Sub
+    
 PH_PY580_FormClear_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY580_FormClear_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Function PH_PY580_DataValidCheck() As Boolean
 On Error GoTo PH_PY580_DataValidCheck_Error
+
     PH_PY580_DataValidCheck = False
+    
     Dim i       As Long
     Dim sQry    As String
-    Dim oRecordSet  As SAPbobsCOM.Recordset
     
+    Dim oRecordSet  As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
 '    '//----------------------------------------------------------------------------------
@@ -686,19 +710,21 @@ On Error GoTo PH_PY580_DataValidCheck_Error
     
     Set oRecordSet = Nothing
     
-    
 PH_PY580_DataValidCheck_Error:
     Set oRecordSet = Nothing
     PH_PY580_DataValidCheck = False
     Sbo_Application.SetStatusBarMessage "PH_PY580_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Function PH_PY580_Validate(ByVal ValidateType As String) As Boolean
 On Error GoTo PH_PY580_Validate_Error
+
     PH_PY580_Validate = True
-    Dim i, j As Long
+    
+    Dim i    As Long
+    Dim j    As Long
     Dim sQry As String
+    
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
@@ -725,26 +751,26 @@ PH_PY580_Validate_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY580_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Sub PH_PY580_Print_Report01()
+On Error GoTo PH_PY580_Print_Report01_Error
 
-    Dim DocNum          As String
-    Dim ErrNum          As Integer
-    Dim WinTitle        As String
-    Dim ReportName      As String
-    Dim sQry            As String
-    Dim oRecordSet      As SAPbobsCOM.Recordset
+    Dim DocNum      As String
+    Dim ErrNum      As Integer
+    Dim WinTitle    As String
+    Dim ReportName  As String
+    Dim sQry        As String
     
-    On Error GoTo PH_PY580_Print_Report01_Error
-    
-    Dim CLTCOD          As String
-    Dim DocDateFr       As String
-    Dim DocDateTo       As String
-    Dim TeamCode        As String
-    Dim RspCode         As String
-    Dim MSTCOD          As String
-    Dim NojoYN          As String
+    Dim CLTCOD      As String
+    Dim DocDateFr   As String
+    Dim DocDateTo   As String
+    Dim TeamCode    As String
+    Dim RspCode     As String
+    Dim ClsCode     As String
+    Dim MSTCOD      As String
+    Dim NojoYN      As String
+    Dim WeekYN      As String
    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -761,15 +787,11 @@ Private Sub PH_PY580_Print_Report01()
     DocDateTo = Trim(oForm.Items("DocDateTo").Specific.VALUE)
     TeamCode = Trim(oForm.Items("TeamCode").Specific.VALUE)
     RspCode = Trim(oForm.Items("RspCode").Specific.VALUE)
+    ClsCode = Trim(oForm.Items("ClsCode").Specific.VALUE)
     MSTCOD = Trim(oForm.Items("MSTCOD").Specific.VALUE)
-    'NojoYN = Trim(oForm.Items("NojoYN").Specific.VALUE)
-    
     
     '/ Crystal /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 
-    WinTitle = "[PH_PY580] 개인별근태월보"
-    ReportName = "PH_PY580_01.rpt"
-    
     '/ Formula 수식필드
     ReDim gRpt_Formula(3)
     ReDim gRpt_Formula_Value(3)
@@ -785,11 +807,16 @@ Private Sub PH_PY580_Print_Report01()
     gRpt_Formula(3) = "DocDateTo"
     gRpt_Formula_Value(3) = Format(DocDateTo, "####-##-##")
     
-    
     If oForm.DataSources.UserDataSources.Item("NojoYN").VALUE = "Y" Then
         NojoYN = "Y"
     Else
         NojoYN = "N"
+    End If
+    
+    If oForm.DataSources.UserDataSources.Item("WeekYN").VALUE = "Y" Then
+        WeekYN = "Y"
+    Else
+        WeekYN = "N"
     End If
     
     '/ SubReport
@@ -799,8 +826,24 @@ Private Sub PH_PY580_Print_Report01()
     ReDim gRpt_SFormula(1, 1)
     ReDim gRpt_SFormula_Value(1, 1)
     
+    WinTitle = "[PH_PY580] 개인별근태월보"
+    
+    If WeekYN = "Y" Then
+        ReportName = "PH_PY580_02.rpt"
+    Else
+        ReportName = "PH_PY580_01.rpt"
+    End If
+    
     '/ Procedure 실행"
-    sQry = "EXEC [PH_PY580_01] '" & CLTCOD & "', '" & DocDateFr & "',  '" & DocDateTo & "', '" & TeamCode & "', '" & RspCode & "', '" & MSTCOD & "', '" & NojoYN & "'"
+    sQry = "      EXEC [PH_PY580_01] '"
+    sQry = sQry & CLTCOD & "','"
+    sQry = sQry & DocDateFr & "','"
+    sQry = sQry & DocDateTo & "','"
+    sQry = sQry & TeamCode & "','"
+    sQry = sQry & RspCode & "','"
+    sQry = sQry & ClsCode & "','"
+    sQry = sQry & MSTCOD & "','"
+    sQry = sQry & NojoYN & "'"
     
 '    oRecordSet.DoQuery sQry
 '    If oRecordSet.RecordCount = 0 Then

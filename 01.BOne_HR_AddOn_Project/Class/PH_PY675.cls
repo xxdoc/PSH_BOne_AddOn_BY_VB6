@@ -740,11 +740,11 @@ Private Sub PH_PY675_Print_Report01()
     
     
     '/ SubReport
-    ReDim gRpt_SRptSqry(2)
-    ReDim gRpt_SRptName(2)
+    ReDim gRpt_SRptSqry(5)
+    ReDim gRpt_SRptName(5)
     
-    ReDim gRpt_SFormula(2, 1)
-    ReDim gRpt_SFormula_Value(2, 1)
+    ReDim gRpt_SFormula(5, 1)
+    ReDim gRpt_SFormula_Value(5, 1)
     
     sQry = "EXEC [PH_PY675_02] '" & CLTCOD & "'"
     gRpt_SRptSqry(1) = sQry
@@ -754,6 +754,17 @@ Private Sub PH_PY675_Print_Report01()
     gRpt_SRptSqry(2) = sQry
     gRpt_SRptName(2) = "PH_PY675_SUB2"
     
+    sQry = "EXEC [PH_PY675_04] '" & CLTCOD & "'"
+    gRpt_SRptSqry(3) = sQry
+    gRpt_SRptName(3) = "PH_PY675_SUB3"
+    
+    sQry = "EXEC [PH_PY675_05] '" & CLTCOD & "'"
+    gRpt_SRptSqry(4) = sQry
+    gRpt_SRptName(4) = "PH_PY675_SUB4"
+    
+    sQry = "EXEC [PH_PY675_06] '" & CLTCOD & "'"
+    gRpt_SRptSqry(5) = sQry
+    gRpt_SRptName(5) = "PH_PY675_SUB5"
     '/ Procedure ½ÇÇà"
     sQry = "EXEC [PH_PY675_01] '" & CLTCOD & "'"
     

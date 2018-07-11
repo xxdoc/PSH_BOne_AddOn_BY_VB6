@@ -2307,7 +2307,10 @@ On Error GoTo CreateUserForm_Error
         ElseIf (pval.MenuUID = "PS_PP982") Then '반별가동률 조회(2018.05.16)
             Set oTempClass = New PS_PP982
             Call oTempClass.LoadForm
-        ElseIf (pval.MenuUID = "PS_CO660") Then '기간비용등록(2018.06.18)
+       	ElseIf (pval.MenuUID = "PS_PP901") Then '분말화면레포
+            Set oTempClass = New PS_PP901
+			Call oTempClass.LoadForm
+		ElseIf (pval.MenuUID = "PS_CO660") Then '기간비용등록(2018.06.18)
             Set oTempClass = New PS_CO660
             Call oTempClass.LoadForm
         ElseIf (pval.MenuUID = "PS_CO670") Then '기간비용분개등록(2018.06.21)
@@ -2315,6 +2318,9 @@ On Error GoTo CreateUserForm_Error
             Call oTempClass.LoadForm
         ElseIf (pval.MenuUID = "PS_CO665") Then '기간비용현황(연간)(2018.06.27)
             Set oTempClass = New PS_CO665
+            Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_CO605") Then '통합수불부(2018.06.28)
+            Set oTempClass = New PS_CO605
             Call oTempClass.LoadForm
         End If
 

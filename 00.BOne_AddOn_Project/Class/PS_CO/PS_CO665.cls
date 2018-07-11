@@ -595,7 +595,18 @@ On Error GoTo PS_CO665_ComboBox_Setting_Error
     '//콤보에 기본값설정
     
     '사업장
-    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID").Specific, "SELECT BPLID, BPLName FROM OBPL order by BPLID", User_BPLId, False, False)
+    sQry = "        SELECT    CONVERT(VARCHAR(1),BPLID) AS [BPLID],"
+    sQry = sQry & "           BPLName AS [BPLName]"
+    sQry = sQry & " FROM      OBPL"
+        
+    sQry = sQry & " UNION ALL"
+    
+    sQry = sQry & " SELECT   '%' AS [BPLID],"
+    sQry = sQry & "          '전체' AS [BPLName]"
+        
+    sQry = sQry & " ORDER BY  BPLID"
+        
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("BPLID").Specific, sQry, User_BPLId, False, False)
 '
 '    '자체/외주
 '    Call oForm01.Items("InOut").Specific.ValidValues.Add("%", "전체")
@@ -805,22 +816,24 @@ On Error GoTo PS_CO665_MTX01_Error
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
 
-    Dim StdYM    As String '기준년월
+    Dim BPLID   As String '사업장
+    Dim StdYear As String '기준년도
     
-    StdYM = Trim(oForm01.Items("StdYM").Specific.VALUE)  '기준년월
+    BPLID = Trim(oForm01.Items("BPLID").Specific.VALUE) '사업장
+    StdYear = Trim(oForm01.Items("StdYear").Specific.VALUE) '기준년도
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
 
     Query01 = "         EXEC PS_CO665_01 '"
-    Query01 = Query01 & StdYM & "'"
+    Query01 = Query01 & BPLID & "','"
+    Query01 = Query01 & StdYear & "'"
     
     Call oGrid01.DataTable.Clear
     Call oDS_PS_CO665A.ExecuteQuery(Query01)
     
 '    oGrid01.DataTable = oForm01.DataSources.DataTables.Item("DataTable")
 
-    oGrid01.Columns(6).RightJustified = True
     oGrid01.Columns(7).RightJustified = True
     oGrid01.Columns(8).RightJustified = True
     oGrid01.Columns(9).RightJustified = True
@@ -828,6 +841,15 @@ On Error GoTo PS_CO665_MTX01_Error
     oGrid01.Columns(11).RightJustified = True
     oGrid01.Columns(12).RightJustified = True
     oGrid01.Columns(13).RightJustified = True
+    oGrid01.Columns(14).RightJustified = True
+    oGrid01.Columns(15).RightJustified = True
+    oGrid01.Columns(16).RightJustified = True
+    oGrid01.Columns(17).RightJustified = True
+    oGrid01.Columns(18).RightJustified = True
+    oGrid01.Columns(19).RightJustified = True
+    oGrid01.Columns(20).RightJustified = True
+    oGrid01.Columns(21).RightJustified = True
+    oGrid01.Columns(22).RightJustified = True
     
 '    oGrid01.Columns(12).BackColor = RGB(255, 255, 125) '[결산]계, 노랑
 '    oGrid01.Columns(19).BackColor = RGB(255, 255, 125) '[계산]계, 노랑

@@ -146,6 +146,17 @@ Private Function PH_PY003_CreateItems() As Boolean
         Loop
     End If
     oColumn.DisplayDesc = True
+
+    Set oColumn = oMat1.Columns("WorkType2")
+    sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P221' AND U_UseYN= 'Y'"
+    oRecordSet.DoQuery sQry
+    If oRecordSet.RecordCount > 0 Then
+        Do Until oRecordSet.EOF
+            oColumn.ValidValues.Add Trim$(oRecordSet.Fields(0).VALUE), Trim$(oRecordSet.Fields(1).VALUE)
+            oRecordSet.MoveNext
+        Loop
+    End If
+    oColumn.DisplayDesc = True
     
     
     '//요일구분

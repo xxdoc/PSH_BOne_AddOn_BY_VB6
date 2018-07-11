@@ -604,6 +604,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Dim oColumn     As SAPbouiCOM.Column
     Dim oColumns     As SAPbouiCOM.Columns
     Dim oRecordSet  As SAPbobsCOM.Recordset
+    Dim oRecordSet01  As SAPbobsCOM.Recordset
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Dim ErrNum As Integer
@@ -611,6 +612,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     On Error GoTo Raise_FormItemEvent_Error
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
+    Set oRecordSet01 = oCompany.GetBusinessObject(BoRecordset)
     
     Select Case pval.EventType
         Case et_ITEM_PRESSED: '//1
@@ -1234,6 +1236,28 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 If oRecordSet.RecordCount > 0 Then
                                    oForm.Items("ShiftDatNm").Specific.VALUE = oRecordSet.Fields(0).VALUE
                                    
+                                   sQry = "select u_Team1 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                   oRecordSet.DoQuery sQry
+                                   oForm.Items("Team1").Specific.VALUE = oRecordSet.Fields(0).VALUE
+                                   
+                                   sQry = "select u_Team2 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                   oRecordSet.DoQuery sQry
+                                   oForm.Items("Team2").Specific.VALUE = oRecordSet.Fields(0).VALUE
+                                   
+                                   
+                                   sQry = "select u_Team3 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                   oRecordSet.DoQuery sQry
+                                   oForm.Items("Team3").Specific.VALUE = oRecordSet.Fields(0).VALUE
+                                   
+
+                                    
+                                sQry = "SELECT U_CodeNm FROM [@PS_HR200L] "
+                                sQry = sQry & " WHERE Code = 'P154' AND U_Code = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
+                                sQry = sQry & " ORDER BY U_Code"
+                                
+                                oRecordSet.DoQuery sQry
+                                
+                                
                                    oForm.Items("SGNMUJO").Specific.VALUE = ""
                                    oForm.Items("SGNMUJONm").Specific.VALUE = ""
                                    
@@ -1253,15 +1277,81 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select "", psk_ByValue
                             End If
                             Call oForm.Freeze(False)
+                            
                         Case "SGNMUJO"   '//근무조
                             Call oForm.Freeze(True)
                             If oForm.Items("SGNMUJO").Specific.VALUE <> "" Then
-                                sQry = "SELECT U_CodeNm FROM [@PS_HR200L] "
-                                sQry = sQry & " WHERE Code = 'P155' AND U_Code = '" & Trim(oForm.Items.Item("SGNMUJO").Specific.VALUE) & "'"
-                                sQry = sQry & " And U_Char1 = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
+                            
+                                sQry = "        SELECT   U_CodeNm "
+                                sQry = sQry & " FROM     [@PS_HR200L] "
+                                sQry = sQry & " WHERE    Code = 'P155' "
+                                sQry = sQry & "          AND U_Code = '" & Trim(oForm.Items.Item("SGNMUJO").Specific.VALUE) & "'"
+                                sQry = sQry & "          AND U_Char1 = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
                                 sQry = sQry & " ORDER BY U_Code"
                                 
                                 oRecordSet.DoQuery sQry
+                                
+                                If Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) = "4" Then '3조 2교대 일 경우만 해당 로직 수행_S(2018.07.04 송명규)
+                                    ' WORKTYPE 변경 로직 주 52시간일 경우 휴무일경우 E01 주간/야간일 경우 A00을 입력) (주52)
+                                    If (oRecordSet.Fields(0).VALUE = "1조") Then
+                                        
+                                        sQry = "        Select (case when U_Team1 is null then 'E01' else U_WorkType2 end)"
+                                        sQry = sQry + " From   [@PH_PY003A] a Inner Join [@PH_PY003B] b On a.Code = b.Code "
+                                        sQry = sQry + " Where  a.U_CLTCOD = '" & Trim(oForm.Items.Item("SCLTCOD").Specific.VALUE) & "'"
+                                        sQry = sQry + "        And b.U_Date = '" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                        
+                                        oRecordSet01.DoQuery sQry
+                                        
+                                    End If
+                                    
+                                    If (oRecordSet.Fields(0).VALUE = "2조") Then
+                                        
+                                        sQry = "        Select (case when U_Team2 is null then 'E01' else U_WorkType2 end)"
+                                        sQry = sQry + " From   [@PH_PY003A] a Inner Join [@PH_PY003B] b On a.Code = b.Code "
+                                        sQry = sQry + " Where  a.U_CLTCOD = '" & Trim(oForm.Items.Item("SCLTCOD").Specific.VALUE) & "'"
+                                        sQry = sQry + "        And b.U_Date = '" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                        
+                                        oRecordSet01.DoQuery sQry
+                                        
+                                    End If
+                                    
+                                    If (oRecordSet.Fields(0).VALUE = "3조") Then
+                                        
+                                        sQry = "        Select (case when U_Team3 is null then 'E01' else U_WorkType2 end)"
+                                        sQry = sQry + " From   [@PH_PY003A] a Inner Join [@PH_PY003B] b On a.Code = b.Code "
+                                        sQry = sQry + " Where  a.U_CLTCOD = '" & Trim(oForm.Items.Item("SCLTCOD").Specific.VALUE) & "'"
+                                        sQry = sQry + "        And b.U_Date = '" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                        
+                                        oRecordSet01.DoQuery sQry
+                                        
+                                    End If
+                                    
+                                    If oRecordSet01.RecordCount = 0 Then
+                                        Call MDC_Com.MDC_GF_Message("근태월력의 근무일 등록을 하지않습니다.", "E")
+                                       ' GoTo PH_PY008_ChDate_Set_Exit
+                                    Else
+                                        oWorkType = oRecordSet01.Fields(0).VALUE
+                                        Set oCombo = oForm.Items("WorkType").Specific
+                                        oCombo.Select oRecordSet01.Fields(0).VALUE, psk_ByValue
+                                      '  Call PH_PY008_ChGNMUJO_Set
+                                    End If
+                                 '3조 2교대 일 경우만 해당 로직 수행_E(2018.07.04 송명규)
+                                Else '3조 2교대가 아닌경우는 근태월력의 근태구분1을 선택(2018.07.04 송명규)
+                                
+                                    sQry = "        SELECT  T1.U_WorkType"
+                                    sQry = sQry & " FROM    [@PH_PY003A] AS T0 "
+                                    sQry = sQry & "         INNER JOIN "
+                                    sQry = sQry & "         [@PH_PY003B] AS T1 "
+                                    sQry = sQry & "             ON T0.Code = T1.Code "
+                                    sQry = sQry & " Where   T0.U_CLTCOD = '" & Trim(oForm.Items.Item("SCLTCOD").Specific.VALUE) & "'"
+                                    sQry = sQry & "         AND T1.U_Date = '" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                    
+                                    oRecordSet01.DoQuery sQry
+                                
+                                    Call oForm.Items("WorkType").Specific.Select(oRecordSet01.Fields(0).VALUE, psk_ByValue)
+                                
+                                End If
+                                
                                 If oRecordSet.RecordCount > 0 Then
                                     Call oForm.Freeze(True)
                                     
@@ -1271,7 +1361,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                     oCombo.Select oRecordSet.Fields(0).VALUE, psk_ByValue
                                     
                                     Call PH_PY008_ChGNMUJO_Set
-                                    
                                     
                                     Call oForm.Freeze(False)
                                 Else
@@ -2375,12 +2464,12 @@ Private Sub PH_PY008_SAVE()
                         Else
                             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
                         End If
-                        
-                        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 12 Then
+                        ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
+                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
                             If CLTCOD = "2" Then
                             
-                                If Sbo_Application.MessageBox(" 주 12시간 연장초과 했습니다. 그래도 입력하시겠습니까?", "2", "예", "아니오") = "1" Then
+                                If Sbo_Application.MessageBox(" 주 52시간 연장초과 했습니다. 그래도 입력하시겠습니까?", "2", "예", "아니오") = "1" Then
                                     OverTime = 0
                                 End If
                             
@@ -2396,7 +2485,7 @@ Private Sub PH_PY008_SAVE()
 '                            End If
                         End If
                         
-                        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 12 Then
+                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
                             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
                             If LateTo + EarlyOff + GoOut > 0.1 Then
                                 Rotation = 0
@@ -2410,16 +2499,20 @@ Private Sub PH_PY008_SAVE()
                             
                             
                             If (JIGTYP = "02" Or JIGTYP = "03" Or JIGCOD = "73") And PAYTYP = "2" Then '//사무기술직(사무계약직(73) 추가, 2014.07.23 송명규) 월급제 연장근무시간 자동계산 월 20시간
-                                Extend = PH_PY008_Extend15(MSTCOD)
-                                
-                                SpecialTot = PH_PY008_Special(MSTCOD)
-                                
-                                If SpecialTot >= 24 Then
-                                    Special = 0
-                                Else
-                                    If (Special + SpecialTot) >= 24 Then
-                                        Special = Special - (Special + SpecialTot - 24)
+                                If CLTCOD <> "2" Then '주52시간 근무 시행(2018.07.01 부)으로 월급제 기능 제한(2018.07.05 송명규), 일단 부산사업장만 시행
+                                    Extend = PH_PY008_Extend15(MSTCOD)
+                                    
+                                    SpecialTot = PH_PY008_Special(MSTCOD)
+                                    
+                                    If SpecialTot >= 24 Then
+                                        Special = 0
+                                    Else
+                                        If (Special + SpecialTot) >= 24 Then
+                                            Special = Special - (Special + SpecialTot - 24)
+                                        End If
                                     End If
+                                Else
+                                    Extend = Trim(oForm.Items("Extend").Specific.VALUE)
                                 End If
                             Else
                                 Extend = Trim(oForm.Items("Extend").Specific.VALUE)
@@ -2581,12 +2674,12 @@ Private Sub PH_PY008_SAVE()
                         Else
                             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
                         End If
-                        
-                        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 12 Then
+                        ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
+                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
                             If CLTCOD = "2" Then
                             
-                                If Sbo_Application.MessageBox(" 주 12시간 연장초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
+                                If Sbo_Application.MessageBox(" 주 52시간 연장초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
                                     OverTime = 0
                                 End If
                             
@@ -2602,8 +2695,8 @@ Private Sub PH_PY008_SAVE()
 '                                OverTime = -100
 '                            End If
                         End If
-                        
-                        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 12 Then
+                        ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
+                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
                             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
                             If LateTo + EarlyOff + GoOut > 0.1 Then
                                 Rotation = 0
@@ -2764,13 +2857,13 @@ Private Sub PH_PY008_SAVE()
             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
         End If
         
-        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime >= 12 Then
-            If Sbo_Application.MessageBox(" 주 12시간 연장초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
+        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime >= 52 Then
+            If Sbo_Application.MessageBox(" 주 52시간을 초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
                 OverTime = 0
             End If
         End If
                         
-        If Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 12 Then
+        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
             If LateTo + EarlyOff + GoOut > 0.1 Then
                 Rotation = 0
@@ -2882,7 +2975,7 @@ PH_PY008_SAVE_Error:
     
     If ErrNum = 1 Then
     
-        Sbo_Application.SetStatusBarMessage "주 12시간 연장초과 했습니다. 입력할 수 없습니다. 현재 총 연장시간은 " & Extend + SpExtend + EarlyTo + SEarlyTo + OverTime & "시간 입니다.", bmt_Short, True
+        Sbo_Application.SetStatusBarMessage "주 52시간 연장초과 했습니다. 입력할 수 없습니다. 현재 총 연장시간은 " & Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime & "시간 입니다.", bmt_Short, True
     
     Else
     
@@ -2968,6 +3061,9 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     Dim Midnight As Double
     
     Dim WorkType As String
+    Dim Team1 As String
+    Dim Team2 As String
+    Dim Team3 As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
     
@@ -2986,6 +3082,11 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     GetTime = CStr(oForm.Items("GetTime").Specific.VALUE)
     OffTime = CStr(oForm.Items("OffTime").Specific.VALUE)
     
+    Team1 = Trim(oForm.Items("Team1").Specific.VALUE)
+    Team2 = Trim(oForm.Items("Team2").Specific.VALUE)
+    Team3 = Trim(oForm.Items("Team3").Specific.VALUE)
+    
+    
     GetTime = "0" + GetTime
     GetTime = Right(GetTime, 4)
     
@@ -2993,14 +3094,61 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     OffTime = Right(OffTime, 4)
     
     WorkType = oForm.Items("WorkType").Specific.VALUE
+    If (GNMUJO = "41") Then
+        If (Team1 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team1 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
+        
+    If (GNMUJO = "42") Then
+        If (Team2 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team2 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
+            
+    If (GNMUJO = "43") Then
+        If (Team3 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team3 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
     
-    sQry = " Select U_TimeType, U_FromTime, U_ToTime, U_NextDay from [@PH_PY002A] a Inner Join [@PH_PY002B] b On a.Code = b.Code "
-    sQry = sQry + " Where a.U_CLTCOD = '" & CLTCOD & "'" '//사업부
-    sQry = sQry + " and a.U_SType = '" & ShiftDat & "'" '//교대
-    sQry = sQry + " and a.U_Shift = '" & GNMUJO & "'"  '//조
-    sQry = sQry + " and b.U_DayType = '" & DayOff & "'" '//평일
-'    sQry = sQry + " and b.U_Minus = 'N'"
-  
+    ' 위 근무조를 받아와서 21 OR 22 로 변경함 (주간, 야간 시간표때문 PHPY002) (주52)
+    If (ShiftDat = "4") Then
+    
+        ShiftDat = "2"
+        
+        If (WorkType = "A00") Then
+            DayOff = "1"
+        Else
+            DayOff = "2"
+        End If
+        
+        sQry = " Select U_TimeType, U_FromTime, U_ToTime, U_NextDay from [@PH_PY002A] a Inner Join [@PH_PY002B] b On a.Code = b.Code "
+        sQry = sQry + " Where a.U_CLTCOD = '" & CLTCOD & "'" '//사업부
+        sQry = sQry + " and a.U_SType = '" & ShiftDat & "'" '//교대
+        sQry = sQry + " and a.U_Shift = '" & GNMUJO & "'"  '//조
+        sQry = sQry + " and b.U_DayType = '" & DayOff & "'" '//평일
+
+        ShiftDat = "4"
+    Else
+        sQry = " Select U_TimeType, U_FromTime, U_ToTime, U_NextDay from [@PH_PY002A] a Inner Join [@PH_PY002B] b On a.Code = b.Code "
+        sQry = sQry + " Where a.U_CLTCOD = '" & CLTCOD & "'" '//사업부
+        sQry = sQry + " and a.U_SType = '" & ShiftDat & "'" '//교대
+        sQry = sQry + " and a.U_Shift = '" & GNMUJO & "'"  '//조
+        sQry = sQry + " and b.U_DayType = '" & DayOff & "'" '//평일
+    End If
     oRecordSet.DoQuery sQry
     
     If (oRecordSet.RecordCount = 0) Then
@@ -3767,7 +3915,11 @@ Private Sub PH_PY008_ChGNMUJO_Set()
     
     Dim sQry    As String
     Dim Day     As String
-   
+    Dim Team1     As String
+    Dim Team2    As String
+    Dim Team3    As String
+    Dim GNMUJO   As String
+    
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim oRecordSet As SAPbobsCOM.Recordset
     
@@ -3775,9 +3927,43 @@ Private Sub PH_PY008_ChGNMUJO_Set()
 
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
-    
+    ' 근무조를 받아와서 그 근무조가 야간인지 주간인지 휴무인지 체크함. (주52)
+    ' 근무조를 받아와서 체크해서 21 or 22로 변경하는 건 시간표(PH_PY003) 때문임.
+    Team1 = Trim(oForm.Items("Team1").Specific.VALUE)
+    Team2 = Trim(oForm.Items("Team2").Specific.VALUE)
+    Team3 = Trim(oForm.Items("Team3").Specific.VALUE)
+    GNMUJO = Trim(oForm.Items("GNMUJO").Specific.VALUE)
+    If (GNMUJO = "41") Then
+        If (Team1 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team1 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
+        
+    If (GNMUJO = "42") Then
+        If (Team2 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team2 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
+            
+    If (GNMUJO = "43") Then
+        If (Team3 = "D") Then
+             GNMUJO = "21"
+        ElseIf (Team3 = "N") Then
+             GNMUJO = "22"
+        Else
+             GNMUJO = ""
+        End If
+    End If
                         
-    Select Case oForm.Items("GNMUJO").Specific.VALUE
+    Select Case GNMUJO
         Case "22", "33"
             sQry = "Select DateAdd(dd, 1, '" & oForm.Items("SPosDate").Specific.VALUE & "')"
             oRecordSet.DoQuery sQry
@@ -3996,8 +4182,8 @@ Private Function PH_PY008_OverTimeCheck(ByVal PosDate As String, ByVal MSTCOD As
 
     OverTimeYN = oRecordSet.Fields(0).VALUE
     
-    
-    sQry = " Select Sum(Extend + SpExtend + EarlyTo + SEarlyTo) From ZPH_PY008 Where PosDate Between '" & FrDate & "' and '" & ToDate & "'"
+    ' 기존 로직에서 Base Special 추가로 입력해서 주 52시간 초과인지 계산함.
+    sQry = " Select Sum(Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo) From ZPH_PY008 Where PosDate Between '" & FrDate & "' and '" & ToDate & "'"
     sQry = sQry + " And MSTCOD = '" & MSTCOD & "'"
     sQry = sQry + " And PosDate <> '" & PosDate & "'"
     oRecordSet.DoQuery sQry
