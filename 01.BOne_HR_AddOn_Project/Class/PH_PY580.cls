@@ -162,6 +162,12 @@ On Error GoTo PH_PY580_CreateItems_Error
     Set oCheck = oForm.Items("WeekYN").Specific
     oCheck.DataBind.SetBound True, "", "WeekYN"
     oForm.Items("WeekYN").Specific.Checked = False
+
+    '전문직 제외 여부
+    Call oForm.DataSources.UserDataSources.Add("ExpYN", dt_SHORT_TEXT, 1)
+    Set oCheck = oForm.Items("ExpYN").Specific
+    oCheck.DataBind.SetBound True, "", "ExpYN"
+    oForm.Items("ExpYN").Specific.Checked = False
     
     Set oCheck = Nothing
     Set oEdit = Nothing
@@ -769,6 +775,7 @@ On Error GoTo PH_PY580_Print_Report01_Error
     Dim MSTCOD      As String
     Dim NojoYN      As String
     Dim WeekYN      As String
+    Dim ExpYN       As String
    
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
@@ -819,6 +826,12 @@ On Error GoTo PH_PY580_Print_Report01_Error
         WeekYN = "N"
     End If
     
+    If oForm.DataSources.UserDataSources.Item("ExpYN").VALUE = "Y" Then
+        ExpYN = "Y"
+    Else
+        ExpYN = "N"
+    End If
+
     '/ SubReport
     ReDim gRpt_SRptSqry(1)
     ReDim gRpt_SRptName(1)
@@ -843,7 +856,8 @@ On Error GoTo PH_PY580_Print_Report01_Error
     sQry = sQry & RspCode & "','"
     sQry = sQry & ClsCode & "','"
     sQry = sQry & MSTCOD & "','"
-    sQry = sQry & NojoYN & "'"
+    sQry = sQry & NojoYN & "','"
+    sQry = sQry & ExpYN & "'"
     
 '    oRecordSet.DoQuery sQry
 '    If oRecordSet.RecordCount = 0 Then
