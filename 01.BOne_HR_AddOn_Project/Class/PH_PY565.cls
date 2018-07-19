@@ -37,18 +37,16 @@ Private oLastColUID     As String
 Private oLastColRow     As Long
 
 Public Sub LoadForm(Optional ByVal oFromDocEntry01 As String)
+On Error GoTo LoadForm_Error
 
     Dim i           As Long
     Dim oXmlDoc     As New MSXML2.DOMDocument
-    
-    On Error GoTo LoadForm_Error
-    
+
     oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PY565.srf")
     oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     For i = 1 To (oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
@@ -84,6 +82,7 @@ LoadForm_Error:
 End Sub
 
 Private Function PH_PY565_CreateItems() As Boolean
+On Error GoTo PH_PY565_CreateItems_Error
 
     Dim sQry        As String
     Dim i           As Long
@@ -95,14 +94,10 @@ Private Function PH_PY565_CreateItems() As Boolean
     Dim oColumns    As SAPbouiCOM.Columns
     Dim optBtn      As SAPbouiCOM.OptionBtn
     
-    Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY565_CreateItems_Error
-    
     Call oForm.Freeze(True)
     
+    Dim oRecordSet  As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
-    
     
     '//----------------------------------------------------------------------------------------------
     '// 아이템 설정
@@ -151,7 +146,7 @@ Private Function PH_PY565_CreateItems() As Boolean
     oCheck.DataBind.SetBound True, "", "MidNt_YN"
     oForm.Items("MidNt_YN").Specific.Checked = True
     
-    '야간제외
+    '결재박스제외
     Call oForm.DataSources.UserDataSources.Add("Box_YN", dt_SHORT_TEXT, 1)
     Set oCheck = oForm.Items("Box_YN").Specific
     oCheck.DataBind.SetBound True, "", "Box_YN"
@@ -183,8 +178,7 @@ PH_PY565_CreateItems_Error:
 End Function
 
 Private Sub PH_PY565_EnableMenus()
-    
-    On Error GoTo PH_PY565_EnableMenus_Error
+On Error GoTo PH_PY565_EnableMenus_Error
 
     Call oForm.EnableMenu("1283", True)     '//제거
     Call oForm.EnableMenu("1284", False)    '//취소
@@ -197,7 +191,7 @@ PH_PY565_EnableMenus_Error:
 End Sub
 
 Private Sub PH_PY565_SetDocument(ByVal oFromDocEntry01 As String)
-    On Error GoTo PH_PY565_SetDocument_Error
+On Error GoTo PH_PY565_SetDocument_Error
     
     If (oFromDocEntry01 = "") Then
         Call PH_PY565_FormItemEnabled
@@ -215,10 +209,7 @@ PH_PY565_SetDocument_Error:
 End Sub
 
 Sub PH_PY565_FormItemEnabled()
-    Dim oCombo      As SAPbouiCOM.ComboBox
-    
-    On Error GoTo PH_PY565_FormItemEnabled_Error
-    
+On Error GoTo PH_PY565_FormItemEnabled_Error
     
     Call oForm.Freeze(True)
     If (oForm.Mode = fm_ADD_MODE) Then
@@ -245,15 +236,14 @@ PH_PY565_FormItemEnabled_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY565_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormItemEvent_Error
+    
     Dim sQry        As String
     Dim i           As Long
     Dim oCombo      As SAPbouiCOM.ComboBox
+
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo Raise_FormItemEvent_Error
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Select Case pval.EventType
@@ -264,7 +254,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Call PH_PY565_Print_Report01
                 End If
             ElseIf pval.BeforeAction = False Then
-
 
             End If
      
@@ -292,7 +281,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
         Case et_COMBO_SELECT: '//5
             Call oForm.Freeze(True)
             If pval.BeforeAction = True Then
-                
                 
             ElseIf pval.BeforeAction = False Then
                 If pval.ItemChanged = True Then
@@ -461,7 +449,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Set oRecordSet = Nothing
     
     Exit Sub
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Raise_FormItemEvent_Error:
     oForm.Freeze (False)
     Set oCombo = Nothing
@@ -469,10 +457,11 @@ Raise_FormItemEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormMenuEvent_Error
+
     Dim i As Long
-    On Error GoTo Raise_FormMenuEvent_Error
+    
     Call oForm.Freeze(True)
     
     If (pval.BeforeAction = True) Then
@@ -539,8 +528,7 @@ Raise_FormMenuEvent_Error:
 End Sub
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_FormDataEvent_Error
+On Error GoTo Raise_FormDataEvent_Error
     
     If (BusinessObjectInfo.BeforeAction = True) Then
         Select Case BusinessObjectInfo.EventType
@@ -566,8 +554,7 @@ Raise_FormDataEvent_Error:
 End Sub
 
 Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.ContextMenuInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_RightClickEvent_Error
+On Error GoTo Raise_RightClickEvent_Error
     
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
@@ -586,14 +573,13 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     End Select
     Exit Sub
 Raise_RightClickEvent_Error:
-
     Sbo_Application.SetStatusBarMessage "Raise_RightClickEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Sub PH_PY565_AddMatrixRow()
+On Error GoTo PH_PY565_AddMatrixRow_Error
+
     Dim oRow    As Long
-    
-    On Error GoTo PH_PY565_AddMatrixRow_Error
     
     Call oForm.Freeze(True)
     
@@ -638,6 +624,7 @@ End Sub
 
 Sub PH_PY565_FormClear()
 On Error GoTo PH_PY565_FormClear_Error
+
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY565'", "")
     If DocEntry = 0 Then
@@ -652,6 +639,7 @@ End Sub
 
 Function PH_PY565_DataValidCheck() As Boolean
 On Error GoTo PH_PY565_DataValidCheck_Error
+
     PH_PY565_DataValidCheck = False
     Dim i       As Long
     Dim sQry    As String
@@ -680,16 +668,15 @@ On Error GoTo PH_PY565_DataValidCheck_Error
     
     Set oRecordSet = Nothing
     
-    
 PH_PY565_DataValidCheck_Error:
     Set oRecordSet = Nothing
     PH_PY565_DataValidCheck = False
     Sbo_Application.SetStatusBarMessage "PH_PY565_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Function PH_PY565_Validate(ByVal ValidateType As String) As Boolean
 On Error GoTo PH_PY565_Validate_Error
+
     PH_PY565_Validate = True
     Dim i, j As Long
     Dim sQry As String
@@ -719,27 +706,25 @@ PH_PY565_Validate_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY565_Validate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Sub PH_PY565_Print_Report01()
+On Error GoTo PH_PY565_Print_Report01_Error
 
-    Dim DocNum          As String
-    Dim ErrNum          As Integer
-    Dim WinTitle        As String
-    Dim ReportName      As String
-    Dim sQry            As String
-    Dim oRecordSet      As SAPbobsCOM.Recordset
+    Dim DocNum      As String
+    Dim ErrNum      As Integer
+    Dim WinTitle    As String
+    Dim ReportName  As String
+    Dim sQry        As String
     
-    On Error GoTo PH_PY565_Print_Report01_Error
+    Dim CLTCOD      As String
+    Dim TeamCode    As String
+    Dim RspCode     As String
+    Dim DocDate     As String
     
-    Dim CLTCOD          As String
-    Dim TeamCode        As String
-    Dim RspCode         As String
-    Dim DocDate         As String
+    Dim G5_YN       As String
+    Dim MidNt_YN    As String
+    Dim Box_YN      As String
     
-    Dim G5_YN As String
-    Dim MidNt_YN As String
-    Dim Box_YN As String
-    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar

@@ -2465,7 +2465,7 @@ Private Sub PH_PY008_SAVE()
                             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
                         End If
                         ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
-                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
+                        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
                             If CLTCOD = "2" Then
                             
@@ -2485,7 +2485,7 @@ Private Sub PH_PY008_SAVE()
 '                            End If
                         End If
                         
-                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
+                        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
                             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
                             If LateTo + EarlyOff + GoOut > 0.1 Then
                                 Rotation = 0
@@ -2675,7 +2675,7 @@ Private Sub PH_PY008_SAVE()
                             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
                         End If
                         ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
-                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
+                        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
                             If CLTCOD = "2" Then
                             
@@ -2696,7 +2696,7 @@ Private Sub PH_PY008_SAVE()
 '                            End If
                         End If
                         ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
-                        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
+                        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
                             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
                             If LateTo + EarlyOff + GoOut > 0.1 Then
                                 Rotation = 0
@@ -2857,13 +2857,13 @@ Private Sub PH_PY008_SAVE()
             OverTime = PH_PY008_OverTimeCheck(PosDate, MSTCOD)
         End If
         
-        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime >= 52 Then
+        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime >= 52 Then
             If Sbo_Application.MessageBox(" 주 52시간을 초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
                 OverTime = 0
             End If
         End If
                         
-        If Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
+        If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime <= 52 Then
             '//지각, 조퇴, 외출시간이 있으면 교대일수 없다.
             If LateTo + EarlyOff + GoOut > 0.1 Then
                 Rotation = 0
