@@ -256,8 +256,18 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                        
+                        oForm01.Freeze True   ' 황영수 2018.07.20 Call Sbo_Application.ActivateMenuItem("1282") 오류로 Menu Event 내에 있는 것을 가져옴.
+                        Call FormItemEnabled
+                        Call Initialization
+                        Call FormClear
+                        Call oDS_PS_MM070H.setValue("U_DocDate", 0, Format(Now, "YYYYMMDD"))
+                        Call Add_MatrixRow(0, True)
+                        oForm01.Freeze False
+                        
+                     '   oForm01.Mode = fm_ADD_MODE
+                      '  oForm01.EnableMenu ("1282"), True
+                      '  Call Sbo_Application.ActivateMenuItem("1282")
                         
                         '검수여부 및 품의형태 세팅 로직 수정(2013.05.23 송명규 수정)
                         If oQEYesNo <> "" Then
@@ -775,7 +785,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM070L.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM070L.offset = oRow
+    oDS_PS_MM070L.Offset = oRow
     oDS_PS_MM070L.setValue "U_LineNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub

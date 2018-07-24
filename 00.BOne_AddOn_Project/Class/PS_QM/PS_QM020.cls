@@ -282,8 +282,16 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE Then
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                        Call FormItemEnabled
+                        Call FormClear
+                        oDS_PS_QM020H.setValue "U_InspDate", 0, Format(Now, "YYYYMMDD")
+                        oForm01.Items("OrdNum").Click ct_Regular
+                        
+                        oDS_PS_QM020H.setValue "U_CardCode", 0, Last_CardCode
+                        oDS_PS_QM020H.setValue "U_CardName", 0, Last_CardName
+                        oDS_PS_QM020H.setValue "U_InspPrsn", 0, Last_InspPrsn
+                        'oForm01.Mode = fm_OK_MODE
+                        'Call Sbo_Application.ActivateMenuItem("1282")
                     ElseIf oForm01.Mode = fm_OK_MODE Then
                         FormItemEnabled
                         FlushToItemValue "ItemCode"

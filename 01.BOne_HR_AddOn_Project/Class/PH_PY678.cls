@@ -670,9 +670,15 @@ On Error GoTo PH_PY678_ComboBox_Setting_Error
     oColumn.ValidValues.Add "N", "야간당직"
 
     Set oColumn = oMat01.Columns("DutyAmt1")
+    oColumn.ValidValues.Add " ", "0"
     oColumn.ValidValues.Add "3500", "3,500"
     oColumn.ValidValues.Add "7000", "7,000"
     oColumn.ValidValues.Add "10500", "10,500"
+    
+    Set oColumn = oMat01.Columns("DutyAmt2")
+    oColumn.ValidValues.Add " ", "0"
+    oColumn.ValidValues.Add "5000", "5,000"
+    
     
     Call oForm.Freeze(False)
     Set oColumn = Nothing
@@ -1034,6 +1040,7 @@ On Error GoTo PH_PY678_MTX01_Error
         Call oDS_PH_PY678B.setValue("U_ColReg04", i, Trim(oRecordSet01.Fields("MSTNAM1").VALUE)) '성명
         Call oDS_PH_PY678B.setValue("U_ColReg05", i, Trim(oRecordSet01.Fields("DutyGbn1").VALUE)) '당직근무구분
         Call oDS_PH_PY678B.setValue("U_ColReg09", i, Trim(oRecordSet01.Fields("DutyAmt1").VALUE)) '식대
+        Call oDS_PH_PY678B.setValue("U_ColReg10", i, Trim(oRecordSet01.Fields("DutyAmt2").VALUE)) '식대
         Call oDS_PH_PY678B.setValue("U_ColReg06", i, Trim(oRecordSet01.Fields("MSTCOD2").VALUE)) '사번2
         Call oDS_PH_PY678B.setValue("U_ColReg07", i, Trim(oRecordSet01.Fields("MSTNAM2").VALUE)) '성명2
         Call oDS_PH_PY678B.setValue("U_ColReg08", i, Trim(oRecordSet01.Fields("DutyGbn2").VALUE)) '당직근무구분2
@@ -1087,7 +1094,8 @@ On Error GoTo PH_PY678_Save_Error
     Dim StdDate As String '기준일
     Dim MSTCOD  As String '사번
     Dim DutyGbn As String '당직근무형태
-    Dim DutyAmt As String '당직근무형태
+    Dim DutyAmt As String '식대
+    Dim DutyAmt2 As String '조식대
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = oCompany.GetBusinessObject(BoRecordset)
@@ -1104,7 +1112,8 @@ On Error GoTo PH_PY678_Save_Error
         CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE) '사업장
         StdDate = oDS_PH_PY678B.GetValue("U_ColDt01", i) '기준일
         MSTCOD = Trim(oDS_PH_PY678B.GetValue("U_ColReg03", i)) '사번
-        DutyAmt = Trim(oDS_PH_PY678B.GetValue("U_ColReg09", i)) '당직근무 형태
+        DutyAmt = Trim(oDS_PH_PY678B.GetValue("U_ColReg09", i)) '식대
+        DutyAmt2 = Trim(oDS_PH_PY678B.GetValue("U_ColReg10", i)) '조식대
         DutyGbn = Trim(oDS_PH_PY678B.GetValue("U_ColReg05", i)) '당직근무 형태
              
         If Trim(MSTCOD) <> "" Then
@@ -1113,7 +1122,8 @@ On Error GoTo PH_PY678_Save_Error
             sQry = sQry & "'" & CLTCOD & "',"  '사업장
             sQry = sQry & "'" & StdDate & "',"  '기준일
             sQry = sQry & "'" & MSTCOD & "',"  '사번
-            sQry = sQry & "'" & DutyAmt & "',"  '사번
+            sQry = sQry & "'" & DutyAmt & "',"  '식대
+            sQry = sQry & "'" & DutyAmt2 & "',"  '조식대
             sQry = sQry & "'" & DutyGbn & "'"  '당직근무형태
             
             Call oRecordSet01.DoQuery(sQry)
@@ -1129,7 +1139,8 @@ On Error GoTo PH_PY678_Save_Error
             sQry = sQry & "'" & CLTCOD & "',"  '사업장
             sQry = sQry & "'" & StdDate & "',"  '기준일
             sQry = sQry & "'" & MSTCOD & "',"  '사번
-            sQry = sQry & "'" & DutyAmt & "',"  '사번
+            sQry = sQry & "'" & DutyAmt & "',"  '식대
+            sQry = sQry & "'" & DutyAmt2 & "',"  '조식대
             sQry = sQry & "'" & DutyGbn & "'"  '당직근무형태
             
             Call oRecordSet01.DoQuery(sQry)

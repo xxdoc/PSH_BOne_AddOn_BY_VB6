@@ -285,8 +285,12 @@ Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)   '// 객체 정의 및
              ' 저장 후 추가 가능처리
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
-                          oForm01.Mode = fm_OK_MODE
-                          Call Sbo_Application.ActivateMenuItem("1282")
+                        FormItemEnabled
+                        FormClear
+                        AddMatrixRow 0, oMat01.RowCount, True
+                        oForm01.Items("CardCode").Click ct_Collapsed
+                       '   oForm01.Mode = fm_OK_MODE
+                       '   Call Sbo_Application.ActivateMenuItem("1282")
                     ElseIf oForm01.Mode = fm_ADD_MODE And pval.Action_Success = False Then
                         FormItemEnabled
                         AddMatrixRow 1, oMat01.RowCount, True
@@ -681,7 +685,7 @@ On Error GoTo MatrixSpaceLineDel_Error
     If oMat01.VisualRowCount > 0 Then
         
     For i = 0 To oMat01.VisualRowCount - 2
-        oDS_PS_MM170L.Offset = i
+        oDS_PS_MM170L.offset = i
             Select Case True
                 Case oDS_PS_MM170L.GetValue("U_GRDocNum", i) = ""
                     ErrNum = 2

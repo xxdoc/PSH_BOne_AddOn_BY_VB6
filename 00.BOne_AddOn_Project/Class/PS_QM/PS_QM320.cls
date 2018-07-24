@@ -1091,6 +1091,7 @@ On Error GoTo PS_QM320_ComboBox_Setting_Error
     Call oForm01.Items("MachCode").Specific.ValidValues.Add("122901", "S&D 1호기")
     Call oForm01.Items("MachCode").Specific.ValidValues.Add("122902", "S&D 2호기")
     Call oForm01.Items("MachCode").Specific.ValidValues.Add("122903", "S&D 3호기")
+    Call oForm01.Items("MachCode").Specific.ValidValues.Add("122604", "DEGREASER 4호기")
     oForm01.Items("MachCode").Specific.Select "0", psk_Index
     
     
@@ -1098,6 +1099,7 @@ On Error GoTo PS_QM320_ComboBox_Setting_Error
     Call oForm01.Items("SMachCod").Specific.ValidValues.Add("122901", "S&D 1호기")
     Call oForm01.Items("SMachCod").Specific.ValidValues.Add("122902", "S&D 2호기")
     Call oForm01.Items("SMachCod").Specific.ValidValues.Add("122903", "S&D 3호기")
+    Call oForm01.Items("SMachCod").Specific.ValidValues.Add("122604", "DEGREASER 4호기")
     oForm01.Items("SMachCod").Specific.Select "0", psk_Index
 
     '조회조건-사업장

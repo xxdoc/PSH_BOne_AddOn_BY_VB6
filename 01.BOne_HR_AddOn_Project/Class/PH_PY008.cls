@@ -2272,7 +2272,7 @@ Private Sub PH_PY008_SAVE()
     Dim sQry    As String
     Dim ErrNum As Integer
     
-    Dim CLTCOD$, DayOff$, Day$, MSTCOD$, FullName$, TeamCode$, RspCode$, ClsCode$, ShiftDat$, GNMUJO$, WorkType$
+    Dim CLTCOD$, DayOff$, Day$, MSTCOD$, FullName$, TeamCode$, RspCode$, Inform05$, ClsCode$, ShiftDat$, GNMUJO$, WorkType$
     Dim GetDate As String
     Dim GetTime As Integer
     Dim OffDate As String
@@ -2419,7 +2419,8 @@ Private Sub PH_PY008_SAVE()
                     sQry = sQry + " PAYTYP = a.U_PAYTYP, "
                     sQry = sQry + " TeamCode = a.U_TeamCode, "
                     sQry = sQry + " RspCode = a.U_RspCode, "
-                    sQry = sQry + " ClsCode = a.U_ClsCode "
+                    sQry = sQry + " ClsCode = a.U_ClsCode, "
+                    sQry = sQry + " inform05 = a.u_inform05 "
                     sQry = sQry + " FROM [@PH_PY001A] a Left Join (Select Code = t1.U_Code, CodeNm = t1.U_CodeNm, DangerCD = t1.U_Char1 "
                     sQry = sQry + " FROM [@PS_HR200H] t Inner Join [@PS_HR200L] t1 On t.Code = t1.Code "
                     sQry = sQry + " Where t1.Code = 'P127' and U_Char2 = '" & CLTCOD & "' ) b On a.U_Activity = b.Code"
@@ -2437,7 +2438,7 @@ Private Sub PH_PY008_SAVE()
                     TeamCode = oRecordSet.Fields("TeamCode").VALUE '//팀
                     RspCode = oRecordSet.Fields("RspCode").VALUE '//담당
                     ClsCode = oRecordSet.Fields("ClsCode").VALUE '//반
-                        
+                    Inform05 = oRecordSet.Fields("inform05").VALUE '//반
                     ShiftDat001A = oRecordSet.Fields("ShiftDat").VALUE '//인사기본 근무조
                     
                     
@@ -2467,7 +2468,7 @@ Private Sub PH_PY008_SAVE()
                         ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
                         If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
-                            If CLTCOD = "2" Then
+                            If Inform05 = "Y" Then
                             
                                 If Sbo_Application.MessageBox(" 주 52시간 연장초과 했습니다. 그래도 입력하시겠습니까?", "2", "예", "아니오") = "1" Then
                                     OverTime = 0
@@ -2677,7 +2678,7 @@ Private Sub PH_PY008_SAVE()
                         ' 스페셜 추가 OVER TIME 주 BASE SPECIAL 도 추가함 (주52)
                         If Base + Special + Extend + SpExtend + EarlyTo + SEarlyTo + OverTime > 52 Then
                         
-                            If CLTCOD = "2" Then
+                            If Inform05 = "Y" Then
                             
                                 If Sbo_Application.MessageBox(" 주 52시간 연장초과 했습니다. 그래도 입력하시겠습니까? ?", "2", "예", "아니오") = "1" Then
                                     OverTime = 0

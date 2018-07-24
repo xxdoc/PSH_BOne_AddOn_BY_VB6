@@ -363,8 +363,18 @@ On Error GoTo Raise_ItemEvent_Error
                             oLast_Mode = 100
                         End If
                     ElseIf oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                        
+                        oForm01.Freeze True ' 황영수 2018.07.20 Call Sbo_Application.ActivateMenuItem("1282") 오류로 Menu Event 내에 있는 것을 가져옴.
+                        Call Initialization
+                        Call FormItemEnabled
+                        Call FormClear
+                        Call oDS_PS_MM050H.setValue("U_DocDate", 0, Format(Now, "YYYYMMDD"))
+                        oForm01.Items("CardCode").Click ct_Collapsed
+                        oForm01.Freeze False
+                        
+                     '   oForm01.Mode = fm_ADD_MODE
+                      '  oForm01.EnableMenu ("1282"), True
+                      '  Call Sbo_Application.ActivateMenuItem("1282")
                     End If
                 ElseIf pval.ItemUID = "Btn01" Then
                     If HeaderSpaceLineDel = False Then
@@ -916,7 +926,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_TEMPTABLE.InsertRecord (oRow)
         End If
         oMat01.AddRow
-        oDS_PS_TEMPTABLE.offset = oRow
+        oDS_PS_TEMPTABLE.Offset = oRow
         oDS_PS_TEMPTABLE.setValue "U_LineNum", oRow, oRow + 1
         oMat01.LoadFromDataSource
     ElseIf ItemUID = "Mat02" Then
@@ -924,7 +934,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_MM050L.InsertRecord (oRow)
         End If
         oMat02.AddRow
-        oDS_PS_MM050L.offset = oRow
+        oDS_PS_MM050L.Offset = oRow
         oDS_PS_MM050L.setValue "U_LineNum", oRow, oRow + 1
         oMat02.LoadFromDataSource
     End If
@@ -1339,7 +1349,7 @@ On Error GoTo Display_MatrixData_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.offset = sCnt
+            oDS_PS_TEMPTABLE.Offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_iField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)
@@ -1453,7 +1463,7 @@ On Error GoTo Update_PO_Error
     If oRecordSet01.RecordCount > 0 Then
         Do Until oRecordSet01.EOF
             oDS_PS_TEMPTABLE.InsertRecord (sCnt)
-            oDS_PS_TEMPTABLE.offset = sCnt
+            oDS_PS_TEMPTABLE.Offset = sCnt
             oDS_PS_TEMPTABLE.setValue "U_iField01", sCnt, sCnt + 1
             oDS_PS_TEMPTABLE.setValue "U_sField01", sCnt, Trim(oRecordSet01.Fields(0).VALUE)
             oDS_PS_TEMPTABLE.setValue "U_sField02", sCnt, Trim(oRecordSet01.Fields(1).VALUE)

@@ -563,7 +563,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                         Call oDS_PS_PP092L.setValue("U_Quantity", pval.Row - 1, RecordSet01.Fields("Quantity").VALUE)
                         Call oDS_PS_PP092L.setValue("U_PQty", pval.Row - 1, RecordSet01.Fields("PQty").VALUE)
                         Call oDS_PS_PP092L.setValue("U_GQty", pval.Row - 1, RecordSet01.Fields("GQty").VALUE)
-                        Call oDS_PS_PP092L.setValue("U_Qty", pval.Row - 1, RecordSet01.Fields("Quantity").VALUE / Val(RecordSet02.Fields("UnitWgt").VALUE))
+                        Call oDS_PS_PP092L.setValue("U_Qty", pval.Row - 1, Round(RecordSet01.Fields("Quantity").VALUE / Val(RecordSet02.Fields("UnitWgt").VALUE), 0))
                         Call oDS_PS_PP092L.setValue("U_UnitWgt", pval.Row - 1, Val(RecordSet02.Fields("UnitWgt").VALUE))
                         Call oDS_PS_PP092L.setValue("U_Weight", pval.Row - 1, RecordSet01.Fields("Quantity").VALUE)
                         Call oDS_PS_PP092L.setValue("U_ProDate", pval.Row - 1, Format(RecordSet01.Fields("CreateDate").VALUE, "YYYYMMDD"))
@@ -603,7 +603,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                         Else
                             '//현재수량보다 초과할 수 없음
                             Call MDC_Com.MDC_GF_Message("재고보다 많이 입력할 수 없습니다.", "W")
-                            Call oDS_PS_PP092L.setValue("U_Qty", pval.Row - 1, Quantity / oMat01.Columns("UnitWgt").Cells(pval.Row).Specific.VALUE)
+                            Call oDS_PS_PP092L.setValue("U_Qty", pval.Row - 1, Round(Quantity / oMat01.Columns("UnitWgt").Cells(pval.Row).Specific.VALUE, 0))
                             Call oDS_PS_PP092L.setValue("U_Weight", pval.Row - 1, Quantity)
                             
                         End If

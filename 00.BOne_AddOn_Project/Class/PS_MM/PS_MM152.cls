@@ -370,8 +370,12 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                    oForm01.Freeze True
+                    Call Initialization
+                    Call FormClear
+                    Call FormItemEnabled
+                    Add_MatrixRow 0, True
+                    oForm01.Freeze False
                     End If
                 ElseIf pval.ItemUID = "Btn01" Then
                     Print_Report01

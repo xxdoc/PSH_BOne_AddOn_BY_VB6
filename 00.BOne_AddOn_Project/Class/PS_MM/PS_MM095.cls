@@ -187,8 +187,16 @@ On Error GoTo Raise_ItemEvent_Error
                     ElseIf oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
                         oMat02.Clear
                         oDS_PS_USERDS01.Clear
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                        oForm01.Freeze True
+                        Call Initialization
+                        Call FormItemEnabled
+                        Call FormClear
+                        oForm01.Items("BPLId").Specific.Select "0", psk_Index
+                        oForm01.Items("OrdGbn").Specific.Select "0", psk_Index
+                        oDS_PS_MM095H.setValue "U_DocDate", 0, Format(Now, "YYYYMMDD")
+                        oForm01.Freeze False
+                        'oForm01.Mode = fm_OK_MODE
+                        'Call Sbo_Application.ActivateMenuItem("1282")
                     End If
                 End If
             Case et_KEY_DOWN: '//2

@@ -172,18 +172,27 @@ On Error GoTo Raise_ItemEvent_Error
                             BubbleEvent = False
                             Exit Sub
                         End If
+                        If (oForm01.Items("ChemC_Fe").Specific.VALUE >= 0.05 And oForm01.Items("ChemC_Fe").Specific.VALUE <= 0.15) Then
+                            If (oForm01.Items("ChemC_P").Specific.VALUE >= 0.025 And oForm01.Items("ChemC_P").Specific.VALUE <= 0.04) Then
+                                Call Update_OBTN
+                    
+                                oForm01.Items("ChemC_Fe").Specific.VALUE = 0
+                                oForm01.Items("ChemC_P").Specific.VALUE = 0
+                                oForm01.Items("ChemC_Cu").Specific.VALUE = 0
+                                
+                                oMat01.Clear
+                                oMat01.FlushToDataSource
+                                oMat01.LoadFromDataSource
+                                Exit Sub
                         
-                        Call Update_OBTN
+                                End If
+                                ErrNum = 5
+                                
+                                GoTo Raise_ItemEvent_Error
+                            End If
+                            ErrNum = 6
+                            GoTo Raise_ItemEvent_Error
                         
-                        oForm01.Items("LotNo").Specific.VALUE = ""
-                        
-                        oForm01.Items("ChemC_Fe").Specific.VALUE = 0
-                        oForm01.Items("ChemC_P").Specific.VALUE = 0
-                        oForm01.Items("ChemC_Cu").Specific.VALUE = 0
-                        
-                        oMat01.Clear
-                        oMat01.FlushToDataSource
-                        oMat01.LoadFromDataSource
                     End If
                 End If
                 
@@ -227,8 +236,10 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
                 If pval.ItemUID = "1" Then
                     If oForm01.Mode = fm_ADD_MODE Then
-                        oForm01.Mode = fm_OK_MODE
-                        Call Sbo_Application.ActivateMenuItem("1282")
+                        Call FormItemEnabled
+                        Call FormClear
+                        'oForm01.Mode = fm_OK_MODE
+                        'Call Sbo_Application.ActivateMenuItem("1282")
                     ElseIf oForm01.Mode = fm_OK_MODE Then
 '                        FormItemEnabled
 '                        Call Matrix_AddRow(1, oMat01.RowCount, False) 'oMat01
@@ -277,6 +288,10 @@ Raise_ItemEvent_Error:
         ErrNum = 0
         MDC_Com.MDC_GF_Message "Raise_ItemEvent_Error:" & Err.Number & " - " & Err.Description, "E"
         BubbleEvent = False
+    ElseIf ErrNum = 5 Then
+    Sbo_Application.MessageBox ("P 의 값이 잘못 입력되었습니다. 확인해주세요..")
+    ElseIf ErrNum = 6 Then
+    Sbo_Application.MessageBox ("Fe 의 값이 잘못 입력되었습니다. 확인해주세요..")
     Else
         MDC_Com.MDC_GF_Message "Raise_ItemEvent_Error:" & Err.Number & " - " & Err.Description, "E"
     End If
@@ -715,7 +730,7 @@ Private Sub Update_OBTN()
         sQry = "update [OBTN] set U_ChemC_Fe = '" & Trim(oDS_PS_QM030L.GetValue("U_ChemC_Fe", i)) & "', "
         sQry = sQry & "U_ChemC_P = '" & Trim(oDS_PS_QM030L.GetValue("U_ChemC_P", i)) & "', "
         sQry = sQry & "U_ChemC_Cu = '" & Trim(oDS_PS_QM030L.GetValue("U_ChemC_Cu", i)) & "' "
-        sQry = sQry & "Where ItemCode = '" & Trim(oDS_PS_QM030H.GetValue("U_ItemCode", 0)) & "' "
+         sQry = sQry & "Where ItemCode = '" & Trim(oDS_PS_QM030H.GetValue("U_ItemCode", 0)) & "' "
         sQry = sQry & "and DistNumber = '" & Trim(oDS_PS_QM030L.GetValue("U_CLotNo", i)) & "'"
         oRecordSet.DoQuery sQry
 
