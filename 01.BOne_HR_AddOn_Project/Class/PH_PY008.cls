@@ -40,10 +40,9 @@ On Error GoTo LoadForm_Error
     
     oXmlDoc.Load (MDC_Globals.SP_Path & "\" & SP_Screen & "\PH_PY008.srf")
     oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+
     For i = 1 To (oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").Item(i - 1).nodeValue = 20
         oXmlDoc.selectNodes("Application/forms/action/form/items/action/item/specific/@cellHeight").Item(i - 1).nodeValue = 16
@@ -82,6 +81,7 @@ LoadForm_Error:
 End Sub
 
 Private Function PH_PY008_CreateItems() As Boolean
+On Error GoTo PH_PY008_CreateItems_Error
 
     Dim sQry        As String
     Dim i           As Long
@@ -95,13 +95,10 @@ Private Function PH_PY008_CreateItems() As Boolean
     Dim optBtn      As SAPbouiCOM.OptionBtn
     
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_CreateItems_Error
-    
-    Call oForm.Freeze(True)
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
+    Call oForm.Freeze(True)
+
     Set oGrid1 = oForm.Items("Grid01").Specific
     
     oForm.DataSources.DataTables.Add ("PH_PY008")
@@ -114,13 +111,11 @@ Private Function PH_PY008_CreateItems() As Boolean
     '// 기본사항
     '//----------------------------------------------------------------------------------------------
     
-    
     oForm.Items("SCLTCOD").DisplayDesc = True
     
     '//일자_조회
     Call oForm.DataSources.UserDataSources.Add("SPosDate", dt_DATE, 8)
     oForm.Items("SPosDate").Specific.DataBind.SetBound True, "", "SPosDate"
-    
     
     Call oForm.DataSources.UserDataSources.Add("MSTCOD", dt_SHORT_TEXT, 10)
     oForm.Items("MSTCOD").Specific.DataBind.SetBound True, "", "MSTCOD"
@@ -131,7 +126,6 @@ Private Function PH_PY008_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("PosDate", dt_DATE, 8)
     oForm.Items("PosDate").Specific.DataBind.SetBound True, "", "PosDate"
     
-    
     '//출근
     Call oForm.DataSources.UserDataSources.Add("GetDate", dt_DATE, 8)
     oForm.Items("GetDate").Specific.DataBind.SetBound True, "", "GetDate"
@@ -140,7 +134,6 @@ Private Function PH_PY008_CreateItems() As Boolean
     Call oForm.DataSources.UserDataSources.Add("OffDate", dt_DATE, 8)
     oForm.Items("OffDate").Specific.DataBind.SetBound True, "", "OffDate"
    
-    
     Call oForm.DataSources.UserDataSources.Add("Rotation", dt_SHORT_TEXT, 4)
     oForm.Items("Rotation").Specific.DataBind.SetBound True, "", "Rotation"
     
@@ -156,15 +149,13 @@ Private Function PH_PY008_CreateItems() As Boolean
     
     Call oForm.DataSources.UserDataSources.Add("RToTime", dt_SHORT_TEXT, 4)
     oForm.Items("RToTime").Specific.DataBind.SetBound True, "", "RToTime"
-    
-    
+ 
     '//기찰기 퇴근
     Call oForm.DataSources.UserDataSources.Add("ROffDate", dt_DATE, 8)
     oForm.Items("ROffDate").Specific.DataBind.SetBound True, "", "ROffDate"
     
     Call oForm.DataSources.UserDataSources.Add("ROffTime", dt_SHORT_TEXT, 4)
     oForm.Items("ROffTime").Specific.DataBind.SetBound True, "", "ROffTime"
-    
     
     Call oForm.DataSources.UserDataSources.Add("ROutTime", dt_SHORT_TEXT, 4)
     oForm.Items("ROutTime").Specific.DataBind.SetBound True, "", "ROutTime"
@@ -175,7 +166,6 @@ Private Function PH_PY008_CreateItems() As Boolean
     '//근무형태
     Call oForm.DataSources.UserDataSources.Add("SShiftDat", dt_SHORT_TEXT, 10)
     oForm.Items("SShiftDat").Specific.DataBind.SetBound True, "", "SShiftDat"
-    
     
     '//근무조
     Call oForm.DataSources.UserDataSources.Add("SGNMUJO", dt_SHORT_TEXT, 10)
@@ -220,7 +210,6 @@ Private Function PH_PY008_CreateItems() As Boolean
     
     Call oForm.DataSources.UserDataSources.Add("SEarlyTo", dt_QUANTITY, 10)
     oForm.Items("SEarlyTo").Specific.DataBind.SetBound True, "", "SEarlyTo"
-    
     
     Call oForm.DataSources.UserDataSources.Add("EducTran", dt_QUANTITY, 10)
     oForm.Items("EducTran").Specific.DataBind.SetBound True, "", "EducTran"
@@ -281,10 +270,8 @@ Private Function PH_PY008_CreateItems() As Boolean
 '
 '    oForm.Items("TeamCode").DisplayDesc = True
     
-    
     '//담당
     oForm.Items("SRspCode").DisplayDesc = True
-    
     
     '// 근무형태
     Set oCombo = oForm.Items("ShiftDat").Specific
@@ -311,7 +298,6 @@ Private Function PH_PY008_CreateItems() As Boolean
     oForm.Items("DangerCD").DisplayDesc = True
 '    Set oCombo = oForm.Items("WorkType").Specific
     
-    
     '// 휴일
     Set oCombo = oForm.Items("SDayOff").Specific
     sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] WHERE Code = 'P202' AND U_UseYN= 'Y'"
@@ -336,13 +322,11 @@ Private Function PH_PY008_CreateItems() As Boolean
     oCombo.ValidValues.Add "Y", "확인[Y]"
     oForm.Items("Confirm").DisplayDesc = True
     
-    
     '// 교대근무인정
     Set oCombo = oForm.Items("RotateYN").Specific
     oCombo.ValidValues.Add "Y", "인정[Y]"
     oCombo.ValidValues.Add "N", "미인정[N]"
     oForm.Items("RotateYN").DisplayDesc = True
-    
     
 '    oForm.Items("SPosDate").Specific.Value = Format(Now, "yyyymmdd")
 
@@ -362,7 +346,6 @@ Private Function PH_PY008_CreateItems() As Boolean
             oRspCodeYN = "N"
         End If
     End If
-    
     
     '관리담당이면 현재일자 이전및 당일 16시 이후에 수정삭제 가능. 그외는 제한을 둠
                     
@@ -391,8 +374,7 @@ PH_PY008_CreateItems_Error:
 End Function
 
 Private Sub PH_PY008_EnableMenus()
-    
-    On Error GoTo PH_PY008_EnableMenus_Error
+On Error GoTo PH_PY008_EnableMenus_Error
 
     Call oForm.EnableMenu("1283", False)     '//제거
     Call oForm.EnableMenu("1284", False)    '//취소
@@ -405,7 +387,7 @@ PH_PY008_EnableMenus_Error:
 End Sub
 
 Private Sub PH_PY008_SetDocument(ByVal oFromDocEntry01 As String)
-    On Error GoTo PH_PY008_SetDocument_Error
+On Error GoTo PH_PY008_SetDocument_Error
     
     If (oFromDocEntry01 = "") Then
         Call PH_PY008_FormItemEnabled
@@ -423,16 +405,15 @@ PH_PY008_SetDocument_Error:
 End Sub
 
 Sub PH_PY008_FormItemEnabled()
+On Error GoTo PH_PY008_FormItemEnabled_Error
+
     Dim oCombo      As SAPbouiCOM.ComboBox
     Dim sQry        As String
     Dim i           As Long
+    Dim CLTCOD      As String
+    Dim sPosDate    As String
+    
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    
-    Dim CLTCOD As String
-    Dim sPosDate As String
-    
-    On Error GoTo PH_PY008_FormItemEnabled_Error
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Call oForm.Freeze(True)
@@ -465,10 +446,13 @@ Sub PH_PY008_FormItemEnabled()
             Next i
             oCombo.ValidValues.Add "", ""
             
-            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-            sQry = sQry & " AND U_UseYN = 'Y'"
-            sQry = sQry & " Order By U_Seq"
+            sQry = "        SELECT      U_Code,"
+            sQry = sQry & "             U_CodeNm"
+            sQry = sQry & " FROM        [@PS_HR200L] "
+            sQry = sQry & " WHERE       Code = '1'"
+            sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+            sQry = sQry & "             AND U_UseYN = 'Y'"
+            sQry = sQry & " ORDER BY    U_Seq"
             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
         End If
         oCombo.Select "", psk_ByValue
@@ -482,14 +466,15 @@ Sub PH_PY008_FormItemEnabled()
             Next i
             oCombo.ValidValues.Add "", ""
             
-            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-            sQry = sQry & " WHERE Code = '1' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-            sQry = sQry & " AND U_UseYN = 'Y'"
-            sQry = sQry & " Order By U_Seq"
+            sQry = "        SELECT      U_Code,"
+            sQry = sQry & "             U_CodeNm"
+            sQry = sQry & " FROM        [@PS_HR200L] "
+            sQry = sQry & " WHERE       Code = '1'"
+            sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+            sQry = sQry & "             AND U_UseYN = 'Y'"
+            sQry = sQry & " ORDER BY    U_Seq"
             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
         End If
-        
-        
         
         oCombo.Select "", psk_ByValue
         
@@ -528,8 +513,13 @@ Sub PH_PY008_FormItemEnabled()
         CLTCOD = oForm.Items("SCLTCOD").Specific.VALUE
         sPosDate = oForm.Items("SPosDate").Specific.VALUE
         
-        sQry = "Select U_WorkType From [@PH_PY003A] a Inner Join [@PH_PY003B] b On a.Code = b.Code "
-        sQry = sQry + " Where a.U_CLTCOD = '" & CLTCOD & "' And b.U_Date = '" & sPosDate & "'"
+        sQry = "        SELECT      U_WorkType"
+        sQry = sQry & " FROM        [@PH_PY003A]"
+        sQry = sQry & "             a Inner Join"
+        sQry = sQry & "             [@PH_PY003B] b"
+        sQry = sQry & "                 On a.Code = b.Code"
+        sQry = sQry & " WHERE       a.U_CLTCOD = '" & CLTCOD & "'"
+        sQry = sQry & "             AND b.U_Date = '" & sPosDate & "'"
         oRecordSet.DoQuery sQry
         
         Set oCombo = oForm.Items("WorkType").Specific
@@ -540,13 +530,11 @@ Sub PH_PY008_FormItemEnabled()
             oCombo.Select PH_PY008_WorkTypeSelect(oForm.Items("SPosDate").Specific.VALUE), psk_ByValue
         End If
     
-        
 '        oCombo.Select PH_PY008_WorkTypeSelect(Format(Now, "yyyymmdd")), psk_ByValue
 '        oCombo.Select "", psk_ByValue
         
 '        '//시간reset
 '        Call PH_PY008_Time_ReSet
-        
         
         Call oForm.EnableMenu("1281", False)     '//문서찾기
         Call oForm.EnableMenu("1282", True)    '//문서추가
@@ -583,33 +571,29 @@ PH_PY008_FormItemEnabled_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY008_FormItemEnabled_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
-    Dim sQry        As String
-    Dim i           As Long
-    Dim Chkcnt      As Long
-    Dim tSex        As String
-    Dim tBrith      As String
-    Dim Day         As String
-    Dim ActCode     As String
-    Dim MSTCOD      As String
-    Dim CLTCOD      As String
-    Dim YY          As String
-    Dim ymd         As String
-    Dim JanQty      As Double
-    
-    
-    
-    Dim oCombo      As SAPbouiCOM.ComboBox
-    Dim oColumn     As SAPbouiCOM.Column
+On Error GoTo Raise_FormItemEvent_Error
+
+    Dim sQry         As String
+    Dim i            As Long
+    Dim Chkcnt       As Long
+    Dim tSex         As String
+    Dim tBrith       As String
+    Dim Day          As String
+    Dim ActCode      As String
+    Dim MSTCOD       As String
+    Dim CLTCOD       As String
+    Dim YY           As String
+    Dim ymd          As String
+    Dim JanQty       As Double
+    Dim oCombo       As SAPbouiCOM.ComboBox
+    Dim oColumn      As SAPbouiCOM.Column
     Dim oColumns     As SAPbouiCOM.Columns
-    Dim oRecordSet  As SAPbobsCOM.Recordset
-    Dim oRecordSet01  As SAPbobsCOM.Recordset
+    Dim oRecordSet   As SAPbobsCOM.Recordset
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Dim ErrNum As Integer
-    
-    On Error GoTo Raise_FormItemEvent_Error
     
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     Set oRecordSet01 = oCompany.GetBusinessObject(BoRecordset)
@@ -638,8 +622,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     
                     Call PH_PY008_MTX01("A")
                 End If
-                
-                
                 
                 If pval.ItemUID = "Btn01" Then
                     If PH_PY008_ModifyYN() = "Y" Then
@@ -763,6 +745,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 If pval.ItemChanged = True Then
                     '//사업장(헤더)
                     Select Case pval.ItemUID
+
                         Case "SCLTCOD"
                         
                             Set oCombo = oForm.Items("STeamCode").Specific
@@ -775,14 +758,17 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '1' And U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L]"
+                            sQry = sQry & "             WHERE Code = '1'"
+                            sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            'sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("STeamCode").DisplayDesc = True
-                            
                             
                             Set oCombo = oForm.Items("TeamCode").Specific
         
@@ -794,10 +780,14 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '1' And U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = '1'"
+                            sQry = sQry & "             And U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            'sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("TeamCode").DisplayDesc = True
@@ -813,14 +803,17 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = 'P220' And U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = 'P220'"
+                            sQry = sQry & "             And U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            'sQry = sQRy &  "            AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & ""
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("DangerCD").DisplayDesc = True
-                            
                         
                         Case "STeamCode"
                             
@@ -836,16 +829,20 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '2' And U_Char1 = '" & oForm.Items.Item("STeamCode").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = '2'"
+                            sQry = sQry & "             And U_Char1 = '" & oForm.Items.Item("STeamCode").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("SRspCode").DisplayDesc = True
+
                         Case "TeamCode"
                         
-                            
                             '//담당 (부서에 따른 담당변경)
                             
                             Set oCombo = oForm.Items("RspCode").Specific
@@ -858,13 +855,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '2' And U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "' AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = '2'"
+                            sQry = sQry & "             And U_Char1 = '" & oForm.Items.Item("TeamCode").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_Char2 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("RspCode").DisplayDesc = True
+
                         Case "SRspCode"
                             
                             '//반변경 (담당에 따른 반변경)
@@ -879,16 +881,20 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '9' And U_Char1 = '" & oForm.Items.Item("SRspCode").Specific.VALUE & "' AND U_Char3 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = '9'"
+                            sQry = sQry & "             And U_Char1 = '" & oForm.Items.Item("SRspCode").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_Char3 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("SClsCode").DisplayDesc = True
+
                         Case "RspCode"
                         
-                            
                             '//반변경 (담당에 따른 반변경)
                             
                             Set oCombo = oForm.Items("ClsCode").Specific
@@ -901,13 +907,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 oCombo.Select 0, psk_Index
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = '9' And U_Char1 = '" & oForm.Items.Item("RspCode").Specific.VALUE & "' AND U_Char3 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " Order By U_Seq"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & "             WHERE Code = '9'"
+                            sQry = sQry & "             And U_Char1 = '" & oForm.Items.Item("RspCode").Specific.VALUE & "'"
+                            sQry = sQry & "             AND U_Char3 = '" & oForm.Items.Item("SCLTCOD").Specific.VALUE & "'"
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Seq"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oForm.Items("ClsCode").DisplayDesc = True
+
                         Case "WorkType"
                         
                             Select Case oForm.Items("WorkType").Specific.VALUE
@@ -1060,14 +1071,18 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                                 Next i
                             End If
                             
-                            sQry = "SELECT U_Code, U_CodeNm FROM [@PS_HR200L] "
-                            sQry = sQry & " WHERE Code = 'P155' AND U_Char1 = '" & oForm.Items.Item("ShiftDat").Specific.VALUE & "'"
-                            sQry = sQry & " And U_UseYN = 'Y'"
-                            sQry = sQry & " ORDER BY U_Code"
+                            sQry = "        SELECT      U_Code,"
+                            sQry = sQry & "             U_CodeNm"
+                            sQry = sQry & " FROM        [@PS_HR200L] "
+                            sQry = sQry & " WHERE       Code = 'P155'"
+                            sQry = sQry & "             AND U_Char1 = '" & oForm.Items.Item("ShiftDat").Specific.VALUE & "'"
+                            sQry = sQry & "             And U_UseYN = 'Y'"
+                            sQry = sQry & " ORDER BY    U_Code"
                             Call SetReDataCombo(oForm, sQry, oCombo, "Y")
                             
                             oCombo.Select 0, psk_Index
                             oForm.Items("GNMUJO").DisplayDesc = True
+
                         Case "GNMUJO"
                         
                             '//시간reset
@@ -1228,41 +1243,42 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                         Case "SShiftDat"   '//근무형태
                             Call oForm.Freeze(True)
                             If Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) <> "" Then
-                                sQry = "SELECT U_CodeNm FROM [@PS_HR200L] "
-                                sQry = sQry & " WHERE Code = 'P154' AND U_Code = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
-                                sQry = sQry & " ORDER BY U_Code"
+
+                                sQry = "        SELECT      U_CodeNm"
+                                sQry = sQry & "  FROM        [@PS_HR200L] "
+                                sQry = sQry & " WHERE       Code = 'P154'"
+                                sQry = sQry & "             AND U_Code = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
+                                sQry = sQry & " ORDER BY    U_Code"
                                 
                                 oRecordSet.DoQuery sQry
                                 If oRecordSet.RecordCount > 0 Then
-                                   oForm.Items("ShiftDatNm").Specific.VALUE = oRecordSet.Fields(0).VALUE
+                                    oForm.Items("ShiftDatNm").Specific.VALUE = oRecordSet.Fields(0).VALUE
                                    
-                                   sQry = "select u_Team1 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
-                                   oRecordSet.DoQuery sQry
-                                   oForm.Items("Team1").Specific.VALUE = oRecordSet.Fields(0).VALUE
+                                    sQry = "select u_Team1 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                    oRecordSet.DoQuery sQry
+                                    oForm.Items("Team1").Specific.VALUE = oRecordSet.Fields(0).VALUE
                                    
-                                   sQry = "select u_Team2 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
-                                   oRecordSet.DoQuery sQry
-                                   oForm.Items("Team2").Specific.VALUE = oRecordSet.Fields(0).VALUE
-                                   
-                                   
-                                   sQry = "select u_Team3 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
-                                   oRecordSet.DoQuery sQry
-                                   oForm.Items("Team3").Specific.VALUE = oRecordSet.Fields(0).VALUE
-                                   
+                                    sQry = "select u_Team2 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                    oRecordSet.DoQuery sQry
+                                    oForm.Items("Team2").Specific.VALUE = oRecordSet.Fields(0).VALUE
 
-                                    
-                                sQry = "SELECT U_CodeNm FROM [@PS_HR200L] "
-                                sQry = sQry & " WHERE Code = 'P154' AND U_Code = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
-                                sQry = sQry & " ORDER BY U_Code"
-                                
-                                oRecordSet.DoQuery sQry
-                                
-                                
-                                   oForm.Items("SGNMUJO").Specific.VALUE = ""
-                                   oForm.Items("SGNMUJONm").Specific.VALUE = ""
+                                    sQry = "select u_Team3 from [@PH_PY003B] where left(code,1) ='1' and u_date ='" & Trim(oForm.Items.Item("SPosDate").Specific.VALUE) & "'"
+                                    oRecordSet.DoQuery sQry
+                                    oForm.Items("Team3").Specific.VALUE = oRecordSet.Fields(0).VALUE
                                    
-                                   Set oCombo = oForm.Items("ShiftDat").Specific
-                                   oCombo.Select oRecordSet.Fields(0).VALUE, psk_ByValue
+                                    sQry = "        SELECT      U_CodeNm"
+                                    sQry = sQry & " FROM        [@PS_HR200L] "
+                                    sQry = sQry & " WHERE       Code = 'P154'"
+                                    sQry = sQry & "             AND U_Code = '" & Trim(oForm.Items.Item("SShiftDat").Specific.VALUE) & "'"
+                                    sQry = sQry & " ORDER BY    U_Code"
+                                
+                                    oRecordSet.DoQuery sQry
+                                
+                                    oForm.Items("SGNMUJO").Specific.VALUE = ""
+                                    oForm.Items("SGNMUJONm").Specific.VALUE = ""
+                                   
+                                    Set oCombo = oForm.Items("ShiftDat").Specific
+                                    oCombo.Select oRecordSet.Fields(0).VALUE, psk_ByValue
                                    
                                 Else
                                     oForm.Items("ShiftDatNm").Specific.VALUE = ""
@@ -1471,7 +1487,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                 oForm.Items.Item("77").Width = oForm.Items.Item("BUYN20").Left + oForm.Items.Item("BUYN20").Width - oForm.Items.Item("77").Left + 16
                 oForm.Items.Item("77").Height = oForm.Items.Item("78").Height
             
-                
             End If
 '----------------------------------------------------------
         Case et_FORM_KEY_DOWN '//22
@@ -1498,7 +1513,6 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
 '----------------------------------------------------------
         Case et_Drag '//39
         
-            
     End Select
     
     Set oCombo = Nothing
@@ -1506,7 +1520,7 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
     Set ProgBar01 = Nothing
     
     Exit Sub
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Raise_FormItemEvent_Error:
     oForm.Freeze (False)
     Set oCombo = Nothing
@@ -1522,10 +1536,11 @@ Raise_FormItemEvent_Error:
     End If
 End Sub
 
-
 Public Sub Raise_FormMenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormMenuEvent_Error
+
     Dim i As Long
-    On Error GoTo Raise_FormMenuEvent_Error
+
     Call oForm.Freeze(True)
     
     If (pval.BeforeAction = True) Then
@@ -1574,15 +1589,13 @@ Raise_FormMenuEvent_Error:
 End Sub
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
+On Error GoTo Raise_FormDataEvent_Error
+
     Dim i       As Long
     Dim sQry    As String
     Dim oCombo  As SAPbouiCOM.ComboBox
     
-    Dim oRecordSet  As SAPbobsCOM.Recordset
-    
-    
-    On Error GoTo Raise_FormDataEvent_Error
-    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     If (BusinessObjectInfo.BeforeAction = False) Then
@@ -1606,8 +1619,7 @@ Raise_FormDataEvent_Error:
 End Sub
 
 Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.ContextMenuInfo, ByRef BubbleEvent As Boolean)
-    
-    On Error GoTo Raise_RightClickEvent_Error
+On Error GoTo Raise_RightClickEvent_Error
     
     If pval.BeforeAction = True Then
     ElseIf pval.BeforeAction = False Then
@@ -1626,15 +1638,14 @@ Public Sub Raise_RightClickEvent(ByRef FormUID As String, ByRef pval As SAPbouiC
     End Select
     Exit Sub
 Raise_RightClickEvent_Error:
-
     Sbo_Application.SetStatusBarMessage "Raise_RightClickEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Sub PH_PY008_AddMatrixRow()
-    Dim oRow    As Long
-    
-    On Error GoTo PH_PY008_AddMatrixRow_Error
-    
+On Error GoTo PH_PY008_AddMatrixRow_Error
+
+    Dim oRow As Long
+
     Call oForm.Freeze(True)
     
 '    '//[Mat1]
@@ -1659,19 +1670,16 @@ Sub PH_PY008_AddMatrixRow()
 '        oDS_PH_PY008A.setValue "U_LineNum", oRow, oRow + 1
 '        oMat1.LoadFromDataSource
 '    End If
-
-    
-
     Call oForm.Freeze(False)
     Exit Sub
 PH_PY008_AddMatrixRow_Error:
-
     Call oForm.Freeze(False)
     Sbo_Application.SetStatusBarMessage "PH_PY008_AddMatrixRow_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
 Sub PH_PY008_FormClear()
 On Error GoTo PH_PY008_FormClear_Error
+
     Dim DocEntry As String
     DocEntry = MDC_GetData.Get_ReData("AutoKey", "ObjectCode", "ONNM", "'PH_PY008'", "")
     If DocEntry = 0 Then
@@ -1686,13 +1694,14 @@ End Sub
 
 Function PH_PY008_DataValidCheck() As Boolean
 On Error GoTo PH_PY008_DataValidCheck_Error
+
     PH_PY008_DataValidCheck = False
+
     Dim i       As Long
     Dim j       As Long
-    
     Dim sQry    As String
+
     Dim oRecordSet  As SAPbobsCOM.Recordset
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 '    '//----------------------------------------------------------------------------------
 '    '//기본사항 탭
@@ -1730,8 +1739,6 @@ On Error GoTo PH_PY008_DataValidCheck_Error
 '    '// Code = Name 동일
 '    Call oDS_PH_PY008A.setValue("Name", 0, oDS_PH_PY008A.GetValue("Code", 0))
 '
-'
-'
 '    oMat1.FlushToDataSource
 '
 '    '// Matrix 마지막 행 삭제(DB 저장시)
@@ -1745,7 +1752,6 @@ On Error GoTo PH_PY008_DataValidCheck_Error
     
     Set oRecordSet = Nothing
     
-    
 PH_PY008_DataValidCheck_Error:
     Set oRecordSet = Nothing
     PH_PY008_DataValidCheck = False
@@ -1753,13 +1759,14 @@ PH_PY008_DataValidCheck_Error:
 End Function
 
 Private Sub PH_PY008_MTX01(ByVal oConfirm As String) '//oConfirm A: 조회, S:근태이상자
+On Error GoTo PH_PY008_MTX01_Error
 
     '//메트릭스에 데이터 로드
     
     Dim i       As Long
     Dim Chkcnt  As Long
     Dim sQry    As String
-    Dim iRow        As Long
+    Dim iRow    As Long
     
     Dim Param01 As String
     Dim Param02 As String
@@ -1771,11 +1778,9 @@ Private Sub PH_PY008_MTX01(ByVal oConfirm As String) '//oConfirm A: 조회, S:근태
     Dim Param08 As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_MTX01_Error
+    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     Call oForm.Freeze(True)
-    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", 100, False)
@@ -1806,8 +1811,6 @@ Private Sub PH_PY008_MTX01(ByVal oConfirm As String) '//oConfirm A: 조회, S:근태
         GoTo PH_PY008_MTX01_Exit
     End If
     
-    
-
     iRow = oForm.DataSources.DataTables.Item(0).Rows.Count
     
     Call PH_PY008_TitleSetting(iRow)
@@ -1855,27 +1858,26 @@ PH_PY008_MTX01_Error:
 End Sub
 
 Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional oCol As String)
+On Error GoTo PH_PY008_MTX02_Error
 
     '//메트릭스 자료를 head에 로드
     
     Dim i       As Long
     Dim sQry    As String
-    Dim sRow As Long
+    Dim sRow    As Long
     
     Dim Param01 As String
     Dim Param02 As String
     Dim Param03 As String
     
-    Dim oCombo      As SAPbouiCOM.ComboBox
+    Dim oCombo  As SAPbouiCOM.ComboBox
+
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_MTX02_Error
+    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     Call oForm.Freeze(True)
-    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
-    
+
     sRow = oRow
-    
     
     Param01 = oForm.Items("SCLTCOD").Specific.VALUE
     Param02 = oDS_PH_PY008.Columns.Item("GetDate").Cells(oRow).VALUE
@@ -1901,9 +1903,6 @@ Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
         oForm.Items.Item("MSTCOD").Enabled = True
         oForm.Items.Item("FullName").Enabled = True
         
-        
-        
-        
         GoTo PH_PY008_MTX02_Exit
     End If
     sQry = "EXEC PH_PY008_02 '" & Param01 & "', '" & Param02 & "', '" & Param03 & "'"
@@ -1913,8 +1912,6 @@ Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
         Call MDC_Com.MDC_GF_Message("결과가 존재하지 않습니다.", "E")
         GoTo PH_PY008_MTX02_Exit
     End If
-    
-    
     
 '    oForm.Items("PosDate").Specific.Value = Format(oRecordset.Fields("PosDate").Value, "YYYYMMDD")
         
@@ -2009,9 +2006,6 @@ Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
     Set oCombo = oForm.Items("WorkType").Specific
     oCombo.Select oRecordSet.Fields("WorkType").VALUE, psk_ByValue
     
-    
-    
-    
     oForm.DataSources.UserDataSources.Item("GetDate").VALUE = Format(oRecordSet.Fields("GetDate").VALUE, "YYYYMMDD")
 '    oForm.Items("GetDate").Specific.Value = Format(oRecordset.Fields("GetDate").Value, "YYYYMMDD")
 '    oForm.Items("GetTime").Specific.Value = Right("0" + CStr(oRecordset.Fields("GetTime").Value), 4)
@@ -2054,12 +2048,10 @@ Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
 '    oForm.DataSources.UserDataSources.Item("DangerNu").Value = oRecordset.Fields("DangerNu").Value
     oForm.DataSources.UserDataSources.Item("Rotation").VALUE = oRecordSet.Fields("Rotation").VALUE
     
-
     oForm.DataSources.UserDataSources.Item("RToDate").VALUE = oRecordSet.Fields("RToDate").VALUE
     oForm.DataSources.UserDataSources.Item("RToTime").VALUE = oRecordSet.Fields("RToTime").VALUE
     oForm.DataSources.UserDataSources.Item("ROffDate").VALUE = oRecordSet.Fields("ROffDate").VALUE
     oForm.DataSources.UserDataSources.Item("ROffTime").VALUE = oRecordSet.Fields("ROffTime").VALUE
-    
     
     oForm.DataSources.UserDataSources.Item("ROutTime").VALUE = oRecordSet.Fields("ROutTime").VALUE
     oForm.DataSources.UserDataSources.Item("RInTime").VALUE = oRecordSet.Fields("RInTime").VALUE
@@ -2085,7 +2077,6 @@ Private Sub PH_PY008_MTX02(ByVal oUID As String, Optional oRow As Long, Optional
     
     oForm.Update
     
-    
     Set oRecordSet = Nothing
     Call oForm.Freeze(False)
     Exit Sub
@@ -2102,7 +2093,9 @@ End Sub
 
 Function PH_PY008_Validate(ByVal ValidateType As String) As Boolean
 On Error GoTo PH_PY008_Validate_Error
+
     PH_PY008_Validate = True
+
     Dim i, j As Long
     Dim sQry As String
     Dim oRecordSet As SAPbobsCOM.Recordset
@@ -2132,13 +2125,11 @@ PH_PY008_Validate_Error:
 End Function
 
 '//행삭제 (FormUID, pval, BubbleEvent, 매트릭스 이름, 디비데이터소스, 데이터 체크 필드명)
-Private Sub Raise_EVENT_ROW_DELETE(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean, _
-                                                    oMat As SAPbouiCOM.Matrix, DBData As SAPbouiCOM.DBDataSource, CheckField As String)
+Private Sub Raise_EVENT_ROW_DELETE(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean, oMat As SAPbouiCOM.Matrix, DBData As SAPbouiCOM.DBDataSource, CheckField As String)
+On Error GoTo Raise_EVENT_ROW_DELETE_Error
 
     Dim i As Long
     
-    On Error GoTo Raise_EVENT_ROW_DELETE_Error
-
     If (oLastColRow > 0) Then
         If pval.BeforeAction = True Then
         
@@ -2169,16 +2160,13 @@ Raise_EVENT_ROW_DELETE_Error:
 End Sub
 
 Private Function PH_PY008_DaySelect(ByVal Day As String) As String
+On Error GoTo PH_PY008_DaySelect_Error
 
     '//요일 Select
     
     Dim sQry    As String
     
-   
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_DaySelect_Error
-
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     sQry = "SELECT datepart(weekday, '" & Day & "')"
@@ -2222,7 +2210,6 @@ PH_PY008_DaySelect_Error:
     Sbo_Application.SetStatusBarMessage "PH_PY008_DaySelect_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Function PH_PY008_DayOffSelect(ByVal Day As String) As String
 On Error GoTo PH_PY008_DayOffSelect_Error
     '//평일휴일구분 Select
@@ -2235,14 +2222,13 @@ On Error GoTo PH_PY008_DayOffSelect_Error
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    
-    sQry = "           SELECT    T1.U_DayType "
-    sQry = sQry & " FROM      [@PH_PY003A] AS T0"
-    sQry = sQry & "              INNER JOIN"
-    sQry = sQry & "              [@PH_PY003B] AS T1"
+    sQry = "        SELECT      T1.U_DayType "
+    sQry = sQry & " FROM        [@PH_PY003A] AS T0"
+    sQry = sQry & "             INNER JOIN"
+    sQry = sQry & "             [@PH_PY003B] AS T1"
     sQry = sQry & "                 ON T0.Code = T1.Code"
-    sQry = sQry & " WHERE    T1.U_Date = '" & Day & "'"
-    sQry = sQry & "              AND T0.U_CLTCOD = '" & CLTCOD & "'"
+    sQry = sQry & " WHERE       T1.U_Date = '" & Day & "'"
+    sQry = sQry & "             AND T0.U_CLTCOD = '" & CLTCOD & "'"
     
     oRecordSet.DoQuery sQry
     If oRecordSet.RecordCount > 0 Then
@@ -2264,6 +2250,7 @@ PH_PY008_DayOffSelect_Error:
 End Function
 
 Private Sub PH_PY008_SAVE()
+On Error GoTo PH_PY008_SAVE_Error
 
     '//데이타 저장
     Dim oCombo      As SAPbouiCOM.ComboBox
@@ -2303,6 +2290,7 @@ Private Sub PH_PY008_SAVE()
     Dim RInTime As Integer
     Dim Abnomal$, Confirm$, Attend$
     Dim PosDate As String
+    Dim DAYTyp As String
     
     Dim ShiftDat001A As String '//인사기본 교대조
     Dim bShiftDat As String '//지난주 교대조
@@ -2332,8 +2320,6 @@ Private Sub PH_PY008_SAVE()
     
     Dim oRecordSet As SAPbobsCOM.Recordset
     
-    On Error GoTo PH_PY008_SAVE_Error
-
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
@@ -2380,7 +2366,13 @@ Private Sub PH_PY008_SAVE()
     Confirm = oForm.Items("Confirm").Specific.VALUE
     Comment = oForm.Items("Comment").Specific.VALUE
     
-    
+    If Trim(GNMUJO) = "41" Then
+        DAYTyp = Trim(oForm.Items("Team1").Specific.VALUE)
+    ElseIf Trim(GNMUJO) = "42" Then
+        DAYTyp = Trim(oForm.Items("Team2").Specific.VALUE)
+    Else
+        DAYTyp = Trim(oForm.Items("Team3").Specific.VALUE)
+    End If
     
     If Trim(Confirm) = "" Then
         Confirm = "N"
@@ -2394,13 +2386,11 @@ Private Sub PH_PY008_SAVE()
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", oRecordSet.RecordCount, False)
     
-    
     If oForm.DataSources.UserDataSources("Chk").VALUE = "N" Then
         '//전체적용
         If oDS_PH_PY008.Rows.Count > 0 Then
             For i = 0 To oDS_PH_PY008.Rows.Count - 1
                 If oDS_PH_PY008.Columns.Item("Chk").Cells(i).VALUE = "Y" Then
-                    
                     
                     CheckData = Trim(oDS_PH_PY008.Columns.Item("Day").Cells(i).VALUE)
                     MSTCOD = Trim(oDS_PH_PY008.Columns.Item("MSTCOD").Cells(i).VALUE)
@@ -2458,7 +2448,6 @@ Private Sub PH_PY008_SAVE()
                         
                         Abnomal = "Y" '//근태이상자
                         
-                        
                         If oForm.Items("SDay").Specific.VALUE = "월" Then
                             '//월요일은 제외
                             OverTime = 0
@@ -2498,7 +2487,6 @@ Private Sub PH_PY008_SAVE()
                                 Rotation = 0
                             End If
                             
-                            
                             If (JIGTYP = "02" Or JIGTYP = "03" Or JIGCOD = "73") And PAYTYP = "2" Then '//사무기술직(사무계약직(73) 추가, 2014.07.23 송명규) 월급제 연장근무시간 자동계산 월 20시간
                                 If CLTCOD <> "2" Then '주52시간 근무 시행(2018.07.01 부)으로 월급제 기능 제한(2018.07.05 송명규), 일단 부산사업장만 시행
                                     Extend = PH_PY008_Extend15(MSTCOD)
@@ -2522,7 +2510,6 @@ Private Sub PH_PY008_SAVE()
                             '무단결근, 유계결근, 휴직, 무급휴가는 위해 수당 없다.
                             If WorkType = "A01" Or WorkType = "A02" Or Left(WorkType, 1) = "F" Or WorkType = "D11" Then
                                 DangerCD = ""
-                            
                             Else
                                 '//전문직, 계약직 이며 연봉제가 아니고 위해코드가 없으면 위해코드를 기타로..
                                 If (JIGTYP = "04" Or JIGTYP = "05") And PAYTYP <> "1" And JIGCOD <> "73" And DangerCD = "" Then
@@ -2606,7 +2593,8 @@ Private Sub PH_PY008_SAVE()
                             sQry = sQry & " Attend,"
                             sQry = sQry & " Confirm,"
                             sQry = sQry & " Comment,"
-                            sQry = sQry & " RotateYN"
+                            sQry = sQry & " RotateYN,"
+                            sQry = sQry & " DAYTyp"
                             sQry = sQry & " ) "
                             sQry = sQry & "VALUES("
                             sQry = sQry & "'" & CLTCOD & "',"
@@ -2655,7 +2643,8 @@ Private Sub PH_PY008_SAVE()
                             sQry = sQry & "'" & Attend & "',"
                             sQry = sQry & "'" & Confirm & "',"
                             sQry = sQry & "'" & Comment & "',"
-                            sQry = sQry & "'" & RotateYN & "'"
+                            sQry = sQry & "'" & RotateYN & "',"
+                            sQry = sQry & "'" & DAYTyp & "'"
                             sQry = sQry & ")"
                             oRecordSet.DoQuery sQry
                         End If
@@ -2729,7 +2718,6 @@ Private Sub PH_PY008_SAVE()
                             '무단결근, 유계결근, 휴직, 무급휴가는 위해 수당 없다.
                             If WorkType = "A01" Or WorkType = "A02" Or Left(WorkType, 1) = "F" Or WorkType = "D11" Then
                                 DangerCD = ""
-                            
                             Else
                                 '//전문직, 계약직 이며 위해코드가 없으면 위해코드를 기타로..
                                 ' JIGCOD 73 추가 20180201 황영수 사무계약직의 경우 추가 안되도록 수정 김택근과장 요청
@@ -2774,7 +2762,6 @@ Private Sub PH_PY008_SAVE()
                                 DangerNu = 1
                             End If
                             
-                            
                             sQry = "Update ZPH_PY008"
                             sQry = sQry & " Set ShiftDat = '" & ShiftDat & "',"
                             sQry = sQry & " GNMUJO = '" & GNMUJO & "',"
@@ -2811,7 +2798,8 @@ Private Sub PH_PY008_SAVE()
                             sQry = sQry & " RInTime = " & RInTime & ","
                             sQry = sQry & " Confirm = '" & Confirm & "',"
                             sQry = sQry & " Comment = '" & Comment & "',"
-                            sQry = sQry & " RotateYN = '" & RotateYN & "'"
+                            sQry = sQry & " RotateYN = '" & RotateYN & "',"
+                            sQry = sQry & " DAYTyp = '" & DAYTyp & "'"
                             sQry = sQry & " Where CLTCOD = '" & CLTCOD & "'"
                             sQry = sQry & " And PosDate = '" & PosDate & "'"
                             sQry = sQry & " And MSTCOD = '" & MSTCOD & "'"
@@ -2849,7 +2837,6 @@ Private Sub PH_PY008_SAVE()
         JIGTYP = oRecordSet.Fields(3).VALUE '//직원구분
         PAYTYP = oRecordSet.Fields(4).VALUE '//급여구분
         JIGCOD = oRecordSet.Fields(5).VALUE '직급
-
 
         If oForm.Items("SDay").Specific.VALUE = "월" Then
             '//월요일은 제외
@@ -2987,16 +2974,13 @@ PH_PY008_SAVE_Error:
 End Sub
 
 Private Function PH_PY008_WorkTypeSelect(ByVal Day As String) As String
+On Error GoTo PH_PY008_WorkTypeSelect_Error
 
     '//근태구분 Select
     
-    Dim sQry    As String
+    Dim sQry As String
     
-   
     Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_WorkTypeSelect_Error
-
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
 
     sQry = "SELECT U_WorkType From [@PH_PY003B] Where U_Date = '" & Day & "'"
@@ -3019,7 +3003,6 @@ PH_PY008_WorkTypeSelect_Error:
     Set oRecordSet = Nothing
     Sbo_Application.SetStatusBarMessage "PH_PY008_WorkTypeSelect_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
-
 
 Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
 
@@ -3044,7 +3027,6 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     Dim hTime3 As Double '//오후 10분 휴식시간
     Dim hTime4 As Double '//저녁휴식시간
     Dim hTime5 As Double '//야간휴식시간
-    
     
     Dim NextDay As String
     Dim TimeType As String
@@ -3086,7 +3068,6 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     Team1 = Trim(oForm.Items("Team1").Specific.VALUE)
     Team2 = Trim(oForm.Items("Team2").Specific.VALUE)
     Team3 = Trim(oForm.Items("Team3").Specific.VALUE)
-    
     
     GetTime = "0" + GetTime
     GetTime = Right(GetTime, 4)
@@ -3740,9 +3721,6 @@ Private Function PH_PY008_Time_Calc_Main(ByVal OffTime As String)
     oForm.Items("Special").Specific.VALUE = PH_PY008_hhmm_Calc(Special) '//특근
     oForm.Items("SpExtend").Specific.VALUE = PH_PY008_hhmm_Calc(SpExtend) '//특근연장
     
-        
-     
-    
     Set oRecordSet = Nothing
     Exit Function
 PH_PY008_Time_Calc_Main_Exit:
@@ -3753,7 +3731,6 @@ PH_PY008_Time_Calc_Main_Error:
     Set oRecordSet = Nothing
     Sbo_Application.SetStatusBarMessage "PH_PY008_Time_Calc_Main_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
-
 
 Private Function PH_PY008_Time_Calc(ByVal GetTime As String, ByVal OffTime As String) As Double
     
@@ -3799,8 +3776,6 @@ Private Function PH_PY008_Time_Calc(ByVal GetTime As String, ByVal OffTime As St
     
     PH_PY008_Time_Calc = Ret
     
-
-    
     Exit Function
 PH_PY008_Time_Calct_Exit:
     Exit Function
@@ -3809,25 +3784,23 @@ PH_PY008_Mark_Set_Error:
 End Function
 
 Private Sub PH_PY008_ChDate_Set()
+On Error GoTo PH_PY008_ChDate_Set_Error
     '//날자변경에 대한 자료 Set
 
-    
-    
     Dim i       As Long
     Dim sQry    As String
     Dim Day     As String
     
-    Dim CLTCOD  As String
-    Dim sPosDate As String
+    Dim CLTCOD      As String
+    Dim sPosDate    As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
-    Dim oRecordSet As SAPbobsCOM.Recordset
     
-    On Error GoTo PH_PY008_ChDate_Set_Error
-
-    Call oForm.Freeze(True)
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
+    Call oForm.Freeze(True)
+
     CLTCOD = oForm.Items("SCLTCOD").Specific.VALUE
     sPosDate = oForm.Items("SPosDate").Specific.VALUE
     
@@ -3846,10 +3819,8 @@ Private Sub PH_PY008_ChDate_Set()
         Call PH_PY008_ChGNMUJO_Set
     End If
     
-    
     oForm.DataSources.UserDataSources.Item("PosDate").VALUE = sPosDate
     oForm.DataSources.UserDataSources.Item("GetDate").VALUE = sPosDate
-    
     
 '    oForm.Items("PosDate").Specific.Value = sPosDate
 '    oForm.Items("GetDate").Specific.Value = sPosDate
@@ -3865,10 +3836,6 @@ Private Sub PH_PY008_ChDate_Set()
                          
     Set oCombo = oForm.Items("DayOff1").Specific
     oCombo.Select PH_PY008_DayOffSelect(sPosDate), psk_ByValue
-                        
-    
-                        
-    
     
 '    Select Case oForm.Items("GNMUJO").Specific.Value
 '        Case "22"
@@ -3890,13 +3857,8 @@ Private Sub PH_PY008_ChDate_Set()
 '            oCombo.Select PH_PY008_DayOffSelect(oForm.Items.Item("SPosDate").Specific.Value), psk_ByValue
 '
 '    End Select
-                            
-    
-                        
-                        
 
     oForm.Update
-    
     
     Set oRecordSet = Nothing
     Call oForm.Freeze(False)
@@ -3911,9 +3873,9 @@ PH_PY008_ChDate_Set_Error:
 End Sub
 
 Private Sub PH_PY008_ChGNMUJO_Set()
+On Error GoTo PH_PY008_ChGNMUJO_Set_Error
     '//근무조 변경에 대한 자료 Set
 
-    
     Dim sQry    As String
     Dim Day     As String
     Dim Team1     As String
@@ -3922,11 +3884,10 @@ Private Sub PH_PY008_ChGNMUJO_Set()
     Dim GNMUJO   As String
     
     Dim oCombo      As SAPbouiCOM.ComboBox
-    Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_ChGNMUJO_Set_Error
 
     Call oForm.Freeze(True)
+
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     ' 근무조를 받아와서 그 근무조가 야간인지 주간인지 휴무인지 체크함. (주52)
     ' 근무조를 받아와서 체크해서 21 or 22로 변경하는 건 시간표(PH_PY003) 때문임.
@@ -4017,8 +3978,6 @@ Private Sub PH_PY008_ChGNMUJO_Set()
 '    oForm.Items("GetTime").Specific.Value = "0000"
 '    oForm.Items("OffTime").Specific.Value = "0000"
     
-    
-    
     Set oRecordSet = Nothing
     Call oForm.Freeze(False)
     Exit Sub
@@ -4090,29 +4049,25 @@ PH_PY008_Time_ReSet_Error:
 End Sub
 
 Private Function PH_PY008_OverTimeCheck(ByVal PosDate As String, ByVal MSTCOD As String) As Double
+On Error GoTo PH_PY008_OverTimeCheck_Error
 
     '//주 근무시간
     
-    Dim sQry    As String
+    Dim sQry        As String
+    Dim FrDate      As String
+    Dim ToDate      As String
+    Dim CLTCOD      As String
+    Dim sunday      As String
+    Dim OverTimeYN  As String
     
-    Dim FrDate As String
-    Dim ToDate As String
-    Dim CLTCOD As String
-    Dim sunday As String
-    Dim OverTimeYN As String
-    
-    Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_OverTimeCheck_Error
-
     Call oForm.Freeze(True)
+
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     CLTCOD = oForm.Items("SCLTCOD").Specific.VALUE
     
     If oForm.Items("SDay").Specific.VALUE = "일" Then
-        
-    
         
         ToDate = PosDate
         
@@ -4213,24 +4168,145 @@ PH_PY008_OverTimeCheck_Error:
     Call oForm.Freeze(False)
     Sbo_Application.SetStatusBarMessage "PH_PY008_OverTimeCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
+Private Function PH_PY008_OverTimeCheck2(ByVal PosDate As String, ByVal MSTCOD As String) As Double
 
-Private Sub PH_PY008_Delete()
-    '//선택된 자료 삭제
-    Dim PosDate As String
-    Dim CLTCOD As String
-    Dim MSTCOD As String
-    Dim FullName As String
+    '//주 근무시간 월급제 사원 2.5 계산을 위한 신규오버타임
     
-    Dim i As Integer
     Dim sQry    As String
+    
+    Dim FrDate As String
+    Dim ToDate As String
+    Dim CLTCOD As String
+    Dim sunday As String
+    Dim OverTimeYN As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
     
-    On Error GoTo PH_PY008_Delete_Error
+    On Error GoTo PH_PY008_OverTimeCheck_Error
 
+    Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
+    CLTCOD = oForm.Items("SCLTCOD").Specific.VALUE
     
+    If oForm.Items("SDay").Specific.VALUE = "일" Then
+        
+    
+        
+        ToDate = PosDate
+        
+        '//월요일 찾기
+        sQry = " SELECT U_Date "
+        sQry = sQry + " From [@PH_PY003A] a Inner join [@PH_PY003B] b On a.Code = b.Code And a.U_CLTCOD = '" & CLTCOD & "'"
+        sQry = sQry + " Where DatePart(Weekday, U_Date) = 2 "
+        sQry = sQry + " and U_Date between DATEADD(dd, -6, '" & PosDate & "') and '" & PosDate & "'"
+        
+        oRecordSet.DoQuery sQry
+        
+        If oRecordSet.RecordCount > 0 Then
+            FrDate = oRecordSet.Fields(0).VALUE
+        Else
+            Call MDC_Com.MDC_GF_Message("[12시간초과체크] 기준일자(월요일)을 가져오지 못했습니다..", "E")
+            GoTo PH_PY008_OverTimeCheck_Exit
+        End If
+        
+    ElseIf oForm.Items("SDay").Specific.VALUE = "월" Then
+        FrDate = PosDate
+        
+        '//일요일 찾기
+        sQry = " SELECT U_Date "
+        sQry = sQry + " From [@PH_PY003A] a Inner join [@PH_PY003B] b On a.Code = b.Code And a.U_CLTCOD = '" & CLTCOD & "'"
+        sQry = sQry + " Where DatePart(Weekday, U_Date) = 1 "
+        sQry = sQry + " and U_Date between '" & PosDate & "' and  DATEADD(dd, 6, '" & PosDate & "')"
+        
+        oRecordSet.DoQuery sQry
+        If oRecordSet.RecordCount > 0 Then
+            ToDate = oRecordSet.Fields(0).VALUE
+        Else
+            Call MDC_Com.MDC_GF_Message("[12시간초과체크] 기준일자(일요일)을 가져오지 못했습니다..", "E")
+            GoTo PH_PY008_OverTimeCheck_Exit
+        End If
+    Else
+        '//월요일 찾기
+        sQry = " SELECT U_Date "
+        sQry = sQry + " From [@PH_PY003A] a Inner join [@PH_PY003B] b On a.Code = b.Code And a.U_CLTCOD = '" & CLTCOD & "'"
+        sQry = sQry + " Where DatePart(Weekday, U_Date) = 2 "
+        sQry = sQry + " and U_Date between DATEADD(dd, -6, '" & PosDate & "') and '" & PosDate & "'"
+        
+        oRecordSet.DoQuery sQry
+        If oRecordSet.RecordCount > 0 Then
+            FrDate = oRecordSet.Fields(0).VALUE
+        Else
+            Call MDC_Com.MDC_GF_Message("[12시간초과체크] 기준일자(월요일)을 가져오지 못했습니다..", "E")
+            GoTo PH_PY008_OverTimeCheck_Exit
+        End If
+        
+        '//일요일 찾기
+        sQry = " SELECT U_Date "
+        sQry = sQry + " From [@PH_PY003A] a Inner join [@PH_PY003B] b On a.Code = b.Code And a.U_CLTCOD = '" & CLTCOD & "'"
+        sQry = sQry + " Where DatePart(Weekday, U_Date) = 1 "
+        sQry = sQry + " and U_Date between '" & PosDate & "' and  DATEADD(dd, 6, '" & PosDate & "')"
+        
+        oRecordSet.DoQuery sQry
+        If oRecordSet.RecordCount > 0 Then
+            ToDate = oRecordSet.Fields(0).VALUE
+        Else
+            Call MDC_Com.MDC_GF_Message("[12시간초과체크] 기준일자(일요일)을 가져오지 못했습니다..", "E")
+            GoTo PH_PY008_OverTimeCheck_Exit
+        End If
+        
+    End If
+        
+    sQry = "SELECT Isnull(U_Inform05,'N') From [@PH_PY001A] Where Code = '" & MSTCOD & "'"
+    oRecordSet.DoQuery sQry
+
+    OverTimeYN = oRecordSet.Fields(0).VALUE
+    
+    ' 기존 로직에서 Base Special 추가로 입력해서 주 52시간 초과인지 계산함.
+    sQry = " Select Sum(Extend + SpExtend + EarlyTo + SEarlyTo) From ZPH_PY008 Where PosDate Between '" & FrDate & "' and '" & ToDate & "'"
+    sQry = sQry + " And MSTCOD = '" & MSTCOD & "'"
+    sQry = sQry + " And PosDate <> '" & PosDate & "'"
+    oRecordSet.DoQuery sQry
+    
+    If (oRecordSet.RecordCount = 0) Then
+        Call MDC_Com.MDC_GF_Message("결과가 존재하지 않습니다.", "E")
+        GoTo PH_PY008_OverTimeCheck_Exit
+    Else
+        If OverTimeYN = "Y" Then
+            PH_PY008_OverTimeCheck2 = -100
+        Else
+            PH_PY008_OverTimeCheck2 = oRecordSet.Fields(0).VALUE
+        End If
+    End If
+    
+    Set oRecordSet = Nothing
+    Call oForm.Freeze(False)
+    Exit Function
+PH_PY008_OverTimeCheck_Exit:
+    PH_PY008_OverTimeCheck2 = 15 '//주계산 시간
+    Set oRecordSet = Nothing
+    Call oForm.Freeze(False)
+    Exit Function
+PH_PY008_OverTimeCheck_Error:
+    Set oRecordSet = Nothing
+    Call oForm.Freeze(False)
+    Sbo_Application.SetStatusBarMessage "PH_PY008_OverTimeCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
+End Function
+
+Private Sub PH_PY008_Delete()
+On Error GoTo PH_PY008_Delete_Error
+
+    '//선택된 자료 삭제
+    Dim PosDate     As String
+    Dim CLTCOD      As String
+    Dim MSTCOD      As String
+    Dim FullName    As String
+    
+    Dim i       As Integer
+    Dim sQry    As String
+    
+    Dim oRecordSet As SAPbobsCOM.Recordset
+    Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     Call oForm.Freeze(True)
     
@@ -4241,8 +4317,6 @@ Private Sub PH_PY008_Delete()
     PosDate = oForm.Items("PosDate").Specific.VALUE
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
-    
-    
     
 '    If Trim(MSTCOD) <> "" Then
 '        '//선택한 한명만 삭제
@@ -4304,31 +4378,26 @@ PH_PY008_Delete_Error:
 End Sub
 
 Private Function PH_PY008_Extend15(ByVal MSTCOD As String) As Double
+On Error GoTo PH_PY008_Extend15_Error
 
     '//사무기술직 월 15시간 => 20시간으로 변경 2014/07/01부 N.G.Y
     
     Dim sQry    As String
+    Dim CLTCOD  As String
+    Dim YM      As String
     
-    
-    Dim CLTCOD As String
-    Dim YM As String
-    
-    Dim StTime As Double
+    Dim StTime  As Double
     
     Dim OverTime As Double
     
     Dim CLTCODTIME As Double
     
-    Dim oRecordSet As SAPbobsCOM.Recordset
-    
-    On Error GoTo PH_PY008_Extend15_Error
-
     Call oForm.Freeze(True)
+
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
-    
-    
-    OverTime = PH_PY008_OverTimeCheck(oForm.Items("PosDate").Specific.VALUE, MSTCOD)
+    OverTime = PH_PY008_OverTimeCheck2(oForm.Items("PosDate").Specific.VALUE, MSTCOD)
     
     CLTCOD = oForm.Items("SCLTCOD").Specific.VALUE
     YM = Left(oForm.Items("PosDate").Specific.VALUE, 6)
@@ -4429,19 +4498,18 @@ PH_PY008_hhmm_Calc_Error:
 End Function
 
 Private Sub PH_PY008_TitleSetting(iRow As Long)
-    Dim i               As Long
-    Dim j               As Long
-    Dim sQry            As String
-     
-    Dim COLNAM(29)       As String
+On Error GoTo Error_Message
 
-    Dim oColumn         As SAPbouiCOM.EditTextColumn
-    Dim oComboCol       As SAPbouiCOM.ComboBoxColumn
+    Dim i       As Long
+    Dim j       As Long
+    Dim sQry    As String
+     
+    Dim COLNAM(29)  As String
+
+    Dim oColumn     As SAPbouiCOM.EditTextColumn
+    Dim oComboCol   As SAPbouiCOM.ComboBoxColumn
     
     Dim oRecordSet  As SAPbobsCOM.Recordset
-     
-    On Error GoTo Error_Message
-    
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
     
     oForm.Freeze True
@@ -4481,7 +4549,6 @@ Private Sub PH_PY008_TitleSetting(iRow As Long)
         oGrid1.Columns.Item(i).TitleObject.Caption = COLNAM(i)
         oGrid1.Columns.Item(i).Editable = False
         
-
         Select Case COLNAM(i)
             Case "선택"
                 oGrid1.Columns.Item(i).Editable = True
@@ -4501,7 +4568,6 @@ Private Sub PH_PY008_TitleSetting(iRow As Long)
                     Next j
                 End If
 
-
                 oComboCol.DisplayType = cdt_Description
             Case "담당"
                 oGrid1.Columns.Item(i).Type = gct_ComboBox
@@ -4517,7 +4583,6 @@ Private Sub PH_PY008_TitleSetting(iRow As Long)
                         oRecordSet.MoveNext
                     Next j
                 End If
-
 
                 oComboCol.DisplayType = cdt_Description
             Case "반"
@@ -4535,7 +4600,6 @@ Private Sub PH_PY008_TitleSetting(iRow As Long)
                     Next j
                 End If
 
-
                 oComboCol.DisplayType = cdt_Description
             Case "휴일"
                 oGrid1.Columns.Item(i).Type = gct_ComboBox
@@ -4550,7 +4614,6 @@ Private Sub PH_PY008_TitleSetting(iRow As Long)
                         oRecordSet.MoveNext
                     Next j
                 End If
-
 
                 oComboCol.DisplayType = cdt_Description
             Case "근태"
@@ -4592,7 +4655,6 @@ Error_Message:
     Sbo_Application.SetStatusBarMessage "PH_PY008_TitleSetting Error : " & Space(10) & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Function PH_PY008_ModifyYN() As String
 On Error GoTo PH_PY008_ModifyYN_Error
     '//추가 수정 삭제 가능한지
@@ -4600,7 +4662,7 @@ On Error GoTo PH_PY008_ModifyYN_Error
     Dim Today       As String
     Dim Todaytm     As String
     
-    Dim sQry    As String
+    Dim sQry        As String
 
     Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
@@ -4636,7 +4698,6 @@ On Error GoTo PH_PY008_ModifyYN_Error
         PH_PY008_ModifyYN = "Y"
     End If
     
-    
     Set oRecordSet = Nothing
     Exit Function
 PH_PY008_ModifyYN_Exit:
@@ -4649,20 +4710,16 @@ PH_PY008_ModifyYN_Error:
 End Function
 
 Private Function PH_PY008_Special(ByVal MSTCOD As String) As Double
+On Error GoTo PH_PY008_Special_Error
 
     '//사무기술직 특근시간 월 24시간 초과 할 수 없음. 2014/07/01부 N.G.Y
     
     Dim sQry    As String
-    
-    
-    Dim CLTCOD As String
-    Dim YM As String
-    
+    Dim CLTCOD  As String
+    Dim YM      As String
     
     Dim oRecordSet As SAPbobsCOM.Recordset
     
-    On Error GoTo PH_PY008_Special_Error
-
     Call oForm.Freeze(True)
     Set oRecordSet = oCompany.GetBusinessObject(BoRecordset)
         

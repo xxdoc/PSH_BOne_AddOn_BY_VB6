@@ -1023,6 +1023,7 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
     Dim Exist As Boolean
     Dim sQry As String
     Dim TotalAmt As Long
+    Dim ReqCod
     
     Dim oRecordSet01    As SAPbobsCOM.Recordset
     
@@ -1271,7 +1272,11 @@ On Error GoTo Raise_EVENT_VALIDATE_Error
                             Call MDC_Com.MDC_GF_Message("수,중량이 올바르지 않습니다.", "W")
                         End If
                     End If
-                ElseIf (pval.ItemUID = "CntcCode") Then
+                 ElseIf (pval.ItemUID = "ReqCod") Then ' 요청자 추가 20180726 황영수
+                    sQry = "SELECT LastName + FirstName FROM [OHEM] WHERE U_MSTCOD = '" & Trim(oForm01.Items("ReqCod").Specific.VALUE) & "'"
+                    oRecordSet01.DoQuery sQry
+                    oForm01.Items("ReqNam").Specific.VALUE = oRecordSet01.Fields(0).VALUE
+                 ElseIf (pval.ItemUID = "CntcCode") Then
                     Call oDS_PS_PP030H.setValue("U_" & pval.ItemUID, 0, oForm01.Items(pval.ItemUID).Specific.VALUE)
                     Call oDS_PS_PP030H.setValue("U_CntcName", 0, MDC_PS_Common.GetValue("SELECT LastName + FirstName FROM [OHEM] WHERE U_MSTCOD = '" & oForm01.Items(pval.ItemUID).Specific.VALUE & "'", 0, 1))
                 Else
@@ -1381,6 +1386,7 @@ On Error GoTo Raise_EVENT_CHOOSE_FROM_LIST_Error
                 Set oDataTable01 = Nothing
             End If
         End If
+        
         If (pval.ItemUID = "SCardCod") Then
             If pval.SelectedObjects Is Nothing Then
             Else
@@ -1611,9 +1617,12 @@ On Error GoTo PS_PP030_CreateItems_Error
     Call oForm01.DataSources.UserDataSources.Add("SItemNam", dt_SHORT_TEXT, 100)
     Call oForm01.DataSources.UserDataSources.Add("SCardCod", dt_SHORT_TEXT, 20)
     Call oForm01.DataSources.UserDataSources.Add("SCardNam", dt_SHORT_TEXT, 100)
+    Call oForm01.DataSources.UserDataSources.Add("ReqCod", dt_SHORT_TEXT, 20)
+    Call oForm01.DataSources.UserDataSources.Add("ReqNam", dt_SHORT_TEXT, 100)
     Call oForm01.DataSources.UserDataSources.Add("Opt01", dt_SHORT_TEXT, 10)
     Call oForm01.DataSources.UserDataSources.Add("Opt02", dt_SHORT_TEXT, 10)
     Call oForm01.DataSources.UserDataSources.Add("Opt03", dt_SHORT_TEXT, 10)
+    
     Call oForm01.Items("SBPLId").Specific.DataBind.SetBound(True, "", "SBPLId")
     Call oForm01.Items("ItmBsort").Specific.DataBind.SetBound(True, "", "ItmBsort")
     Call oForm01.Items("ItmMsort").Specific.DataBind.SetBound(True, "", "ItmMsort")
@@ -1622,6 +1631,8 @@ On Error GoTo PS_PP030_CreateItems_Error
     Call oForm01.Items("SItemNam").Specific.DataBind.SetBound(True, "", "SItemNam")
     Call oForm01.Items("SCardCod").Specific.DataBind.SetBound(True, "", "SCardCod")
     Call oForm01.Items("SCardNam").Specific.DataBind.SetBound(True, "", "SCardNam")
+    Call oForm01.Items("ReqCod").Specific.DataBind.SetBound(True, "", "ReqCod")
+    Call oForm01.Items("ReqNam").Specific.DataBind.SetBound(True, "", "ReqNam")
     Call oForm01.Items("Opt01").Specific.DataBind.SetBound(True, "", "Opt01")
     Call oForm01.Items("Opt02").Specific.DataBind.SetBound(True, "", "Opt02")
     Call oForm01.Items("Opt03").Specific.DataBind.SetBound(True, "", "Opt03")
@@ -2352,6 +2363,7 @@ On Error GoTo PS_PP030_MTX01_Error
     Dim Param05 As String
     Dim Param06 As String
     Dim Param07 As String
+    Dim Param08 As String
     
     Param01 = Trim(oForm01.Items("SBPLId").Specific.Selected.VALUE)
     Param02 = Trim(oForm01.Items("ItmBsort").Specific.Selected.VALUE)
@@ -2360,11 +2372,13 @@ On Error GoTo PS_PP030_MTX01_Error
     Param05 = Trim(oForm01.Items("SItemCod").Specific.VALUE)
     Param06 = Trim(oForm01.Items("SCardCod").Specific.VALUE)
     Param07 = Trim(oForm01.Items("Mark").Specific.VALUE)
+    Param08 = Trim(oForm01.Items("ReqCod").Specific.VALUE)
+    
     
     Dim ProgressBar01 As SAPbouiCOM.ProgressBar
     Set ProgressBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회시작!", RecordSet01.RecordCount, False)
     
-    Query01 = "EXEC PS_PP030_02 '" & Param01 & "','" & Param02 & "','" & Param03 & "','" & Param04 & "','" & Param05 & "','" & Param06 & "','" & Param07 & "'"
+    Query01 = "EXEC PS_PP030_02 '" & Param01 & "','" & Param02 & "','" & Param03 & "','" & Param04 & "','" & Param05 & "','" & Param06 & "','" & Param07 & "','" & Param08 & "'"
     Call RecordSet01.DoQuery(Query01)
     
     oMat01.Clear

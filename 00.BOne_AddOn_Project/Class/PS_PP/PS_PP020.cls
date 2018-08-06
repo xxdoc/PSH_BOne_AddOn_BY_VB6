@@ -17,7 +17,7 @@ Attribute VB_Exposed = False
 '//  Description    : 작번등록
 '//  FormType       : PS_PP020
 '//  Create Date    : 2010.10.05
-'//  Modified Date  :
+'//  Modified Date  : 2018.07.26 필드 요청자 필드 추
 '//  Creator        : Ryu Yung Jo
 '//  Company        : Poongsan Holdings
 '****************************************************************************************************************
@@ -210,11 +210,17 @@ On Error GoTo Raise_ItemEvent_Error
                                 Sbo_Application.ActivateMenuItem ("7425")
                                 BubbleEvent = False
                             End If
+                        ElseIf pval.ColUID = "ReqCod" Then
+                            If oMat01.Columns("ReqCod").Cells(pval.Row).Specific.VALUE = "" Then
+                                Sbo_Application.ActivateMenuItem ("7425")
+                                BubbleEvent = False
+                            End If
                         ElseIf pval.ColUID = "CardCode" Then
                             If oMat01.Columns("CardCode").Cells(pval.Row).Specific.VALUE = "" Then
                                 Sbo_Application.ActivateMenuItem ("7425")
                                 BubbleEvent = False
                             End If
+                        
                         ElseIf pval.ColUID = "ShipCode" Then
                             If oMat01.Columns("ShipCode").Cells(pval.Row).Specific.VALUE = "" Then
                                 Sbo_Application.ActivateMenuItem ("7425")
@@ -446,6 +452,8 @@ On Error GoTo Raise_ItemEvent_Error
                         ElseIf pval.ColUID = "ItemCode" Then
                             FlushToItemValue pval.ItemUID, pval.Row, pval.ColUID
                         ElseIf pval.ColUID = "ShipCode" Then
+                            FlushToItemValue pval.ItemUID, pval.Row, pval.ColUID
+                        ElseIf pval.ColUID = "ReqCod" Then
                             FlushToItemValue pval.ItemUID, pval.Row, pval.ColUID
                         End If
                         
@@ -946,7 +954,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_TEMPTABLE.InsertRecord (oRow)
         End If
         oMat02.AddRow
-        oDS_PS_TEMPTABLE.Offset = oRow
+        oDS_PS_TEMPTABLE.offset = oRow
         oDS_PS_TEMPTABLE.setValue "U_iField01", oRow, oRow + 1
         oMat02.LoadFromDataSource
     Else
@@ -954,7 +962,7 @@ On Error GoTo Add_MatrixRow_Error
             oDS_PS_PP020H.InsertRecord (oRow)
         End If
         oMat01.AddRow
-        oDS_PS_PP020H.Offset = oRow
+        oDS_PS_PP020H.offset = oRow
         oDS_PS_PP020H.setValue "DocNum", oRow, oRow + 1
         oMat01.LoadFromDataSource
     End If
@@ -1047,6 +1055,7 @@ On Error GoTo FlushToItemValue_Error
                 sQry = sQry & "         a.U_SubNo1,"
                 sQry = sQry & "         a.U_SubNo2,"
                 sQry = sQry & "         a.U_Status,"
+                sQry = sQry & "         U_ReqCod = '" & MDC_PS_Common.User_MSTCOD & "',"
                 sQry = sQry & "         a.U_UseDept,"
                 sQry = sQry & "         ISNULL(a.U_ReWeight, 0) AS U_ReWeight"
                 sQry = sQry & " FROM    [@PS_PP010H] a "
@@ -1103,6 +1112,7 @@ On Error GoTo FlushToItemValue_Error
                     sQry = sQry & "         a.U_SubNo1,"
                     sQry = sQry & "         a.U_SubNo2,"
                     sQry = sQry & "         a.U_Status,"
+                    sQry = sQry & "         U_ReqCod = '" & MDC_PS_Common.User_MSTCOD & "',"
                     sQry = sQry & "         a.U_UseDept,"
                     sQry = sQry & "         ISNULL(a.U_ReWeight, 0) AS U_ReWeight,"
                     sQry = sQry & "         B.SalUnitMsr "
@@ -1141,8 +1151,14 @@ On Error GoTo FlushToItemValue_Error
                 oMat01.Columns("SlePrice").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields("U_SlePrice").VALUE)
                 oMat01.Columns("WorkGbn").Cells(oRow).Specific.Select Trim(oRecordSet01.Fields("U_WorkGbn").VALUE), psk_ByValue
                 oMat01.Columns("PP010Doc").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields("DocEntry").VALUE)
+                oMat01.Columns("ReqCod").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields("U_ReqCod").VALUE)
                 oMat01.Columns("WrWeight").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields("U_ReWeight").VALUE)
                 Call oMat01.Columns("YearPdYN").Cells(oRow).Specific.Select("N", psk_ByValue) '연간품여부(2015.06.15 송명규 추가)
+                
+                
+                sQry = "Select lastName + firstName From OHEM Where U_MSTCOD = '" & MDC_PS_Common.User_MSTCOD & "'"
+                oRecordSet01.DoQuery sQry
+                oMat01.Columns("ReqNam").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
                 
                 oMat01.Columns("Comments").Cells(oRow).Click ct_Regular
                 oForm01.Freeze False
@@ -1179,6 +1195,13 @@ On Error GoTo FlushToItemValue_Error
                 oRecordSet01.DoQuery sQry
                 
                 oMat01.Columns("ShipName").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+                                
+            ElseIf oCol = "ReqCod" Then
+            
+                sQry = "Select lastName + firstName From OHEM Where U_MSTCOD = '" & Trim(oMat01.Columns("ReqCod").Cells(oRow).Specific.VALUE) & "'"
+                oRecordSet01.DoQuery sQry
+                oMat01.Columns("ReqNam").Cells(oRow).Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+                
             End If
     End Select
 
@@ -1391,6 +1414,8 @@ On Error GoTo PS_PP020_AddData_Error
     Dim ReDate      As String
     Dim Comments    As String
     Dim PP010Doc    As String
+    Dim ReqCod      As String
+    Dim ReqNam      As String
     Dim YearPdYN    As String
     Dim OrderAmt    As String
     Dim NegoAmt     As String
@@ -1434,6 +1459,8 @@ On Error GoTo PS_PP020_AddData_Error
         Material = Trim(oDS_PS_PP020H.GetValue("U_Material", loopCount))
         Unit = Trim(oDS_PS_PP020H.GetValue("U_Unit", loopCount))
         Size = Trim(oDS_PS_PP020H.GetValue("U_Size", loopCount))
+        ReqCod = Trim(oDS_PS_PP020H.GetValue("U_ReqCod", loopCount))
+        ReqNam = Trim(oDS_PS_PP020H.GetValue("U_ReqNam", loopCount))
         ItmBsort = Trim(oDS_PS_PP020H.GetValue("U_ItmBSort", loopCount))
         SjDocNum = Trim(oDS_PS_PP020H.GetValue("U_SjDocNum", loopCount))
         SjLinNum = Trim(oDS_PS_PP020H.GetValue("U_SjLinNum", loopCount))
@@ -1494,6 +1521,8 @@ On Error GoTo PS_PP020_AddData_Error
         Query01 = Query01 & ReDate & "','"
         Query01 = Query01 & Comments & "','"
         Query01 = Query01 & PP010Doc & "','"
+        Query01 = Query01 & ReqCod & "','"
+        Query01 = Query01 & ReqNam & "','"
         Query01 = Query01 & YearPdYN & "','"
         Query01 = Query01 & OrderAmt & "','"
         Query01 = Query01 & NegoAmt & "','"
@@ -1598,6 +1627,8 @@ On Error GoTo Add_JakNum_Error
     
     Dim DrawQty As Double
     Dim YearPdYN As String '연간품여부(2015.06.15 송명규)
+    Dim ReqCod As String '요청자(2018.07.27 황영수)
+    Dim ReqNam As String '요청자(2018.07.27 황영수)
     
     Dim OrderAmt As Currency '수주금액(2015.10.12 송명규)
     Dim NegoAmt As Currency 'Nego금액(2015.10.12 송명규)
@@ -1644,11 +1675,10 @@ On Error GoTo Add_JakNum_Error
         ProDate = Trim(oDS_PS_PP020H.GetValue("U_ProDate", i))
         ReDate = Trim(oDS_PS_PP020H.GetValue("U_ReDate", i))
         PP010Doc = Trim(oDS_PS_PP020H.GetValue("U_PP010Doc", i))
-        
+        ReqCod = Trim(oDS_PS_PP020H.GetValue("U_ReqCod", i))
+        ReqNam = Trim(oDS_PS_PP020H.GetValue("U_ReqNam", i))
         DrawQty = Trim(oDS_PS_PP020H.GetValue("U_DrawQty", i))
-        
         YearPdYN = Trim(oDS_PS_PP020H.GetValue("U_YearPdYN", i))
-        
         OrderAmt = Trim(oDS_PS_PP020H.GetValue("U_OrderAmt", i))
         NegoAmt = Trim(oDS_PS_PP020H.GetValue("U_NegoAmt", i))
         TrgtAmt = Trim(oDS_PS_PP020H.GetValue("U_TrgtAmt", i))
@@ -1707,6 +1737,8 @@ On Error GoTo Add_JakNum_Error
         sQry = sQry & " U_Status,"
         sQry = sQry & " U_DrawQty,"
         sQry = sQry & " CreateDate"
+        sQry = sQry & " U_ReqCod,"
+        sQry = sQry & " U_ReqNam,"
         sQry = sQry & " ) "
         sQry = sQry & "VALUES("
         sQry = sQry & DocEntry & ","
@@ -1752,6 +1784,8 @@ On Error GoTo Add_JakNum_Error
         sQry = sQry & "'O',"
         sQry = sQry & "'" & DrawQty & "',"
         sQry = sQry & " GETDATE()"
+        sQry = sQry & "'" & ReqCod & "',"
+        sQry = sQry & "'" & ReqNam & "',"
         sQry = sQry & ")"
         RecordSet01.DoQuery sQry
         
@@ -1941,7 +1975,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_PP020H.Offset = i
+        oDS_PS_PP020H.offset = i
         oDS_PS_PP020H.setValue "DocNum", i, i + 1
         oDS_PS_PP020H.setValue "DocEntry", i, Trim(oRecordSet01.Fields("DocEntry").VALUE)
         oDS_PS_PP020H.setValue "U_JakName", i, Trim(oRecordSet01.Fields("U_JakName").VALUE)
@@ -1977,6 +2011,8 @@ On Error GoTo LoadData_Error
         oDS_PS_PP020H.setValue "U_Comments", i, Trim(oRecordSet01.Fields("U_Comments").VALUE)
         oDS_PS_PP020H.setValue "U_InOutGbn", i, Trim(oRecordSet01.Fields("U_InOutGbn").VALUE)
         oDS_PS_PP020H.setValue "U_Status", i, Trim(oRecordSet01.Fields("U_Status").VALUE)
+        oDS_PS_PP020H.setValue "U_ReqCod", i, Trim(oRecordSet01.Fields("U_ReqCod").VALUE)
+        oDS_PS_PP020H.setValue "U_ReqNam", i, Trim(oRecordSet01.Fields("U_ReqNam").VALUE)
         oDS_PS_PP020H.setValue "U_PP010Doc", i, Trim(oRecordSet01.Fields("U_PP010Doc").VALUE)
         oDS_PS_PP020H.setValue "U_DrawQty", i, Trim(oRecordSet01.Fields("U_DrawQty").VALUE)
         oDS_PS_PP020H.setValue "U_ReWkRn", i, Trim(oRecordSet01.Fields("U_ReWkRn").VALUE)

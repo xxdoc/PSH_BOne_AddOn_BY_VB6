@@ -23,25 +23,24 @@ Attribute VB_Exposed = False
 '//********************************************************************************
 Option Explicit         '모듈 수준에서 해당하는 모듈의 모든 변수를 명시적으로 선언하도록 할 때 사용합니다.
 
-Public oFormUniqueID01      As String
-Public oForm01              As SAPbouiCOM.Form
-Public oMat01               As SAPbouiCOM.Matrix
-Private oDS_PS_SD001H       As SAPbouiCOM.DBDataSource    '등록헤더 'Represents a SAP Business One database table to be attached to a form.
-Private oDS_PS_SD001L       As SAPbouiCOM.DBDataSource    '등록라인
-Private oDS_PS_SD001M       As SAPbouiCOM.DBDataSource
+Public oFormUniqueID01  As String
+Public oForm01          As SAPbouiCOM.Form
+Public oMat01           As SAPbouiCOM.Matrix
+Private oDS_PS_SD001H   As SAPbouiCOM.DBDataSource    '등록헤더 'Represents a SAP Business One database table to be attached to a form.
+Private oDS_PS_SD001L   As SAPbouiCOM.DBDataSource    '등록라인
+Private oDS_PS_SD001M   As SAPbouiCOM.DBDataSource
 
-Private oLast_Item_UID   As String                        '클래스에서 선택한 마지막 아이템 Uid값
-Private oLast_Col_UID    As String                        '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
-Private oLast_Col_Row    As Long                          '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
-Private oSeq&
-Private TmpCode As String
-Private oRadioBtn As String
-Private oCardCode As String
-Private oCpNaming As String
-Private oWhsCode As String
-Private oItmBsort As String
-Private oItmMsort As String
-
+Private oLast_Item_UID  As String '클래스에서 선택한 마지막 아이템 Uid값
+Private oLast_Col_UID   As String '마지막아이템이 메트릭스일경우에 마지막 선택된 Col의 Uid값
+Private oLast_Col_Row   As Long   '마지막아이템이 메트릭스일경우에 마지막 선택된 Row값
+Private oSeq            As Long
+Private TmpCode         As String
+Private oRadioBtn       As String
+Private oCardCode       As String
+Private oCpNaming       As String
+Private oWhsCode        As String
+Private oItmBsort       As String
+Private oItmMsort       As String
 
 'Private oFormMode As String
 
@@ -50,16 +49,15 @@ Private oItmMsort As String
 '*******************************************************************
 Public Sub LoadForm()
 On Error GoTo LoadForm_Error
-    Dim i As Long
+
+    Dim i           As Long
     Dim oInnerXml01 As String
-    Dim oXmlDoc01             As New MSXML2.DOMDocument
+    Dim oXmlDoc01   As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_SD001.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -95,7 +93,6 @@ On Error GoTo LoadForm_Error
     Call ComboBox_Setting
 '    Call CF_ChooseFromList
 '    Call FormItemEnabled
-    
         
     oForm01.Update      ' Reloads the form from the application.
                         ' Use this method to update an object from the database.
@@ -110,13 +107,15 @@ LoadForm_Error:
     Set oForm01 = Nothing
     Sbo_Application.SetStatusBarMessage "Form_Load Error:" & Err.Description, bmt_Short, True
 End Sub
+
 Public Sub Raise_ItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_ItemEvent_Error
-    Dim sQry As String
-    Dim ErrNum As Integer
-    Dim oRecordSet01 As SAPbobsCOM.Recordset
-    Dim loopCount As Integer
+
+    Dim sQry        As String
+    Dim ErrNum      As Integer
+    Dim loopCount   As Integer
     
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     If (pval.BeforeAction = True) Then '//BeforeAction = True
@@ -220,8 +219,8 @@ On Error GoTo Raise_ItemEvent_Error
             Case et_ITEM_PRESSED: '//1
               If pval.ItemUID = "Btn02" Then
                 If oForm01.Mode = fm_ADD_MODE And pval.Action_Success = True Then
-                      oForm01.Mode = fm_OK_MODE
-                      Call Sbo_Application.ActivateMenuItem("1282")
+                    oForm01.Mode = fm_OK_MODE
+                    Call Sbo_Application.ActivateMenuItem("1282")
                 End If
               End If
             Case et_KEY_DOWN: '//2
@@ -262,13 +261,13 @@ On Error GoTo Raise_ItemEvent_Error
                         End If
                         
                         Call oForm01.Items("TeamCode").Specific.ValidValues.Add("%", "선택")
-                        sQry = "            SELECT      U_Minor AS [Code],"
-                        sQry = sQry & "                 U_CdName As [Name]"
-                        sQry = sQry & "  FROM       [@PS_SY001L]"
-                        sQry = sQry & "  WHERE      Code = 'I001'"
-                        sQry = sQry & "                 AND U_UseYN = 'Y'"
-                        sQry = sQry & "                 AND U_RelCd = '" & Trim(oForm01.Items("CardCode").Specific.VALUE) & "'"
-                        sQry = sQry & "  ORDER BY  U_Seq"
+                        sQry = "        SELECT      U_Minor AS [Code],"
+                        sQry = sQry & "             U_CdName As [Name]"
+                        sQry = sQry & " FROM        [@PS_SY001L]"
+                        sQry = sQry & " WHERE       Code = 'I001'"
+                        sQry = sQry & "             AND U_UseYN = 'Y'"
+                        sQry = sQry & "             AND U_RelCd = '" & Trim(oForm01.Items("CardCode").Specific.VALUE) & "'"
+                        sQry = sQry & " ORDER BY    U_Seq"
                         Call MDC_SetMod.Set_ComboList(oForm01.Items("TeamCode").Specific, sQry, "", False, False)
                         Call oForm01.Items("TeamCode").Specific.Select(0, psk_Index)
                     
@@ -310,7 +309,7 @@ On Error GoTo Raise_ItemEvent_Error
         End Select
     End If
     Exit Sub
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Raise_ItemEvent_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "품목코드생성 버튼을 누르기 전에 고객을 먼저 선택하세요.", "E"
@@ -320,7 +319,6 @@ Raise_ItemEvent_Error:
         Sbo_Application.SetStatusBarMessage "Raise_ItemEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
     End If
 End Sub
-
 
 Public Sub Raise_MenuEvent(ByRef FormUID As String, ByRef pval As SAPbouiCOM.IMenuEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_MenuEvent_Error
@@ -351,7 +349,6 @@ On Error GoTo Raise_MenuEvent_Error
 Raise_MenuEvent_Error:
     Sbo_Application.SetStatusBarMessage "Raise_MenuEvent_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Public Sub Raise_FormDataEvent(ByRef FormUID As String, ByRef BusinessObjectInfo As SAPbouiCOM.BusinessObjectInfo, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_FormDataEvent_Error
@@ -389,8 +386,9 @@ End Sub
 
 Function CreateItems() As Boolean
 On Error GoTo CreateItems_Error
-    Dim optBtn          As SAPbouiCOM.OptionBtn
-    Dim sQry As String
+
+    Dim optBtn  As SAPbouiCOM.OptionBtn
+    Dim sQry    As String
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     
     Call oForm01.DataSources.UserDataSources.Add("MatDate", dt_DATE, 10)
@@ -449,7 +447,6 @@ On Error GoTo CreateItems_Error
     oForm01.Items("WhsCode").Specific.VALUE = "102"
     oForm01.Items("WhsName").Specific.VALUE = "동래"
     
-    
     Exit Function
 CreateItems_Error:
     Set oRecordSet01 = Nothing
@@ -491,10 +488,23 @@ On Error GoTo ComboBox_Setting_Error
     Call MDC_SetMod.Set_ComboList(oForm01.Items("TeamCode").Specific, sQry, "", False, False)
     Call oForm01.Items("TeamCode").Specific.Select(0, psk_Index)
     
+    '연간품여부
     Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("%", "선택")
     Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("Y", "Y")
     Call oForm01.Items("YearPdYN").Specific.ValidValues.Add("N", "N")
     Call oForm01.Items("YearPdYN").Specific.Select(0, psk_Index)
+
+    '세분화항목(2018.07.28 송명규, 김명수 대리 요청)
+    Call oForm01.Items("Detail").Specific.ValidValues.Add("%", "선택")
+    sQry = "        SELECT      U_Minor AS [Code],"
+    sQry = sQry & "             U_CdName As [Name]"
+    sQry = sQry & " FROM        [@PS_SY001L]"
+    sQry = sQry & " WHERE       Code = 'P213'"
+    sQry = sQry & "             AND U_UseYN = 'Y'"
+    sQry = sQry & " ORDER BY    U_Minor"
+    Call MDC_SetMod.Set_ComboList(oForm01.Items("Detail").Specific, sQry, "", False, False)
+    Call oForm01.Items("Detail").Specific.Select(0, psk_Index)
+
     '//콤보에 기본값설정
     Exit Sub
 ComboBox_Setting_Error:
@@ -576,11 +586,11 @@ DataValidCheck_Error:
     Sbo_Application.SetStatusBarMessage "DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
-
 Private Function HeaderSpaceLineDel02() As Boolean
 On Error GoTo HeaderSpaceLineDel02_Error
-    Dim ErrNum      As Integer
-    Dim DocNum      As String
+
+    Dim ErrNum As Integer
+    Dim DocNum As String
     
     ErrNum = 0
     
@@ -622,8 +632,8 @@ On Error GoTo HeaderSpaceLineDel02_Error
     End Select
     
     HeaderSpaceLineDel02 = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 HeaderSpaceLineDel02_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "사업장은 필수입력 사항입니다. 확인하세요.", "E"
@@ -655,8 +665,9 @@ End Function
 
 Private Function HeaderSpaceLineDel01() As Boolean
 On Error GoTo HeaderSpaceLineDel01_Error
-    Dim ErrNum      As Integer
-    Dim DocNum      As String
+
+    Dim ErrNum As Integer
+    Dim DocNum As String
     
     ErrNum = 0
     
@@ -695,8 +706,8 @@ On Error GoTo HeaderSpaceLineDel01_Error
     End Select
     
     HeaderSpaceLineDel01 = True
-Exit Function
-'/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 HeaderSpaceLineDel01_Error:
     If ErrNum = 1 Then
         MDC_Com.MDC_GF_Message "사업장은 필수입력 사항입니다. 확인하세요.", "E"
@@ -727,10 +738,11 @@ HeaderSpaceLineDel01_Error:
 End Function
 
 Private Sub FlushToItemValue(ByVal oUID As String, ByVal oCID As String, Optional oRow As Long, Optional oCol As String)
-    Dim i$
-    Dim oRecordSet01        As SAPbobsCOM.Recordset
-    Dim sQry                As String
+
+    Dim i       As Integer
+    Dim sQry    As String
     
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Select Case oUID
@@ -748,40 +760,43 @@ Private Sub FlushToItemValue(ByVal oUID As String, ByVal oCID As String, Optiona
     Set oRecordSet01 = Nothing
 End Sub
 
-
 Private Function Create_Itemcode(ChkType As Integer) As Boolean
 On Error GoTo Create_Itemcode_Error
 
-    Dim oItem01 As SAPbobsCOM.Items
-    Dim ErrCode       As Long
-    Dim ErrMsg        As String
-    Dim ItemName      As String
-    Dim RetVal&
+    Dim oItem01     As SAPbobsCOM.Items
+    Dim ErrCode     As Long
+    Dim ErrMsg      As String
+    Dim ItemName    As String
+    Dim RetVal      As Long
 
     Set oItem01 = Sbo_Company.GetBusinessObject(oItems)
-    
+
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False) 
+
     If (Sbo_Company.InTransaction = True) Then
         Sbo_Company.EndTransaction wf_RollBack
     End If
     
     Sbo_Company.StartTransaction
-    ItemName = Trim(oForm01.Items("ItemName").Specific.VALUE) & " " & Trim(oForm01.Items("Spec1").Specific.VALUE)  '아이템코드
-    oItem01.ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
-    oItem01.ItemName = ItemName                                                           '아이템이름
+    ItemName = Trim(oForm01.Items("ItemName").Specific.VALUE) & " " & Trim(oForm01.Items("Spec1").Specific.VALUE)
+    oItem01.ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE) '아이템코드
+    oItem01.ItemName = ItemName '아이템이름
     oItem01.ForeignName = Trim(oForm01.Items("ItemName").Specific.VALUE)
-    oItem01.DefaultWarehouse = Trim(oForm01.Items("WhsCode").Specific.VALUE)                    '기본창고
-    oItem01.ItemsGroupCode = "102"                                                        '품목그룹
-    oItem01.UserFields("U_ItmBsort").VALUE = Trim(oForm01.Items("ItmBsort").Specific.VALUE)     '품목대분류
-    oItem01.UserFields("U_ItmMsort").VALUE = Trim(oForm01.Items("ItmMsort").Specific.VALUE)     '품목중분류
-    oItem01.UserFields("U_Spec1").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE)           '규격
-    oItem01.UserFields("U_Size").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE)            '사이즈
-    oItem01.PurchaseUnit = Trim(oForm01.Items("Unit1").Specific.VALUE)                          '구매처표현단위
-    oItem01.SalesUnit = Trim(oForm01.Items("Unit1").Specific.VALUE)                             '판매처표현단위
-    oItem01.UserFields("U_ObasUnit").VALUE = "101"                                        '매입기준단위
-    oItem01.UserFields("U_SbasUnit").VALUE = "101"                                        '판매기준단위
+    oItem01.DefaultWarehouse = Trim(oForm01.Items("WhsCode").Specific.VALUE) '기본창고
+    oItem01.ItemsGroupCode = "102" '품목그룹
+    oItem01.UserFields("U_ItmBsort").VALUE = Trim(oForm01.Items("ItmBsort").Specific.VALUE) '품목대분류
+    oItem01.UserFields("U_ItmMsort").VALUE = Trim(oForm01.Items("ItmMsort").Specific.VALUE) '품목중분류
+    oItem01.UserFields("U_Spec1").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE) '규격
+    oItem01.UserFields("U_Size").VALUE = Trim(oForm01.Items("Spec1").Specific.VALUE) '사이즈
+    oItem01.PurchaseUnit = Trim(oForm01.Items("Unit1").Specific.VALUE) '구매처표현단위
+    oItem01.SalesUnit = Trim(oForm01.Items("Unit1").Specific.VALUE) '판매처표현단위
+    oItem01.UserFields("U_ObasUnit").VALUE = "101" '매입기준단위
+    oItem01.UserFields("U_SbasUnit").VALUE = "101" '판매기준단위
     
     oItem01.UserFields("U_TeamCode").VALUE = Trim(oForm01.Items("TeamCode").Specific.VALUE) '고객소속
     oItem01.UserFields("U_YearPdYN").VALUE = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '연간품여부
+    oItem01.UserFields("U_Detail").VALUE = Trim(oForm01.Items("Detail").Specific.VALUE)'세분화항목
     
     RetVal = oItem01.Add
     
@@ -804,8 +819,17 @@ On Error GoTo Create_Itemcode_Error
     Set oItem01 = Nothing
     Create_Itemcode = True
     
+    ProgBar01.VALUE = 100 
+    ProgBar01.Stop 
+    Set ProgBar01 = Nothing 
+
 Exit Function
 Create_Itemcode_Error:
+
+    ProgBar01.VALUE = 100 
+    ProgBar01.Stop 
+    Set ProgBar01 = Nothing
+
     Set oItem01 = Nothing
     If Sbo_Company.InTransaction Then
         Sbo_Company.EndTransaction wf_RollBack
@@ -816,14 +840,15 @@ End Function
 
 Sub Create_Form_Code()
 On Error GoTo Create_Form_Code_Error
-    Dim oRecordSet01 As SAPbobsCOM.Recordset
-    Dim sQry As String
-    Dim sTxt As String
-    Dim sCho As String
-    Dim sSeq As String
-    Dim sDate As String
-    Dim ErrNum As Integer
     
+    Dim sQry    As String
+    Dim sTxt    As String
+    Dim sCho    As String
+    Dim sSeq    As String
+    Dim sDate   As String
+    Dim ErrNum  As Integer
+    
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
     If oForm01.DataSources.UserDataSources("RadioBtn").VALUE = "A" Then
