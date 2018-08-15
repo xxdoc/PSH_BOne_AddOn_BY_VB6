@@ -1064,8 +1064,8 @@ On Error GoTo PS_S139_Validate_Error
                     Query01 = Query01 & " FROM [RDR1] RDR1 WHERE DocEntry = '" & oForm01.Items("8").Specific.VALUE & "' AND LineNum = '" & Val(oMat01.Columns("U_LineNum").Cells(i).Specific.VALUE) & "'"
                     RecordSet01.DoQuery Query01
                     If RecordSet01.Fields(0).VALUE = oMat01.Columns("1").Cells(i).Specific.VALUE And _
-                    Val(RecordSet01.Fields(1).VALUE) = Val(Mid(oMat01.Columns("14").Cells(i).Specific.VALUE, 1, Len(oMat01.Columns("14").Cells(i).Specific.VALUE) - 4)) And _
-                    RecordSet01.Fields(2).VALUE = oMat01.Columns("U_TrType").Cells(i).Specific.Selected.VALUE _
+                        Val(RecordSet01.Fields(1).VALUE) = Val(Mid(oMat01.Columns("14").Cells(i).Specific.VALUE, 1, Len(oMat01.Columns("14").Cells(i).Specific.VALUE) - 4)) And _
+                        RecordSet01.Fields(2).VALUE = oMat01.Columns("U_TrType").Cells(i).Specific.Selected.VALUE _
                     Then
                     Else
                         MDC_Com.MDC_GF_Message "이미출하,선출요청된 행입니다. 수정할 수 없습니다.", "W"

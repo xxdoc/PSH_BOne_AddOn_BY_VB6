@@ -731,7 +731,7 @@ On Error GoTo ComboBox_Setting_Error
     Loop
     
     '//»ç¿ëÃ³
-    sQry = "Select PrcCode, PrcName From [OPRC] Where DimCode = '1' Order by PrcCode"
+    sQry = "Select PrcCode, PrcName From [OPRC] Where DimCode = '1' AND Active = 'Y' Order by PrcCode"
     oRecordSet01.DoQuery sQry
     Do Until oRecordSet01.EOF
         oMat01.Columns("UseDept").ValidValues.Add Trim(oRecordSet01.Fields(0).VALUE), Trim(oRecordSet01.Fields(1).VALUE)
