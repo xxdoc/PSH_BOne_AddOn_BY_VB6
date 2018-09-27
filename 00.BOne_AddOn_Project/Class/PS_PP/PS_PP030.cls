@@ -1654,6 +1654,9 @@ End Function
 
 Sub PS_PP030_ComboBox_Setting()
 On Error GoTo PS_PP030_ComboBox_Setting_Error
+
+    Dim sQry As String
+
     Call oForm01.Freeze(True)
     '//콤보에 기본값설정
     Call MDC_PS_Common.Combo_ValidValues_Insert("PS_PP030", "ReqType", "", "10", "계획생산요청")
@@ -1732,6 +1735,17 @@ On Error GoTo PS_PP030_ComboBox_Setting_Error
     Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat01.Columns("ItmBsort"), "SELECT Code, Name FROM [@PSH_ITMBSORT] WHERE U_PudYN = 'Y' order by Code")
     Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat02.Columns("ItemGpCd"), "SELECT ItmsGrpCod, ItmsGrpNam FROM [OITB]")
     Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat03.Columns("Unit"), "SELECT Code, Name FROM [@PSH_CPUOM]")
+    
+    '재청구사유(라인)
+    sQry = "        SELECT      U_Minor,"
+    sQry = sQry & "             U_CdName"
+    sQry = sQry & " FROM        [@PS_SY001L]"
+    sQry = sQry & " WHERE       Code = 'P203'"
+    sQry = sQry & "             AND U_UseYN = 'Y'"
+    sQry = sQry & "             AND U_Minor <> 'A'"
+    sQry = sQry & " ORDER BY    U_Seq"
+    Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat02.Columns("RCode"), sQry)
+    
     Call oForm01.Freeze(False)
     Exit Sub
 PS_PP030_ComboBox_Setting_Error:
@@ -2028,7 +2042,7 @@ On Error GoTo PS_PP030_AddMatrixRow01_Error
         oDS_PS_PP030L.InsertRecord (oRow)
     End If
     oMat02.AddRow
-    oDS_PS_PP030L.Offset = oRow
+    oDS_PS_PP030L.offset = oRow
     oDS_PS_PP030L.setValue "U_LineNum", oRow, oRow + 1
     If oForm01.Items("OrdGbn").Specific.Selected.VALUE = "107" Then '//엔드베어링은 투입구분,원재료,스크랩
         oDS_PS_PP030L.setValue "U_InputGbn", oRow, "20"
@@ -2051,7 +2065,7 @@ On Error GoTo PS_PP030_AddMatrixRow02_Error
         oDS_PS_PP030M.InsertRecord (oRow)
     End If
     oMat03.AddRow
-    oDS_PS_PP030M.Offset = oRow
+    oDS_PS_PP030M.offset = oRow
     oDS_PS_PP030M.setValue "U_LineNum", oRow, oRow + 1
     oDS_PS_PP030M.setValue "U_Sequence", oRow, oRow + 1
     oDS_PS_PP030M.setValue "U_WorkGbn", oRow, "10"
@@ -2274,9 +2288,18 @@ On Error GoTo PS_PP030_DataValidCheck_Error
             End If
             If Val(oMat02.Columns("Weight").Cells(i).Specific.VALUE) <= 0 Then
                 Sbo_Application.SetStatusBarMessage "수,중량은 필수입니다.", bmt_Short, True
-                oMat02.Columns("Weight").Cells(i).Click ct_Right
+                oMat02.Columns("Weight").Cells(i).Click ct_Regular
                 PS_PP030_DataValidCheck = False
                 Exit Function
+            End If
+            '원재료 중복 청구 시(2018.09.17 송명규, 김석태 과장 요청)
+            If (PS_PP030_Check_DupReq(oForm01.Items("DocEntry").Specific.VALUE, oMat02.Columns("ItemCode").Cells(i).Specific.VALUE, oMat02.Columns("LineId").Cells(i).Specific.VALUE)) = True Then
+                If (oMat02.Columns("RCode").Cells(i).Specific.Selected Is Nothing) Then
+                    Call Sbo_Application.SetStatusBarMessage(i & "행의 원재료 청구가 중복되어 재청구사유를 필수로 입력하여야 합니다.", bmt_Short, True)
+                    Call oMat02.Columns("RCode").Cells(i).Click(ct_Regular)
+                    PS_PP030_DataValidCheck = False
+                    Exit Function
+                End If
             End If
         End If
         '//멀티,엔드베어링인경우
@@ -2394,7 +2417,7 @@ On Error GoTo PS_PP030_MTX01_Error
         If i <> 0 Then
             oDS_PS_USERDS01.InsertRecord (i)
         End If
-        oDS_PS_USERDS01.Offset = i
+        oDS_PS_USERDS01.offset = i
         Call oDS_PS_USERDS01.setValue("U_LineNum", i, i + 1)
         Call oDS_PS_USERDS01.setValue("U_ColReg01", i, RecordSet01.Fields(0).VALUE)
         Call oDS_PS_USERDS01.setValue("U_ColReg02", i, RecordSet01.Fields(1).VALUE)
@@ -2483,7 +2506,7 @@ On Error GoTo PS_PP030_MTX02_Error
         If i <> 0 Then
             oDS_PS_PP030L.InsertRecord (i)
         End If
-        oDS_PS_PP030L.Offset = i
+        oDS_PS_PP030L.offset = i
         Call oDS_PS_PP030L.setValue("U_LineNum", i, i + 1)
         
         Call oDS_PS_PP030L.setValue("U_InputGbn", i, "10") '//투입구분 '//휘팅,부품의경우만 실행되므로 항상 10이다
@@ -2572,7 +2595,7 @@ On Error GoTo PS_PP030_MTX03_Error
             If i <> 0 Then
                 oDS_PS_PP030M.InsertRecord (i)
             End If
-            oDS_PS_PP030M.Offset = i
+            oDS_PS_PP030M.offset = i
             Call oDS_PS_PP030M.setValue("U_LineNum", i, i + 1)
             Call oDS_PS_PP030M.setValue("U_Sequence", i, i + 1)
             Call oDS_PS_PP030M.setValue("U_CpBCode", i, RecordSet01.Fields(0).VALUE)
@@ -2591,7 +2614,7 @@ On Error GoTo PS_PP030_MTX03_Error
         Next
     Else
         '//기계공구류는 검사공정을 기본적으로 입력
-        oDS_PS_PP030M.Offset = 0
+        oDS_PS_PP030M.offset = 0
         Call oDS_PS_PP030M.setValue("U_LineNum", 0, 1)
         Call oDS_PS_PP030M.setValue("U_Sequence", 0, 1)
         Call oDS_PS_PP030M.setValue("U_CpBCode", 0, "CP204")
@@ -3514,7 +3537,11 @@ On Error GoTo PS_PP030_PurchaseRequest_Error
     Query01 = Query01 & " CONVERT(NVARCHAR,PS_PP030H.DocEntry) + '-' + CONVERT(NVARCHAR,PS_PP030L.LineId),"
     '// 청구시 필드 추가 - 류영조
     Query01 = Query01 & " CONVERT(NVARCHAR,PS_PP030L.U_CGDate,112) As CGDate,"
-    Query01 = Query01 & " PS_PP030H.U_OrdNum + '-' + PS_PP030H.U_OrdSub1 + '-' + PS_PP030H.U_OrdSub2 As OrdNum"
+    Query01 = Query01 & " PS_PP030H.U_OrdNum + '-' + PS_PP030H.U_OrdSub1 + '-' + PS_PP030H.U_OrdSub2 As OrdNum,"
+    Query01 = Query01 & " PS_PP030L.U_ImportYN As ImportYN," '수입품여부
+    Query01 = Query01 & " PS_PP030L.U_EmergYN As EmergYN," '긴급여부
+    Query01 = Query01 & " PS_PP030L.U_RCode As RCode," '재작업사유
+    Query01 = Query01 & " PS_PP030L.U_RName As RName" '재작업사유내용
     ''''''''''''''''''''''''''''''''''''''''''
     Query01 = Query01 & " FROM [@PS_PP030H] PS_PP030H LEFT JOIN [@PS_PP030L] PS_PP030L ON PS_PP030H.DocEntry = PS_PP030L.DocEntry"
     Query01 = Query01 & " WHERE PS_PP030H.DocEntry = '" & oDocEntry02 & "'"
@@ -3570,6 +3597,10 @@ On Error GoTo PS_PP030_PurchaseRequest_Error
         Query01 = Query01 & " U_PP030HNo,"
         Query01 = Query01 & " U_PP030LNo,"
         Query01 = Query01 & " U_PP030DL,"
+        Query01 = Query01 & " U_ImportYN," '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_EmergYN," '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_RCode," '재청구사유(2018.09.17 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_RName," '재청구사유내용(2018.09.17 송명규, 김석태 과장 요청)
         Query01 = Query01 & " CreateDate" '생성일 추가(2014.02.24 송명규)
         Query01 = Query01 & " ) "
         Query01 = Query01 & "VALUES("
@@ -3607,6 +3638,10 @@ On Error GoTo PS_PP030_PurchaseRequest_Error
         Query01 = Query01 & "'" & RecordSet01.Fields(25).VALUE & "'," 'PP030HNo
         Query01 = Query01 & "'" & RecordSet01.Fields(26).VALUE & "',"  'PP030LNo
         Query01 = Query01 & "'" & RecordSet01.Fields(27).VALUE & "',"  'PP030DL
+        Query01 = Query01 & "'" & RecordSet01.Fields("ImportYN").VALUE & "'," '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & "'" & RecordSet01.Fields("EmergYN").VALUE & "'," '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & "'" & RecordSet01.Fields("RCode").VALUE & "'," '재청구사유(2018.09.17 송명규, 김석태 과장 요청)
+        Query01 = Query01 & "'" & RecordSet01.Fields("RName").VALUE & "'," '재청구사유내용(2018.09.17 송명규, 김석태 과장 요청)
         Query01 = Query01 & " GETDATE()" '생성일 추가(2014.02.24 송명규)
         Query01 = Query01 & ")"
         RecordSet01.DoQuery Query01
@@ -3637,6 +3672,10 @@ On Error GoTo PS_PP030_PurchaseRequest_Error
 '        Query01 = Query01 & " U_DocDate = '" & RecordSet01.Fields("CGDate").Value & "',"
 '        Query01 = Query01 & " U_DueDate = '" & RecordSet01.Fields("CGDate").Value & "',"
         Query01 = Query01 & " U_Comments = '" & RecordSet01.Fields(19).VALUE & "',"
+        Query01 = Query01 & " U_ImportYN = '" & RecordSet01.Fields("ImportYN").VALUE & "'," '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_EmergYN = '" & RecordSet01.Fields("EmergYN").VALUE & "'," '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_RCode = '" & RecordSet01.Fields("RCode").VALUE & "'," '재작업사유(2018.09.17 송명규, 김석태 과장 요청)
+        Query01 = Query01 & " U_RName = '" & RecordSet01.Fields("RName").VALUE & "'," '재작업사유내용(2018.09.17 송명규, 김석태 과장 요청)
         Query01 = Query01 & " UpdateDate = GETDATE()" '수정일 추가(2014.02.24 송명규)
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         Query01 = Query01 & " WHERE U_OrdType = '10' And U_PP030HNo = '" & RecordSet01.Fields(25).VALUE & "'"
@@ -3952,4 +3991,49 @@ On Error GoTo PS_PP030_CheckDate_Error
 PS_PP030_CheckDate_Error:
     PS_PP030_CheckDate = False
     Call Sbo_Application.SetStatusBarMessage("PS_PP030_CheckDate_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True)
+End Function
+
+Private Function PS_PP030_Check_DupReq(ByVal pDocEntry As String, ByVal pItemCode As String, ByVal pLineID As String) As Boolean
+'******************************************************************************
+'Function ID : PS_PP030_Check_DupReq()
+'해당모듈    : PS_PP030
+'기능        : 중복청구 여부 조회
+'인수        : pDocEntry(문서번호), pItemCode(원재료품목코드), pLineID(라인번호)
+'반환값      : True-중복청구(O), False-중복청구(X)
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_PP030_CheckDate_Error
+
+    Dim Query01      As String
+    Dim loopCount    As Integer
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
+    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
+    
+    Dim DocEntry    As String
+    Dim ItemCode    As String
+    Dim LineId      As String
+    
+    DocEntry = pDocEntry 'Trim(oForm01.Items("DocEntry").Specific.VALUE)
+    ItemCode = pItemCode
+    LineId = pLineID
+    
+    Query01 = "         EXEC PS_Z_Check_DupReq '"
+    Query01 = Query01 & DocEntry & "','"
+    Query01 = Query01 & ItemCode & "','"
+    Query01 = Query01 & LineId & "'"
+    
+    Call oRecordSet01.DoQuery(Query01)
+
+    If oRecordSet01.Fields("ReturnValue").VALUE = "FALSE" Then
+        PS_PP030_Check_DupReq = False
+    Else
+        PS_PP030_Check_DupReq = True
+    End If
+    
+    Set oRecordSet01 = Nothing
+
+    Exit Function
+PS_PP030_CheckDate_Error:
+    PS_PP030_Check_DupReq = False
+    Call Sbo_Application.SetStatusBarMessage("PS_PP030_Check_DupReq_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True)
 End Function

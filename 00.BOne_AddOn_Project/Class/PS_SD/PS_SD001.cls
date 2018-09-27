@@ -198,6 +198,15 @@ On Error GoTo Raise_ItemEvent_Error
                     End If
                 End If
                 
+                '기준작번
+                If oForm01.Items("BaseCode").Specific.VALUE = "" Then
+                    If pval.ItemUID = "BaseCode" And pval.CharPressed = 9 Then
+                        oForm01.Items("BaseCode").Click ct_Regular
+                        Sbo_Application.ActivateMenuItem ("7425")
+                        BubbleEvent = False
+                    End If
+                End If
+                
             Case et_COMBO_SELECT: '//5
             Case et_CLICK: '//6
             Case et_DOUBLE_CLICK: '//7
@@ -292,6 +301,13 @@ On Error GoTo Raise_ItemEvent_Error
                     sQry = "Select U_CodeName From [@PSH_ITMMSORT] Where U_Code = '" & Trim(oForm01.Items("ItmMsort").Specific.VALUE) & "'"
                     oRecordSet01.DoQuery sQry
                     oForm01.Items("ItmMname").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
+                End If
+                
+                '기준작번
+                If pval.ItemUID = "BaseCode" And pval.ItemChanged = True Then
+                    sQry = "Select ItemName From [OITM] Where ItemCode = '" & Trim(oForm01.Items("BaseCode").Specific.VALUE) & "'"
+                    oRecordSet01.DoQuery sQry
+                    oForm01.Items("BaseName").Specific.VALUE = Trim(oRecordSet01.Fields(0).VALUE)
                 End If
                 
             Case et_MATRIX_LOAD: '//11
@@ -446,6 +462,14 @@ On Error GoTo CreateItems_Error
     
     oForm01.Items("WhsCode").Specific.VALUE = "102"
     oForm01.Items("WhsName").Specific.VALUE = "동래"
+    
+    '기준작번
+    Call oForm01.DataSources.UserDataSources.Add("BaseCode", dt_SHORT_TEXT, 20)
+    Call oForm01.Items("BaseCode").Specific.DataBind.SetBound(True, "", "BaseCode")
+    
+    '기준작명
+    Call oForm01.DataSources.UserDataSources.Add("BaseName", dt_SHORT_TEXT, 200)
+    Call oForm01.Items("BaseName").Specific.DataBind.SetBound(True, "", "BaseName")
     
     Exit Function
 CreateItems_Error:
@@ -629,6 +653,13 @@ On Error GoTo HeaderSpaceLineDel02_Error
         Case oForm01.Items("ItemCode").Specific.VALUE = ""
              ErrNum = 11
              GoTo HeaderSpaceLineDel02_Error
+        Case oForm01.Items("BaseCode").Specific.VALUE = ""
+             If Left(oForm01.Items("ItemCode").Specific.VALUE, 1) = "Z" Then
+                ErrNum = 12
+                Call oForm01.Items("BaseCode").Click(ct_Regular)
+                GoTo HeaderSpaceLineDel02_Error
+             End If
+             
     End Select
     
     HeaderSpaceLineDel02 = True
@@ -657,6 +688,8 @@ HeaderSpaceLineDel02_Error:
         MDC_Com.MDC_GF_Message "작명일자는 필수입력 사항입니다. 확인하세요", "E"
     ElseIf ErrNum = 11 Then
         MDC_Com.MDC_GF_Message "품목코드생성 버튼을 먼저 누르세요.", "E"
+    ElseIf ErrNum = 12 Then
+        MDC_Com.MDC_GF_Message "서비스작번(Z)은 필히 기준작번을 등록하여야 합니다.", "E"
     Else
         MDC_Com.MDC_GF_Message "HeaderSpaceLineDel02_Error:" & Err.Description, "E"
     End If
@@ -772,7 +805,7 @@ On Error GoTo Create_Itemcode_Error
     Set oItem01 = Sbo_Company.GetBusinessObject(oItems)
 
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
-    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False) 
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("저장 중...", 100, False)
 
     If (Sbo_Company.InTransaction = True) Then
         Sbo_Company.EndTransaction wf_RollBack
@@ -796,7 +829,8 @@ On Error GoTo Create_Itemcode_Error
     
     oItem01.UserFields("U_TeamCode").VALUE = Trim(oForm01.Items("TeamCode").Specific.VALUE) '고객소속
     oItem01.UserFields("U_YearPdYN").VALUE = Trim(oForm01.Items("YearPdYN").Specific.VALUE) '연간품여부
-    oItem01.UserFields("U_Detail").VALUE = Trim(oForm01.Items("Detail").Specific.VALUE)'세분화항목
+    oItem01.UserFields("U_Detail").VALUE = Trim(oForm01.Items("Detail").Specific.VALUE) '세분화항목
+    oItem01.UserFields("U_BaseCode").VALUE = Trim(oForm01.Items("BaseCode").Specific.VALUE) '기준작번(서비스작번(Z) 일 경우 필수 입력)
     
     RetVal = oItem01.Add
     
@@ -819,15 +853,15 @@ On Error GoTo Create_Itemcode_Error
     Set oItem01 = Nothing
     Create_Itemcode = True
     
-    ProgBar01.VALUE = 100 
-    ProgBar01.Stop 
-    Set ProgBar01 = Nothing 
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
+    Set ProgBar01 = Nothing
 
 Exit Function
 Create_Itemcode_Error:
 
-    ProgBar01.VALUE = 100 
-    ProgBar01.Stop 
+    ProgBar01.VALUE = 100
+    ProgBar01.Stop
     Set ProgBar01 = Nothing
 
     Set oItem01 = Nothing

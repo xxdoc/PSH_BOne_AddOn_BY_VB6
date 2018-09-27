@@ -815,7 +815,7 @@ On Error GoTo PS_PP510_MTX01_Error
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
     Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("Á¶È¸ Áß...", 100, False)
     
-    Query01 = "              EXEC PS_PP510_01 '"
+    Query01 = "         EXEC PS_PP510_01 '"
     Query01 = Query01 & BPLID & "','"
     Query01 = Query01 & FrDt & "','"
     Query01 = Query01 & ToDt & "','"

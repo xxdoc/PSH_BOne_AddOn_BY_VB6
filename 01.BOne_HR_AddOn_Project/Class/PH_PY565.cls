@@ -144,7 +144,7 @@ On Error GoTo PH_PY565_CreateItems_Error
     Call oForm.DataSources.UserDataSources.Add("MidNt_YN", dt_SHORT_TEXT, 1)
     Set oCheck = oForm.Items("MidNt_YN").Specific
     oCheck.DataBind.SetBound True, "", "MidNt_YN"
-    oForm.Items("MidNt_YN").Specific.Checked = True
+    oForm.Items("MidNt_YN").Specific.Checked = False
     
     '결재박스제외
     Call oForm.DataSources.UserDataSources.Add("Box_YN", dt_SHORT_TEXT, 1)

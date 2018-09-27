@@ -828,7 +828,7 @@ On Error GoTo FormItemEnabled_Error
         oForm01.Items("DocEntry").Click ct_Regular
     ElseIf (oForm01.Mode = fm_OK_MODE) Then
     
-        
+        oForm01.Items("OKYNC").Click ct_Regular
         DocEntry = Trim(oForm01.Items("DocEntry").Specific.VALUE)
         sQry = "Select Count(*) From OCRD Where CardCode = '" & Trim(oDS_PS_MM138H.GetValue("U_CardCode", 0)) & "'"
         sQry = "select Count(*) From [@PS_MM095H] a Inner Join [@PS_MM095L] b On a.DocEntry = b.DocEntry"
@@ -846,11 +846,9 @@ On Error GoTo FormItemEnabled_Error
         
         oForm01.Items("BPLId").Enabled = False
         oForm01.Items("CardCode").Enabled = False
-        oForm01.Items("DocDate").Enabled = True
+        oForm01.Items("DocDate").Enabled = False     '// 날짜 수정 못하도록 수정 20180911 황영수
         oForm01.Items("Qty").Enabled = False
-        
         oForm01.Items("ItemCode").Enabled = False
-        
         oForm01.Items("DocEntry").Enabled = False
 
         oMat01.Columns("OutQty").Editable = True

@@ -796,6 +796,15 @@ On Error GoTo ComboBox_Setting_Error
         oRecordSet01.MoveNext
     Loop
     
+    '청구사유(라인)
+    sQry = "        SELECT      U_Minor,"
+    sQry = sQry & "             U_CdName"
+    sQry = sQry & " FROM        [@PS_SY001L]"
+    sQry = sQry & " WHERE       Code = 'P203'"
+    sQry = sQry & "             AND U_UseYN = 'Y'"
+    sQry = sQry & "             AND U_Minor <> 'A'"
+    sQry = sQry & " ORDER BY    U_Seq"
+    Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat01.Columns("RCode"), sQry)
     
     Set oCombo = Nothing
     Set oRecordSet01 = Nothing
@@ -1053,7 +1062,7 @@ On Error GoTo Add_MatrixRow_Error
         oDS_PS_MM005H.InsertRecord (oRow)
     End If
     oMat01.AddRow
-    oDS_PS_MM005H.Offset = oRow
+    oDS_PS_MM005H.offset = oRow
     oDS_PS_MM005H.setValue "DocNum", oRow, oRow + 1
     oMat01.LoadFromDataSource
     Exit Sub
@@ -1910,6 +1919,9 @@ On Error GoTo Add_PurchaseDemand_Error
     Dim DocType     As String
     Dim CurDocDate  As String
     
+    Dim ImportYN    As String '수입품여부
+    Dim EmergYN     As String '긴급여부
+    
     oMat01.FlushToDataSource
     
     OrdType = Trim(oForm01.Items("OrdType").Specific.VALUE)
@@ -1964,7 +1976,6 @@ On Error GoTo Add_PurchaseDemand_Error
             PP030LNo = Mid(PP030DL, K + 1, Len(PP030DL) - K)
         End If
         
-        
         ItemCode = Trim(oDS_PS_MM005H.GetValue("U_ItemCode", i))
         
         If Trim(oForm01.Items("OrdType").Specific.VALUE) = "60" Then
@@ -2006,6 +2017,9 @@ On Error GoTo Add_PurchaseDemand_Error
         MachCode = Trim(oDS_PS_MM005H.GetValue("U_MachCode", i)) '설비코드
         MachName = Trim(oDS_PS_MM005H.GetValue("U_MachName", i)) '설비명
         
+        ImportYN = Trim(oDS_PS_MM005H.GetValue("U_ImportYN", i)) '수입품여부
+        EmergYN = Trim(oDS_PS_MM005H.GetValue("U_EmergYN", i)) '긴급여부
+        
         If Trim(ItemCode) <> "" Then
         
             sQry = "            EXEC [PS_MM005_05] "
@@ -2037,7 +2051,9 @@ On Error GoTo Add_PurchaseDemand_Error
             sQry = sQry & "'" & OutSize & "',"
             sQry = sQry & "'" & OutUnit & "',"
             sQry = sQry & "'" & MachCode & "',"
-            sQry = sQry & "'" & MachName & "'"
+            sQry = sQry & "'" & MachName & "',"
+            sQry = sQry & "'" & ImportYN & "',"
+            sQry = sQry & "'" & EmergYN & "'"
             
             '선행프로세스 대비 일자체크_S
             'Entry = Split(SjDocLin, "-")
@@ -2127,6 +2143,9 @@ On Error GoTo Update_PurchaseDemand_Error
     Dim MachCode As String
     Dim MachName As String
     
+    Dim ImportYN As String
+    Dim EmergYN  As String
+    
     Dim BaseEntry   As String
     Dim BaseLine    As String
     Dim DocType     As String
@@ -2181,6 +2200,9 @@ On Error GoTo Update_PurchaseDemand_Error
         
         MachCode = Trim(oDS_PS_MM005H.GetValue("U_MachCode", i)) '설비코드
         MachName = Trim(oDS_PS_MM005H.GetValue("U_MachName", i)) '설비명
+        
+        ImportYN = Trim(oDS_PS_MM005H.GetValue("U_ImportYN", i)) '수입품여부
+        EmergYN = Trim(oDS_PS_MM005H.GetValue("U_EmergYN", i)) '긴급여부
         
         If Trim(oDS_PS_MM005H.GetValue("U_PP030DL", i)) = "" Or Trim(oDS_PS_MM005H.GetValue("U_PP030DL", i)) = Null Then
             PP030DL = ""
@@ -2248,9 +2270,10 @@ On Error GoTo Update_PurchaseDemand_Error
         sQry = sQry & "U_Status = '" & Status & "', "
         sQry = sQry & "U_MachCode = '" & MachCode & "', "
         sQry = sQry & "U_MachName = '" & MachName & "', "
+        sQry = sQry & "U_ImportYN = '" & ImportYN & "', "
+        sQry = sQry & "U_EmergYN = '" & EmergYN & "', "
         sQry = sQry & "UpdateDate = GETDATE() "
         sQry = sQry & "Where DocEntry = '" & CgNum & "' "
-    
     
         '선행프로세스 대비 일자체크_S
         'Entry = Split(SjDocLin, "-")
@@ -2311,6 +2334,7 @@ End Function
 
 Public Sub LoadData()
 On Error GoTo LoadData_Error
+
     Dim i As Integer
     Dim sQry As String, SumQty As Currency, SumWeight As Currency
     Dim oRecordSet01 As SAPbobsCOM.Recordset
@@ -2376,7 +2400,7 @@ On Error GoTo LoadData_Error
         End If
         
         oMat01.AddRow
-        oDS_PS_MM005H.Offset = i
+        oDS_PS_MM005H.offset = i
                 
         oDS_PS_MM005H.setValue "DocNum", i, i + 1
         oDS_PS_MM005H.setValue "U_PP030DL", i, Trim(oRecordSet01.Fields("U_PP030DL").VALUE)
@@ -2424,6 +2448,10 @@ On Error GoTo LoadData_Error
         oDS_PS_MM005H.setValue "U_ProcCode", i, Trim(oRecordSet01.Fields("U_ProcCode").VALUE)
         oDS_PS_MM005H.setValue "U_ProcName", i, Trim(oRecordSet01.Fields("U_ProcName").VALUE)
         oDS_PS_MM005H.setValue "U_Comments", i, Trim(oRecordSet01.Fields("U_Comments").VALUE)
+        oDS_PS_MM005H.setValue "U_ImportYN", i, Trim(oRecordSet01.Fields("U_ImportYN").VALUE) '수입품여부
+        oDS_PS_MM005H.setValue "U_EmergYN", i, Trim(oRecordSet01.Fields("U_EmergYN").VALUE) '긴급여부
+        oDS_PS_MM005H.setValue "U_RCode", i, Trim(oRecordSet01.Fields("U_RCode").VALUE) '재청구사유
+        oDS_PS_MM005H.setValue "U_RName", i, Trim(oRecordSet01.Fields("U_RName").VALUE) '재청구사유내용
         oDS_PS_MM005H.setValue "U_Status", i, Trim(oRecordSet01.Fields("U_Status").VALUE)
         
         SumQty = SumQty + Trim(oRecordSet01.Fields("U_Qty").VALUE)

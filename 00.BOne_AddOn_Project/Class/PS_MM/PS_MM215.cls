@@ -640,23 +640,23 @@ End Sub
 
 Private Sub PS_MM215_Print_Report01()
 On Error GoTo PS_MM215_Print_Report01_Error
-    Dim DocNum As String
-    Dim WinTitle                    As String
-    Dim ReportName                  As String
-    Dim sQry                        As String
+
+    Dim DocNum      As String
+    Dim WinTitle    As String
+    Dim ReportName  As String
+    Dim sQry        As String
     
-    Dim BPLID                       As String
-    Dim PQType                      As String
-    Dim DocDateFr                   As String
-    Dim DocDateTo                   As String
-    Dim CntcCode                    As String
-    Dim ItemCode                    As String
+    Dim BPLID       As String
+    Dim PQType      As String
+    Dim DocDateFr   As String
+    Dim DocDateTo   As String
+    Dim CntcCode    As String
+    Dim ItemCode    As String
     
-    Dim POType As String
-    Dim SrchCls As String
+    Dim POType      As String
+    Dim SrchCls     As String
     
-    Dim oRecordSet      As SAPbobsCOM.Recordset
-    
+    Dim oRecordSet As SAPbobsCOM.Recordset
     Set oRecordSet = Sbo_Company.GetBusinessObject(BoRecordset)
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -672,7 +672,7 @@ On Error GoTo PS_MM215_Print_Report01_Error
     DocDateTo = Trim(oForm01.Items("DocDateTo").Specific.VALUE)
 '//    CntcCode = Trim(oForm01.Items("CntcCode").Specific.VALUE)
     ItemCode = Trim(oForm01.Items("ItemCode").Specific.VALUE)
-    POType = IIf(oForm01.Items("POType").Specific.VALUE = "%", "", oForm01.Items("POType").Specific.VALUE)
+    POType = IIf(Trim(oForm01.Items("POType").Specific.VALUE) = "%", "", Trim(oForm01.Items("POType").Specific.VALUE))
     SrchCls = Trim(oForm01.Items("SrchCls").Specific.VALUE)
     
     CntcCode = "%"

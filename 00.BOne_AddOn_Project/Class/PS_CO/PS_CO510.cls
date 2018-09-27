@@ -550,8 +550,7 @@ On Error GoTo PS_CO510_ComboBox_Setting_Error
     Call oForm01.Items("Div").Specific.ValidValues.Add("8", "코스트센터 미지정전표확인")
     Call oForm01.Items("Div").Specific.ValidValues.Add("9", "작업공수없는 부자재불출조회")
     Call oForm01.Items("Div").Specific.ValidValues.Add("10", "제품출고-판매확인")
-    Call oForm01.Items("Div").Specific.ValidValues.Add("11", "공정수량 오류체크")
-    Call oForm01.Items("Div").Specific.ValidValues.Add("12", "분말스크랩단가등록체크")
+    Call oForm01.Items("Div").Specific.ValidValues.Add("11", "분말스크랩단가등록체크")
     Call oForm01.Items("Div").Specific.Select(0, psk_Index)
     
     Call oForm01.Freeze(False)
@@ -735,8 +734,6 @@ On Error GoTo PS_CO510_MTX01_Error
        Query01 = "EXEC PS_CO510_10 '" & BPLID & "','" & DocDateFr & "','" & DocDateTo & "'"
     ElseIf Div = "11" Then
        Query01 = "EXEC PS_CO510_11 '" & BPLID & "','" & DocDateFr & "','" & DocDateTo & "'"
-    ElseIf Div = "12" Then
-       Query01 = "EXEC PS_CO510_12 '" & BPLID & "','" & DocDateFr & "','" & DocDateTo & "'"
     End If
     
     oGrid01.DataTable.Clear

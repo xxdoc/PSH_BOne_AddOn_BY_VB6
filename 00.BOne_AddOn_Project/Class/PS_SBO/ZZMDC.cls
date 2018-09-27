@@ -1848,6 +1848,9 @@ On Error GoTo CreateUserForm_Error
         ElseIf (pval.MenuUID = "PS_QM320") Then '//M/G 계량치 분석값 등록
             Set oTempClass = New PS_QM320
             Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_PP530") Then '//결산 전 사전점검조회
+            Set oTempClass = New PS_PP530
+            Call oTempClass.LoadForm
         End If
         
         '//SMG
@@ -2307,10 +2310,10 @@ On Error GoTo CreateUserForm_Error
         ElseIf (pval.MenuUID = "PS_PP982") Then '반별가동률 조회(2018.05.16)
             Set oTempClass = New PS_PP982
             Call oTempClass.LoadForm
-       	ElseIf (pval.MenuUID = "PS_PP901") Then '분말화면레포
+        ElseIf (pval.MenuUID = "PS_PP901") Then '분말화면레포
             Set oTempClass = New PS_PP901
-			Call oTempClass.LoadForm
-		ElseIf (pval.MenuUID = "PS_CO660") Then '기간비용등록(2018.06.18)
+            Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_CO660") Then '기간비용등록(2018.06.18)
             Set oTempClass = New PS_CO660
             Call oTempClass.LoadForm
         ElseIf (pval.MenuUID = "PS_CO670") Then '기간비용분개등록(2018.06.21)
@@ -2321,6 +2324,12 @@ On Error GoTo CreateUserForm_Error
             Call oTempClass.LoadForm
         ElseIf (pval.MenuUID = "PS_CO605") Then '통합수불부(2018.06.28)
             Set oTempClass = New PS_CO605
+            Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_SD957") Then '거래처별 세분화별 수주실적(관계3사)(2018.09.06)
+            Set oTempClass = New PS_SD957
+            Call oTempClass.LoadForm
+        ElseIf (pval.MenuUID = "PS_SD958") Then '거래처별 세분화별 판매실적(관계3사)(2018.09.06)
+            Set oTempClass = New PS_SD958
             Call oTempClass.LoadForm
         End If
 

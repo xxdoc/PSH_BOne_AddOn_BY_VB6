@@ -293,6 +293,8 @@ Public Sub Raise_FormItemEvent(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent
                     Call PH_PY680_Print_Report01
                 ElseIf pval.ItemUID = "BtnSearch" Then
                     Call PH_PY680_MTX01
+                ElseIf pval.ItemUID = "Btn02" Then
+                    Call PH_PY680_MTX02
                 End If
             ElseIf pval.BeforeAction = False Then
 
@@ -851,6 +853,71 @@ PH_PY680_MTX01_Error:
     End If
 End Sub
 
+Public Sub PH_PY680_MTX02()
+'******************************************************************************
+'Function ID : PH_PY680_MTX02()
+'해당모듈 : PH_PY680
+'기능 : 재직자 상벌횟수 조회
+'******************************************************************************
+On Error GoTo PH_PY680_MTX02_Error
+
+    Dim loopCount As Integer
+    Dim sQry As String
+    Dim ErrNum As Integer
+    
+    Dim RecordSet01 As SAPbobsCOM.Recordset
+    Set RecordSet01 = oCompany.GetBusinessObject(BoRecordset)
+    
+    Dim CLTCOD As String
+    
+    CLTCOD = Trim(oForm.Items("CLTCOD").Specific.VALUE)
+        
+    Dim ProgBar01 As SAPbouiCOM.ProgressBar
+    Set ProgBar01 = Sbo_Application.StatusBar.CreateProgressBar("조회 중...", RecordSet01.RecordCount, False)
+    
+    Call oForm.Freeze(True)
+    
+    sQry = " EXEC [PH_PY680_04] '"
+    sQry = sQry & CLTCOD & "'"
+    
+    oGrid01.DataTable = oForm.DataSources.DataTables.Item("DataTable")
+    Call oGrid01.DataTable.Clear
+    Call oForm.DataSources.DataTables.Item("DataTable").ExecuteQuery(sQry)
+    
+    ProgBar01.VALUE = 100
+'    ProgBar01.Text = "비용 집계중...!"
+    ProgBar01.Stop
+    
+'    oGrid01.Columns(11).RightJustified = True
+'    oGrid01.Columns(12).RightJustified = True
+'    oGrid01.Columns(13).RightJustified = True
+
+    If oGrid01.Rows.Count = 0 Then
+        ErrNum = 1
+        GoTo PH_PY680_MTX02_Error
+    End If
+        
+    oGrid01.AutoResizeColumns
+    oForm.Update
+    
+    Call oForm.Freeze(False)
+  
+    Set ProgBar01 = Nothing
+    Set RecordSet01 = Nothing
+    Exit Sub
+'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+PH_PY680_MTX02_Error:
+'    ProgBar01.Stop
+    Call oForm.Freeze(False)
+    Set ProgBar01 = Nothing
+    Set RecordSet01 = Nothing
+    
+    If ErrNum = 1 Then
+        Call MDC_Com.MDC_GF_Message("조회 결과가 없습니다. 확인하세요.", "W")
+    Else
+        Call MDC_Com.MDC_GF_Message("PH_PY680_MTX02_Error:" & Err.Number & " - " & Err.Description, "E")
+    End If
+End Sub
 Private Sub PH_PY680_Print_Report01()
 
     Dim DocNum          As String

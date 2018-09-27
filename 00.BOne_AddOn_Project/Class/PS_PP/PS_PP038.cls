@@ -66,16 +66,15 @@ Private oLastColRow01   As Long '마지막아이템이 메트릭스일경우에 마지막 선택된 R
 '*******************************************************************
 Public Sub LoadForm(Optional ByRef oForm02 As SAPbouiCOM.Form, Optional ByVal oItemUID02 As String, Optional ByVal oColUID02 As String, Optional ByVal oColRow02 As Long, Optional ByVal oTradeType02 As String, Optional ByVal oItmBsort02 As String)
 On Error GoTo LoadForm_Error
+
     Dim i As Long
     Dim oInnerXml01 As String
     Dim oXmlDoc01 As New MSXML2.DOMDocument
     
     oXmlDoc01.Load (SubMain.ShareFolderPath & "ScreenPS\PS_PP038.srf")
     oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@uid").nodeValue & "_" & (GetTotalFormsCount)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
-    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = _
-            oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@top").nodeValue + (GetCurrentFormsCount * 10)
+    oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue = oXmlDoc01.selectSingleNode("Application/forms/action/form/@left").nodeValue + (GetCurrentFormsCount * 10)
     
     '매트릭스의 타이틀높이와 셀높이를 고정
     For i = 1 To (oXmlDoc01.selectNodes("Application/forms/action/form/items/action/item/specific/@titleHeight").length)
@@ -275,10 +274,19 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
             
         ElseIf pval.ItemUID = "BtnAdd" Then
             
-            If PS_PP038_AddData() = False Then
-                BubbleEvent = False
-                Exit Sub
-            End If
+'            If PS_PP038_DataValidCheck() = True Then
+            
+                If PS_PP038_AddData() = False Then
+                    BubbleEvent = False
+                    Exit Sub
+                End If
+                
+'            Else
+'
+'                BubbleEvent = False
+'                Exit Sub
+'
+'            End If
         
             Call PS_PP038_MTX02(oForm01.Items("GridRow").Specific.VALUE)
             Call PS_PP038_AddMatrixRow(oMat01.RowCount)
@@ -334,8 +342,6 @@ On Error GoTo Raise_EVENT_ITEM_PRESSED_Error
 '            End If
 '        End If
 
-        
-        
     ElseIf pval.BeforeAction = False Then
         If pval.ItemUID = "PS_PP038" Then
             If oForm01.Mode = fm_ADD_MODE Then
@@ -627,7 +633,6 @@ Raise_EVENT_CHOOSE_FROM_LIST_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_CHOOSE_FROM_LIST_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
 
-
 Private Sub Raise_EVENT_GOT_FOCUS(ByRef FormUID, ByRef pval As SAPbouiCOM.ItemEvent, ByRef BubbleEvent As Boolean)
 On Error GoTo Raise_EVENT_GOT_FOCUS_Error
     If pval.ItemUID = "Mat01" Then
@@ -686,7 +691,6 @@ On Error GoTo Raise_EVENT_ROW_DELETE_Error
 Raise_EVENT_ROW_DELETE_Error:
     Sbo_Application.SetStatusBarMessage "Raise_EVENT_ROW_DELETE_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Sub
-
 
 Private Function PS_PP038_CreateItems() As Boolean
 On Error GoTo PS_PP038_CreateItems_Error
@@ -816,8 +820,8 @@ On Error GoTo PS_PP038_ComboBox_Setting_Error
     Call oForm01.Items("BPLID").Specific.Select(MDC_PS_Common.User_BPLId, psk_ByValue)
     
     '작업구분
-    sQry = "           SELECT     Code AS [Code], "
-    sQry = sQry & "               Name AS [Name]"
+    sQry = "        SELECT    Code AS [Code], "
+    sQry = sQry & "           Name AS [Name]"
     sQry = sQry & " FROM      [@PSH_ITMBSORT]"
     sQry = sQry & " WHERE     U_PudYN = 'Y'"
     Call oForm01.Items("OrdGbn").Specific.ValidValues.Add("%", "선택")
@@ -831,9 +835,9 @@ On Error GoTo PS_PP038_ComboBox_Setting_Error
     Call oMat01.Columns("InputGbn").ValidValues.Add("30", "스크랩")
     
     '품목그룹
-    sQry = "           SELECT      ItmsGrpCod AS [Code], "
-    sQry = sQry & "                ItmsGrpNam AS [Name]"
-    sQry = sQry & " FROM       [OITB] a"
+    sQry = "        SELECT  ItmsGrpCod AS [Code], "
+    sQry = sQry & "         ItmsGrpNam AS [Name]"
+    sQry = sQry & " FROM    [OITB] a"
     
     Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat01.Columns("ItemGpCd"), sQry)
     
@@ -841,6 +845,24 @@ On Error GoTo PS_PP038_ComboBox_Setting_Error
     Call oMat01.Columns("ProcType").ValidValues.Add("10", "청구")
     Call oMat01.Columns("ProcType").ValidValues.Add("20", "잔재")
     Call oMat01.Columns("ProcType").ValidValues.Add("30", "취소")
+    
+    '수입품여부
+    Call oMat01.Columns("ImportYN").ValidValues.Add("Y", "Y")
+    Call oMat01.Columns("ImportYN").ValidValues.Add("N", "N")
+    
+    '긴급여부
+    Call oMat01.Columns("EmergYN").ValidValues.Add("Y", "Y")
+    Call oMat01.Columns("EmergYN").ValidValues.Add("N", "N")
+    
+    '청구사유(라인)
+    sQry = "        SELECT      U_Minor,"
+    sQry = sQry & "             U_CdName"
+    sQry = sQry & " FROM        [@PS_SY001L]"
+    sQry = sQry & " WHERE       Code = 'P203'"
+    sQry = sQry & "             AND U_UseYN = 'Y'"
+    sQry = sQry & "             AND U_Minor <> 'A'"
+    sQry = sQry & " ORDER BY    U_Seq"
+    Call MDC_Com.MDC_GP_MatrixSetMatComboList(oMat01.Columns("RCode"), sQry)
     '//////////매트릭스//////////
 
     Call oForm01.Freeze(False)
@@ -962,7 +984,7 @@ On Error GoTo PS_PP038_FlushToItemValue_Error
         OrdSub1 = Trim(oForm01.Items("OrdSub1").Specific.VALUE)
         OrdSub2 = Trim(oForm01.Items("OrdSub2").Specific.VALUE)
 
-        sQry = "           SELECT   CASE"
+        sQry = "        SELECT      CASE"
         sQry = sQry & "                 WHEN T0.U_JakMyung = '' THEN (SELECT FrgnName FROM OITM WHERE ItemCode = T0.U_ItemCode)"
         sQry = sQry & "                 ELSE T0.U_JakMyung"
         sQry = sQry & "             END AS [JakMyung],"
@@ -970,8 +992,8 @@ On Error GoTo PS_PP038_FlushToItemValue_Error
         sQry = sQry & "                 WHEN T0.U_JakSize = '' THEN (SELECT U_Size FROM OITM WHERE ItemCode = T0.U_ItemCode)"
         sQry = sQry & "                 ELSE T0.U_JakSize"
         sQry = sQry & "             END AS [JakSize]"
-        sQry = sQry & " FROM     [@PS_PP020H] AS T0"
-        sQry = sQry & " WHERE   T0.U_JakName = '" & OrdNum & "'"
+        sQry = sQry & " FROM        [@PS_PP020H] AS T0"
+        sQry = sQry & " WHERE       T0.U_JakName = '" & OrdNum & "'"
         sQry = sQry & "             AND T0.U_SubNo1 = CASE WHEN '" & OrdSub1 & "' = '' THEN '00' ELSE '" & OrdSub1 & "' END"
         sQry = sQry & "             AND T0.U_SubNo2 = CASE WHEN '" & OrdSub2 & "' = '' THEN '000' ELSE '" & OrdSub2 & "' END"
 
@@ -983,8 +1005,9 @@ On Error GoTo PS_PP038_FlushToItemValue_Error
     End If
     
     Set oRecordSet01 = Nothing
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Exit Sub
+    
 PS_PP038_FlushToItemValue_Error:
 
     Set oRecordSet01 = Nothing
@@ -1068,31 +1091,33 @@ End Sub
 
 Function PS_PP038_DataValidCheck() As Boolean
 On Error GoTo PS_PP038_DataValidCheck_Error
+
+    PS_PP038_DataValidCheck = False
+
     Dim i As Long
-'    If oForm01.Items("WhsCode").Specific.Value = "" Then
-'        Sbo_Application.SetStatusBarMessage "창고는 필수입니다.", bmt_Short, True
-'        oForm01.Items("WhsCode").Click ct_Regular
-'        PS_PP038_DataValidCheck = False
-'        Exit Function
-'    End If
-'    If oMat01.VisualRowCount = 0 Then
-'        Sbo_Application.SetStatusBarMessage "라인이 존재하지 않습니다.", bmt_Short, True
-'        PS_PP038_DataValidCheck = False
-'        Exit Function
-'    End If
-'    For i = 1 To oMat01.VisualRowCount
-'        If (oMat01.Columns("ItemName").Cells(i).Specific.Value = "") Then
-'            Sbo_Application.SetStatusBarMessage "품목은 필수입니다.", bmt_Short, True
-'            oMat01.Columns("ItemName").Cells(i).Click ct_Regular
-'            PS_PP038_DataValidCheck = False
-'            Exit Function
+    
+'    For i = 1 To oMat01.VisualRowCount - 1
+    
+'        '//기계공구,몰드인경우
+'        If oForm01.Items("OrdGbn").Specific.Selected.VALUE = "105" Or oForm01.Items("OrdGbn").Specific.Selected.VALUE = "106" Then
+'            '원재료 중복 청구 시(2018.09.17 송명규, 김석태 과장 요청)
+'            If (PS_PP038_Check_DupReq(oForm01.Items("GridRow").Specific.VALUE, oMat01.Columns("ItemCode").Cells(i).Specific.VALUE, i)) = True Then
+'                If (oMat01.Columns("RCode").Cells(i).Specific.Selected Is Nothing) Then
+'                    Call Sbo_Application.SetStatusBarMessage(i & "행의 원재료 청구가 중복되어 재청구사유를 필수로 입력하여야 합니다.", bmt_Short, True)
+'                    Call oMat01.Columns("RCode").Cells(i).Click(ct_Regular)
+'                    PS_PP038_DataValidCheck = False
+'                    Exit Function
+'                End If
+'            End If
 '        End If
+    
 '    Next
-'    Call oDS_SM020L.RemoveRecord(oDS_SM020L.Size - 1)
-'    Call oMat01.LoadFromDataSource
-    Call PS_PP038_FormClear
+
+    Call oMat01.LoadFromDataSource
+    PS_PP038_DataValidCheck = True
     Exit Function
 PS_PP038_DataValidCheck_Error:
+    PS_PP038_DataValidCheck = False
     Sbo_Application.SetStatusBarMessage "PS_PP038_DataValidCheck_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True
 End Function
 
@@ -1194,22 +1219,22 @@ End Sub
 Public Sub PS_PP038_MTX02(ByVal pRow As Long)
 '******************************************************************************
 'Function ID : PS_PP038_MTX02()
-'해당모듈 : PS_PP038
-'기능 : 데이터 조회
-'인수 : pRow(행번호)
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_PP038
+'기능        : 데이터 조회
+'인수        : pRow(행번호)
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_PP038_MTX02_Error
 
-    Dim i As Integer
-    Dim sQry As String
-    Dim ErrNum As Integer
+    Dim i       As Integer
+    Dim sQry    As String
+    Dim ErrNum  As Integer
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
-    Dim DocEntry As String
+    Dim DocEntry   As String
     Dim FullOrdNum As String
     
     Dim ProgBar01 As SAPbouiCOM.ProgressBar
@@ -1224,7 +1249,7 @@ On Error GoTo PS_PP038_MTX02_Error
     oForm01.Items("GridRow").Specific.VALUE = pRow '그리드에서 선택한 행의 행번호
     oForm01.Items("FullOrdNum").Specific.VALUE = FullOrdNum '그리드에서 선택한 작번(전체작번)
     
-    sQry = "         EXEC [PS_PP038_02] '"
+    sQry = "      EXEC [PS_PP038_02] '"
     sQry = sQry & DocEntry & "'"
     
     Call oRecordSet01.DoQuery(sQry)
@@ -1270,6 +1295,10 @@ On Error GoTo PS_PP038_MTX02_Error
         Call oDS_PS_PP038L.setValue("U_ColReg11", i, Trim(oRecordSet01.Fields("CntcName").VALUE)) '이름
         Call oDS_PS_PP038L.setValue("U_ColDt02", i, Format(Trim(oRecordSet01.Fields("CGDate").VALUE), "YYYYMMDD")) '청구일자
         Call oDS_PS_PP038L.setValue("U_ColReg13", i, Trim(oRecordSet01.Fields("ProcType").VALUE)) '조달방식
+        Call oDS_PS_PP038L.setValue("U_ColReg15", i, Trim(oRecordSet01.Fields("ImportYN").VALUE)) '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+        Call oDS_PS_PP038L.setValue("U_ColReg16", i, Trim(oRecordSet01.Fields("EmergYN").VALUE)) '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+        Call oDS_PS_PP038L.setValue("U_ColReg20", i, Trim(oRecordSet01.Fields("RCode").VALUE)) '재청구사유
+        Call oDS_PS_PP038L.setValue("U_ColReg21", i, Trim(oRecordSet01.Fields("RName").VALUE)) '재청구사유내용
         Call oDS_PS_PP038L.setValue("U_ColReg14", i, Trim(oRecordSet01.Fields("Comments").VALUE)) '비고
         Call oDS_PS_PP038L.setValue("U_ColNum01", i, Trim(oRecordSet01.Fields("DocEntry").VALUE)) 'DocEntry
         Call oDS_PS_PP038L.setValue("U_ColNum02", i, Trim(oRecordSet01.Fields("LineId").VALUE)) 'LineId
@@ -1293,7 +1322,7 @@ On Error GoTo PS_PP038_MTX02_Error
     Set ProgBar01 = Nothing
     Set oRecordSet01 = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_PP038_MTX02_Error:
 
     Call oForm01.Freeze(False)
@@ -1310,17 +1339,17 @@ End Sub
 Public Function PS_PP038_AddData() As Boolean
 '******************************************************************************
 'Function ID : PS_PP038_AddData()
-'해당모듈 : PS_PP038
-'기능 : 데이터 INSERT
-'인수 : 없음
-'반환값 : 성공여부
-'특이사항 : 없음
+'해당모듈    : PS_PP038
+'기능        : 데이터 INSERT
+'인수        : 없음
+'반환값      : 성공여부
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_PP038_AddData_Error
 
     Dim loopCount As Integer
-    Dim sQry As String
-    Dim ErrNum As Integer
+    Dim sQry      As String
+    Dim ErrNum    As Integer
     
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
@@ -1330,20 +1359,24 @@ On Error GoTo PS_PP038_AddData_Error
     Dim ItemName As String '품목이름
     Dim ItemGpCd As String '품목그룹
     Dim BatchNum As String '배치번호
-    Dim Weight As String '중량
-    Dim Unit As String '단위
-    Dim DueDate As String '납기요구일
+    Dim Weight   As String '중량
+    Dim Unit     As String '단위
+    Dim DueDate  As String '납기요구일
     Dim CntcCode As String '사번
     Dim CntcName As String '이름
-    Dim CGDate As String '청구일자
+    Dim CGDate   As String '청구일자
     Dim ProcType As String '조달방식
+    Dim ImportYN As String '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+    Dim EmergYN  As String '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+    Dim RCode    As String '재청구사유(2018.09.17 송명규, 김석태 과장 요청)
+    Dim RName    As String '재청구사유내용(2018.09.17 송명규, 김석태 과장 요청)
     Dim Comments As String '비고
     Dim DocEntry As String 'DocEntry
-    Dim LineId As String 'LineID
+    Dim LineId   As String 'LineID
     Dim VisOrder As String 'VisOrder
-    Dim Object As String 'Object
-    Dim LogInst As String 'LogInst
-    Dim LineNum As String 'U_LineNum
+    Dim Object   As String 'Object
+    Dim LogInst  As String 'LogInst
+    Dim LineNum  As String 'U_LineNum
     
     Dim MainEntry As String '작업지시문서번호
     Dim BPLID As String '사업장코드
@@ -1372,6 +1405,10 @@ On Error GoTo PS_PP038_AddData_Error
             CntcName = Trim(oDS_PS_PP038L.GetValue("U_ColReg11", loopCount)) '이름
             CGDate = Trim(oDS_PS_PP038L.GetValue("U_ColDt02", loopCount)) '청구일자
             ProcType = Trim(oDS_PS_PP038L.GetValue("U_ColReg13", loopCount)) '조달방식
+            ImportYN = Trim(oDS_PS_PP038L.GetValue("U_ColReg15", loopCount)) '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+            EmergYN = Trim(oDS_PS_PP038L.GetValue("U_ColReg16", loopCount)) '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+            RCode = Trim(oDS_PS_PP038L.GetValue("U_ColReg20", loopCount)) '재청구사유(2018.09.17 송명규, 김석태 과장 요청)
+            RName = Trim(oDS_PS_PP038L.GetValue("U_ColReg21", loopCount)) '재청구사유내용(2018.09.17 송명규, 김석태 과장 요청)
             Comments = Trim(oDS_PS_PP038L.GetValue("U_ColReg14", loopCount)) '비고
             DocEntry = Trim(oDS_PS_PP038L.GetValue("U_ColNum01", loopCount)) 'DocEntry
             LineId = Trim(oDS_PS_PP038L.GetValue("U_ColNum02", loopCount)) 'LineID
@@ -1393,6 +1430,10 @@ On Error GoTo PS_PP038_AddData_Error
             sQry = sQry & "'" & CntcName & "'," '이름
             sQry = sQry & "'" & CGDate & "'," '청구일자
             sQry = sQry & "'" & ProcType & "'," '조달방식
+            sQry = sQry & "'" & ImportYN & "'," '수입품여부(2018.09.12 송명규, 김석태 과장 요청)
+            sQry = sQry & "'" & EmergYN & "'," '긴급여부(2018.09.12 송명규, 김석태 과장 요청)
+            sQry = sQry & "'" & RCode & "'," '재청구사유(2018.09.17 송명규, 김석태 과장 요청)
+            sQry = sQry & "'" & RName & "'," '재청구사유내용(2018.09.17 송명규, 김석태 과장 요청)
             sQry = sQry & "'" & Comments & "'," '비고
             sQry = sQry & "'" & DocEntry & "'," 'DocEntry
             sQry = sQry & "'" & LineId & "'," 'LineID
@@ -1404,7 +1445,16 @@ On Error GoTo PS_PP038_AddData_Error
             sQry = sQry & "'" & MainEntry & "'," '선택한 작업지시문서번호
             sQry = sQry & "'" & BPLID & "'," '사업장코드
             sQry = sQry & "'" & FullOrdNum & "'" '전체작번
-'
+
+            If (PS_PP038_Check_DupReq(MainEntry, ItemCode, LineId)) = True Then
+                If (oMat01.Columns("RCode").Cells(loopCount + 1).Specific.Selected Is Nothing) Then
+                    Call Sbo_Application.SetStatusBarMessage(loopCount + 1 & "행의 원재료 청구가 중복되어 재청구사유를 필수로 입력하여야 합니다. 등록이 취소되었습니다.", bmt_Short, True)
+                    Call oMat01.Columns("RCode").Cells(loopCount + 1).Click(ct_Regular)
+                    PS_PP038_AddData = False
+                    Exit Function
+                End If
+            End If
+
             Call RecordSet01.DoQuery(sQry)
     
         End If
@@ -1422,7 +1472,7 @@ On Error GoTo PS_PP038_AddData_Error
     PS_PP038_AddData = True
 
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_PP038_AddData_Error:
 
     ProgBar01.VALUE = 100
@@ -1440,20 +1490,20 @@ End Function
 Public Function PS_PP038_DeleteData() As Boolean
 '******************************************************************************
 'Function ID : PS_PP038_DeleteData()
-'해당모듈 : PS_PP038
-'기능 : 기본정보 삭제
-'인수 : 없음
-'반환값 : 없음
-'특이사항 : 없음
+'해당모듈    : PS_PP038
+'기능        : 기본정보 삭제
+'인수        : 없음
+'반환값      : 없음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_PP038_DeleteData_Error
 
     Dim loopCount As Integer
-    Dim sQry As String
-    Dim ErrNum As Integer
+    Dim sQry      As String
+    Dim ErrNum    As Integer
     
-    Dim DocEntry As String '문서번호
-    Dim LineId As String '라인번호
+    Dim DocEntry  As String '문서번호
+    Dim LineId    As String '라인번호
     
     Dim oRecordSet01 As SAPbobsCOM.Recordset
     Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
@@ -1473,7 +1523,7 @@ On Error GoTo PS_PP038_DeleteData_Error
             DocEntry = Trim(oDS_PS_PP038L.GetValue("U_ColNum01", loopCount)) '문서번호
             LineId = Trim(oDS_PS_PP038L.GetValue("U_ColNum02", loopCount)) '라인번호
             
-            sQry = "                 EXEC [PS_PP038_05] " '구매견적까지 진행된 구매요청이 존재하는지 체크
+            sQry = "            EXEC [PS_PP038_05] " '구매견적까지 진행된 구매요청이 존재하는지 체크
             sQry = sQry & "'" & DocEntry & "'," '문서번호
             sQry = sQry & "'" & LineId & "'"  '라인번호
             
@@ -1481,12 +1531,12 @@ On Error GoTo PS_PP038_DeleteData_Error
             
             sQry = ""
             
-            If oRecordSet01.Fields("CNT").VALUE > 0 Then
+            If oRecordSet01.Fields("CNT").VALUE > 0 Then '구매견적진행되지 않은 건만 삭제 가능
                 ErrNum = 2
                 GoTo PS_PP038_DeleteData_Error
             End If
             
-            sQry = "                 EXEC [PS_PP038_04] "
+            sQry = "            EXEC [PS_PP038_04] "
             sQry = sQry & "'" & DocEntry & "'," '문서번호
             sQry = sQry & "'" & LineId & "'"  '라인번호
             
@@ -1503,7 +1553,7 @@ On Error GoTo PS_PP038_DeleteData_Error
     PS_PP038_DeleteData = True
     
     Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 PS_PP038_DeleteData_Error:
 
     Set oRecordSet01 = Nothing
@@ -1519,7 +1569,6 @@ PS_PP038_DeleteData_Error:
     PS_PP038_DeleteData = False
     
 End Function
-
 
 Private Function PS_PP038_DI_API() As Boolean
 'On Error GoTo PS_PP038_DI_API_Error
@@ -1655,11 +1704,11 @@ End Sub
 Private Function PS_PP038_CheckBeforeSearch() As Boolean
 '******************************************************************************
 'Function ID : PS_PP038_CheckBeforeSearch()
-'해당모듈 : PS_PP038
-'기능 : 필수입력사항 체크
-'인수 : 없음
-'반환값 : True:필수입력사항을 모두 입력, Fasle:필수입력사항 중 하나라도 입력하지 않았음
-'특이사항 : 없음
+'해당모듈    : PS_PP038
+'기능        : 필수입력사항 체크
+'인수        : 없음
+'반환값      : True:필수입력사항을 모두 입력, Fasle:필수입력사항 중 하나라도 입력하지 않았음
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_PP038_CheckBeforeSearch_Error
 
@@ -1673,8 +1722,8 @@ On Error GoTo PS_PP038_CheckBeforeSearch_Error
     End Select
 
     PS_PP038_CheckBeforeSearch = True
-Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 PS_PP038_CheckBeforeSearch_Error:
     If ErrNum = 1 Then
         Call MDC_Com.MDC_GF_Message("조회조건 작업구분은 필수선택 사항입니다. 확인하세요.", "E")
@@ -1686,18 +1735,19 @@ End Function
 Private Function PS_PP038_CheckOKYN(ByVal pRow As Integer) As Boolean
 '******************************************************************************
 'Function ID : PS_PP038_CheckOKYN()
-'해당모듈 : PS_PP038
-'기능 : 구매요청승인 상태 확인
-'인수 : 없음
-'반환값 : True:구매요청승인Y, Fasle:구매요청승인N
-'특이사항 : 없음
+'해당모듈    : PS_PP038
+'기능        : 구매요청승인 상태 확인
+'인수        : 없음
+'반환값      : True:구매요청승인Y, Fasle:구매요청승인N
+'특이사항    : 없음
 '******************************************************************************
 On Error GoTo PS_PP038_CheckOKYN_Error
 
-    Dim PP030DL As String
-    Dim ErrNum As Integer
+    Dim PP030DL     As String
+    Dim ErrNum      As Integer
     Dim loopCount01 As Long
-    Dim Query01 As String
+    Dim Query01     As String
+    
     Dim RecordSet01 As SAPbobsCOM.Recordset
     Set RecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
     
@@ -1706,10 +1756,10 @@ On Error GoTo PS_PP038_CheckOKYN_Error
 '    Call oMat01.FlushToDataSource
     PP030DL = oDS_PS_PP038L.GetValue("U_ColNum01", pRow - 1) & "-" & oDS_PS_PP038L.GetValue("U_ColNum02", pRow - 1)
     
-    Query01 = "                SELECT     U_OKYN AS [OKYN]"
+    Query01 = "           SELECT    U_OKYN AS [OKYN]"
     Query01 = Query01 & " FROM      [@PS_MM005H] "
     Query01 = Query01 & " WHERE     U_PP030DL = '" & PP030DL & "'"
-    Query01 = Query01 & "               AND U_OrdType = '10'" '원자재 구매요청만 조회
+    Query01 = Query01 & "           AND U_OrdType = '10'" '원자재 구매요청만 조회
 
     Call RecordSet01.DoQuery(Query01)
     
@@ -1719,8 +1769,8 @@ On Error GoTo PS_PP038_CheckOKYN_Error
         PS_PP038_CheckOKYN = False
     End If
     
-Exit Function
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Exit Function
+
 PS_PP038_CheckOKYN_Error:
     If ErrNum = 1 Then
         Call MDC_Com.MDC_GF_Message("조회조건 작업구분은 필수선택 사항입니다. 확인하세요.", "E")
@@ -1729,8 +1779,9 @@ PS_PP038_CheckOKYN_Error:
     PS_PP038_CheckOKYN = False
 End Function
 
-Private Sub PS_PP038_Print_Report01()
+Private Sub PS_PP038_Print_Report01() '미사용
 On Error GoTo Print_Query_Error
+
     Dim DocNum As String
     Dim WinTitle As String
     Dim ReportName As String
@@ -1836,8 +1887,6 @@ On Error GoTo Print_Query_Error
     
     gRpt_SFormula(1, 1) = ""
     gRpt_SFormula_Value(1, 1) = ""
-    
-
 
     Call oRecordSet.DoQuery(sQry)
     
@@ -1852,7 +1901,7 @@ On Error GoTo Print_Query_Error
     
     Set oRecordSet = Nothing
     Exit Sub
-'////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Print_Query_Error:
     Set oRecordSet = Nothing
     If ErrNum = 1 Then
@@ -1862,8 +1911,49 @@ Print_Query_Error:
     End If
 End Sub
 
+Private Function PS_PP038_Check_DupReq(ByVal pDocEntry As String, ByVal pItemCode As String, ByVal pLineID As String) As Boolean
+'******************************************************************************
+'Function ID : PS_PP038_Check_DupReq()
+'해당모듈    : PS_PP038
+'기능        : 중복청구 여부 조회
+'인수        : pDocEntry(문서번호), pItemCode(원재료품목코드), pLineID(라인번호)
+'반환값      : True-중복청구(O), False-중복청구(X)
+'특이사항    : 없음
+'******************************************************************************
+On Error GoTo PS_PP038_CheckDate_Error
 
+    Dim Query01      As String
+    Dim loopCount    As Integer
+    Dim oRecordSet01 As SAPbobsCOM.Recordset
+    Set oRecordSet01 = Sbo_Company.GetBusinessObject(BoRecordset)
+    
+    Dim DocEntry    As String
+    Dim ItemCode    As String
+    Dim LineId      As String
+    
+    DocEntry = pDocEntry 'Trim(oForm01.Items("DocEntry").Specific.VALUE)
+    ItemCode = pItemCode
+    LineId = pLineID
+    
+    Query01 = "         EXEC PS_Z_Check_DupReq '"
+    Query01 = Query01 & DocEntry & "','"
+    Query01 = Query01 & ItemCode & "','"
+    Query01 = Query01 & LineId & "'"
+    
+    Call oRecordSet01.DoQuery(Query01)
 
+    If oRecordSet01.Fields("ReturnValue").VALUE = "FALSE" Then
+        PS_PP038_Check_DupReq = False
+    Else
+        PS_PP038_Check_DupReq = True
+    End If
+    
+    Set oRecordSet01 = Nothing
 
+    Exit Function
+PS_PP038_CheckDate_Error:
+    PS_PP038_Check_DupReq = False
+    Call Sbo_Application.SetStatusBarMessage("PS_PP038_Check_DupReq_Error: " & Err.Number & " - " & Err.Description, bmt_Short, True)
+End Function
 
 

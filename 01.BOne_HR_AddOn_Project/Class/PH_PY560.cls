@@ -143,6 +143,8 @@ Private Function PH_PY560_CreateItems() As Boolean
     Set oCombo = oForm.Items("Bus2").Specific
     oCombo.ValidValues.Add "", ""
     oCombo.ValidValues.Add "款青", "款青"
+    oCombo.ValidValues.Add "款青(20:00)", "款青(20:00)"
+    oCombo.ValidValues.Add "款青(20:30)", "款青(20:30)"
     oCombo.ValidValues.Add "固款青", "固款青"
     oCombo.Select 0, psk_Index
     
@@ -150,6 +152,7 @@ Private Function PH_PY560_CreateItems() As Boolean
     Set oCombo = oForm.Items("Bus3").Specific
     oCombo.ValidValues.Add "", ""
     oCombo.ValidValues.Add "款青(05:30)", "款青(05:30)"
+    oCombo.ValidValues.Add "款青(08:00)", "款青(08:00)"
     oCombo.ValidValues.Add "款青(08:30)", "款青(08:30)"
     oCombo.ValidValues.Add "固款青", "固款青"
     oCombo.Select 0, psk_Index

@@ -1924,6 +1924,10 @@ On Error GoTo PS_PP041_FormItemEnabled_Error
                                         '//비활성상태
                                         GoTo Continue_First
                                     End If
+                                    '//V-mill 투입시 Core문서가 생성됨으로 날짜 수정 못하도록 변경함. 황영수 20180911
+                                    If Trim(oDS_PS_PP041H.GetValue("U_CpCode", 0)) = "CP50101" Then
+                                        GoTo Continue_First
+                                    End If
                                 End If
                             End If
                             
